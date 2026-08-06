@@ -1,0 +1,7 @@
+{
+  "/calculator-rata-credit/page": "app/calculator-rata-credit/page.js",
+  "/manifest.webmanifest/route": "app/manifest.webmanifest/route.js",
+  "/page": "app/page.js",
+  "/refinantare-credit/page": "app/refinantare-credit/page.js",
+  "/stergere-birou-credit/page": "app/stergere-birou-credit/page.js"
+}
