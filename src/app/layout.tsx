@@ -25,7 +25,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const viewport: Viewport = {
-  themeColor: "#050505",
+  themeColor: "#FFFFFF",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -38,13 +38,12 @@ export const metadata: Metadata = {
     template: "%s | CV Finance",
   },
   description:
-    "CV Finance oferă consultanță financiară premium pentru optimizarea creditelor, refinanțare și identificarea celor mai bune soluții financiare disponibile în piață.",
+    "CV Finance oferă consultanță financiară independentă pentru analizarea opțiunilor de creditare, refinanțare și optimizare a ratelor lunare.",
   keywords: [
     "credit nevoi personale",
     "refinanțare credit",
     "consultant financiar",
     "optimizare financiară",
-    "strategie de creditare",
     "consultanță financiară",
     "broker credite",
     "credit cu istoric negativ",
@@ -63,7 +62,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "CV Finance | Credit Advisory & Financial Optimization",
     description:
-      "CV Finance oferă consultanță financiară premium pentru optimizarea creditelor, refinanțare și identificarea celor mai bune soluții financiare disponibile în piață.",
+      "Analizăm gratuit situația ta financiară și verificăm dacă există variante mai potrivite pentru creditul tău.",
     type: "website",
     locale: "ro_RO",
     siteName: "CV Finance",
@@ -71,13 +70,50 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "CV Finance | Credit Advisory & Financial Optimization",
-    description: "Consultanță financiară premium pentru optimizarea creditelor și refinanțare.",
+    description: "Analiză financiară independentă pentru refinanțare și opțiuni de creditare.",
   },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FinancialService",
+  "name": "CV Finance",
+  "url": "https://credite.cristianvaduva.com",
+  "telephone": "+40767110439",
+  "email": "cristianvaduva@duck.com",
+  "founder": {
+    "@type": "Person",
+    "name": "Cristian Văduva"
+  },
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "București",
+    "addressRegion": "Piața Victoriei",
+    "addressCountry": "RO"
+  },
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": "Cristian Văduva Intelligence Ecosystem",
+    "sameAs": [
+      "https://homefind.cristianvaduva.com",
+      "https://insurance.cristianvaduva.com",
+      "https://subventii.cristianvaduva.com",
+      "https://aixmedia.cristianvaduva.com",
+      "https://health.cristianvaduva.com",
+      "https://os.cristianvaduva.com"
+    ]
+  }
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ro" className={`${manrope.variable} ${playfair.variable} ${jetbrainsMono.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="antialiased">
         {children}
         <CookieConsent />

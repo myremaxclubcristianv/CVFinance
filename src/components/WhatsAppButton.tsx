@@ -9,7 +9,7 @@ interface WhatsAppButtonProps {
 }
 
 export default function WhatsAppButton({
-  phone = "40700000000",
+  phone = "436509536345",
   message = "Bună ziua, doresc o analiză gratuită a opțiunilor mele financiare.",
 }: WhatsAppButtonProps) {
   const handleClick = () => {

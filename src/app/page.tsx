@@ -1523,9 +1523,122 @@ export default function Home() {
           </div>
         </section>
 
+        {/* 12. CONTACT DIRECT SECTION */}
+        <section id="contact-direct" className="section" style={{ paddingTop: "40px" }}>
+          <div className="section-intro">
+            <div>
+              <p className="eyebrow">
+                <span /> CANALE OFICIALE
+              </p>
+              <h2>Contact direct</h2>
+              <p style={{ color: "var(--muted)", maxWidth: "600px", marginTop: "8px" }}>
+                Discutăm situația ta financiară și identificăm opțiunile potrivite pentru cazul tău.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-3" style={{ gap: "20px" }}>
+            <a
+              href="https://wa.me/436509536345?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83%20a%20op%C8%9Biunilor%20mele%20financiare."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card"
+              style={{ padding: "28px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+            >
+              <div>
+                <span style={{ fontSize: "11px", fontWeight: 800, color: "var(--finance-green)", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "8px" }}>
+                  WhatsApp
+                </span>
+                <h3 style={{ fontSize: "1.1rem", marginBottom: "6px" }}>Răspuns rapid prin mesaj</h3>
+                <p style={{ fontSize: "0.9rem", color: "var(--muted)", margin: 0 }}>Preferat pentru întrebări rapide și trimiterea informațiilor.</p>
+              </div>
+              <div style={{ marginTop: "20px", fontSize: "1.05rem", fontWeight: 800, color: "var(--bloomberg-navy)", fontFamily: "var(--font-numbers)" }}>
+                +43 650 953 6345 →
+              </div>
+            </a>
+
+            <a
+              href="tel:+40767110439"
+              className="card"
+              style={{ padding: "28px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+            >
+              <div>
+                <span style={{ fontSize: "11px", fontWeight: 800, color: "var(--finance-green)", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "8px" }}>
+                  Telefon
+                </span>
+                <h3 style={{ fontSize: "1.1rem", marginBottom: "6px" }}>Consultanță directă</h3>
+                <p style={{ fontSize: "0.9rem", color: "var(--muted)", margin: 0 }}>Luni – Vineri 09:00 – 18:00 pentru conversații telefonice direct cu consultantul.</p>
+              </div>
+              <div style={{ marginTop: "20px", fontSize: "1.05rem", fontWeight: 800, color: "var(--bloomberg-navy)", fontFamily: "var(--font-numbers)" }}>
+                0767 110 439 →
+              </div>
+            </a>
+
+            <a
+              href="mailto:cristianvaduva@duck.com"
+              className="card"
+              style={{ padding: "28px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+            >
+              <div>
+                <span style={{ fontSize: "11px", fontWeight: 800, color: "var(--finance-green)", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "8px" }}>
+                  Email
+                </span>
+                <h3 style={{ fontSize: "1.1rem", marginBottom: "6px" }}>Solicitări și documente</h3>
+                <p style={{ fontSize: "0.9rem", color: "var(--muted)", margin: 0 }}>Trimite întrebări detaliate sau documente necesare pentru analiza dosarului.</p>
+              </div>
+              <div style={{ marginTop: "20px", fontSize: "1rem", fontWeight: 800, color: "var(--bloomberg-navy)", fontFamily: "var(--font-numbers)", wordBreak: "break-all" }}>
+                cristianvaduva@duck.com →
+              </div>
+            </a>
+          </div>
+        </section>
+
+        {/* 13. ECOSYSTEM AUTHORITY SECTION */}
+        <section id="ecosistem" className="section" style={{ paddingTop: "40px", paddingBottom: "60px" }}>
+          <div className="section-intro">
+            <div>
+              <p className="eyebrow">
+                <span /> CRISTIAN VĂDUVA INTELLIGENCE
+              </p>
+              <h2>Parte din ecosistemul Cristian Văduva Intelligence</h2>
+              <p style={{ color: "var(--muted)", maxWidth: "680px", marginTop: "8px", lineHeight: 1.6 }}>
+                CV Finance face parte dintr-un ecosistem digital construit pentru decizii mai bune în domeniul financiar, imobiliar, asigurări, business intelligence și sănătate.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-3" style={{ gap: "16px" }}>
+            {[
+              { name: "HomeFind", url: "https://homefind.cristianvaduva.com", desc: "Real estate intelligence, proprietăți și analiză de piață." },
+              { name: "Insurance", url: "https://insurance.cristianvaduva.com", desc: "Analiză și soluții de protecție financiară." },
+              { name: "Subvenții", url: "https://subventii.cristianvaduva.com", desc: "Platformă de intelligence pentru finanțări și programe guvernamentale." },
+              { name: "AiX Media", url: "https://aixmedia.cristianvaduva.com", desc: "Business, economie, tehnologie și intelligence." },
+              { name: "Health", url: "https://health.cristianvaduva.com", desc: "Tehnologie și intelligence pentru sănătate." },
+              { name: "OS", url: "https://os.cristianvaduva.com", desc: "Ecosistem operațional și instrumente digitale inteligente." },
+            ].map((eco, idx) => (
+              <a
+                key={idx}
+                href={eco.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="card"
+                style={{ padding: "20px 24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+              >
+                <div>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                    <strong style={{ fontSize: "1.05rem", color: "var(--bloomberg-navy)" }}>{eco.name}</strong>
+                    <span style={{ fontSize: "12px", color: "var(--finance-green)", fontWeight: 700 }}>{eco.url.replace("https://", "")} ↗</span>
+                  </div>
+                  <p style={{ fontSize: "0.88rem", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>{eco.desc}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+
         {/* Footer */}
         <footer id="contact">
-          <div className="footer-main" style={{ gridTemplateColumns: "1.1fr 0.9fr 1fr 1fr" }}>
+          <div className="footer-main" style={{ gridTemplateColumns: "1.2fr 0.8fr 1fr 1fr" }}>
             <div>
               <a href="#top" className="brand" style={{ letterSpacing: "-1px" }}>
                 <span>CV</span> Finance
@@ -1533,16 +1646,32 @@ export default function Home() {
               <p>
                 Credit Advisory & Financial Optimization. Consultanță și intermediere financiară independentă, cu transparență totală.
               </p>
+              <div style={{ marginTop: "16px", fontSize: "13px", color: "#94A3B8" }}>
+                <strong>Contact oficial:</strong><br />
+                WhatsApp: <a href="https://wa.me/436509536345" style={{ color: "#94A3B8", textDecoration: "underline" }}>+43 650 953 6345</a><br />
+                Telefon: <a href="tel:+40767110439" style={{ color: "#94A3B8", textDecoration: "underline" }}>0767 110 439</a><br />
+                Email: <a href="mailto:cristianvaduva@duck.com" style={{ color: "#94A3B8", textDecoration: "underline" }}>cristianvaduva@duck.com</a>
+              </div>
             </div>
             <div>
-              <strong style={{ color: "var(--ink)", marginBottom: "8px", fontSize: "0.9rem" }}>Navigație</strong>
+              <strong style={{ color: "#FFFFFF", marginBottom: "8px", fontSize: "0.9rem" }}>Navigație</strong>
               <a href="#servicii">Servicii</a>
               <a href="#calculator">Calculator</a>
-              <a href="#despre">Despre noi</a>
+              <a href="#proces">Cum funcționează</a>
+              <a href="#contact-direct">Contact direct</a>
               <a href="#aplica">Analiză gratuită</a>
             </div>
             <div>
-              <strong style={{ color: "var(--ink)", marginBottom: "8px", fontSize: "0.9rem" }}>Legal</strong>
+              <strong style={{ color: "#FFFFFF", marginBottom: "8px", fontSize: "0.9rem" }}>Ecosistem CV</strong>
+              <a href="https://homefind.cristianvaduva.com" target="_blank" rel="noopener noreferrer">HomeFind ↗</a>
+              <a href="https://insurance.cristianvaduva.com" target="_blank" rel="noopener noreferrer">Insurance ↗</a>
+              <a href="https://subventii.cristianvaduva.com" target="_blank" rel="noopener noreferrer">Subvenții ↗</a>
+              <a href="https://aixmedia.cristianvaduva.com" target="_blank" rel="noopener noreferrer">AiX Media ↗</a>
+              <a href="https://health.cristianvaduva.com" target="_blank" rel="noopener noreferrer">Health ↗</a>
+              <a href="https://os.cristianvaduva.com" target="_blank" rel="noopener noreferrer">OS ↗</a>
+            </div>
+            <div>
+              <strong style={{ color: "#FFFFFF", marginBottom: "8px", fontSize: "0.9rem" }}>Legal & GDPR</strong>
               <a href="/termeni-si-conditii">Termeni și condiții</a>
               <a href="/politica-confidentialitate">Politica de confidențialitate</a>
               <a href="/gdpr">Protecția datelor GDPR</a>
@@ -1550,28 +1679,20 @@ export default function Home() {
               <a href="/acord-marketing">Acord comunicări marketing</a>
               <button
                 onClick={() => typeof window !== "undefined" && window.dispatchEvent(new Event("cv_open_cookie_settings"))}
-                style={{ background: "none", border: 0, color: "var(--muted)", font: "inherit", fontSize: "14px", padding: 0, textAlign: "left", cursor: "pointer" }}
+                style={{ background: "none", border: 0, color: "#94A3B8", font: "inherit", fontSize: "14px", padding: 0, textAlign: "left", cursor: "pointer" }}
               >
                 Setări Cookie-uri
               </button>
             </div>
-            <div>
-              <strong style={{ color: "var(--ink)", marginBottom: "8px", fontSize: "0.9rem" }}>Birou central</strong>
-              <span className="muted">Piața Victoriei, București</span>
-              <span className="muted" style={{ marginTop: "4px" }}>Contact: Cristian Văduva</span>
-              <a href="#aplica" className="text-link" style={{ fontSize: "14px", marginTop: "6px", display: "inline-block" }}>
-                Discută cu un consultant →
-              </a>
-            </div>
           </div>
 
           <div className="footer-bottom">
-            <span>© {new Date().getFullYear()} CV Finance. Toate drepturile rezervate.</span>
+            <span>© {new Date().getFullYear()} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
             <span>Credit Advisory & Financial Optimization</span>
           </div>
 
           <div className="legal-disclaimer">
-            * Disclaimer legal: CV Finance funcționează ca birou de consultanță financiară. Analiza este gratuită și nu garantează aprobarea unui credit. Soluțiile financiare disponibile depind direct de criteriile, evaluarea și decizia individuală a fiecărei instituții bancare sau IFN partenere.
+            * Disclaimer legal: CV Finance funcționează ca birou de consultanță financiară independentă fondat de Cristian Văduva. Analiza este gratuită și nu garantează aprobarea unui credit. Soluțiile financiare depind direct de criteriile și evaluarea individuală a instituțiilor bancare partenere.
           </div>
         </footer>
 
