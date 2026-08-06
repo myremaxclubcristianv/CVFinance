@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-
+import { supabaseAdmin } from "@/lib/supabase-admin";
 const leadSchema = z.object({
   // Step 1: Purpose & Requested Amount
   purpose: z.string().trim().min(2).max(100),
@@ -83,8 +83,50 @@ const clean = (val: string) => val.replace(/[<>]/g, "").replace(/\s+/g, " ").tri
 // --- Storage & Notification Abstraction Layer ---
 
 async function saveLead(leadData: any): Promise<boolean> {
-  // TODO: Implement permanent database storage here (e.g. Supabase, PostgreSQL)
-  // For now, we simulate a successful save to the permanent storage layer.
+  const { error } = await supabaseAdmin
+    .from("public.leads")
+    .insert({
+      name: leadData.name,
+      phone: leadData.phone,
+      email: leadData.email,
+
+      birth_year: leadData.birthYear,
+      purpose: leadData.purpose,
+      desired_amount: String(leadData.desiredAmount),
+
+      income: String(leadData.income),
+      employment: leadData.employment,
+
+      credit_types: leadData.creditTypes,
+      credit_type: leadData.creditTypes.join(", "),
+
+      monthly_payment: String(leadData.monthlyPayment),
+      delays: leadData.delays,
+      credit_bureau: leadData.creditBureau,
+
+      message: leadData.message,
+
+      gdpr: leadData.gdpr,
+      marketing: leadData.marketing,
+
+      utm_source: leadData.utmSource,
+      utm_medium: leadData.utmMedium,
+      utm_campaign: leadData.utmCampaign,
+      utm_content: leadData.utmContent,
+
+      page_url: leadData.pageUrl,
+      device_type: leadData.deviceType,
+
+      ip: leadData.ip,
+      user_agent: leadData.userAgent,
+      referrer: leadData.referrer,
+    });
+
+  if (error) {
+    console.error("Supabase lead insert failed:", error);
+    return false;
+  }
+
   return true;
 }
 
