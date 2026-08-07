@@ -2,10 +2,40 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
 import { ArrowRight, Menu, X } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 export default function Header() {
   const [menu, setMenu] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handleCtaClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setMenu(false);
+    trackEvent("cta_analysis_clicked", { source: "header_nav_cta" });
+
+    const scrollToForm = () => {
+      const el = document.getElementById("aplica");
+      if (el) {
+        const isReducedMotion =
+          typeof window !== "undefined" &&
+          window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        el.scrollIntoView({
+          behavior: isReducedMotion ? "auto" : "smooth",
+          block: "start",
+        });
+      }
+    };
+
+    if (pathname === "/") {
+      scrollToForm();
+    } else {
+      router.push("/#aplica");
+      setTimeout(scrollToForm, 300);
+    }
+  };
 
   return (
     <header className="nav">
@@ -22,9 +52,9 @@ export default function Header() {
         <Link href="/#contact-direct">Contact</Link>
         <Link href="/#ecosistem">Ecosistem</Link>
       </nav>
-      <Link className="nav-cta" href="/#aplica">
+      <a className="nav-cta" href="/#aplica" onClick={handleCtaClick}>
         Solicită analiza gratuită <ArrowRight size={15} />
-      </Link>
+      </a>
       <button
         className="menu"
         onClick={() => setMenu(!menu)}
