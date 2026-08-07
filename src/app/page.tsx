@@ -1694,84 +1694,104 @@ export default function Home() {
 
         {/* Footer */}
         <footer id="contact">
-          <div className="footer-main" style={{ gridTemplateColumns: "1.2fr 0.8fr 1fr 1.1fr" }}>
+          <div className="footer-main">
             {/* Zone 01: Cristian Văduva */}
-            <div>
+            <div className="footer-col brand-col">
               <a href="#top" className="brand" style={{ letterSpacing: "-1px" }}>
                 <span>CV</span> Finance
               </a>
-              <p>
-                Credit Advisory & Financial Optimization. Consultanță și intermediere financiară independentă fondată de Cristian Văduva, cu transparență totală și suport dedicat.
+              <p className="brand-desc">
+                Credit Advisory & Financial Optimization. Consultanță și intermediere financiară independentă fondată de Cristian Văduva.
               </p>
-              <div style={{ marginTop: "16px", fontSize: "13px", color: "#CBD5E1", lineHeight: 1.6 }}>
-                <strong>Cristian Văduva</strong><br />
-                Consultant Financiar Independent
+              <div className="brand-meta">
+                <strong>Cristian Văduva</strong>
+                <span>Senior Sales · Credit & Financial Advisory</span>
+              </div>
+              <div className="contact-inline">
+                <a href={`tel:${CONTACT.PHONE}`}>Telefon</a>
+                <span className="dot">•</span>
+                <a href={`https://wa.me/${CONTACT.WHATSAPP}?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83.`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
+                <span className="dot">•</span>
+                <a href={`mailto:${CONTACT.EMAIL}`}>Email</a>
+              </div>
+              <div className="office-badge">
+                <strong>Birou — Piața Victoriei</strong>
+                <span>Zonă centrală, București</span>
               </div>
             </div>
 
             {/* Zone 02: Navigație */}
-            <div>
-              <strong style={{ color: "#FFFFFF", marginBottom: "12px", fontSize: "0.9rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Navigație</strong>
-              <a href="#beneficii">Beneficii</a>
-              <a href="#servicii">Servicii</a>
-              <a href="#calculator">Calculator</a>
-              <a href="#proces">Cum funcționează</a>
-              <a href="/referral">Recomandări</a>
-              <a href="#faq">FAQ</a>
-              <a href="#contact-direct">Contact</a>
-              <a href="#ecosistem">Ecosistem</a>
+            <div className="footer-col">
+              <strong className="col-title">Navigație</strong>
+              <div className="link-strip">
+                <a href="#beneficii">Beneficii</a>
+                <a href="#servicii">Servicii</a>
+                <a href="#calculator">Calculator</a>
+                <a href="#proces">Proces</a>
+                <a href="/referral">Recomandări</a>
+                <a href="#faq">FAQ</a>
+                <a href="#contact-direct">Contact</a>
+                <a href="#ecosistem">Ecosistem</a>
+              </div>
             </div>
 
             {/* Zone 03: Servicii */}
-            <div>
-              <strong style={{ color: "#FFFFFF", marginBottom: "12px", fontSize: "0.9rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Servicii</strong>
-              <a href="#servicii">Credit nou</a>
-              <a href="#servicii">Refinanțare</a>
-              <a href="#servicii">Optimizarea ratelor</a>
-              <a href="#servicii">Biroul de Credit</a>
-              <a href="#aplica">Analiză financiară</a>
-              <a href="#servicii">Acces la oferte multiple</a>
+            <div className="footer-col">
+              <strong className="col-title">Servicii</strong>
+              <div className="link-strip">
+                <a href="#servicii">Credit nou</a>
+                <a href="#servicii">Refinanțare</a>
+                <a href="#servicii">Optimizarea ratelor</a>
+                <a href="#servicii">Biroul de Credit</a>
+                <a href="#aplica">Analiză financiară</a>
+                <a href="#servicii">Oferte multiple</a>
+              </div>
             </div>
 
-            {/* Zone 04: Contact & Birou */}
-            <div>
-              <strong style={{ color: "#FFFFFF", marginBottom: "12px", fontSize: "0.9rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Contact & Birou</strong>
-              <div style={{ fontSize: "13.5px", color: "#CBD5E1", display: "flex", flexDirection: "column", gap: "8px" }}>
+            {/* Zone 04: Contact & Birou (Desktop) */}
+            <div className="footer-col desktop-contact-col">
+              <strong className="col-title">Contact & Birou</strong>
+              <div className="desktop-contact-details">
                 <div>
-                  <strong>Telefon:</strong> <a href={`tel:${CONTACT.PHONE}`} style={{ color: "#CBD5E1", textDecoration: "underline" }}>0767 110 439</a>
+                  <strong>Telefon:</strong> <a href={`tel:${CONTACT.PHONE}`}>0767 110 439</a>
                 </div>
                 <div>
-                  <strong>Email:</strong> <a href={`mailto:${CONTACT.EMAIL}`} style={{ color: "#CBD5E1", textDecoration: "underline" }}>{CONTACT.EMAIL}</a>
+                  <strong>Email:</strong> <a href={`mailto:${CONTACT.EMAIL}`}>{CONTACT.EMAIL}</a>
                 </div>
                 <div>
-                  <strong>WhatsApp:</strong> <a href={`https://wa.me/${CONTACT.WHATSAPP}?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83.`} target="_blank" rel="noopener noreferrer" style={{ color: "#CBD5E1", textDecoration: "underline" }}>+43 650 953 6345</a>
+                  <strong>WhatsApp:</strong> <a href={`https://wa.me/${CONTACT.WHATSAPP}?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83.`} target="_blank" rel="noopener noreferrer">+43 650 953 6345</a>
                 </div>
-                <div style={{ marginTop: "10px", padding: "10px 12px", background: "rgba(255, 255, 255, 0.05)", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
-                  <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "2px" }}>Birou — Piața Victoriei</strong>
-                  <span style={{ fontSize: "12.5px", color: "#94A3B8" }}>Zonă centrală, București</span>
+                <div className="office-card">
+                  <strong>Birou — Piața Victoriei</strong>
+                  <span>Zonă centrală, București</span>
                 </div>
               </div>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <div>
-              <span>© {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
-              <div style={{ marginTop: "6px", display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "12.5px" }}>
-                <a href="/termeni-si-conditii">Termeni și condiții</a>
-                <a href="/politica-confidentialitate">Politica de confidențialitate</a>
-                <a href="/gdpr">GDPR</a>
-                <a href="/acord-marketing">Acord marketing</a>
-                <a href="/nota-legala">Notă legală</a>
-                <button
-                  onClick={() => typeof window !== "undefined" && window.dispatchEvent(new Event("cv_open_cookie_settings"))}
-                  style={{ background: "none", border: 0, color: "#CBD5E1", font: "inherit", fontSize: "12.5px", padding: 0, cursor: "pointer", textDecoration: "underline" }}
-                >
-                  Cookies
-                </button>
-              </div>
+            <div className="footer-legal-strip">
+              <a href="/termeni-si-conditii">Termeni și condiții</a>
+              <span className="dot">•</span>
+              <a href="/politica-confidentialitate">Politica de confidențialitate</a>
+              <span className="dot">•</span>
+              <a href="/gdpr">GDPR</a>
+              <span className="dot">•</span>
+              <button
+                onClick={() => typeof window !== "undefined" && window.dispatchEvent(new Event("cv_open_cookie_settings"))}
+                className="cookie-btn"
+              >
+                Cookies
+              </button>
+              <span className="dot">•</span>
+              <a href="/acord-marketing">Acord marketing</a>
+              <span className="dot">•</span>
+              <a href="/nota-legala">Notă legală</a>
             </div>
-            <span style={{ fontSize: "12.5px" }}>Credit Advisory & Financial Optimization</span>
+            <div className="footer-copyright">
+              <span>© {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
+              <span className="tagline">Credit Advisory & Financial Optimization</span>
+            </div>
           </div>
 
           <div className="legal-disclaimer">
