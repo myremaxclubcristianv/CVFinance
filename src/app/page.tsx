@@ -145,7 +145,7 @@ export default function Home() {
   const [marketing, setMarketing] = useState(false);
   const [honeypot, setHoneypot] = useState("");
 
-  const [footerYear, setFooterYear] = useState(new Date().getFullYear());
+  const [footerYear, setFooterYear] = useState(2026);
   useEffect(() => { setFooterYear(new Date().getFullYear()); }, []);
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
@@ -213,9 +213,17 @@ export default function Home() {
     setFormStep(2);
   };
 
+  const parseIncomeValue = (val: string | number): number => {
+    if (typeof val === "number") return val;
+    if (!val) return 0;
+    const cleanStr = String(val).replace(/\./g, "");
+    const match = cleanStr.match(/\d+/);
+    return match ? Number(match[0]) : 0;
+  };
+
   const handleNextStep2 = () => {
     setFormError("");
-    const numIncome = Number(income);
+    const numIncome = parseIncomeValue(income);
     if (!income || isNaN(numIncome) || numIncome < 500) {
       setFormError("Te rugăm să introduci venitul lunar net (minim 500 RON).");
       return;
@@ -296,25 +304,22 @@ export default function Home() {
     const trafficMeta = typeof window !== "undefined" ? getTrafficMetadata() : {};
     const currentYear = new Date().getFullYear();
 
-      const leadCreditTypes = creditTypes.map((type) => {
-        switch (type) {
-          case "Rate la bancă":
-            return "Bancă";
-          case "Carduri de credit / IFN":
-            return "IFN";
-          case "Mai multe credite":
-            return "Card de credit";
-          case "Nu am credite active":
-            return "Nu am";
-          default:
-            return type;
-        }
-      });
+      const CREDIT_TYPE_MAP: Record<string, string> = {
+        "Rate la bancă": "Bancă",
+        "Carduri de credit / IFN": "IFN",
+        "Mai multe credite": "Card de credit",
+        "Leasing": "Leasing",
+        "Nu am credite active": "Nu am",
+      };
+
+      const leadCreditTypes = creditTypes.map((type) => CREDIT_TYPE_MAP[type] || type);
+
+    const numericIncome = parseIncomeValue(income) || 4500;
 
     const payload = {
       purpose,
       desiredAmount: Number(desiredAmount),
-      income: Number(income),
+      income: numericIncome,
       employment,
       creditTypes: leadCreditTypes,
       monthlyPayment: Number(monthlyPayment),
@@ -349,7 +354,14 @@ export default function Home() {
       const result = await response.json();
       console.log("[FORM] RESPONSE", response.status, result);
       if (!response.ok) {
-        setFormError(result.message || "Solicitarea nu a putut fi trimisă. Încearcă din nou.");
+        let msg = result.message || "Solicitarea nu a putut fi trimisă. Încearcă din nou.";
+        if (result.errors?.fieldErrors) {
+          const firstKey = Object.keys(result.errors.fieldErrors)[0];
+          if (firstKey && result.errors.fieldErrors[firstKey]?.[0]) {
+            msg = `Eroare [${firstKey}]: ${result.errors.fieldErrors[firstKey][0]}`;
+          }
+        }
+        setFormError(msg);
         setFormState("error");
         return;
       }

@@ -88,7 +88,14 @@ const ReferralForm: React.FC = () => {
       });
       const data = await resp.json();
       if (!resp.ok) {
-        setError(data.message || "Eroare la trimitere.");
+        let msg = data.message || "Eroare la trimitere.";
+        if (data.errors?.fieldErrors) {
+          const firstKey = Object.keys(data.errors.fieldErrors)[0];
+          if (firstKey && data.errors.fieldErrors[firstKey]?.[0]) {
+            msg = `Eroare [${firstKey}]: ${data.errors.fieldErrors[firstKey][0]}`;
+          }
+        }
+        setError(msg);
         setFormState("error");
         return;
       }

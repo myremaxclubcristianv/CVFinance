@@ -24,7 +24,13 @@ const leadSchema = z.object({
     .trim()
     .transform((val) => val.replace(/\s+/g, ""))
     .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Număr de telefon nevalid")),
-  email: z.string().trim().email().max(120),
+  email: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((val) => (!val ? undefined : val))
+    .pipe(z.string().email("Adresă de email nevalidă").max(120).optional()),
   birthYear: z.coerce.number().int().min(1930).max(new Date().getFullYear() - 18),
   message: z.string().trim().max(1000).optional().default(""),
   gdpr: z.boolean().optional().default(true),
@@ -207,23 +213,27 @@ export async function POST(request: Request) {
     if (!success) {
       console.error("LEAD VALIDATION FAILED", JSON.stringify(error?.flatten(), null, 2));
       const errorMessage = error?.errors?.map((e) => e.message).join(", ") || "Datele introduse sunt incomplete sau invalide.";
-      if (process.env.NODE_ENV !== 'production') {
-        return NextResponse.json({ ok: false, message: "Date invalide", errors: error?.flatten() }, { status: 400 });
-      }
-      return NextResponse.json({ ok: false, message: errorMessage }, { status: 400 });
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Datele introduse sunt incomplete sau invalide.",
+          ...(process.env.NODE_ENV !== "production" ? { errors: error?.flatten() } : {}),
+        },
+        { status: 400 }
+      );
     }
 
     const lead = data;
     
     // Duplicate Check
-    if (isDuplicate(lead.phone, lead.email)) {
+    if (isDuplicate(lead.phone, lead.email || "")) {
       // Return 200 OK to the client to not raise alarm, but skip processing
       console.log(`Duplicate lead prevented for ${lead.phone} / ${lead.email}`);
       return NextResponse.json({ ok: true, message: "Solicitarea a fost înregistrată cu succes." });
     }
 
     const sanitizedName = clean(lead.name);
-    const sanitizedEmail = clean(lead.email);
+    const sanitizedEmail = lead.email ? clean(lead.email) : "";
     const sanitizedMessage = clean(lead.message);
 
     const timestamp = new Intl.DateTimeFormat("ro-RO", {

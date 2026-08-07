@@ -2,64 +2,48 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
-// Reuse the base lead schema for shared fields
-const baseLeadSchema = z.object({
-  // Step 1: Purpose & Requested Amount
-  purpose: z.string().trim().min(2).max(100),
-  desiredAmount: z.coerce.number().positive().max(5_000_000),
-
-  // Step 2: Financial Profile
-  income: z.coerce.number().positive().max(1_000_000),
-  employment: z.enum(["Sub 3 luni", "3–12 luni", "1–3 ani", "Peste 3 ani"]),
-  creditTypes: z
-    .array(z.enum(["Bancă", "IFN", "Card de credit", "Leasing", "Nu am"]))
-    .min(1)
-    .max(5),
-  monthlyPayment: z.coerce.number().min(0).max(100_000),
-  delays: z.enum(["Nu", "Da"]),
-  creditBureau: z.enum(["Nu", "Da", "Nu știu"]),
-
-  // Step 3: Contact & Consents
-  name: z.string().trim().min(2).max(100),
-  phone: z
+const referralSchema = z.object({
+  referrer_name: z.string().trim().min(2).max(100),
+  referrer_phone: z
     .string()
     .trim()
-    .transform((val) => val.replace(/\s+/g, ""))
-    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Număr de telefon nevalid")),
-  email: z.string().trim().email().max(120),
-  birthYear: z.coerce.number().int().min(1930).max(new Date().getFullYear() - 18),
-  message: z.string().trim().max(1000).optional().default(""),
-  gdpr: z.boolean().optional().default(true),
-  gdprConsent: z.boolean().optional().default(true),
-  marketing: z.boolean().optional().default(false),
-  marketingConsent: z.boolean().optional().default(false),
-
-  // Traffic & Device Metadata
-  website: z.string().max(0).optional(), // Honeypot
-  utmSource: z.string().max(100).optional().default("direct"),
+    .transform((v) => v.replace(/\s+/g, ""))
+    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon referrer invalid")),
+  referrer_email: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((v) => (!v ? undefined : v))
+    .pipe(z.string().email().max(120).optional()),
+  client_name: z.string().trim().min(2).max(100),
+  client_phone: z
+    .string()
+    .trim()
+    .transform((v) => v.replace(/\s+/g, ""))
+    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon client invalid")),
+  client_email: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((v) => (!v ? undefined : v))
+    .pipe(z.string().email().max(120).optional()),
+  financial_need: z.string().trim().min(2).max(200),
+  referral_message: z.string().trim().max(1000).optional().default(""),
+  consent: z.literal(true, {
+    errorMap: () => ({ message: "Trebuie să confirmați consimțământul." }),
+  }),
+  website: z.string().max(0).optional().default(""), // Honeypot
   utmMedium: z.string().max(100).optional().default("—"),
   utmCampaign: z.string().max(100).optional().default("—"),
   utmContent: z.string().max(100).optional().default("—"),
-  referral: z.string().max(100).optional().default("—"),
-  pageUrl: z.string().url().max(2048).optional(),
+  pageUrl: z.string().max(2048).optional(),
   deviceType: z.string().max(50).optional().default("Desktop"),
 });
 
-// Referral‑specific fields
-const referralSchema = z.object({
-  referrer_name: z.string().trim().min(2).max(100),
-  referrer_phone: z.string().trim().transform(v => v.replace(/\s+/g, "")).pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon referrer invalid")),
-  referrer_email: z.string().trim().email().max(120).optional().default(""),
-  client_name: z.string().trim().min(2).max(100),
-  client_phone: z.string().trim().transform(v => v.replace(/\s+/g, "")).pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon client invalid")),
-  client_email: z.string().trim().email().max(120).optional().default(""),
-  financial_need: z.string().trim().min(2).max(200),
-  referral_message: z.string().trim().max(1000).optional().default(""),
-  consent: z.boolean().optional().default(true),
-  website: z.string().max(0).optional(), // Honeypot
-});
 const attempts = new Map<string, { count: number; resetAt: number }>();
-const fullReferralSchema = baseLeadSchema.merge(referralSchema);
+const fullReferralSchema = referralSchema;
 const RATE_LIMIT = 5;
 const WINDOW_MS = 15 * 60 * 1000;
 function allowRequest(ip: string): boolean {
@@ -109,47 +93,48 @@ export async function POST(request: Request) {
     }
     const parsed = fullReferralSchema.safeParse(body);
     if (!parsed.success || parsed.data.website) {
-      return NextResponse.json({ ok: false, message: "Datele introduse sunt incomplete sau invalide." }, { status: 400 });
+      console.error("REFERRAL VALIDATION FAILED", JSON.stringify(parsed.error?.flatten(), null, 2));
+      return NextResponse.json(
+        {
+          ok: false,
+          message: "Datele introduse sunt incomplete sau invalide.",
+          ...(process.env.NODE_ENV !== "production" ? { errors: parsed.error?.flatten() } : {}),
+        },
+        { status: 400 }
+      );
     }
     const data = parsed.data;
-    if (isDuplicate(data.referrer_phone, data.referrer_email)) {
+    if (isDuplicate(data.referrer_phone, data.referrer_email || "")) {
       return NextResponse.json({ ok: true, message: "Recomandarea a fost înregistrată cu succes." });
     }
-    const sanitized = {
-      ...data,
-      name: clean(data.name),
-      email: clean(data.email),
-      message: clean(data.message),
-    };
     // Store in leads table – respecting existing columns
     const { error } = await getSupabaseAdmin()
     .from("leads")
     .insert({
-      name: sanitized.client_name,
-      phone: sanitized.client_phone,
-      email: sanitized.client_email,
-      birth_year: sanitized.birthYear,
-      purpose: sanitized.financial_need || sanitized.purpose,
-      desired_amount: String(sanitized.desiredAmount),
-      income: String(sanitized.income),
-      employment: sanitized.employment,
-      credit_types: sanitized.creditTypes,
-      credit_type: sanitized.creditTypes.join(", "),
-      monthly_payment: String(sanitized.monthlyPayment),
-      delays: sanitized.delays,
-      credit_bureau: sanitized.creditBureau,
-      message: `[RECOMANDARE DE LA: ${sanitized.referrer_name} (${sanitized.referrer_phone}${sanitized.referrer_email ? " / " + sanitized.referrer_email : ""})] ${sanitized.referral_message || ""}`.trim(),
-      gdpr: sanitized.gdpr,
-      marketing: sanitized.marketing,
+      name: clean(data.client_name),
+      phone: clean(data.client_phone),
+      email: data.client_email ? clean(data.client_email) : "referral@cvfinance.ro",
+      purpose: clean(data.financial_need),
+      desired_amount: "0",
+      income: "0",
+      employment: "Sub 3 luni",
+      credit_types: ["Nu am"],
+      credit_type: "Nu am",
+      monthly_payment: "0",
+      delays: "Nu",
+      credit_bureau: "Nu știu",
+      message: `[RECOMANDARE DE LA: ${clean(data.referrer_name)} (${clean(data.referrer_phone)}${data.referrer_email ? " / " + clean(data.referrer_email) : ""})] ${clean(data.referral_message || "")}`.trim(),
+      gdpr: true,
+      marketing: false,
       utm_source: "referral",
-      utm_medium: sanitized.utmMedium,
-      utm_campaign: sanitized.utmCampaign,
-      utm_content: sanitized.utmContent,
-      page_url: sanitized.pageUrl,
-      device_type: sanitized.deviceType,
+      utm_medium: data.utmMedium || "—",
+      utm_campaign: data.utmCampaign || "—",
+      utm_content: data.utmContent || "—",
+      page_url: data.pageUrl,
+      device_type: data.deviceType || "Desktop",
       ip,
       user_agent: request.headers.get("user-agent") || "",
-      referrer: sanitized.referrer_name,
+      referrer: clean(data.referrer_name),
     });
     if (error) {
       console.error("Supabase insert error (referral):", error);
