@@ -33,10 +33,18 @@ const leadSchema = z.object({
     .pipe(z.string().email("Adresă de email nevalidă").max(120).optional()),
   birthYear: z.coerce.number().int().min(1930).max(new Date().getFullYear() - 18),
   message: z.string().trim().max(1000).optional().default(""),
-  gdpr: z.boolean().optional().default(true),
-  gdprConsent: z.boolean().optional().default(true),
-  marketing: z.boolean().optional().default(false),
-  marketingConsent: z.boolean().optional().default(false),
+  gdpr: z.literal(true, {
+    errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
+  }),
+  gdprConsent: z.literal(true, {
+    errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
+  }),
+  marketing: z.literal(true, {
+    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
+  }),
+  marketingConsent: z.literal(true, {
+    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
+  }),
 
   // Traffic & Device Metadata
   website: z.string().max(0).optional(), // Honeypot

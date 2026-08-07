@@ -31,6 +31,7 @@ import {
 import { trackEvent, getTrafficMetadata } from "@/lib/analytics";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Header from "@/components/Header";
+import { CONTACT } from "@/lib/constants";
 
 const servicesList = [
   {
@@ -296,7 +297,14 @@ export default function Home() {
 
     if (!gdpr) {
       console.log("VALIDATION FAILED: gdpr");
-      setFormError("Pentru a trimite solicitarea, este obligatoriu acordul cu termenii și condițiile.");
+      setFormError("Trebuie să accepți politica de confidențialitate și termenii pentru a continua.");
+      setFormState("error");
+      return;
+    }
+
+    if (!marketing) {
+      console.log("VALIDATION FAILED: marketing");
+      setFormError("Trebuie să îți exprimi acordul pentru comunicările de marketing pentru a continua.");
       setFormState("error");
       return;
     }
@@ -520,8 +528,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 2. SECTION: CE SE SCHIMBĂ ÎN TIMP? */}
-        <section id="schimbari" className="section">
+        {/* 2. SECTION: CE SE SCHIMBĂ ÎN TIMP? (BENEFICII) */}
+        <section id="beneficii" className="section">
           <div className="section-intro">
             <div>
               <p className="eyebrow">
@@ -992,7 +1000,7 @@ export default function Home() {
             </div>
 
             {formState === "success" ? (
-              <div className="success-screen" style={{ textAlign: "center", padding: "40px 20px" }}>
+              <div className="success-screen" role="status" aria-live="polite" style={{ textAlign: "center", padding: "40px 20px" }}>
                 <div
                   style={{
                     width: "64px",
@@ -1015,8 +1023,18 @@ export default function Home() {
                 <div style={{ display: "inline-block", background: "rgba(57, 255, 136, 0.1)", border: "1px solid rgba(57, 255, 136, 0.3)", color: "var(--neon-green)", padding: "8px 18px", borderRadius: "20px", fontSize: "0.85rem", fontWeight: 700, marginBottom: "16px" }}>
                   Nu ai nicio obligație să accepți o ofertă.
                 </div>
-                <div>
+                <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
+                  <a
+                    href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, am trimis o solicitare de analiză pe site și doresc mai multe informații.")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="button"
+                    style={{ background: "#25D366", borderColor: "#25D366", color: "#FFFFFF" }}
+                  >
+                    Discută pe WhatsApp
+                  </a>
                   <button
+                    type="button"
                     className="button"
                     onClick={() => {
                       setFormState("idle");
@@ -1030,7 +1048,7 @@ export default function Home() {
             ) : (
               <form onSubmit={submitForm} className="multi-step-form">
                 {formState === "error" && (
-                  <div className="form-error" style={{ marginBottom: "16px", color: "var(--error)", fontWeight: "bold" }}>
+                  <div className="form-error" role="alert" aria-live="assertive" style={{ marginBottom: "16px", color: "var(--error)", fontWeight: "bold" }}>
                     {formError}
                   </div>
                 )}
@@ -1038,10 +1056,11 @@ export default function Home() {
                 <input
                   type="text"
                   name="website"
+                  tabIndex={-1}
+                  aria-hidden="true"
                   value={honeypot}
                   onChange={(e) => setHoneypot(e.target.value)}
                   style={{ display: "none" }}
-                  tabIndex={-1}
                   autoComplete="off"
                 />
 
@@ -1159,8 +1178,9 @@ export default function Home() {
                     </div>
 
                     <div className="field-group">
-                      <label className="field-label">Rata lunară actuală totală (RON)</label>
+                      <label className="field-label" htmlFor="leadMonthlyPayment">Rata lunară actuală totală (RON)</label>
                       <input
+                        id="leadMonthlyPayment"
                         type="number"
                         inputMode="numeric"
                         pattern="[0-9]*"
@@ -1204,8 +1224,9 @@ export default function Home() {
                 {formStep === 3 && (
                   <div className="step-content">
                     <div className="field-group">
-                      <label className="field-label">Nume complet</label>
+                      <label className="field-label" htmlFor="leadName">Nume complet</label>
                       <input
+                        id="leadName"
                         type="text"
                         autoComplete="name"
                         className="input-field"
@@ -1216,8 +1237,9 @@ export default function Home() {
                     </div>
 
                     <div className="field-group">
-                      <label className="field-label">Număr de telefon</label>
+                      <label className="field-label" htmlFor="leadPhone">Număr de telefon</label>
                       <input
+                        id="leadPhone"
                         type="tel"
                         inputMode="tel"
                         autoComplete="tel"
@@ -1250,8 +1272,9 @@ export default function Home() {
                     </div>
 
                     <div className="field-group">
-                      <label className="field-label">Adresă de email</label>
+                      <label className="field-label" htmlFor="leadEmail">Adresă de email</label>
                       <input
+                        id="leadEmail"
                         type="email"
                         inputMode="email"
                         autoComplete="email"
@@ -1266,8 +1289,9 @@ export default function Home() {
                     </div>
 
                     <div className="field-group">
-                      <label className="field-label">Anul nașterii</label>
+                      <label className="field-label" htmlFor="leadBirthYear">Anul nașterii</label>
                       <input
+                        id="leadBirthYear"
                         type="number"
                         inputMode="numeric"
                         pattern="[0-9]*"
@@ -1283,11 +1307,15 @@ export default function Home() {
                     </div>
 
                     <div className="field-group">
-                      <label className="checkbox-label">
+                      <label className="checkbox-label" htmlFor="gdprConsentCheck">
                         <input
+                          id="gdprConsentCheck"
                           type="checkbox"
                           checked={gdpr}
                           onChange={(e) => setGdpr(e.target.checked)}
+                          required
+                          aria-required="true"
+                          aria-invalid={!gdpr && formState === "error"}
                         />
                         <span>
                           Am citit și accept <a href="/termeni-si-conditii" target="_blank" style={{ textDecoration: "underline" }}>Termenii și Condițiile</a> și <a href="/politica-confidentialitate" target="_blank" style={{ textDecoration: "underline" }}>Politica de Confidențialitate</a>. (Obligatoriu)
@@ -1296,14 +1324,18 @@ export default function Home() {
                     </div>
 
                     <div className="field-group">
-                      <label className="checkbox-label">
+                      <label className="checkbox-label" htmlFor="marketingConsentCheck">
                         <input
+                          id="marketingConsentCheck"
                           type="checkbox"
                           checked={marketing}
                           onChange={(e) => setMarketing(e.target.checked)}
+                          required
+                          aria-required="true"
+                          aria-invalid={!marketing && formState === "error"}
                         />
                         <span>
-                          Sunt de acord să primesc comunicări comerciale, oferte și informații financiare de la CV Finance. (<a href="/acord-marketing" target="_blank" style={{ textDecoration: "underline" }}>Detalii acord</a>) (Opțional)
+                          Sunt de acord să primesc comunicări comerciale, oferte și informații financiare de la CV Finance. (<a href="/acord-marketing" target="_blank" style={{ textDecoration: "underline" }}>Detalii acord</a>) (Obligatoriu)
                         </span>
                       </label>
                     </div>

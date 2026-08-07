@@ -90,6 +90,7 @@ a {
   max-width: 1240px;
   margin: auto;
   padding: 100px 32px;
+  scroll-margin-top: 90px;
 }
 
 h1, h2, h3, h4, p {
@@ -996,6 +997,85 @@ footer {
   }
 }
 
+/* Floating Conversion CTA Stack */
+.floating-cta-stack {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  right: 20px;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+  pointer-events: none;
+}
+
+.floating-cta-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid transparent;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  cursor: pointer;
+}
+
+.floating-cta-btn.primary-analysis {
+  background: var(--bloomberg-navy, #0B192C);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.floating-cta-btn.primary-analysis:hover,
+.floating-cta-btn.primary-analysis:focus-visible {
+  background: #1e293b;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.2);
+}
+
+.floating-cta-btn.secondary-whatsapp {
+  background: #25D366;
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.floating-cta-btn.secondary-whatsapp:hover,
+.floating-cta-btn.secondary-whatsapp:focus-visible {
+  background: #20bd5a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+}
+
+.floating-cta-btn:focus-visible {
+  outline: 2px solid var(--finance-green, #10B981);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .floating-cta-stack {
+    right: 12px;
+    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    gap: 8px;
+  }
+
+  .floating-cta-btn {
+    padding: 8px 14px;
+    font-size: 12px;
+    border-radius: 24px;
+  }
+
+  .floating-cta-btn .cta-icon {
+    width: 16px;
+    height: 16px;
+  }
+}
+
 /* Reduced Motion Support */
 @media (prefers-reduced-motion: reduce) {
   *, ::before, ::after {
@@ -1003,5 +1083,10 @@ footer {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .floating-cta-btn:hover,
+  .floating-cta-btn:focus-visible {
+    transform: none !important;
   }
 }

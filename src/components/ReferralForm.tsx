@@ -122,7 +122,7 @@ const ReferralForm: React.FC = () => {
 
   if (formState === "success") {
     return (
-      <div className="success-message" style={{ textAlign: "center", padding: "24px" }}>
+      <div className="success-message" role="status" aria-live="polite" style={{ textAlign: "center", padding: "24px" }}>
         <p style={{ fontSize: "1.1rem", marginBottom: "20px" }}>
           Recomandarea a fost transmisă cu succes. Vom reveni către persoana recomandată în cel mai scurt timp.
         </p>
@@ -135,9 +135,9 @@ const ReferralForm: React.FC = () => {
 
   return (
     <form className="referral-form" onSubmit={handleSubmit} noValidate>
-      {error && <p className="error" style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error" role="alert" aria-live="assertive" style={{ color: "red" }}>{error}</p>}
       {/* Hidden honeypot */}
-      <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: "none" }} />
+      <input type="text" name="website" tabIndex={-1} aria-hidden="true" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: "none" }} />
 
       <h2 className="form-title">Recomandă un client</h2>
       <div className="field-group">
@@ -173,8 +173,16 @@ const ReferralForm: React.FC = () => {
         <textarea id="message" className="input-field" value={message} onChange={(e) => setMessage(e.target.value)} rows={3} />
       </div>
       <div className="field-group" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <input id="consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} required />
-        <label htmlFor="consent" className="field-label">Confirm că am dreptul să transmit datele persoanei recomandate și că aceasta a consimțat.</label>
+        <input
+          id="consent"
+          type="checkbox"
+          checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          required
+          aria-required="true"
+          aria-invalid={!consent && formState === "error"}
+        />
+        <label htmlFor="consent" className="field-label">Confirm că am dreptul să transmit datele persoanei recomandate și că aceasta a consimțat.*</label>
       </div>
 
       <button type="submit" disabled={formState === "submitting"} className="button">

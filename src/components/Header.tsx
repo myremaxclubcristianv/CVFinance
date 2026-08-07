@@ -26,12 +26,14 @@ export default function Header() {
       <button
         className="menu"
         onClick={() => setMenu(!menu)}
-        aria-label="Meniu navigație"
+        aria-label={menu ? "Închide meniul de navigație" : "Deschide meniul de navigație"}
+        aria-expanded={menu}
+        aria-controls="mobile-nav-menu"
       >
         {menu ? <X size={22} /> : <Menu size={22} />}
       </button>
       {menu && (
-        <div className="mobile-nav">
+        <div className="mobile-nav" id="mobile-nav-menu" role="navigation" aria-label="Meniu mobil">
           <Link href="/#beneficii" onClick={() => setMenu(false)}>
             Beneficii
           </Link>
