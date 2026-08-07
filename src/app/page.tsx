@@ -439,9 +439,6 @@ export default function Home() {
       />
 
       <main>
-        {/* Navigation Bar */}
-        <Header />
-
         {/* 1. HERO SECTION REWRITE */}
         <section id="top" className="hero section">
           <div className="hero-copy">
@@ -449,7 +446,7 @@ export default function Home() {
               <span /> ✓ Analiză gratuită · Fără obligații · Durează 2 minute
             </p>
             <h1>
-              Banca nu te sună să îți spună că există o variantă mai bună. <i>Noi da.</i>
+              Banca nu te sună să îți spună că există o variantă mai bună. <i>Eu da.</i>
             </h1>
             <p className="lead">
               Verificăm dacă există variante mai potrivite pentru creditul tău.
@@ -1498,7 +1495,7 @@ export default function Home() {
                 500 – 3.000 RON / recomandare
               </div>
 
-              <a className="button" href="#aplica" onClick={() => trackEvent("referral_click")}>
+              <a className="button" href="/referral" onClick={() => trackEvent("referral_click")}>
                 Recomandă un client <Share2 size={18} />
               </a>
             </div>

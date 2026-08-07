@@ -105,6 +105,8 @@ const jsonLd = {
   }
 };
 
+import Header from "@/components/Header";
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ro" className={`${manrope.variable} ${playfair.variable} ${jetbrainsMono.variable}`}>
@@ -115,6 +117,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="antialiased">
+        <Header />
         {children}
         <CookieConsent />
       </body>
