@@ -19,6 +19,8 @@ export default function Header() {
         <Link href="/#proces">Cum funcționează</Link>
         <Link href="/referral">Recomandări</Link>
         <Link href="/#faq">FAQ</Link>
+        <Link href="/#contact-direct">Contact</Link>
+        <Link href="/#ecosistem">Ecosistem</Link>
       </nav>
       <Link className="nav-cta" href="/#aplica">
         Solicită analiza gratuită <ArrowRight size={15} />
@@ -52,8 +54,11 @@ export default function Header() {
           <Link href="/#faq" onClick={() => setMenu(false)}>
             FAQ
           </Link>
-          <Link href="/#aplica" onClick={() => setMenu(false)}>
-            Solicită analiza gratuită
+          <Link href="/#contact-direct" onClick={() => setMenu(false)}>
+            Contact
+          </Link>
+          <Link href="/#ecosistem" onClick={() => setMenu(false)}>
+            Ecosistem
           </Link>
         </div>
       )}

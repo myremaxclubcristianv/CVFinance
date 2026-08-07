@@ -1,8 +1,13 @@
 "use client";
-import Header from "@/components/Header";
+import { useEffect } from "react";
 import ReferralForm from "@/components/ReferralForm";
+import { trackEvent } from "@/lib/analytics";
 
 export default function ReferralPage() {
+  useEffect(() => {
+    trackEvent("referral_page_viewed");
+  }, []);
+
   return (
     <main className="container">
       {/* Hero Section */}

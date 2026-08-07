@@ -35,39 +35,34 @@ import { CONTACT } from "@/lib/constants";
 
 const servicesList = [
   {
-    title: "Consultanță Financiară",
-    desc: "Analizăm situația ta și identificăm cele mai bune opțiuni de creditare din piață.",
-    icon: UserCheck,
-  },
-  {
-    title: "Refinanțare Credite",
-    desc: "Înlocuim creditele scumpe cu o variantă optimizată și cu o rată lunară mai mică.",
-    icon: TrendingDown,
-  },
-  {
-    title: "Consolidare Credite",
-    desc: "Comasăm mai multe rate dispersate într-o singură plată lunară clară și accesibilă.",
-    icon: Coins,
-  },
-  {
-    title: "Credit Nevoi Personale",
-    desc: "Găsim condițiile potrivite pentru planurile și necesitățile tale financiare.",
-    icon: Zap,
-  },
-  {
-    title: "Analiză Birou de Credit",
-    desc: "Identificăm soluțiile legale pentru clarificarea și corectarea istoricului tău.",
+    title: "Biroul de Credit",
+    desc: "Analizez situația din Biroul de Credit și identific dacă există posibilități legale de corectare sau ștergere a unor informații, atunci când există temei.",
     icon: FileCheck,
   },
   {
-    title: "Credite cu Întârzieri",
-    desc: "Căutăm parteneri financiari deschiși către situații financiare mai complexe.",
-    icon: ShieldCheck,
+    title: "Credit nou",
+    desc: "Verific opțiunile disponibile pentru obținerea unui credit nou adaptat nevoilor tale.",
+    icon: Zap,
   },
   {
-    title: "Manager de Cont",
-    desc: "Un specialist te asistă pas cu pas, de la prima analiză gratuită până la aprobare.",
-    icon: Award,
+    title: "Refinanțare",
+    desc: "Analizez dacă refinanțarea poate însemna condiții mai potrivite sau o rată lunară mai ușor de susținut.",
+    icon: TrendingDown,
+  },
+  {
+    title: "Optimizarea ratelor",
+    desc: "Caut variante prin care costul lunar al creditelor tale poate fi optimizat, dacă situația permite.",
+    icon: Coins,
+  },
+  {
+    title: "Analiză rapidă",
+    desc: "Te ajut să identifici rapid variantele disponibile și pașii potriviți pentru situația ta.",
+    icon: Clock3,
+  },
+  {
+    title: "Acces la oferte multiple",
+    desc: "Compar opțiuni de la mai mulți finanțatori pentru a identifica variante potrivite profilului tău.",
+    icon: Landmark,
   },
 ];
 
@@ -157,6 +152,7 @@ export default function Home() {
 
   useEffect(() => {
     if (formStep === 3) {
+      trackEvent("lead_form_step_3");
       const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
       requestAnimationFrame(() => {
         contactStepRef.current?.scrollIntoView({
@@ -473,7 +469,7 @@ export default function Home() {
               Banca nu te sună să îți spună că există o variantă mai bună. <i>Eu da.</i>
             </h1>
             <p className="lead">
-              Verificăm dacă există variante mai potrivite pentru creditul tău.
+              Verific dacă există variante mai potrivite pentru creditul tău.
             </p>
 
             <div className="hero-actions" style={{ marginTop: "24px" }}>
@@ -1698,61 +1694,88 @@ export default function Home() {
 
         {/* Footer */}
         <footer id="contact">
-          <div className="footer-main" style={{ gridTemplateColumns: "1.2fr 0.8fr 1fr 1fr" }}>
+          <div className="footer-main" style={{ gridTemplateColumns: "1.2fr 0.8fr 1fr 1.1fr" }}>
+            {/* Zone 01: Cristian Văduva */}
             <div>
               <a href="#top" className="brand" style={{ letterSpacing: "-1px" }}>
                 <span>CV</span> Finance
               </a>
               <p>
-                Credit Advisory & Financial Optimization. Consultanță și intermediere financiară independentă, cu transparență totală.
+                Credit Advisory & Financial Optimization. Consultanță și intermediere financiară independentă fondată de Cristian Văduva, cu transparență totală și suport dedicat.
               </p>
-              <div style={{ marginTop: "16px", fontSize: "13px", color: "#94A3B8" }}>
-                <strong>Contact oficial:</strong><br />
-                WhatsApp: <a href="https://wa.me/436509536345" style={{ color: "#94A3B8", textDecoration: "underline" }}>+43 650 953 6345</a><br />
-                Telefon: <a href="tel:+40767110439" style={{ color: "#94A3B8", textDecoration: "underline" }}>0767 110 439</a><br />
-                Email: <a href="mailto:cristianvaduva@duck.com" style={{ color: "#94A3B8", textDecoration: "underline" }}>cristianvaduva@duck.com</a>
+              <div style={{ marginTop: "16px", fontSize: "13px", color: "#CBD5E1", lineHeight: 1.6 }}>
+                <strong>Cristian Văduva</strong><br />
+                Consultant Financiar Independent
               </div>
             </div>
+
+            {/* Zone 02: Navigație */}
             <div>
-              <strong style={{ color: "#FFFFFF", marginBottom: "8px", fontSize: "0.9rem" }}>Navigație</strong>
+              <strong style={{ color: "#FFFFFF", marginBottom: "12px", fontSize: "0.9rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Navigație</strong>
+              <a href="#beneficii">Beneficii</a>
               <a href="#servicii">Servicii</a>
               <a href="#calculator">Calculator</a>
               <a href="#proces">Cum funcționează</a>
-              <a href="#contact-direct">Contact direct</a>
-              <a href="#aplica">Analiză gratuită</a>
+              <a href="/referral">Recomandări</a>
+              <a href="#faq">FAQ</a>
+              <a href="#contact-direct">Contact</a>
+              <a href="#ecosistem">Ecosistem</a>
             </div>
+
+            {/* Zone 03: Servicii */}
             <div>
-              <strong style={{ color: "#FFFFFF", marginBottom: "8px", fontSize: "0.9rem" }}>Ecosistem CV</strong>
-              <a href="https://homefind.cristianvaduva.com" target="_blank" rel="noopener noreferrer">HomeFind ↗</a>
-              <a href="https://insurance.cristianvaduva.com" target="_blank" rel="noopener noreferrer">Insurance ↗</a>
-              <a href="https://subventii.cristianvaduva.com" target="_blank" rel="noopener noreferrer">Subvenții ↗</a>
-              <a href="https://aixmedia.cristianvaduva.com" target="_blank" rel="noopener noreferrer">AiX Media ↗</a>
-              <a href="https://health.cristianvaduva.com" target="_blank" rel="noopener noreferrer">Health ↗</a>
-              <a href="https://os.cristianvaduva.com" target="_blank" rel="noopener noreferrer">OS ↗</a>
+              <strong style={{ color: "#FFFFFF", marginBottom: "12px", fontSize: "0.9rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Servicii</strong>
+              <a href="#servicii">Credit nou</a>
+              <a href="#servicii">Refinanțare</a>
+              <a href="#servicii">Optimizarea ratelor</a>
+              <a href="#servicii">Biroul de Credit</a>
+              <a href="#aplica">Analiză financiară</a>
+              <a href="#servicii">Acces la oferte multiple</a>
             </div>
+
+            {/* Zone 04: Contact & Birou */}
             <div>
-              <strong style={{ color: "#FFFFFF", marginBottom: "8px", fontSize: "0.9rem" }}>Legal & GDPR</strong>
-              <a href="/termeni-si-conditii">Termeni și condiții</a>
-              <a href="/politica-confidentialitate">Politica de confidențialitate</a>
-              <a href="/gdpr">Protecția datelor GDPR</a>
-              <a href="/nota-legala">Notă legală & Disclaimer</a>
-              <a href="/acord-marketing">Acord comunicări marketing</a>
-              <button
-                onClick={() => typeof window !== "undefined" && window.dispatchEvent(new Event("cv_open_cookie_settings"))}
-                style={{ background: "none", border: 0, color: "#94A3B8", font: "inherit", fontSize: "14px", padding: 0, textAlign: "left", cursor: "pointer" }}
-              >
-                Setări Cookie-uri
-              </button>
+              <strong style={{ color: "#FFFFFF", marginBottom: "12px", fontSize: "0.9rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Contact & Birou</strong>
+              <div style={{ fontSize: "13.5px", color: "#CBD5E1", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <div>
+                  <strong>Telefon:</strong> <a href={`tel:${CONTACT.PHONE}`} style={{ color: "#CBD5E1", textDecoration: "underline" }}>0767 110 439</a>
+                </div>
+                <div>
+                  <strong>Email:</strong> <a href={`mailto:${CONTACT.EMAIL}`} style={{ color: "#CBD5E1", textDecoration: "underline" }}>{CONTACT.EMAIL}</a>
+                </div>
+                <div>
+                  <strong>WhatsApp:</strong> <a href={`https://wa.me/${CONTACT.WHATSAPP}?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83.`} target="_blank" rel="noopener noreferrer" style={{ color: "#CBD5E1", textDecoration: "underline" }}>+43 650 953 6345</a>
+                </div>
+                <div style={{ marginTop: "10px", padding: "10px 12px", background: "rgba(255, 255, 255, 0.05)", borderRadius: "8px", border: "1px solid rgba(255, 255, 255, 0.1)" }}>
+                  <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "2px" }}>Birou — Piața Victoriei</strong>
+                  <span style={{ fontSize: "12.5px", color: "#94A3B8" }}>Zonă centrală, București</span>
+                </div>
+              </div>
             </div>
           </div>
 
           <div className="footer-bottom">
-            <span>© {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
-            <span>Credit Advisory & Financial Optimization</span>
+            <div>
+              <span>© {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
+              <div style={{ marginTop: "6px", display: "flex", flexWrap: "wrap", gap: "14px", fontSize: "12.5px" }}>
+                <a href="/termeni-si-conditii">Termeni și condiții</a>
+                <a href="/politica-confidentialitate">Politica de confidențialitate</a>
+                <a href="/gdpr">GDPR</a>
+                <a href="/acord-marketing">Acord marketing</a>
+                <a href="/nota-legala">Notă legală</a>
+                <button
+                  onClick={() => typeof window !== "undefined" && window.dispatchEvent(new Event("cv_open_cookie_settings"))}
+                  style={{ background: "none", border: 0, color: "#CBD5E1", font: "inherit", fontSize: "12.5px", padding: 0, cursor: "pointer", textDecoration: "underline" }}
+                >
+                  Cookies
+                </button>
+              </div>
+            </div>
+            <span style={{ fontSize: "12.5px" }}>Credit Advisory & Financial Optimization</span>
           </div>
 
           <div className="legal-disclaimer">
-            * Disclaimer legal: CV Finance funcționează ca birou de consultanță financiară independentă fondat de Cristian Văduva. Analiza este gratuită și nu garantează aprobarea unui credit. Soluțiile financiare depind direct de criteriile și evaluarea individuală a instituțiilor bancare partenere.
+            * Disclaimer legal: CV Finance funcționează ca birou de consultanță financiară independentă fondat de Cristian Văduva. Birou în zona centrală — Piața Victoriei, București. Analiza este gratuită și nu garantează aprobarea unui credit. Soluțiile financiare depind direct de criteriile și evaluarea individuală a instituțiilor bancare partenere.
           </div>
         </footer>
 
