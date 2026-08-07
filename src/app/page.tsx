@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   ArrowRight,
   BadgeCheck,
@@ -151,6 +151,22 @@ export default function Home() {
   useEffect(() => { setFooterYear(new Date().getFullYear()); }, []);
 
   const [openFaq, setOpenFaq] = useState<number | null>(0);
+
+  const contactStepRef = useRef<HTMLDivElement>(null);
+  const contactHeadingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (formStep === 3) {
+      const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      requestAnimationFrame(() => {
+        contactStepRef.current?.scrollIntoView({
+          behavior: isReducedMotion ? "auto" : "smooth",
+          block: "start",
+        });
+        contactHeadingRef.current?.focus({ preventScroll: true });
+      });
+    }
+  }, [formStep]);
 
   // Track Page View on Mount
   useEffect(() => {
@@ -1222,7 +1238,10 @@ export default function Home() {
 
                 {/* STEP 3: Contact Details & Submit */}
                 {formStep === 3 && (
-                  <div className="step-content">
+                  <div id="contact-step-start" ref={contactStepRef} className="step-content">
+                    <h3 ref={contactHeadingRef} tabIndex={-1} style={{ outline: "none", fontSize: "1.2rem", marginBottom: "16px" }}>
+                      Date de contact
+                    </h3>
                     <div className="field-group">
                       <label className="field-label" htmlFor="leadName">Nume complet</label>
                       <input
@@ -1736,9 +1755,6 @@ export default function Home() {
             * Disclaimer legal: CV Finance funcționează ca birou de consultanță financiară independentă fondat de Cristian Văduva. Analiza este gratuită și nu garantează aprobarea unui credit. Soluțiile financiare depind direct de criteriile și evaluarea individuală a instituțiilor bancare partenere.
           </div>
         </footer>
-
-        {/* Floating WhatsApp Contact Button */}
-        <WhatsAppButton />
 
         {/* Mobile Sticky CTA Bar */}
         {!isInputFocused && (

@@ -10,8 +10,8 @@
   --line-dark: rgba(10, 37, 64, 0.12);
   --ink: #1D1D1F;
   --text-primary: #1D1D1F;
-  --text-secondary: #424245;
-  --muted: #86868B;
+  --text-secondary: #334155;
+  --muted: #52525B;
   
   /* Bloomberg Institutional Navy */
   --bloomberg-navy: #0A2540;
@@ -91,6 +91,10 @@ a {
   margin: auto;
   padding: 100px 32px;
   scroll-margin-top: 90px;
+}
+
+#contact-step-start {
+  scroll-margin-top: 100px;
 }
 
 h1, h2, h3, h4, p {
@@ -908,6 +912,10 @@ footer {
   color: #FFFFFF;
   border-top: 1px solid rgba(10, 37, 64, 0.2);
   padding: 80px 32px 40px 32px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .footer-main {
@@ -917,10 +925,12 @@ footer {
   grid-template-columns: 1.5fr 1fr 1fr 1fr;
   gap: 48px;
   margin-bottom: 60px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .footer-main p {
-  color: #94A3B8;
+  color: #CBD5E1;
   font-size: 13px;
   margin-top: 12px;
   max-width: 320px;
@@ -930,12 +940,15 @@ footer {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  min-width: 0;
 }
 
 .footer-main a, .footer-main span {
-  color: #94A3B8;
+  color: #CBD5E1;
   font-size: 14px;
   transition: color 0.2s;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .footer-main a:hover {
@@ -947,15 +960,23 @@ footer {
   padding-top: 24px;
   display: flex;
   justify-content: space-between;
-  color: #94A3B8;
+  color: #CBD5E1;
   font-size: 13px;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .legal-disclaimer {
   margin-top: 24px;
   font-size: 11px;
-  color: #64748B;
+  color: #94A3B8;
   line-height: 1.5;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 /* Mobile Responsiveness & Safe Area Insets */
@@ -968,6 +989,10 @@ footer {
 
   .nav nav {
     display: none;
+  }
+
+  .nav-cta {
+    display: none !important;
   }
 
   .menu {
@@ -991,9 +1016,19 @@ footer {
     padding: 28px 20px;
   }
 
+  footer {
+    padding: 48px 20px calc(80px + env(safe-area-inset-bottom, 0px)) 20px;
+  }
+
   .footer-main {
     grid-template-columns: 1fr;
     gap: 32px;
+    margin-bottom: 36px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    gap: 8px;
   }
 }
 
