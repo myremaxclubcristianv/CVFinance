@@ -8,8 +8,10 @@ interface WhatsAppButtonProps {
   message?: string;
 }
 
+import { CONTACT } from "@/lib/constants";
+
 export default function WhatsAppButton({
-  phone = "436509536345",
+  phone = CONTACT.WHATSAPP,
   message = "Bună ziua, doresc o analiză gratuită a opțiunilor mele financiare.",
 }: WhatsAppButtonProps) {
   const handleClick = () => {

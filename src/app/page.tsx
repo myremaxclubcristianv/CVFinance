@@ -123,8 +123,7 @@ export default function Home() {
   // Multi-step Form State (3 Steps)
   const [formStep, setFormStep] = useState<1 | 2 | 3>(1);
   const [formError, setFormError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   // Form Fields State
   const [purpose, setPurpose] = useState("Reduc rata");
@@ -245,17 +244,20 @@ export default function Home() {
 
     if (!name.trim() || name.trim().length < 2) {
       setFormError("Te rugăm să introduci numele complet.");
+      setFormState("error");
       return;
     }
 
     const cleanPhone = phone.replace(/\s+/g, "");
     if (!cleanPhone || !/^(?:\+40|0040|0)7\d{8}$/.test(cleanPhone)) {
       setFormError("Te rugăm să introduci un număr de telefon valid din România (ex: 0722123456).");
+      setFormState("error");
       return;
     }
 
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
       setFormError("Te rugăm să introduci o adresă de email validă.");
+      setFormState("error");
       return;
     }
 
@@ -263,15 +265,17 @@ export default function Home() {
     const currentYear = new Date().getFullYear();
     if (!birthYear || isNaN(yearNum) || yearNum < 1930 || yearNum > currentYear - 18) {
       setFormError(`Te rugăm să introduci anul nașterii (vârsta minimă 18 ani).`);
+      setFormState("error");
       return;
     }
 
     if (!gdpr) {
       setFormError("Pentru a trimite solicitarea, este obligatoriu acordul cu termenii și condițiile.");
+      setFormState("error");
       return;
     }
 
-    const trafficMeta = getTrafficMetadata();
+    const trafficMeta = typeof window !== "undefined" ? getTrafficMetadata() : {};
 
     const payload = {
       purpose,
@@ -296,8 +300,8 @@ export default function Home() {
       pageUrl: typeof window !== "undefined" ? window.location.href : "https://credite.cristianvaduva.com",
     };
 
-    setSubmitting(true);
-    trackEvent("form_submit");
+    setFormState("submitting");
+    if (typeof window !== "undefined") trackEvent("form_submit");
 
     try {
       const response = await fetch("/api/leads", {
@@ -310,15 +314,17 @@ export default function Home() {
 
       if (!response.ok) {
         setFormError(result.message || "Solicitarea nu a putut fi trimisă. Încearcă din nou.");
+        setFormState("error");
         return;
       }
 
       trackEvent("lead_success", { purpose, desiredAmount });
-      setSubmitted(true);
+      setFormState("success");
     } catch {
       setFormError("Conexiunea a fost întreruptă. Verifică rețeaua și încearcă din nou.");
+      setFormState("error");
     } finally {
-      setSubmitting(false);
+      // no action needed; formState reflects final state
     }
   };
 
@@ -451,9 +457,8 @@ export default function Home() {
               <a className="button" href="#calculator" onClick={() => trackEvent("calculator_start")}>
                 Află ce opțiuni ai <ArrowRight size={18} />
               </a>
-              <a className="text-link" href="#aplica" onClick={() => trackEvent("form_start")}>
-                Solicită analiza gratuită <ArrowRight size={16} />
-              </a>
+              <a className="button" href="#aplica" onClick={() => trackEvent("form_start")}>Solicită analiza gratuită <ArrowRight size={18} /></a>
+      <a className="button" href="/referral" onClick={() => trackEvent("referral_form_start")}>Recomandă un client <ArrowRight size={18} /></a>
             </div>
 
             <div className="trust-row">
@@ -987,7 +992,7 @@ export default function Home() {
               </div>
             </div>
 
-            {submitted ? (
+            {formState === "success" ? (
               <div className="success-screen" style={{ textAlign: "center", padding: "40px 20px" }}>
                 <div
                   style={{
@@ -1004,7 +1009,7 @@ export default function Home() {
                 >
                   <Check size={32} />
                 </div>
-                <h3 style={{ fontSize: "1.8rem", marginBottom: "12px" }}>Primul pas este făcut.</h3>
+                <h3 style={{ fontSize: "1.8rem", marginBottom: "12px" }}>Solicitarea a fost transmisă cu succes. Vom contacta în curând.</h3>
                 <p style={{ color: "var(--muted)", maxWidth: "520px", margin: "0 auto 16px", lineHeight: 1.6 }}>
                   Analizăm informațiile trimise și revenim cu variantele disponibile, dacă există.
                 </p>
@@ -1015,16 +1020,21 @@ export default function Home() {
                   <button
                     className="button"
                     onClick={() => {
-                      setSubmitted(false);
+                      setFormState("idle");
                       setFormStep(1);
                     }}
                   >
-                    Trimite o altă solicitare
+                    Trimite o nouă solicitare
                   </button>
                 </div>
               </div>
             ) : (
               <form onSubmit={submitForm} className="multi-step-form">
+                {formState === "error" && (
+                  <div className="form-error" style={{ marginBottom: "16px", color: "var(--error)", fontWeight: "bold" }}>
+                    {formError}
+                  </div>
+                )}
                 {/* Honeypot */}
                 <input
                   type="text"
@@ -1074,9 +1084,9 @@ export default function Home() {
 
                     {formError && <div className="form-error">{formError}</div>}
 
-                    <button type="button" className="button full" onClick={handleNextStep1}>
-                      Vezi ce opțiuni există →
-                    </button>
+                    <button type="button" className="button full" onClick={handleNextStep1} disabled={formState === "submitting"}>
+                    Vezi ce opțiuni există →
+                  </button>
                   </div>
                 )}
 
@@ -1316,8 +1326,8 @@ export default function Home() {
                       <button type="button" className="back" onClick={() => setFormStep(2)}>
                         ← Înapoi
                       </button>
-                      <button type="submit" className="button" disabled={submitting}>
-                        {submitting ? "Se trimite..." : "Vreau analiza gratuită"} <ArrowRight size={18} />
+                      <button type="submit" className="button" disabled={formState === "submitting"}>
+                        {formState === "submitting" ? "Se trimite..." : "Trimite solicitarea"}
                       </button>
                     </div>
                   </div>
