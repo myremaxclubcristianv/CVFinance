@@ -1,9 +1,12 @@
 "use client";
+import Header from "@/components/Header";
 import ReferralForm from "@/components/ReferralForm";
 
 export default function ReferralPage() {
   return (
     <main className="container">
+      <Header />
+
       {/* Hero Section */}
       <section className="hero section">
         <div className="hero-copy">

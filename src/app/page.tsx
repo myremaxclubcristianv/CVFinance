@@ -30,6 +30,7 @@ import {
 } from "lucide-react";
 import { trackEvent, getTrafficMetadata } from "@/lib/analytics";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import Header from "@/components/Header";
 
 const servicesList = [
   {
@@ -439,54 +440,7 @@ export default function Home() {
 
       <main>
         {/* Navigation Bar */}
-        <header className="nav">
-          <a href="#top" className="brand" style={{ letterSpacing: "-1px" }}>
-            <span>CV</span> Finance
-          </a>
-          <nav>
-            <a href="#beneficii">Beneficii</a>
-            <a href="#servicii">Servicii</a>
-            <a href="#calculator">Calculator</a>
-            <a href="#proces">Cum funcționează</a>
-            <a href="#recomandari">Recomandări</a>
-            <a href="#faq">FAQ</a>
-          </nav>
-          <a className="nav-cta" href="#aplica">
-            Solicită analiza gratuită <ArrowRight size={15} />
-          </a>
-          <button
-            className="menu"
-            onClick={() => setMenu(!menu)}
-            aria-label="Meniu navigație"
-          >
-            {menu ? <X size={22} /> : <Menu size={22} />}
-          </button>
-          {menu && (
-            <div className="mobile-nav">
-              <a href="#beneficii" onClick={() => setMenu(false)}>
-                Beneficii
-              </a>
-              <a href="#servicii" onClick={() => setMenu(false)}>
-                Servicii
-              </a>
-              <a href="#calculator" onClick={() => setMenu(false)}>
-                Calculator
-              </a>
-              <a href="#proces" onClick={() => setMenu(false)}>
-                Cum funcționează
-              </a>
-              <a href="#recomandari" onClick={() => setMenu(false)}>
-                Recomandă & Câștigă
-              </a>
-              <a href="#faq" onClick={() => setMenu(false)}>
-                FAQ
-              </a>
-              <a href="#aplica" onClick={() => setMenu(false)}>
-                Solicită analiza gratuită
-              </a>
-            </div>
-          )}
-        </header>
+        <Header />
 
         {/* 1. HERO SECTION REWRITE */}
         <section id="top" className="hero section">
