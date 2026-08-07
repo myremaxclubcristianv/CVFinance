@@ -1032,82 +1032,134 @@ footer {
   }
 }
 
-/* Floating Conversion CTA Stack */
-.floating-cta-stack {
+/* Floating Conversion Container & Single Chat Trigger */
+.floating-conversion-container {
   position: fixed;
-  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
   right: 20px;
-  z-index: 99;
+  z-index: 999;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   align-items: flex-end;
-  pointer-events: none;
 }
 
-.floating-cta-btn {
-  pointer-events: auto;
-  display: inline-flex;
+.floating-trigger-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25D366;
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 18px;
-  border-radius: 30px;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.floating-trigger-btn:hover,
+.floating-trigger-btn:focus-visible {
+  background: #20bd5a;
+  transform: scale(1.06);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.45);
+}
+
+.floating-trigger-btn:focus-visible {
+  outline: 2px solid var(--finance-green, #16A34A);
+  outline-offset: 3px;
+}
+
+.floating-trigger-btn.active {
+  background: var(--bloomberg-navy, #0A2540);
+  box-shadow: 0 8px 24px rgba(10, 37, 64, 0.35);
+}
+
+.floating-action-popup {
+  margin-bottom: 12px;
+  background: #FFFFFF;
+  border: 1px solid var(--line-dark, rgba(10, 37, 64, 0.12));
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 16px 36px rgba(10, 37, 64, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 220px;
+  animation: popupFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popupFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.popup-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 10px;
   font-size: 13px;
   font-weight: 700;
   text-decoration: none;
-  border: 1px solid transparent;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.12);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  border: none;
   cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
 }
 
-.floating-cta-btn.primary-analysis {
-  background: var(--bloomberg-navy, #0B192C);
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.15);
+.popup-action-btn.whatsapp-action {
+  background: #F0FDF4;
+  color: #15803D;
+  border: 1px solid #BBF7D0;
 }
 
-.floating-cta-btn.primary-analysis:hover,
-.floating-cta-btn.primary-analysis:focus-visible {
-  background: #1e293b;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.2);
+.popup-action-btn.whatsapp-action:hover,
+.popup-action-btn.whatsapp-action:focus-visible {
+  background: #DCFCE7;
+  color: #166534;
 }
 
-.floating-cta-btn.secondary-whatsapp {
-  background: #25D366;
-  color: #FFFFFF;
-  border-color: rgba(255, 255, 255, 0.2);
+.popup-action-btn.analysis-action {
+  background: var(--bg-secondary, #F5F5F7);
+  color: var(--bloomberg-navy, #0A2540);
+  border: 1px solid rgba(10, 37, 64, 0.1);
 }
 
-.floating-cta-btn.secondary-whatsapp:hover,
-.floating-cta-btn.secondary-whatsapp:focus-visible {
-  background: #20bd5a;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
+.popup-action-btn.analysis-action:hover,
+.popup-action-btn.analysis-action:focus-visible {
+  background: #E2E8F0;
+  color: #020617;
 }
 
-.floating-cta-btn:focus-visible {
-  outline: 2px solid var(--finance-green, #10B981);
-  outline-offset: 2px;
+.popup-action-btn:focus-visible {
+  outline: 2px solid var(--finance-green, #16A34A);
+  outline-offset: 1px;
 }
 
 @media (max-width: 640px) {
-  .floating-cta-stack {
-    right: 12px;
-    bottom: calc(14px + env(safe-area-inset-bottom, 0px));
-    gap: 8px;
+  .floating-conversion-container {
+    right: 14px;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
   }
 
-  .floating-cta-btn {
-    padding: 8px 14px;
-    font-size: 12px;
-    border-radius: 24px;
+  .floating-trigger-btn {
+    width: 52px;
+    height: 52px;
   }
 
-  .floating-cta-btn .cta-icon {
-    width: 16px;
-    height: 16px;
+  .floating-action-popup {
+    min-width: 200px;
+    right: 0;
   }
 }
 
@@ -1120,8 +1172,12 @@ footer {
     scroll-behavior: auto !important;
   }
 
-  .floating-cta-btn:hover,
-  .floating-cta-btn:focus-visible {
+  .floating-trigger-btn:hover,
+  .floating-trigger-btn:focus-visible {
     transform: none !important;
+  }
+
+  .floating-action-popup {
+    animation: none !important;
   }
 }
