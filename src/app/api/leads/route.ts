@@ -15,7 +15,7 @@ const leadSchema = z.object({
     .max(5),
   monthlyPayment: z.coerce.number().min(0).max(100_000),
   delays: z.enum(["Nu", "Da"]),
-  creditBureau: z.enum(["Nu", "Da", "Nu știu"]),
+  creditBureau: z.enum(["Nu", "Da", "Nu știu", "Nu stiu"]),
 
   // Step 3: Contact & Consents
   name: z.string().trim().min(2).max(100),
@@ -84,7 +84,7 @@ const clean = (val: string) => val.replace(/[<>]/g, "").replace(/\s+/g, " ").tri
 
 async function saveLead(leadData: any): Promise<boolean> {
   const { error } = await getSupabaseAdmin()
-    .from("public.leads")
+    .from("leads")
     .insert({
       name: leadData.name,
       phone: leadData.phone,
@@ -173,8 +173,17 @@ async function sendEmail(leadData: any, telegramText: string): Promise<boolean> 
 }
 
 export async function POST(request: Request) {
+  console.log('API /api/leads HIT');
   try {
-    const body = await request.json();
+    let body: any = {};
+    try {
+      body = await request.json();
+    } catch (parseError) {
+      console.error('Failed to parse JSON body', parseError);
+      const raw = await request.text();
+      console.log('RAW BODY TEXT', raw);
+    }
+  console.log('REQUEST BODY', body);
 
     const forwarded = request.headers.get("x-forwarded-for");
     const ip = forwarded ? forwarded.split(",")[0].trim() : request.headers.get("x-real-ip") || "127.0.0.1";
@@ -187,11 +196,24 @@ export async function POST(request: Request) {
     }
 
     const parsed = leadSchema.safeParse(body);
-    if (!parsed.success || parsed.data.website) {
-      return NextResponse.json({ ok: false, message: "Datele introduse sunt incomplete sau invalide." }, { status: 400 });
+    // Log payload for debugging
+    console.log("RECEIVED LEAD PAYLOAD", JSON.stringify(body, null, 2));
+    const { success, data, error } = parsed;
+    // Honeypot check (website must be empty)
+    if (data?.website) {
+      console.warn("Honeypot triggered, ignoring lead.");
+      return NextResponse.json({ ok: true, message: "Solicitarea a fost înregistrată cu succes." }, { status: 200 });
+    }
+    if (!success) {
+      console.error("LEAD VALIDATION FAILED", JSON.stringify(error?.flatten(), null, 2));
+      const errorMessage = error?.errors?.map((e) => e.message).join(", ") || "Datele introduse sunt incomplete sau invalide.";
+      if (process.env.NODE_ENV !== 'production') {
+        return NextResponse.json({ ok: false, message: "Date invalide", errors: error?.flatten() }, { status: 400 });
+      }
+      return NextResponse.json({ ok: false, message: errorMessage }, { status: 400 });
     }
 
-    const lead = parsed.data;
+    const lead = data;
     
     // Duplicate Check
     if (isDuplicate(lead.phone, lead.email)) {
@@ -229,7 +251,9 @@ export async function POST(request: Request) {
 
     // 1. Permanent Storage Layer (Abstractions)
     try {
+      console.log('INSERT START');
       await saveLead(fullLeadData);
+      console.log('INSERT RESULT', 'completed');
     } catch (dbError) {
       console.error("Database save failed, but continuing to notifications:", dbError);
     }

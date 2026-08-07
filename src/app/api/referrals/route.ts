@@ -46,27 +46,20 @@ const baseLeadSchema = z.object({
 });
 
 // Referral‑specific fields
-const referralSchema = baseLeadSchema.extend({
+const referralSchema = z.object({
   referrer_name: z.string().trim().min(2).max(100),
-  referrer_phone: z
-    .string()
-    .trim()
-    .transform((v) => v.replace(/\s+/g, ""))
-    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon referrer invalid")),
+  referrer_phone: z.string().trim().transform(v => v.replace(/\s+/g, "")).pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon referrer invalid")),
   referrer_email: z.string().trim().email().max(120).optional().default(""),
   client_name: z.string().trim().min(2).max(100),
-  client_phone: z
-    .string()
-    .trim()
-    .transform((v) => v.replace(/\s+/g, ""))
-    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon client invalid")),
+  client_phone: z.string().trim().transform(v => v.replace(/\s+/g, "")).pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Telefon client invalid")),
   client_email: z.string().trim().email().max(120).optional().default(""),
   financial_need: z.string().trim().min(2).max(200),
   referral_message: z.string().trim().max(1000).optional().default(""),
+  consent: z.boolean().optional().default(true),
+  website: z.string().max(0).optional(), // Honeypot
 });
-
-// Simple in‑memory rate limiting – same logic as /api/leads
 const attempts = new Map<string, { count: number; resetAt: number }>();
+const fullReferralSchema = baseLeadSchema.merge(referralSchema);
 const RATE_LIMIT = 5;
 const WINDOW_MS = 15 * 60 * 1000;
 function allowRequest(ip: string): boolean {
@@ -114,7 +107,7 @@ export async function POST(request: Request) {
     if (!allowRequest(ip)) {
       return NextResponse.json({ ok: false, message: "Prea multe cereri. Încearcă din nou în 15 minute." }, { status: 429 });
     }
-    const parsed = referralSchema.safeParse(body);
+    const parsed = fullReferralSchema.safeParse(body);
     if (!parsed.success || parsed.data.website) {
       return NextResponse.json({ ok: false, message: "Datele introduse sunt incomplete sau invalide." }, { status: 400 });
     }
@@ -130,13 +123,13 @@ export async function POST(request: Request) {
     };
     // Store in leads table – respecting existing columns
     const { error } = await getSupabaseAdmin()
-    .from("public.leads")
+    .from("leads")
     .insert({
-      name: sanitized.name,
-      phone: sanitized.phone,
-      email: sanitized.email,
+      name: sanitized.client_name,
+      phone: sanitized.client_phone,
+      email: sanitized.client_email,
       birth_year: sanitized.birthYear,
-      purpose: sanitized.purpose,
+      purpose: sanitized.financial_need || sanitized.purpose,
       desired_amount: String(sanitized.desiredAmount),
       income: String(sanitized.income),
       employment: sanitized.employment,
@@ -145,7 +138,7 @@ export async function POST(request: Request) {
       monthly_payment: String(sanitized.monthlyPayment),
       delays: sanitized.delays,
       credit_bureau: sanitized.creditBureau,
-      message: sanitized.message,
+      message: `[RECOMANDARE DE LA: ${sanitized.referrer_name} (${sanitized.referrer_phone}${sanitized.referrer_email ? " / " + sanitized.referrer_email : ""})] ${sanitized.referral_message || ""}`.trim(),
       gdpr: sanitized.gdpr,
       marketing: sanitized.marketing,
       utm_source: "referral",
@@ -157,15 +150,6 @@ export async function POST(request: Request) {
       ip,
       user_agent: request.headers.get("user-agent") || "",
       referrer: sanitized.referrer_name,
-      // Referral‑specific columns (must match migration)
-      referrer_name: sanitized.referrer_name,
-      referrer_phone: sanitized.referrer_phone,
-      referrer_email: sanitized.referrer_email,
-      client_name: sanitized.client_name,
-      client_phone: sanitized.client_phone,
-      client_email: sanitized.client_email,
-      financial_need: sanitized.financial_need,
-      referral_message: sanitized.referral_message,
     });
     if (error) {
       console.error("Supabase insert error (referral):", error);

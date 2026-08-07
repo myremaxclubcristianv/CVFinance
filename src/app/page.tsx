@@ -145,6 +145,9 @@ export default function Home() {
   const [marketing, setMarketing] = useState(false);
   const [honeypot, setHoneypot] = useState("");
 
+  const [footerYear, setFooterYear] = useState(new Date().getFullYear());
+  useEffect(() => { setFooterYear(new Date().getFullYear()); }, []);
+
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   // Track Page View on Mount
@@ -240,49 +243,80 @@ export default function Home() {
 
   const submitForm = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("PREVENT DEFAULT OK");
+    console.log("[FORM] submit fired");
+    
+
+    
     setFormError("");
 
     if (!name.trim() || name.trim().length < 2) {
-      setFormError("Te rugăm să introduci numele complet.");
+      console.log("VALIDATION FAILED: name");
+      setFormError("Te rugăm să introduceți numele complet.");
       setFormState("error");
+      
       return;
     }
 
     const cleanPhone = phone.replace(/\s+/g, "");
     if (!cleanPhone || !/^(?:\+40|0040|0)7\d{8}$/.test(cleanPhone)) {
-      setFormError("Te rugăm să introduci un număr de telefon valid din România (ex: 0722123456).");
+      console.log("VALIDATION FAILED: phone");
+      setFormError("Te rugăm să introduceți un număr de telefon valid din România (ex: 0722123456).");
       setFormState("error");
+      
       return;
     }
 
     if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      setFormError("Te rugăm să introduci o adresă de email validă.");
+      console.log("VALIDATION FAILED: email");
+      setFormError("Te rugăm să introduceți o adresă de email validă.");
       setFormState("error");
+      
       return;
     }
 
     const yearNum = Number(birthYear);
-    const currentYear = new Date().getFullYear();
-    if (!birthYear || isNaN(yearNum) || yearNum < 1930 || yearNum > currentYear - 18) {
-      setFormError(`Te rugăm să introduci anul nașterii (vârsta minimă 18 ani).`);
+    // const currentYear removed to avoid hydration mismatch
+    if (!birthYear || isNaN(yearNum) || yearNum < 1930 || yearNum > new Date().getFullYear() - 18) {
+      console.log("VALIDATION FAILED: birthYear");
+      setFormError(`Te rugăm să introduceți anul nașterii (vârsta minimă 18 ani).`);
       setFormState("error");
+      
       return;
     }
 
     if (!gdpr) {
+      console.log("VALIDATION FAILED: gdpr");
       setFormError("Pentru a trimite solicitarea, este obligatoriu acordul cu termenii și condițiile.");
       setFormState("error");
       return;
     }
 
+    
     const trafficMeta = typeof window !== "undefined" ? getTrafficMetadata() : {};
+    const currentYear = new Date().getFullYear();
+
+      const leadCreditTypes = creditTypes.map((type) => {
+        switch (type) {
+          case "Rate la bancă":
+            return "Bancă";
+          case "Carduri de credit / IFN":
+            return "IFN";
+          case "Mai multe credite":
+            return "Card de credit";
+          case "Nu am credite active":
+            return "Nu am";
+          default:
+            return type;
+        }
+      });
 
     const payload = {
       purpose,
       desiredAmount: Number(desiredAmount),
       income: Number(income),
       employment,
-      creditTypes,
+      creditTypes: leadCreditTypes,
       monthlyPayment: Number(monthlyPayment),
       delays,
       creditBureau: creditBureau || "Nu știu",
@@ -300,7 +334,10 @@ export default function Home() {
       pageUrl: typeof window !== "undefined" ? window.location.href : "https://credite.cristianvaduva.com",
     };
 
+    console.log("[FORM] PAYLOAD:", payload);
+
     setFormState("submitting");
+    console.log("[FORM] FETCH START", payload);
     if (typeof window !== "undefined") trackEvent("form_submit");
 
     try {
@@ -309,18 +346,17 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
       const result = await response.json();
-
+      console.log("[FORM] RESPONSE", response.status, result);
       if (!response.ok) {
         setFormError(result.message || "Solicitarea nu a putut fi trimisă. Încearcă din nou.");
         setFormState("error");
         return;
       }
-
       trackEvent("lead_success", { purpose, desiredAmount });
       setFormState("success");
-    } catch {
+    } catch (err) {
+      console.error("[FORM] ERROR", err);
       setFormError("Conexiunea a fost întreruptă. Verifică rețeaua și încearcă din nou.");
       setFormState("error");
     } finally {
@@ -1697,7 +1733,7 @@ export default function Home() {
           </div>
 
           <div className="footer-bottom">
-            <span>© {new Date().getFullYear()} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
+            <span>© {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
             <span>Credit Advisory & Financial Optimization</span>
           </div>
 

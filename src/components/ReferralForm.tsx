@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
 
 const ReferralForm: React.FC = () => {
+  // Form fields
   const [referrerName, setReferrerName] = useState("");
   const [referrerPhone, setReferrerPhone] = useState("");
   const [referrerEmail, setReferrerEmail] = useState("");
@@ -11,24 +12,29 @@ const ReferralForm: React.FC = () => {
   const [clientEmail, setClientEmail] = useState("");
   const [financialNeed, setFinancialNeed] = useState("");
   const [message, setMessage] = useState("");
-  const [consent, setConsent] = useState(false);
+
   const [honeypot, setHoneypot] = useState("");
+  const [consent, setConsent] = useState(false);
+
+  // UI state
   const [error, setError] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [formState, setFormState] = useState<"idle" | "submitting" | "success" | "error">("idle");
 
   const cleanPhone = (val: string) => val.replace(/\s+/g, "");
   const phoneRegex = /^(?:\+40|0040|0)7\d{8}$/;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     setError("");
+
+    // Validation
     if (!referrerName.trim() || referrerName.trim().length < 2) {
-      setError("Numele tău este obligatoriu.");
+      setError("Numele complet al recomandantului este obligatoriu.");
       return;
     }
     if (!phoneRegex.test(cleanPhone(referrerPhone))) {
-      setError("Telefonul tău este invalid.");
+      setError("Telefonul recomandantului este invalid.");
       return;
     }
     if (referrerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(referrerEmail)) {
@@ -59,7 +65,8 @@ const ReferralForm: React.FC = () => {
       // bot detected – silently ignore
       return;
     }
-    setSubmitting(true);
+
+    setFormState("submitting");
     trackEvent("referral_form_submit");
     try {
       const payload = {
@@ -82,20 +89,39 @@ const ReferralForm: React.FC = () => {
       const data = await resp.json();
       if (!resp.ok) {
         setError(data.message || "Eroare la trimitere.");
+        setFormState("error");
         return;
       }
-      setSuccess(true);
-    } catch {
+      setFormState("success");
+    } catch (e) {
       setError("Probleme de rețea. Încercați din nou.");
-    } finally {
-      setSubmitting(false);
+      setFormState("error");
     }
   };
 
-  if (success) {
+  const resetForm = () => {
+    setReferrerName("");
+    setReferrerPhone("");
+    setReferrerEmail("");
+    setClientName("");
+    setClientPhone("");
+    setClientEmail("");
+    setFinancialNeed("");
+    setMessage("");
+    setConsent(false);
+    setError("");
+    setFormState("idle");
+  };
+
+  if (formState === "success") {
     return (
-      <div className="success-message">
-        Mulțumesc. Recomandarea a fost transmisă. Vom reveni către persoana recomandată în cel mai scurt timp.
+      <div className="success-message" style={{ textAlign: "center", padding: "24px" }}>
+        <p style={{ fontSize: "1.1rem", marginBottom: "20px" }}>
+          Recomandarea a fost transmisă cu succes. Vom reveni către persoana recomandată în cel mai scurt timp.
+        </p>
+        <button type="button" className="button" onClick={resetForm}>
+          Trimite o altă recomandare
+        </button>
       </div>
     );
   }
@@ -106,49 +132,46 @@ const ReferralForm: React.FC = () => {
       {/* Hidden honeypot */}
       <input type="text" name="website" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: "none" }} />
 
-      <h2>Recomandă un client</h2>
-      <label>
-        Numele tău*
-        <input type="text" value={referrerName} onChange={(e) => setReferrerName(e.target.value)} required />
-      </label>
-      <label>
-        Telefonul tău* (<code>07xxxxxxxx</code>)
-        <input type="tel" value={referrerPhone} onChange={(e) => setReferrerPhone(e.target.value)} required />
-      </label>
-      <label>
-        Emailul tău (opțional)
-        <input type="email" value={referrerEmail} onChange={(e) => setReferrerEmail(e.target.value)} />
-      </label>
+      <h2 className="form-title">Recomandă un client</h2>
+      <div className="field-group">
+        <label className="field-label" htmlFor="referrerName">Numele tău*</label>
+        <input id="referrerName" className="input-field" type="text" value={referrerName} onChange={(e) => setReferrerName(e.target.value)} required />
+      </div>
+      <div className="field-group">
+        <label className="field-label" htmlFor="referrerPhone">Telefonul tău* ( <code>07xxxxxxxx</code> )</label>
+        <input id="referrerPhone" className="input-field" type="tel" value={referrerPhone} onChange={(e) => setReferrerPhone(e.target.value)} required />
+      </div>
+      <div className="field-group">
+        <label className="field-label" htmlFor="referrerEmail">Emailul tău (opțional)</label>
+        <input id="referrerEmail" className="input-field" type="email" value={referrerEmail} onChange={(e) => setReferrerEmail(e.target.value)} />
+      </div>
+      <div className="field-group">
+        <label className="field-label" htmlFor="clientName">Numele persoanei recomandate*</label>
+        <input id="clientName" className="input-field" type="text" value={clientName} onChange={(e) => setClientName(e.target.value)} required />
+      </div>
+      <div className="field-group">
+        <label className="field-label" htmlFor="clientPhone">Telefonul persoanei recomandate* ( <code>07xxxxxxxx</code> )</label>
+        <input id="clientPhone" className="input-field" type="tel" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} required />
+      </div>
+      <div className="field-group">
+        <label className="field-label" htmlFor="clientEmail">Emailul persoanei recomandate (opțional)</label>
+        <input id="clientEmail" className="input-field" type="email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} />
+      </div>
+      <div className="field-group">
+        <label className="field-label" htmlFor="financialNeed">Ce tip de finanțare caută?</label>
+        <input id="financialNeed" className="input-field" type="text" value={financialNeed} onChange={(e) => setFinancialNeed(e.target.value)} required />
+      </div>
+      <div className="field-group">
+        <label className="field-label" htmlFor="message">Detalii / mesaj (opțional)</label>
+        <textarea id="message" className="input-field" value={message} onChange={(e) => setMessage(e.target.value)} rows={3} />
+      </div>
+      <div className="field-group" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        <input id="consent" type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} required />
+        <label htmlFor="consent" className="field-label">Confirm că am dreptul să transmit datele persoanei recomandate și că aceasta a consimțat.</label>
+      </div>
 
-      <label>
-        Numele persoanei recomandate*
-        <input type="text" value={clientName} onChange={(e) => setClientName(e.target.value)} required />
-      </label>
-      <label>
-        Telefonul persoanei recomandate* (<code>07xxxxxxxx</code>)
-        <input type="tel" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} required />
-      </label>
-      <label>
-        Emailul persoanei recomandate (opțional)
-        <input type="email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} />
-      </label>
-
-      <label>
-        Ce tip de finanțare caută?
-        <input type="text" value={financialNeed} onChange={(e) => setFinancialNeed(e.target.value)} required />
-      </label>
-      <label>
-        Detalii / mesaj (opțional)
-        <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={3} />
-      </label>
-
-      <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <input type="checkbox" checked={consent} onChange={(e) => setConsent(e.target.checked)} required />
-        Confirm că am dreptul să transmit datele persoanei recomandate și că aceasta a consimțit.
-      </label>
-
-      <button type="submit" disabled={submitting} className="button">
-        {submitting ? "Trimitere..." : "Trimite recomandarea"}
+      <button type="submit" disabled={formState === "submitting"} className="button">
+        {formState === "submitting" ? "Trimitere..." : "Trimite recomandarea"}
       </button>
     </form>
   );

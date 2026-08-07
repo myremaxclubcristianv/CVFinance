@@ -40,6 +40,12 @@
   --dark: #0A2540;
   --dark-surface: #F5F5F7;
   --dark-border: rgba(10, 37, 64, 0.12);
+
+  /* Premium CV Finance colors */
+  --cv-bg: #050505;
+  --cv-card: #0B0B0B;
+  --cv-gold: #C9A227;
+  --cv-border: rgba(255,255,255,0.08);
   
   /* Fonts */
   --font-body: var(--font-manrope), system-ui, -apple-system, sans-serif;
