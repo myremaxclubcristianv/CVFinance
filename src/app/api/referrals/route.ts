@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
 // Reuse the base lead schema for shared fields
 const baseLeadSchema = z.object({
@@ -129,7 +129,9 @@ export async function POST(request: Request) {
       message: clean(data.message),
     };
     // Store in leads table – respecting existing columns
-    const { error } = await supabaseAdmin.from("public.leads").insert({
+    const { error } = await getSupabaseAdmin()
+    .from("public.leads")
+    .insert({
       name: sanitized.name,
       phone: sanitized.phone,
       email: sanitized.email,

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { supabaseAdmin } from "@/lib/supabase-admin";
+import { getSupabaseAdmin } from "@/lib/supabase-admin";
 const leadSchema = z.object({
   // Step 1: Purpose & Requested Amount
   purpose: z.string().trim().min(2).max(100),
@@ -83,7 +83,7 @@ const clean = (val: string) => val.replace(/[<>]/g, "").replace(/\s+/g, " ").tri
 // --- Storage & Notification Abstraction Layer ---
 
 async function saveLead(leadData: any): Promise<boolean> {
-  const { error } = await supabaseAdmin
+  const { error } = await getSupabaseAdmin()
     .from("public.leads")
     .insert({
       name: leadData.name,
