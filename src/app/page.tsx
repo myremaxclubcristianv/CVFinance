@@ -1665,6 +1665,8 @@ export default function Home() {
 
           <div className="grid grid-3" style={{ gap: "16px" }}>
             {[
+              { name: "cristianvaduva.com", url: "https://cristianvaduva.com", desc: "Personal brand, professional profile and advisory platform." },
+              { name: "AiXLuxury.com", url: "https://AiXLuxury.com", desc: "Luxury real estate, premium properties and private advisory." },
               { name: "HomeFind", url: "https://homefind.cristianvaduva.com", desc: "Real estate intelligence, proprietăți și analiză de piață." },
               { name: "Insurance", url: "https://insurance.cristianvaduva.com", desc: "Analiză și soluții de protecție financiară." },
               { name: "Subvenții", url: "https://subventii.cristianvaduva.com", desc: "Platformă de intelligence pentru finanțări și programe guvernamentale." },
