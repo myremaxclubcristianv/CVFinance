@@ -78,119 +78,68 @@ export default function Header() {
     }
   };
 
+
   return (
-    <header className={`cv-header ${isScrolled ? "scrolled" : ""}`}>
-      
-      {/* DESKTOP HEADER INNER */}
-      <div className="cv-container hidden md:flex cv-header-inner" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
-        {/* LEFT: BRANDING */}
-        <Link href="/" className="cv-brand">
-          <span className="cv-brand-title">CV Finance</span>
-          <span className="cv-brand-subtitle">CREDIT ADVISORY & FINANCIAL OPTIMIZATION</span>
-        </Link>
-
-        {/* DESKTOP NAV LINKS */}
-        <nav className="cv-nav-links">
-          <Link
-            href="/#totul-inainte-de-credit"
-            className="cv-nav-link"
-            onClick={(e) => handleNavClick(e, "/#totul-inainte-de-credit", "totul-inainte-de-credit")}
-          >
-            Personal
+    <>
+      <header className={`cv-header ${isScrolled ? "scrolled" : ""}`}> 
+        {/* Desktop Navigation */}
+        <div className="desktop-navigation hidden md:flex cv-header-inner" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
+          <Link href="/" className="cv-brand">
+            <span className="cv-brand-title">CV</span>
+            <span className="cv-brand-subtitle">CREDIT ADVISORY & FINANCIAL OPTIMIZATION</span>
           </Link>
-          <Link
-            href="/#business-finance"
-            className="cv-nav-link"
-            onClick={(e) => handleNavClick(e, "/#business-finance", "business-finance")}
-          >
-            Business
-          </Link>
-          <Link
-            href="/#servicii"
-            className="cv-nav-link"
-            onClick={(e) => handleNavClick(e, "/#servicii", "servicii")}
-          >
-            Servicii
-          </Link>
-          <Link
-            href="/#cum-functioneaza"
-            className="cv-nav-link"
-            onClick={(e) => handleNavClick(e, "/#cum-functioneaza", "cum-functioneaza")}
-          >
-            Cum funcționează
-          </Link>
-          <Link
-            href="/#despre"
-            className="cv-nav-link"
-            onClick={(e) => handleNavClick(e, "/#despre", "despre")}
-          >
-            Despre mine
-          </Link>
-          <Link
-            href="/#contact"
-            className="cv-nav-link"
-            onClick={(e) => handleNavClick(e, "/#contact", "contact")}
-          >
-            Contact
-          </Link>
-        </nav>
-
-        {/* PRIMARY ACTION CTA */}
-        <div className="flex items-center">
-          <a href="#verificare-credit" className="cv-btn-primary" onClick={handleCtaClick}>
-            VERIFICĂ SITUAȚIA →
-          </a>
+          <nav className="cv-nav-links">
+            <Link href="/#totul-inainte-de-credit" className="cv-nav-link" onClick={(e) => handleNavClick(e, "#totul-inainte-de-credit", "totul-inainte-de-credit")}>Personal</Link>
+            <Link href="/#business-finance" className="cv-nav-link" onClick={(e) => handleNavClick(e, "#business-finance", "business-finance")}>Business</Link>
+            <Link href="/#servicii" className="cv-nav-link" onClick={(e) => handleNavClick(e, "#servicii", "servicii")}>Servicii</Link>
+            <Link href="/#cum-functioneaza" className="cv-nav-link" onClick={(e) => handleNavClick(e, "#cum-functioneaza", "cum-functioneaza")}>Cum funcționează</Link>
+            <Link href="/#despre" className="cv-nav-link" onClick={(e) => handleNavClick(e, "#despre", "despre")}>Despre mine</Link>
+            <Link href="/#contact" className="cv-nav-link" onClick={(e) => handleNavClick(e, "#contact", "contact")}>Contact</Link>
+          </nav>
+          <div className="flex items-center">
+            <a href="#verificare-credit" className="cv-btn-primary" onClick={handleCtaClick}>VERIFICĂ SITUAȚIA →</a>
+          </div>
         </div>
-      </div>
+        {/* Mobile Navigation */}
+        <div className="mobile-navigation flex md:hidden cv-header-inner-mobile" style={{ height: "60px", paddingTop: "env(safe-area-inset-top)", paddingLeft: "20px", paddingRight: "20px", alignItems: "center", justifyContent: "space-between", background: "var(--bg-primary)", borderBottom: "1px solid var(--border)" }}>
+          <Link href="/" className="cv-brand" onClick={() => setMobileMenuOpen(false)}>
+            <span className="cv-brand-title" style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.01em" }}>CV</span>
+          </Link>
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav-panel"
+            aria-label={mobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              fontSize: "11px",
+              fontWeight: 600,
+              textTransform: "uppercase",
+              letterSpacing: "0.14em",
+              fontFamily: "monospace",
+              lineHeight: "1",
+            }}
+          >
+            {mobileMenuOpen ? "ÎNCHIDE" : "MENU"}
+          </button>
+        </div>
+      </header>
 
-      {/* MOBILE HEADER INNER */}
-{/* MOBILE HEADER INNER */}
-<div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "60px", paddingTop: "env(safe-area-inset-top)", paddingLeft: "20px", paddingRight: "20px", alignItems: "center", justifyContent: "space-between", background: "var(--bg-primary)", borderBottom: "1px solid var(--border)" }}>
-  {/* LEFT: BRANDING */}
-  <Link href="/" className="cv-brand" onClick={() => setMobileMenuOpen(false)}>
-    <span className="cv-brand-title" style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.01em" }}>CV Finance</span>
-  </Link>
-  {/* RIGHT: MENU TRIGGER */}
-  <button
-    type="button"
-    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-    aria-expanded={mobileMenuOpen}
-    aria-controls="mobile-nav-panel"
-    style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      width: "70px",
-      height: "36px",
-      background: "none",
-      border: "none",
-      cursor: "pointer",
-      padding: 0
-    }}
-    aria-label={mobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
-  >
-    {mobileMenuOpen ? (
-      <X size={16} strokeWidth={2} />
-    ) : (
-      <div style={{ width: "16px", height: "1px", backgroundColor: "#111111", marginBottom: "2px" }} />
-    )}
-    <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", fontFamily: "monospace", lineHeight: "1" }}>
-      {mobileMenuOpen ? "ÎNCHIDE" : "MENU"}
-    </span>
-  </button>
-</div>
-
-      {/* FULL-SCREEN MOBILE NAVIGATION PANEL */}
+      {/* Mobile Menu Panel – placed outside of <header> */}
       {mobileMenuOpen && (
-        <div 
+        <div
           id="mobile-nav-panel"
-          className="md:hidden fixed inset-x-0 bottom-0 bg-white z-[999] px-5 py-6 flex flex-col justify-between" 
-          style={{ 
-            top: "calc(58px + env(safe-area-inset-top, 0px))", 
-            height: "calc(100vh - (58px + env(safe-area-inset-top, 0px)))", 
+          role="dialog"
+          aria-modal="true"
+          className="md:hidden fixed inset-x-0 bottom-0 bg-white z-[999] px-5 py-6 flex flex-col justify-between"
+          style={{
+            top: "calc(60px + env(safe-area-inset-top, 0px))",
+            height: "calc(100vh - (60px + env(safe-area-inset-top, 0px)))",
             overflowY: "auto",
-            borderTop: "1px solid rgba(17, 17, 17, 0.08)"
+            borderTop: "1px solid rgba(17, 17, 17, 0.08)",
           }}
         >
           <div className="flex flex-col gap-6" style={{ marginTop: "1rem" }}>
@@ -205,23 +154,16 @@ export default function Header() {
                     padding: "1.25rem 0",
                     borderBottom: "1px solid rgba(17, 17, 17, 0.08)",
                     textDecoration: "none",
-                    color: "#111111"
+                    color: "#111111",
                   }}
                 >
-                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500, display: "block", marginBottom: "0.25rem" }}>
-                    {item.code}
-                  </span>
-                  <span style={{ fontFamily: "var(--font-sans)", fontSize: "1.1rem", fontWeight: 700, letterSpacing: "-0.02em", display: "block", lineHeight: "1.1" }}>
-                    {item.title}
-                  </span>
-                  <span style={{ fontSize: "12.5px", color: "var(--text-secondary)", display: "block", marginTop: "0.15rem" }}>
-                    {item.desc}
-                  </span>
+                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500, display: "block", marginBottom: "0.25rem" }}>{item.code}</span>
+                  <span style={{ fontFamily: "var(--font-sans)", fontSize: "1.1rem", fontWeight: 700, letterSpacing: "-0.02em", display: "block", lineHeight: "1.1" }}>{item.title}</span>
+                  <span style={{ fontSize: "12.5px", color: "var(--text-secondary)", display: "block", marginTop: "0.15rem" }}>{item.desc}</span>
                 </Link>
               ))}
             </nav>
           </div>
-
           <div style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))", marginTop: "3rem" }}>
             <a
               href="#verificare-credit"
@@ -238,7 +180,7 @@ export default function Header() {
                 letterSpacing: "0.04em",
                 borderRadius: "4px",
                 border: "none",
-                cursor: "pointer"
+                cursor: "pointer",
               }}
               onClick={handleCtaClick}
             >
@@ -249,7 +191,7 @@ export default function Header() {
       )}
 
       {/* Scroll indicator progress bar */}
-      <div 
+      <div
         className="cv-scroll-rollbar"
         style={{
           position: "absolute",
@@ -259,9 +201,9 @@ export default function Header() {
           height: "1px",
           backgroundColor: "var(--emerald)",
           transition: "width 80ms ease-out",
-          zIndex: 100
+          zIndex: 100,
         }}
       />
-    </header>
+    </>
   );
 }
