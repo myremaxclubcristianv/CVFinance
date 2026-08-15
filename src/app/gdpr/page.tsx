@@ -21,8 +21,8 @@ export default function GDPRPage() {
       <h1>Protecția Datelor Tale (GDPR)</h1>
       <p style={{ color: "var(--muted)", marginBottom: "40px" }}>Transparență totală în utilizarea datelor personale.</p>
 
-      <div style={{ background: "var(--card-bg)", border: "1px solid var(--neon-green)", borderRadius: "20px", padding: "32px", marginBottom: "40px" }}>
-        <h3 style={{ color: "var(--neon-green)", marginTop: 0 }}>Principiul nostru principal:</h3>
+      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "32px", marginBottom: "40px" }}>
+        <h3 style={{ color: "var(--emerald)", marginTop: 0 }}>Principiul nostru principal:</h3>
         <p style={{ fontSize: "1.2rem", color: "var(--ink)", fontWeight: 600, margin: 0 }}>
           &ldquo;Datele tale sunt folosite doar pentru a analiza situația ta și pentru a te contacta în legătură cu solicitarea trimisă.&rdquo;
         </p>
@@ -63,7 +63,7 @@ export default function GDPRPage() {
       </div>
 
       <h2>Gestionarea preferințelor de Cookie-uri</h2>
-      <div style={{ background: "var(--card-bg)", border: "1px solid var(--line)", borderRadius: "16px", padding: "24px", marginBottom: "32px" }}>
+      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "24px", marginBottom: "32px" }}>
         <p style={{ color: "var(--ink)", margin: 0, fontSize: "1.05rem", fontWeight: 600 }}>
           &ldquo;Îți poți schimba preferințele de cookie-uri în orice moment accesând link-ul <strong>Setări Cookie-uri</strong> din subsolul paginii.&rdquo;
         </p>

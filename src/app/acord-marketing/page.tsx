@@ -21,7 +21,7 @@ export default function AcordMarketingPage() {
       <h1>Acord Comunicări Comerciale</h1>
       <p style={{ color: "var(--muted)", marginBottom: "40px" }}>Detalii privind abonarea la noutăți și oferte financiare.</p>
 
-      <div style={{ background: "var(--card-bg)", border: "1px solid var(--line)", borderRadius: "20px", padding: "32px", marginBottom: "40px" }}>
+      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "32px", marginBottom: "40px" }}>
         <h3 style={{ marginTop: 0 }}>Acordul de marketing este 100% opțional</h3>
         <p style={{ color: "var(--muted)", margin: 0 }}>
           Bifarea căsuței de comunicări comerciale nu este obligatorie pentru a primi analiza financiară gratuită. Puteți solicita analiza gratuită fără a vă abona la noutăți.

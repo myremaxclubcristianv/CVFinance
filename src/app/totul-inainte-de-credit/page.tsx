@@ -164,7 +164,7 @@ export default function TotulInainteDeCreditPage() {
         <section className="totul-hero-section">
           <div className="totul-hero-container">
             <div className="totul-hero-badge">
-              <ShieldCheck size={16} className="text-emerald-500" />
+              <ShieldCheck size={16} style={{ color: "var(--emerald)" }} />
               <span>PRIVATE CREDIT SITUATION REVIEW</span>
             </div>
 
@@ -434,7 +434,7 @@ export default function TotulInainteDeCreditPage() {
         </section>
 
         {/* FOOTER */}
-        <footer className="footer" style={{ borderTop: "1px solid var(--line)" }}>
+        <footer className="footer" style={{ borderTop: "1px solid var(--border)" }}>
           <div className="footer-cols">
             <div className="footer-col brand-col">
               <Link href="/" className="brand" style={{ letterSpacing: "-1px" }}>

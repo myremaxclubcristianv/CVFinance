@@ -18,7 +18,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "01",
     label: "Vreau bani",
     intent: "Am nevoie de o sumă nouă",
-    desc: "Analizăm varianta optimă pentru o sumă nouă.",
+    desc: "Analizăm varianta optimă pentru obținerea unei sume noi de bani.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -26,7 +26,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "02",
     label: "Vreau să cumpăr o locuință",
     intent: "Credit nou",
-    desc: "Găsim creditul ipotecar potrivit cu avans minim.",
+    desc: "Găsim creditul ipotecar potrivit cu cele mai bune condiții de piață.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -34,7 +34,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "03",
     label: "Vreau să refinanțez",
     intent: "Refinanțare",
-    desc: "Reducem rata lunară și comasăm creditele existente.",
+    desc: "Reducem rata lunară și comasăm toate creditele într-unul singur.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -42,7 +42,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "04",
     label: "Am nevoie de bani pentru mine",
     intent: "Am nevoie de o sumă nouă",
-    desc: "Credit de nevoi personale cu aprobare rapidă.",
+    desc: "Credit de nevoi personale cu acordare rapidă și dobândă optimă.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -50,15 +50,15 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "05",
     label: "Am nevoie de finanțare pentru firmă",
     intent: "Finanțare firmă",
-    desc: "Capital de lucru, leasing sau credite de investiții.",
-    targetId: "verificare-finantare-business",
+    desc: "Capital de lucru, echipamente, linii de credit sau leasing business.",
+    targetId: "business-finance",
     type: "business",
   },
   {
     code: "06",
     label: "Vreau să știu dacă mă încadrez",
     intent: "Reduc rata",
-    desc: "Calculăm gradul de îndatorare maxim admis de bănci.",
+    desc: "Calculăm gradul de îndatorare și eligibilitatea maximă în raport cu banca.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -66,7 +66,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "07",
     label: "Vreau să recomand un client",
     intent: "Recomandare client",
-    desc: "Recomandă un prieten și obții comision la acordare.",
+    desc: "Recomanzi o persoană sau o firmă și obții comision garantat la acordare.",
     targetId: "recomandari",
     type: "personal",
   },
@@ -77,7 +77,12 @@ export default function CommandSheet() {
     trackEvent("command_row_click", { code: row.code, label: row.label });
 
     if (row.targetId === "recomandari") {
-      window.location.href = "/referral";
+      const targetEl = document.getElementById("recomandari");
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: "smooth" });
+      } else {
+        window.location.href = "/referral";
+      }
       return;
     }
 
@@ -93,30 +98,26 @@ export default function CommandSheet() {
   };
 
   return (
-    <section className="command-sheet-section" id="ce-cauti">
-      <div className="command-sheet-container">
-        <div className="command-sheet-header">
-          <span className="section-marker">01 / DE UNDE ÎNCEPEM</span>
-          <h2 className="command-title">DE UNDE ÎNCEPEM?</h2>
-          <p className="command-subtitle">Spune-mi ce vrei să faci. De acolo începem.</p>
+    <section className="cv-section" id="ce-cauti">
+      <div className="cv-container">
+        <div className="cv-section-header">
+          <span className="cv-section-marker">01 / DE UNDE ÎNCEPEM</span>
+          <h2 className="cv-section-title">DE UNDE ÎNCEPEM?</h2>
+          <p className="cv-section-sub">Spune-mi ce vrei să faci. De acolo începem.</p>
         </div>
 
-        <div className="command-rows-list">
+        <div className="cv-directory-list">
           {COMMAND_ROWS.map((row) => (
             <button
               key={row.code}
               type="button"
-              className="command-row-btn"
+              className="cv-dir-row"
               onClick={() => handleSelect(row)}
             >
-              <div className="command-row-left">
-                <span className="command-row-code">{row.code}</span>
-                <div className="command-row-text-group">
-                  <span className="command-row-label">{row.label}</span>
-                  <span className="command-row-desc">{row.desc}</span>
-                </div>
-              </div>
-              <ArrowRight size={20} className="command-row-arrow" />
+              <span className="cv-dir-code">{row.code}</span>
+              <span className="cv-dir-title">{row.label}</span>
+              <span className="cv-dir-desc">{row.desc}</span>
+              <ArrowRight size={18} className="cv-dir-arrow" />
             </button>
           ))}
         </div>

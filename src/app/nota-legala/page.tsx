@@ -35,11 +35,11 @@ export default function NotaLegala() {
           </ul>
         </div>
 
-        <div className="card" style={{ borderColor: "rgba(57, 255, 136, 0.3)" }}>
-          <div className="icon" style={{ background: "rgba(57, 255, 136, 0.1)", color: "var(--neon-green)", borderColor: "rgba(57, 255, 136, 0.2)" }}>
+        <div className="card" style={{ borderColor: "var(--border)" }}>
+          <div className="icon" style={{ background: "var(--surface)", color: "var(--emerald)", borderColor: "var(--border)" }}>
             <Check size={24} />
           </div>
-          <h3 style={{ color: "var(--neon-green)" }}>Ce FACE CV Finance:</h3>
+          <h3 style={{ color: "var(--emerald)" }}>Ce FACE CV Finance:</h3>
           <ul style={{ paddingLeft: "18px", color: "var(--muted)", margin: 0 }}>
             <li style={{ marginBottom: "8px" }}>Analizează gratuit situația ta financiară</li>
             <li style={{ marginBottom: "8px" }}>Compară opțiunile disponibile de la peste 20 de bănci</li>
@@ -50,7 +50,7 @@ export default function NotaLegala() {
       </div>
 
       <h2>Disclaimer privind riscurile financiare</h2>
-      <div style={{ background: "var(--card-bg)", border: "1px solid var(--line)", borderRadius: "16px", padding: "24px", marginBottom: "32px" }}>
+      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "24px", marginBottom: "32px" }}>
         <p style={{ color: "var(--ink)", fontWeight: 600, margin: 0 }}>
           &ldquo;Orice decizie financiară trebuie luată după analiza situației personale.&rdquo;
         </p>

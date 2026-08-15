@@ -21,7 +21,7 @@ export default function TermeniSiConditii() {
       <h1>Termeni și Condiții</h1>
       <p style={{ color: "var(--muted)", marginBottom: "32px" }}>Ultima actualizare: 6 august 2026</p>
 
-      <div style={{ background: "var(--card-bg)", border: "1px solid var(--neon-green)", borderRadius: "16px", padding: "24px", marginBottom: "40px" }}>
+      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "24px", marginBottom: "40px" }}>
         <p style={{ color: "var(--ink)", fontWeight: 600, margin: 0, fontSize: "0.95rem" }}>
           &ldquo;CV Finance oferă servicii de analiză și consultanță financiară. Rezultatele analizelor sunt orientative și nu reprezintă o garanție de aprobare a unui credit. Decizia finală aparține exclusiv instituției financiare partenere, conform propriilor criterii de eligibilitate.&rdquo;
         </p>

@@ -18,51 +18,59 @@ export default function CVFinanceHero() {
   };
 
   return (
-    <section className="hero-section" id="hero">
-      <div className="hero-container hero-split-layout">
-        <div className="hero-left-col">
-          <p className="hero-eyebrow">CREDIT ADVISORY & FINANCIAL OPTIMIZATION</p>
+    <section className="cv-hero-section" id="hero">
+      <div className="cv-container cv-hero-grid">
+        {/* LEFT COLUMN: EDITORIAL STATEMENT & ACTIONS */}
+        <div className="cv-hero-left">
+          <span className="cv-eyebrow">CREDIT ADVISORY & FINANCIAL OPTIMIZATION</span>
           
-          <h1 className="hero-title">
+          <h1 className="cv-hero-title">
             Nu lua primul credit<br />
-            care ți se oferă.
-            <span className="hero-title-emphasis">
-              Găsește varianta care<br />
-              are sens pentru tine.
-            </span>
+            care ți se oferă.<br />
+            <span style={{ color: "#087F5B" }}>Găsește varianta care<br />
+            are sens pentru tine.</span>
           </h1>
 
-          <p className="hero-desc">
+          <p className="cv-hero-desc">
             Îmi spui ce vrei să faci. Eu analizez situația, caut opțiunile potrivite și discut cu banca în locul tău.
           </p>
 
-          <div className="hero-actions">
-            <a href="#verificare-credit" className="hero-btn-primary" onClick={handlePrimaryClick}>
+          <div className="cv-hero-actions">
+            <a href="#verificare-credit" className="cv-btn-primary" onClick={handlePrimaryClick}>
               VERIFICĂ SITUAȚIA →
             </a>
-            <a href="#cum-functioneaza" className="hero-btn-secondary" onClick={handleSecondaryClick}>
+            <a href="#cum-functioneaza" className="cv-btn-secondary" onClick={handleSecondaryClick}>
               CUM FUNCȚIONEAZĂ
             </a>
           </div>
         </div>
 
-        <div className="hero-right-col">
-          <div className="hero-snapshot-panel">
-            <h3 className="snapshot-title">SITUAȚIA TA</h3>
-            <div className="snapshot-divider" />
-            <div className="snapshot-rows">
-              <div className="snapshot-row">
-                <span className="snapshot-label">VENIT NET</span>
-                <span className="snapshot-value">—</span>
+        {/* RIGHT COLUMN: FINANCIAL INSTRUMENT READOUT PANEL */}
+        <div className="cv-hero-right">
+          <div className="cv-readout-panel">
+            <div className="cv-readout-title">
+              <span>SITUAȚIA TA</span>
+              <span style={{ color: "#737A76" }}>REAL-TIME READOUT</span>
+            </div>
+
+            <div className="cv-readout-rows">
+              <div className="cv-readout-row">
+                <span className="cv-readout-label">VENIT NET</span>
+                <span className="cv-readout-value">—</span>
               </div>
-              <div className="snapshot-row">
-                <span className="snapshot-label">GRAD DE ÎNDATORARE</span>
-                <span className="snapshot-value">—</span>
+              <div className="cv-readout-row">
+                <span className="cv-readout-label">GRAD DE ÎNDATORARE</span>
+                <span className="cv-readout-value">—</span>
               </div>
-              <div className="snapshot-row">
-                <span className="snapshot-label">FINANȚARE POSIBILĂ</span>
-                <span className="snapshot-value highlight-emerald">—</span>
+              <div className="cv-readout-row">
+                <span className="cv-readout-label">FINANȚARE POSIBILĂ</span>
+                <span className="cv-readout-value emerald">—</span>
               </div>
+            </div>
+
+            <div style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid #E4E8E6", fontSize: "0.75rem", color: "#5F6368", fontFamily: "var(--font-mono)" }}>
+              • ANALIZĂ 100% CONFIDENȚIALĂ<br />
+              • FĂRĂ AFECTARE SCOR FICO
             </div>
           </div>
         </div>
@@ -70,4 +78,3 @@ export default function CVFinanceHero() {
     </section>
   );
 }
-
