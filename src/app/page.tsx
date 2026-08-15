@@ -1108,7 +1108,7 @@ export default function Home() {
             </div>
 
             {/* COMPACT BUSINESS STATEMENT */}
-            <div style={{ textAlign: "center", maxWidth: "780px", margin: "0 auto 40px", padding: "24px", background: "rgba(15, 23, 42, 0.6)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+            <div style={{ textAlign: "center", maxWidth: "780px", margin: "0 auto 40px", padding: "24px", background: "#0D1117", borderRadius: "16px", border: "1px solid rgba(52, 211, 153, 0.20)" }}>
               <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#34D399", margin: "0 0 8px" }}>
                 O firmă nu se finanțează doar după cifra de afaceri.
               </h3>
