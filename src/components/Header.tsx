@@ -7,12 +7,12 @@ import { Menu, X } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 const MOBILE_MENU_ITEMS = [
-  { code: "01", title: "PERSONAL", desc: "Credit & finanțare personală", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
-  { code: "02", title: "BUSINESS", desc: "Finanțarea companiei", href: "/#business-finance", id: "business-finance" },
-  { code: "03", title: "SERVICII", desc: "Ce pot face pentru tine", href: "/#servicii", id: "servicii" },
-  { code: "04", title: "CUM FUNCȚIONEAZĂ", desc: "Procesul de lucru", href: "/#cum-functioneaza", id: "cum-functioneaza" },
+  { code: "01", title: "PERSONAL", desc: "Credite, refinanțare, locuință", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
+  { code: "02", title: "BUSINESS", desc: "Finanțare pentru companie", href: "/#business-finance", id: "business-finance" },
+  { code: "03", title: "SERVICII", desc: "Analiză și consultanță", href: "/#servicii", id: "servicii" },
+  { code: "04", title: "CUM FUNCȚIONEAZĂ", desc: "De la situație la soluție", href: "/#cum-functioneaza", id: "cum-functioneaza" },
   { code: "05", title: "DESPRE MINE", desc: "Cristian Văduva", href: "/#despre", id: "despre" },
-  { code: "06", title: "CONTACT", desc: "Vorbește direct cu mine", href: "/#contact", id: "contact" },
+  { code: "06", title: "CONTACT", desc: "Vorbim direct", href: "/#contact", id: "contact" },
 ];
 
 export default function Header() {
@@ -158,23 +158,18 @@ export default function Header() {
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-nav-panel"
           style={{
-            fontFamily: "var(--font-mono)",
-            fontSize: "10.5px",
-            fontWeight: 600,
-            letterSpacing: "0.12em",
-            textTransform: "uppercase",
             color: "#111111",
             background: "none",
             border: "none",
             cursor: "pointer",
-            padding: "0.5rem 0",
+            padding: "0.5rem",
             display: "flex",
             alignItems: "center",
-            gap: "0.35rem"
+            justifyContent: "center"
           }}
+          aria-label={mobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
         >
-          <span>{mobileMenuOpen ? "CLOSE" : "MENU"}</span>
-          {mobileMenuOpen ? <X size={13} strokeWidth={2.5} /> : <Menu size={13} strokeWidth={2.5} />}
+          {mobileMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
         </button>
       </div>
 
@@ -199,19 +194,19 @@ export default function Header() {
                   onClick={(e) => handleNavClick(e, item.href, item.id)}
                   style={{
                     display: "block",
-                    padding: "1.5rem 0",
+                    padding: "1.25rem 0",
                     borderBottom: "1px solid rgba(17, 17, 17, 0.08)",
                     textDecoration: "none",
                     color: "#111111"
                   }}
                 >
-                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500, display: "block", marginBottom: "0.35rem" }}>
+                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500, display: "block", marginBottom: "0.25rem" }}>
                     {item.code}
                   </span>
-                  <span style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(26px, 8vw, 36px)", fontWeight: 500, letterSpacing: "-0.03em", display: "block", lineHeight: "1.1" }}>
+                  <span style={{ fontFamily: "var(--font-sans)", fontSize: "1.1rem", fontWeight: 700, letterSpacing: "-0.02em", display: "block", lineHeight: "1.1" }}>
                     {item.title}
                   </span>
-                  <span style={{ fontSize: "12.5px", color: "var(--text-secondary)", display: "block", marginTop: "0.25rem" }}>
+                  <span style={{ fontSize: "12.5px", color: "var(--text-secondary)", display: "block", marginTop: "0.15rem" }}>
                     {item.desc}
                   </span>
                 </Link>

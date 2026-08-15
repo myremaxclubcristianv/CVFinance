@@ -311,7 +311,7 @@ export default function TotulInainteDeCreditFunnel({
       {/* Progress Indicator Header */}
       <div className="totul-progress-header">
         <div className="progress-text-row">
-          <span className="step-badge">Pasul {step} din 5</span>
+          <span className="step-badge">0{step} / 05</span>
           <span className="step-label">
             {step === 1 && "Identificare problemă"}
             {step === 2 && "Profil financiar"}
@@ -375,8 +375,7 @@ export default function TotulInainteDeCreditFunnel({
               onClick={() => handleNextStep(2)}
               className="totul-btn-next"
             >
-              <span>Continuă spre pasul 2</span>
-              <ArrowRight size={18} />
+              <span>CONTINUĂ →</span>
             </button>
           </div>
         </div>
@@ -483,8 +482,7 @@ export default function TotulInainteDeCreditFunnel({
               <span>Înapoi</span>
             </button>
             <button type="button" onClick={() => handleNextStep(3)} className="totul-btn-next">
-              <span>Continuă spre pasul 3</span>
-              <ArrowRight size={18} />
+              <span>CONTINUĂ →</span>
             </button>
           </div>
         </div>
@@ -542,8 +540,7 @@ export default function TotulInainteDeCreditFunnel({
               <span>Înapoi</span>
             </button>
             <button type="button" onClick={() => handleNextStep(4)} className="totul-btn-next">
-              <span>Continuă spre pasul 4</span>
-              <ArrowRight size={18} />
+              <span>CONTINUĂ →</span>
             </button>
           </div>
         </div>
@@ -578,8 +575,7 @@ export default function TotulInainteDeCreditFunnel({
               onClick={() => handleNextStep(5)}
               className="totul-btn-next highlight-step-btn"
             >
-              <span>Mergi la pasul de Contact</span>
-              <ArrowRight size={18} />
+              <span>CONTINUĂ →</span>
             </button>
           </div>
         </div>
