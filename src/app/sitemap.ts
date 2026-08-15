@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/broker-credite-bucuresti",
     "/calculator-rata-credit",
     "/stergere-birou-credit",
+    "/totul-inainte-de-credit",
     "/termeni-si-conditii",
     "/politica-confidentialitate",
     "/gdpr",
