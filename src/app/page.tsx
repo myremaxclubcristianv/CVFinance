@@ -524,154 +524,111 @@ export default function Home() {
         {/* 01 / ARRIVE — UNBOXED EDITORIAL HERO */}
         <CVFinanceHero />
 
-        {/* FINANCIAL MESSAGE: EU TE SUN. BANCA NU. */}
-        <section className="financial-message-section">
-          <div className="financial-message-container">
-            <span className="message-badge">FILOZOFIA NOASTRĂ</span>
-            <h2 className="message-title">
-              EU TE SUN.<br />
-              <span className="emerald">BANCA NU.</span>
+        {/* THE CORE MESSAGE */}
+        <section className="core-message-section">
+          <div className="core-message-container">
+            <h2 className="core-message-title">Tu îmi spui ce vrei să faci.</h2>
+            <h2 className="core-message-title">Eu îți spun ce se poate face.</h2>
+            <p className="core-message-desc">
+              Fără să pierzi zile întregi între bănci. Fără să ghicești unde te încadrezi. Fără să alegi o ofertă doar pentru că este prima pe care ai primit-o.
+            </p>
+          </div>
+        </section>
+
+        {/* EU TE SUN. BANCA NU. */}
+        <section className="philosophy-section">
+          <div className="philosophy-container">
+            <h2 className="philosophy-title">
+              EU TE SUN.
+              <span className="philosophy-title-break">BANCA NU.</span>
             </h2>
-            <div className="message-grid">
-              <div className="message-item">
-                <span className="message-num">01</span>
-                <p className="message-text"><strong>Tu vorbești cu mine.</strong> Stăruim asupra detaliilor pentru a înțelege exact profilul tău financiar.</p>
-              </div>
-              <div className="message-item">
-                <span className="message-num">02</span>
-                <p className="message-text"><strong>Eu analizez situația.</strong> Verificăm normele de creditare de la peste 20 de bănci partenere.</p>
-              </div>
-              <div className="message-item">
-                <span className="message-num">03</span>
-                <p className="message-text"><strong>Eu discut cu banca.</strong> Negociem direct cele mai bune condiții, fără ca tu să pierzi timp la ghișee.</p>
+            <div className="philosophy-steps-wrapper">
+              <div className="philosophy-steps">
+                <p className="philosophy-step">Tu vorbești cu mine.</p>
+                <p className="philosophy-step">Eu analizez situația.</p>
+                <p className="philosophy-step">Eu discut cu banca.</p>
+                <p className="philosophy-step">Tu primești răspunsul.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* 02 / IDENTIFY — EDITORIAL COMMAND SHEET */}
-        <CommandSheet />
-
-        {/* 03 / DIAGNOSE — PERSONAL CREDIT DIAGNOSTIC INDEX */}
-        <section id="totul-inainte-de-credit" className="section" style={{ padding: "64px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
-          <div style={{ marginBottom: "40px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "8px" }}>
-              03 / DIAGNOSE
-            </p>
-            <h2 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#F8FAFC", lineHeight: 1.15, letterSpacing: "-0.02em", margin: "0 0 16px" }}>
-              NU TOATE REFUZURILE ÎNSEAMNĂ ACELAȘI LUCRU.
-            </h2>
-            <p style={{ fontSize: "16px", color: "#CBD5E1", lineHeight: 1.6, maxWidth: "34rem", margin: 0 }}>
-              Un refuz, întârzierile sau lipsa scorului FICO nu trebuie tratate automat ca un „nu”. Înainte de o nouă cerere, trebuie înțeles profilul financiar.
-            </p>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column", marginBottom: "48px" }}>
-            {[
-              { code: "01", label: "AM FOST REFUZAT", desc: "Află motivul real al respingerii înainte de a trimite o nouă cerere" },
-              { code: "02", label: "AM ÎNTÂRZIERI / BC", desc: "Evaluăm raportările din Biroul de Credit și vechimea restanțelor" },
-              { code: "03", label: "NU AM SCOR FICO", desc: "Soluții pentru persoane fără istoric de creditare în sistem" },
-              { code: "04", label: "AM NEVOIE DE O SUMĂ NOUĂ", desc: "Calculăm capacitatea reală de rambursare eligibilă" },
-              { code: "05", label: "VREAU O RATĂ MAI MICĂ", desc: "Analizăm oportunitatea refinanțării ratelor existente" },
-              { code: "06", label: "VREAU REFINANȚARE", desc: "Unificăm creditele active într-o singură rată lunară" },
-            ].map((item) => (
-              <button
-                key={item.code}
-                type="button"
-                style={{
-                  minHeight: "68px",
-                  padding: "18px 0",
-                  background: "transparent",
-                  border: "none",
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  transition: "all 200ms cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
-                onClick={() => {
-                  trackEvent("diagnostic_row_selected", { code: item.code, label: item.label });
-                  setSelectedProblemPill(item.label);
-                  const targetEl = document.getElementById("verificare-credit");
-                  if (targetEl) targetEl.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                  <span style={{ fontSize: "12px", fontWeight: 800, color: "#34D399", fontFamily: "monospace", minWidth: "24px" }}>
-                    {item.code}
-                  </span>
-                  <div>
-                    <span style={{ fontSize: "17px", fontWeight: 700, color: "#F8FAFC", display: "block" }}>
-                      {item.label}
-                    </span>
-                    <span style={{ fontSize: "13px", color: "#CBD5E1", display: "block", marginTop: "2px" }}>
-                      {item.desc}
-                    </span>
+        {/* 03 / DIAGNOSE — PERSONAL FINANCE */}
+        <section id="totul-inainte-de-credit" className="personal-section">
+          <div className="personal-container">
+            {/* Split Editorial Section */}
+            <div className="personal-split">
+              <div className="personal-left">
+                <span className="personal-label">PERSONAL</span>
+                <h2 className="personal-title">Hai să vedem ce poți obține.</h2>
+                <a
+                  href="#verificare-credit"
+                  className="personal-cta-link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  VERIFICĂ SITUAȚIA →
+                </a>
+              </div>
+              <div className="personal-right">
+                <p className="personal-lead">Nu trebuie să știi tu ce bancă îți acceptă situația.</p>
+                <div className="personal-minimal-list">
+                  <div className="personal-minimal-item">
+                    <span className="minimal-label">Venit</span>
+                    <span className="minimal-val">→ analizăm</span>
+                  </div>
+                  <div className="personal-minimal-item">
+                    <span className="minimal-label">Istoric</span>
+                    <span className="minimal-val">→ analizăm</span>
+                  </div>
+                  <div className="personal-minimal-item">
+                    <span className="minimal-label">Obligații</span>
+                    <span className="minimal-val">→ analizăm</span>
+                  </div>
+                  <div className="personal-minimal-item">
+                    <span className="minimal-label">Sumă dorită</span>
+                    <span className="minimal-val">→ analizăm</span>
                   </div>
                 </div>
-                <ArrowRight size={18} style={{ color: "#34D399" }} />
-              </button>
-            ))}
-          </div>
+              </div>
+            </div>
 
-            {/* 03 — CE VERIFIC ÎNAINTE SĂ TE SUN? (7 DIAGNOSTIC CARDS) */}
-            <div className="totul-ce-verific-box" style={{ margin: "48px 0 56px", textAlign: "center" }}>
-              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 800, marginBottom: "12px", color: "#F8FAFC" }}>
-                CE VERIFIC ÎNAINTE SĂ TE SUN?
-              </h3>
-              <p style={{ color: "#CBD5E1", fontSize: "15px", maxWidth: "680px", margin: "0 auto 32px" }}>
+            {/* Checklist Section */}
+            <div className="personal-checklist">
+              <h3 className="checklist-title">CE VERIFIC ÎNAINTE SĂ TE SUN?</h3>
+              <p className="checklist-subtitle">
                 Analiza pe care o realizez este una riguroasă, bazată pe date reale și norme bancare actualizate.
               </p>
-              
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px", maxWidth: "1080px", margin: "0 auto" }}>
+              <div className="checklist-lines">
                 {[
-                  { code: "01 / BIROUL DE CREDIT", title: "Situația din Biroul de Credit", desc: "Verific raportările existente, scorul FICO și eventualele înregistrări active." },
-                  { code: "02 / ÎNTÂRZIERI", title: "Istoricul întârzierilor", desc: "Evaluez vechimea întârzierilor și dacă restanțele au fost stinse." },
-                  { code: "03 / CREDITE & IFN-URI", title: "Creditele și IFN-urile", desc: "Analizez totalul datoriilor curente și structura ratelor de la fiecare creditor." },
-                  { code: "04 / RATE", title: "Nivelul actual al ratelor", desc: "Calculez gradul tău real de îndatorare raportat la veniturile nete eligibile." },
-                  { code: "05 / VENITURI", title: "Veniturile declarate", desc: "Verific ce tipuri de venituri pot fi luate în calcul (salarii, pensii, PFA, chirii)." },
-                  { code: "06 / NECESAR FINANȚARE", title: "Necesarul de finanțare", desc: "Stabilesc dacă suma dorită este realistă raportată la profilul tău de risc." },
-                  { code: "07 / VARIANTE", title: "Variantele eligibile", desc: "Identific opțiunile care merită analizate fără aplicații inutile." },
+                  { code: "01", title: "Situația din Biroul de Credit", desc: "Verific raportările existente, scorul FICO și eventualele înregistrări active." },
+                  { code: "02", title: "Istoricul întârzierilor", desc: "Evaluez vechimea întârzierilor și dacă restanțele au fost stinse." },
+                  { code: "03", title: "Creditele și IFN-urile", desc: "Analizez totalul datoriilor curente și structura ratelor de la fiecare creditor." },
+                  { code: "04", title: "Nivelul actual al ratelor", desc: "Calculez gradul tău real de îndatorare raportat la veniturile nete eligibile." },
+                  { code: "05", title: "Veniturile declarate", desc: "Verific ce tipuri de venituri pot fi luate în calcul (salarii, pensii, PFA, chirii)." },
+                  { code: "06", title: "Necesarul de finanțare", desc: "Stabilesc dacă suma dorită este realistă raportată la profilul tău de risc." },
+                  { code: "07", title: "Variantele eligibile", desc: "Identific opțiunile care merită analizate fără aplicații inutile." },
                 ].map((item) => (
-                  <div
-                    key={item.code}
-                    style={{
-                      background: "#151B23",
-                      border: "1px solid rgba(255, 255, 255, 0.10)",
-                      borderRadius: "12px",
-                      padding: "20px",
-                      textAlign: "left",
-                      display: "flex",
-                      flexDirection: "column",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <span style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.08em" }}>
-                      {item.code}
-                    </span>
-                    <h4 style={{ fontSize: "15px", fontWeight: 700, color: "#F8FAFC", margin: "8px 0 6px" }}>
-                      {item.title}
-                    </h4>
-                    <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
-                      {item.desc}
-                    </p>
+                  <div key={item.code} className="checklist-line">
+                    <span className="checklist-line-code">{item.code}</span>
+                    <div className="checklist-line-main">
+                      <span className="checklist-line-title">{item.title}</span>
+                      <span className="checklist-line-desc">{item.desc}</span>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* 04 — GHID DE ÎNȚELEGERE („ÎNAINTE SĂ APLICI, TREBUIE SĂ ȘTII”) - ACCORDION */}
-            <div className="totul-ghid-section" style={{ margin: "56px 0", textAlign: "center" }}>
-              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 30px)", fontWeight: 800, marginBottom: "12px", color: "#F8FAFC" }}>
-                ÎNAINTE SĂ APLICI, TREBUIE SĂ ȘTII
-              </h3>
-              <p style={{ color: "#CBD5E1", fontSize: "15px", maxWidth: "680px", margin: "0 auto 28px" }}>
+            {/* Ghid Accordion Section */}
+            <div className="personal-accordions-section">
+              <h3 className="accordions-title">ÎNAINTE SĂ APLICI, TREBUIE SĂ ȘTII</h3>
+              <p className="accordions-subtitle">
                 Află cum funcționează evaluarea financiară și ce opțiuni ai când te confrunți cu obstacole de creditare:
               </p>
-
-              <div style={{ maxWidth: "860px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "12px", textAlign: "left" }}>
+              <div className="editorial-accordions">
                 {[
                   { q: "Ce înseamnă o problemă în Biroul de Credit?", a: "O raportare negativă în Biroul de Credit apare atunci când ai avut întârzieri la plata ratelor de peste 30 de zile. Aceste date rămân vizibile timp de 4 ani de la data achitării ultimei restanțe și pot influența decizia băncilor." },
                   { q: "Se poate corecta o informație din Biroul de Credit?", a: "Verificăm dacă există informații care pot fi corectate sau contestate legal atunci când există temei juridic (raportări eronate, nerespectarea notificării prealabile sau erori ale creditorului). Datele raportate corect nu pot fi șterse garantat." },
@@ -682,83 +639,55 @@ export default function Home() {
                   { q: "Ce trebuie să știu despre IFN?", a: "Creditele de la IFN-uri reprezintă o variantă accesibilă pe termen scurt, dar vin cu costuri ridicate. Analizăm dacă o astfel de soluție este oportună sau dacă există alternative bancare mai avantajoase." },
                   { q: "De ce nu este bine să aplic la întâmplare?", a: "Trimiterea simultană de aplicații la 5-10 bănci creează interogări repetate în Biroul de Credit. Sistemul FICO interpretează acest comportament drept stare de urgență financiară și scade automat scorul de credit." },
                 ].map((guide, idx) => (
-                  <details
-                    key={idx}
-                    style={{
-                      background: "#151B23",
-                      border: "1px solid rgba(255, 255, 255, 0.10)",
-                      borderRadius: "12px",
-                      padding: "16px 20px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <summary style={{ fontSize: "16px", fontWeight: 700, color: "#F8FAFC", outline: "none" }}>
-                      {guide.q}
-                    </summary>
-                    <p style={{ fontSize: "14px", color: "#CBD5E1", marginTop: "12px", lineHeight: 1.6, margin: "12px 0 0" }}>
-                      {guide.a}
-                    </p>
+                  <details key={idx} className="editorial-details">
+                    <summary className="editorial-summary">{guide.q}</summary>
+                    <p className="editorial-details-content">{guide.a}</p>
                   </details>
                 ))}
               </div>
             </div>
 
-            {/* 05 — EMBEDDED HOMEPAGE FUNNEL CONTAINER */}
-            <div id="verificare-credit" className="totul-homepage-funnel-wrapper">
+            {/* Embedded Funnel Container */}
+            <div id="verificare-credit" className="personal-funnel-wrapper">
               <div className="funnel-intro-box">
-                <h3>ANALIZĂ CONFIDENȚIALĂ & PRECALIFICARE FINANCIARĂ</h3>
-                <p>
+                <h3 className="funnel-intro-title">ANALIZĂ CONFIDENȚIALĂ & PRECALIFICARE FINANCIARĂ</h3>
+                <p className="funnel-intro-desc">
                   Înainte să mai trimiți o cerere către un creditor, trimite-mi situația ta. Analizez informațiile și revin telefonic.
                 </p>
               </div>
-
               <TotulInainteDeCreditFunnel
                 source="homepage-totul-inainte-de-credit"
                 initialSelectedProblems={selectedProblemPill ? [selectedProblemPill] : []}
               />
-
-              <p className="totul-homepage-legal-note">
+              <p className="funnel-legal-note">
                 * Evaluarea identifică opțiunile legale disponibile conform reglementărilor în vigoare, fără promisiuni nerealiste de aprobare garantată sau ștergere nefondată din Biroul de Credit.
               </p>
             </div>
 
-            {/* 06 — 3 PRINCIPII („CUM LUCREZ”) */}
-            <div className="totul-trust-principles-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", margin: "56px 0" }}>
-              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
-                <span className="card-label">01 / ANALIZEZ</span>
-                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px", color: "#F8FAFC" }}>Înțeleg situația ta</h4>
-                <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
-                  Înțeleg situația ta înainte de următoarea cerere.
-                </p>
+            {/* Principles Section */}
+            <div className="personal-principles">
+              <div className="personal-principle-item">
+                <span className="principle-code">01 / ANALIZEZ</span>
+                <h4 className="principle-heading">Înțeleg situația ta</h4>
+                <p className="principle-desc">Înțeleg situația ta înainte de următoarea cerere.</p>
               </div>
-
-              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
-                <span className="card-label">02 / VERIFIC</span>
-                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px", color: "#F8FAFC" }}>Caut variante reale</h4>
-                <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
-                  Caut variantele care pot avea sens pentru profilul tău.
-                </p>
+              <div className="personal-principle-item">
+                <span className="principle-code">02 / VERIFIC</span>
+                <h4 className="principle-heading">Caut variante reale</h4>
+                <p className="principle-desc">Caut variantele care pot avea sens pentru profilul tău.</p>
               </div>
-
-              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
-                <span className="card-label">03 / ÎȚI SPUN CE URMEAZĂ</span>
-                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px", color: "#F8FAFC" }}>Revin cu răspuns</h4>
-                <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
-                  Revin către tine telefonic după analiză.
-                </p>
+              <div className="personal-principle-item">
+                <span className="principle-code">03 / ÎȚI SPUN CE URMEAZĂ</span>
+                <h4 className="principle-heading">Revin cu răspuns</h4>
+                <p className="principle-desc">Revin către tine telefonic după analiză.</p>
               </div>
             </div>
 
-            {/* 07 — FAQ (7 ACCORDION ITEMS) */}
-            <div className="totul-faq-section" style={{ margin: "56px 0", textAlign: "center" }}>
-              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 30px)", fontWeight: 800, marginBottom: "12px", color: "#F8FAFC" }}>
-                ÎNTREBĂRI FRECVENTE
-              </h3>
-              <p style={{ color: "#CBD5E1", fontSize: "15px", maxWidth: "680px", margin: "0 auto 28px" }}>
-                Tot ce trebuie să știi înainte de a aplica pentru o evaluare:
-              </p>
-
-              <div style={{ maxWidth: "860px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "12px", textAlign: "left" }}>
+            {/* FAQ Accordions */}
+            <div className="personal-faq-accordions">
+              <h3 className="accordions-title">ÎNTREBĂRI FRECVENTE</h3>
+              <p className="accordions-subtitle">Tot ce trebuie să știi înainte de a aplica pentru o evaluare:</p>
+              <div className="editorial-accordions">
                 {[
                   { q: "Se poate șterge istoricul din Biroul de Credit?", a: "Dacă raportarea a fost efectuată cu nerespectarea prevederilor legale sau dacă datele sunt eronate, există temei juridic pentru rectificare sau contestație. Nu există nicio garanție automată de ștergere a datelor raportate corect." },
                   { q: "Pot obține credit dacă am avut întârzieri?", a: "Da, în anumite condiții. Șansele depind de vechimea întârzierilor, dacă au fost achitate integral, nivelul actual al veniturilor și instituția financiară aleasă." },
@@ -768,133 +697,30 @@ export default function Home() {
                   { q: "De ce sunt refuzat repetat?", a: "Refuzul repetat apare adesea din cauza scorului FICO scăzut, a numărului mare de interogări recente sau a gradului depășit de îndatorare." },
                   { q: "Ce verific înainte să trimit o nouă aplicație?", a: "Trebuie să verifici raportul Biroului de Credit, venitul net eligibil, totalul ratelor actuale și criteriile exacte ale finanțatorului." },
                 ].map((faq, idx) => (
-                  <details
-                    key={idx}
-                    style={{
-                      background: "#151B23",
-                      border: "1px solid rgba(255, 255, 255, 0.10)",
-                      borderRadius: "12px",
-                      padding: "16px 20px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    <summary style={{ fontSize: "16px", fontWeight: 700, color: "#F8FAFC", outline: "none" }}>
-                      {faq.q}
-                    </summary>
-                    <p style={{ fontSize: "14px", color: "#CBD5E1", marginTop: "12px", lineHeight: 1.6, margin: "12px 0 0" }}>
-                      {faq.a}
-                    </p>
+                  <details key={idx} className="editorial-details">
+                    <summary className="editorial-summary">{faq.q}</summary>
+                    <p className="editorial-details-content">{faq.a}</p>
                   </details>
                 ))}
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* 08 — FINAL CTA */}
-            <div className="totul-final-cta-panel">
-              <h3>Înainte să mai faci o cerere de credit, verifică mai întâi situația ta.</h3>
-              <p>Îmi trimiți situația. O analizez și revin către tine telefonic.</p>
-              <div className="totul-final-cta-actions">
-                <button
-                  type="button"
-                  className="totul-final-cta-primary"
-                  onClick={() => {
-                    trackEvent("homepage_totul_credit_started", { location: "final_cta_panel" });
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span>VREAU SĂ-MI VERIFIC SITUAȚIA →</span>
-                </button>
-
-                <a
-                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc să verific situația mea înainte de un credit.")}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="totul-final-cta-secondary"
-                  onClick={() => trackEvent("homepage_totul_credit_whatsapp", { location: "final_cta_panel" })}
-                >
-                  <MessageCircle size={18} style={{ color: "#25D366" }} />
-                  <span>PREFER SĂ DISCUT DIRECT</span>
-                </a>
-              </div>
-            </div>
-          </section>
-
-        {/* 04 / BUSINESS FINANCE — PRIVATE BANKING ASYMMETRIC SPLIT */}
-        <section id="business-finance" className="section" style={{ padding: "64px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "48px" }}>
-            {/* LEFT COLUMN — 45% */}
-            <div>
-              <p style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "12px" }}>
-                04 / BUSINESS FINANCE
-              </p>
-              <h2 style={{ fontSize: "clamp(28px, 5vw, 42px)", fontWeight: 900, color: "#F8FAFC", lineHeight: 1.12, letterSpacing: "-0.03em", margin: "0 0 20px" }}>
-                CAPITAL PENTRU<br />URMĂTORUL NIVEL.
-              </h2>
-              <p style={{ fontSize: "15px", color: "#CBD5E1", lineHeight: 1.6, maxWidth: "28rem", margin: "0 0 32px" }}>
-                O companie nu se finanțează doar după cifra de afaceri. Contează cash-flow-ul, profitabilitatea, vechimea, datoriile, destinația capitalului și profilul antreprenorului.
-              </p>
-              <a
-                href="#verificare-finantare-business"
-                className="button"
-                style={{ height: "50px", padding: "0 24px", fontSize: "14px", fontWeight: 700, borderRadius: "10px", background: "#10B981", color: "#070A0F", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  trackEvent("business_primary_cta_click");
-                  document.getElementById("verificare-finantare-business")?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <span>VERIFICĂ OPȚIUNILE →</span>
-              </a>
-            </div>
-
-            {/* RIGHT COLUMN — 55% INDEXED DIRECTORY */}
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              {[
-                { code: "01", title: "CAPITAL DE LUCRU", desc: "Lichiditate operațională și finanțare stocuri" },
-                { code: "02", title: "INVESTIȚII & ECHIPAMENTE", desc: "Leasing tehnic, achiziții de utilaje și extindere" },
-                { code: "03", title: "FINANȚARE COMPANIE", desc: "Linii de credit, scrisori de garanție și factoring" },
-                { code: "04", title: "REFINANȚARE", desc: "Optimimizarea structurii datoriilor comerciale și bancare" },
-                { code: "05", title: "NEVOI PERSONALE ANTREPRENOR", desc: "Finanțare dedusă din dividente sau venituri PFA/SRL" },
-                { code: "06", title: "CAPITAL PENTRU CREȘTERE", desc: "Creditare de dezvoltare și proiecte cu fonduri" },
-              ].map((item) => (
-                <button
-                  key={item.code}
-                  type="button"
-                  style={{
-                    minHeight: "64px",
-                    padding: "16px 0",
-                    background: "transparent",
-                    border: "none",
-                    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    cursor: "pointer",
-                    textAlign: "left",
-                  }}
-                  onClick={() => {
-                    trackEvent("business_directory_selected", { code: item.code, title: item.title });
-                    setSelectedBusinessIntent(item.title);
-                    const targetEl = document.getElementById("verificare-finantare-business");
-                    if (targetEl) targetEl.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-                    <span style={{ fontSize: "12px", fontWeight: 800, color: "#34D399", fontFamily: "monospace" }}>
-                      {item.code}
-                    </span>
-                    <div>
-                      <span style={{ fontSize: "16px", fontWeight: 700, color: "#F8FAFC", display: "block" }}>
-                        {item.title}
-                      </span>
-                      <span style={{ fontSize: "13px", color: "#94A3B8", display: "block", marginTop: "2px" }}>
-                        {item.desc}
-                      </span>
-                    </div>
-                  </div>
-                  <ArrowRight size={16} style={{ color: "#34D399" }} />
-                </button>
-              ))}
+        {/* 04 / BUSINESS FINANCE — PREMIUM CHAPTER */}
+        <section id="business-finance" className="business-section">
+          <div className="business-container">
+            <span className="business-label">BUSINESS</span>
+            <h2 className="business-title">
+              Ai o firmă?<br />
+              Hai să vedem cum o putem finanța.
+            </h2>
+            <p className="business-lead-keywords">
+              Capital de lucru. Echipamente. Investiții. Extindere. Proiecte noi.
+            </p>
+            <div className="business-statement-block">
+              <h3 className="business-statement-title">Spune-mi ce vrei să construiești.</h3>
+              <h3 className="business-statement-title highlight">Vedem cum poate fi finanțat.</h3>
             </div>
           </div>
         </section>
@@ -916,40 +742,35 @@ export default function Home() {
         {/* 05 / FINANCIAL INTELLIGENCE — BLOOMBERG / FT RESEARCH TERMINAL */}
         <FinancialIntelligence />
 
-        {/* PROCES TRANSPARENT PAS CU PAS */}
-        <section id="proces" className="section" style={{ paddingTop: "20px" }}>
-          <div className="section-intro">
-            <div>
-              <p className="eyebrow">
-                <span /> PROCES TRANSPARENT
-              </p>
-              <h2>Cum funcționează pas cu pas?</h2>
-            </div>
-          </div>
+        {/* OUTCOMES SECTION: CE CÂȘTIGI? */}
+        <section id="proces" className="outcomes-section">
+          <div className="outcomes-container">
+            <h2 className="outcomes-main-title">Ce câștigi?</h2>
+            
+            <div className="outcomes-grid">
+              <div className="outcome-item">
+                <span className="outcome-number">01</span>
+                <span className="outcome-label">CLARITATE</span>
+                <p className="outcome-text">Știi unde te afli înainte să pierzi timp.</p>
+              </div>
 
-          <div className="grid grid-4" style={{ gap: "16px" }}>
-            <div className="card" style={{ padding: "24px" }}>
-              <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--neon-green)" }}>PASUL 1</span>
-              <h3 style={{ fontSize: "1.05rem", margin: "8px 0 6px" }}>Completezi formularul</h3>
-              <p style={{ fontSize: "0.88rem", margin: 0, color: "var(--muted)" }}>Durează aproximativ 2 minute. Completezi doar informațiile de bază.</p>
-            </div>
+              <div className="outcome-item">
+                <span className="outcome-number">02</span>
+                <span className="outcome-label">OPȚIUNI</span>
+                <p className="outcome-text">Nu pornim de la o singură bancă.</p>
+              </div>
 
-            <div className="card" style={{ padding: "24px" }}>
-              <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--neon-green)" }}>PASUL 2</span>
-              <h3 style={{ fontSize: "1.05rem", margin: "8px 0 6px" }}>Analizăm informațiile</h3>
-              <p style={{ fontSize: "0.88rem", margin: 0, color: "var(--muted)" }}>Verificăm opțiunile disponibile în piață conform profilului tău.</p>
-            </div>
+              <div className="outcome-item">
+                <span className="outcome-number">03</span>
+                <span className="outcome-label">TIMP</span>
+                <p className="outcome-text">Nu alergi tu după fiecare răspuns.</p>
+              </div>
 
-            <div className="card" style={{ padding: "24px" }}>
-              <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--neon-green)" }}>PASUL 3</span>
-              <h3 style={{ fontSize: "1.05rem", margin: "8px 0 6px" }}>Te contactăm</h3>
-              <p style={{ fontSize: "0.88rem", margin: 0, color: "var(--muted)" }}>Dacă identificăm variante potrivite, îți prezentăm opțiunile pe înțelesul tău.</p>
-            </div>
-
-            <div className="card" style={{ padding: "24px" }}>
-              <span style={{ fontSize: "0.85rem", fontWeight: 800, color: "var(--neon-green)" }}>PASUL 4</span>
-              <h3 style={{ fontSize: "1.05rem", margin: "8px 0 6px" }}>Tu decizi</h3>
-              <p style={{ fontSize: "0.88rem", margin: 0, color: "var(--muted)" }}>Alegi dacă dorești să mergi mai departe. Nu ai nicio obligație.</p>
+              <div className="outcome-item">
+                <span className="outcome-number">04</span>
+                <span className="outcome-label">NEGOCIERE</span>
+                <p className="outcome-text">Eu discut cu banca pentru tine.</p>
+              </div>
             </div>
           </div>
         </section>
@@ -1156,33 +977,33 @@ export default function Home() {
         </section>
 
         {/* 06 / ANALYZE — QUALIFICATION TERMINAL */}
-        <section id="aplica" className="section" style={{ padding: "64px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
+        <section id="aplica" className="section" style={{ padding: "80px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid #E5E7EB" }}>
           <div style={{ marginBottom: "32px", textAlign: "center" }}>
-            <p style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "8px" }}>
-              06 / ANALYZE
+            <p style={{ fontSize: "11px", fontWeight: 800, color: "#087F5B", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "8px" }}>
+              FORMULAR DE CONTACT
             </p>
-            <h2 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#F8FAFC", letterSpacing: "-0.02em", margin: "0 0 12px" }}>
-              SPUNE-NE UNDE EȘTI. NOI ANALIZĂM RESTUL.
+            <h2 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#111827", letterSpacing: "-0.02em", margin: "0 0 12px" }}>
+              Începem cu situația ta.
             </h2>
-            <p style={{ fontSize: "15px", color: "#CBD5E1", maxWidth: "32rem", margin: "0 auto" }}>
-              Analiză confidențială și precalificare financiară pentru persoane fizice și companii.
+            <p style={{ fontSize: "15px", color: "#374151", maxWidth: "32rem", margin: "0 auto" }}>
+              Câteva întrebări. O analiză clară. Apoi îți spun ce putem face.
             </p>
           </div>
 
-          <div className="form-card" style={{ background: "#0D1117", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px", padding: "32px" }}>
+          <div className="form-card" style={{ background: "#F7F9F8", border: "1px solid #E5E7EB", borderRadius: "16px", padding: "32px" }}>
             <div className="form-header">
               {/* Progress Steps */}
               <div className="form-steps" style={{ display: "flex", gap: "16px", justifyContent: "center", marginBottom: "28px" }}>
-                <div className={`step-item ${formStep >= 1 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 1 ? "#34D399" : "#94A3B8" }}>
+                <div className={`step-item ${formStep >= 1 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 1 ? "#087F5B" : "#6B7280" }}>
                   01 / 04 SITUAȚIE
                 </div>
-                <div className={`step-item ${formStep >= 2 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 2 ? "#34D399" : "#94A3B8" }}>
+                <div className={`step-item ${formStep >= 2 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 2 ? "#087F5B" : "#6B7280" }}>
                   02 / 04 NEVOIE
                 </div>
-                <div className={`step-item ${formStep >= 3 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 3 ? "#34D399" : "#94A3B8" }}>
+                <div className={`step-item ${formStep >= 3 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 3 ? "#087F5B" : "#6B7280" }}>
                   03 / 04 DATE
                 </div>
-                <div className={`step-item ${formStep >= 3 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 3 ? "#34D399" : "#94A3B8" }}>
+                <div className={`step-item ${formStep >= 3 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 3 ? "#087F5B" : "#6B7280" }}>
                   04 / 04 ANALIZĂ
                 </div>
               </div>
@@ -1195,8 +1016,8 @@ export default function Home() {
                     width: "64px",
                     height: "64px",
                     borderRadius: "50%",
-                    background: "rgba(16, 185, 129, 0.1)",
-                    color: "#10b981",
+                    background: "#E8F5EF",
+                    color: "#087F5B",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -1205,11 +1026,11 @@ export default function Home() {
                 >
                   <Check size={32} />
                 </div>
-                <h3 style={{ fontSize: "1.8rem", marginBottom: "12px" }}>Solicitarea a fost transmisă cu succes. Vom contacta în curând.</h3>
+                <h3 style={{ fontSize: "1.8rem", marginBottom: "12px", color: "#111827" }}>Solicitarea a fost transmisă cu succes. Vom contacta în curând.</h3>
                 <p style={{ color: "var(--muted)", maxWidth: "520px", margin: "0 auto 16px", lineHeight: 1.6 }}>
                   Analizăm informațiile trimise și revenim cu variantele disponibile, dacă există.
                 </p>
-                <div style={{ display: "inline-block", background: "rgba(57, 255, 136, 0.1)", border: "1px solid rgba(57, 255, 136, 0.3)", color: "var(--neon-green)", padding: "8px 18px", borderRadius: "20px", fontSize: "0.85rem", fontWeight: 700, marginBottom: "16px" }}>
+                <div style={{ display: "inline-block", background: "#E8F5EF", border: "1px solid #CBD5E1", color: "#087F5B", padding: "8px 18px", borderRadius: "20px", fontSize: "0.85rem", fontWeight: 700, marginBottom: "16px" }}>
                   Nu ai nicio obligație să accepți o ofertă.
                 </div>
                 <div style={{ display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap" }}>
@@ -1755,40 +1576,35 @@ export default function Home() {
             })}
           </div>
         </section>
+        {/* 07 / DECIDE — FINAL CTA */}
+        <section className="final-cta-section">
+          <div className="final-cta-container">
+            <h2 className="final-cta-title">Nu trebuie să știi tu ce bancă este potrivită.</h2>
+            <h2 className="final-cta-title highlight">Trebuie doar să-mi spui ce vrei să faci.</h2>
 
-        {/* 07 / DECIDE — CINEMATIC EDITORIAL CLOSING */}
-        <section className="section" style={{ padding: "80px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid rgba(255, 255, 255, 0.08)", textAlign: "center" }}>
-          <p style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "16px" }}>
-            07 / DECIDE
-          </p>
-          <h2 style={{ fontSize: "clamp(28px, 6vw, 48px)", fontWeight: 900, color: "#F8FAFC", lineHeight: 1.15, letterSpacing: "-0.03em", maxWidth: "52rem", margin: "0 auto 32px" }}>
-            NU TREBUIE SĂ ȘTII CE CREDIT ȚI SE POTRIVEȘTE.<br />TREBUIE DOAR SĂ NE SPUI UNDE EȘTI ACUM.
-          </h2>
+            <div className="final-cta-actions">
+              <a
+                href="#verificare-credit"
+                className="final-cta-primary"
+                onClick={(e) => {
+                  e.preventDefault();
+                  trackEvent("final_decide_primary_cta_click");
+                  document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                <span>VERIFICĂ SITUAȚIA →</span>
+              </a>
 
-          <div style={{ display: "flex", gap: "20px", justifyContent: "center", alignItems: "center", flexWrap: "wrap" }}>
-            <a
-              href="#verificare-credit"
-              className="button"
-              style={{ height: "54px", minHeight: "54px", padding: "0 32px", fontSize: "15px", fontWeight: 700, borderRadius: "12px", background: "#10B981", color: "#070A0F", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none" }}
-              onClick={(e) => {
-                e.preventDefault();
-                trackEvent("final_decide_primary_cta_click");
-                document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-              }}
-            >
-              <span>VERIFICĂ SITUAȚIA →</span>
-            </a>
-
-            <a
-              href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară direct pe WhatsApp.")}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ fontSize: "15px", fontWeight: 600, color: "#CBD5E1", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
-              onClick={() => trackEvent("final_decide_whatsapp_click")}
-            >
-              <MessageCircle size={18} style={{ color: "#34D399" }} />
-              <span>Discută direct →</span>
-            </a>
+              <a
+                href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară direct pe WhatsApp.")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="final-cta-secondary"
+                onClick={() => trackEvent("final_decide_whatsapp_click")}
+              >
+                <span>SAU VORBEȘTE CU MINE</span>
+              </a>
+            </div>
           </div>
         </section>
 
@@ -1908,90 +1724,34 @@ export default function Home() {
         </section>
 
         {/* Footer */}
-        <footer id="contact">
-          <div className="footer-main">
-            {/* Zone 01: Cristian Văduva */}
-            <div className="footer-col brand-col">
-              <a href="#top" className="brand" style={{ letterSpacing: "-1px" }}>
-                <span>CV</span> Finance
-              </a>
-              <p className="brand-desc">
-                Credit Advisory & Financial Optimization. Consultanță și intermediere financiară independentă fondată de Cristian Văduva.
-              </p>
-              <div className="brand-meta">
-                <strong>Cristian Văduva</strong>
-                <span>Senior Sales · Credit & Financial Advisory</span>
-              </div>
-              <div className="contact-inline">
-                <a href={`tel:${CONTACT.PHONE}`}>Telefon</a>
-                <span className="dot">•</span>
-                <a href={`https://wa.me/${CONTACT.WHATSAPP}?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83.`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                <span className="dot">•</span>
-                <a href={`mailto:${CONTACT.EMAIL}`}>Email</a>
-              </div>
-              <div className="office-badge">
-                <strong>Birou — Piața Victoriei</strong>
-                <span>Zonă centrală, București</span>
-              </div>
+        <footer id="contact" className="editorial-footer">
+          <div className="footer-container">
+            <div className="footer-left">
+              <span className="footer-brand">CV Finance</span>
+              <p className="footer-tagline">Credit Advisory & Financial Optimization</p>
             </div>
-
-            {/* Zone 02: Navigație */}
-            <div className="footer-col">
-              <strong className="col-title">Navigație</strong>
-              <div className="link-strip">
-                <a href="#beneficii">Beneficii</a>
-                <a href="#servicii">Servicii</a>
-                <a href="#calculator">Calculator</a>
-                <a href="#proces">Proces</a>
-                <a href="/referral">Recomandări</a>
-                <a href="#faq">FAQ</a>
+            <div className="footer-right">
+              <div className="footer-links">
+                <a href="#totul-inainte-de-credit">Personal</a>
+                <a href="#business-finance">Business</a>
+                <a href="#proces">Cum funcționează</a>
+                <a href="#contact-direct">Despre mine</a>
                 <a href="#contact-direct">Contact</a>
-                <a href="#ecosistem">Ecosistem</a>
-              </div>
-            </div>
-
-            {/* Zone 03: Servicii */}
-            <div className="footer-col">
-              <strong className="col-title">Servicii</strong>
-              <div className="link-strip">
-                <a href="#servicii">Credit nou</a>
-                <a href="#servicii">Refinanțare</a>
-                <a href="#servicii">Optimizarea ratelor</a>
-                <a href="#servicii">Biroul de Credit</a>
-                <Link href="/totul-inainte-de-credit">Totul înainte de credit</Link>
-                <a href="#aplica">Analiză financiară</a>
-                <a href="#servicii">Oferte multiple</a>
-              </div>
-            </div>
-
-            {/* Zone 04: Contact & Birou (Desktop) */}
-            <div className="footer-col desktop-contact-col">
-              <strong className="col-title">Contact & Birou</strong>
-              <div className="desktop-contact-details">
-                <div>
-                  <strong>Telefon:</strong> <a href={`tel:${CONTACT.PHONE}`}>0767 110 439</a>
-                </div>
-                <div>
-                  <strong>Email:</strong> <a href={`mailto:${CONTACT.EMAIL}`}>{CONTACT.EMAIL}</a>
-                </div>
-                <div>
-                  <strong>WhatsApp:</strong> <a href={`https://wa.me/${CONTACT.WHATSAPP}?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83.`} target="_blank" rel="noopener noreferrer">+43 650 953 6345</a>
-                </div>
-                <div className="office-card">
-                  <strong>Birou — Piața Victoriei</strong>
-                  <span>Zonă centrală, București</span>
-                </div>
               </div>
             </div>
           </div>
 
-          <div className="footer-bottom">
-            <div className="footer-legal-strip">
+          <div className="footer-bottom-legal">
+            <div className="footer-legal-links">
               <a href="/termeni-si-conditii">Termeni și condiții</a>
               <span className="dot">•</span>
               <a href="/politica-confidentialitate">Politica de confidențialitate</a>
               <span className="dot">•</span>
               <a href="/gdpr">GDPR</a>
+              <span className="dot">•</span>
+              <a href="/acord-marketing">Acord marketing</a>
+              <span className="dot">•</span>
+              <a href="/nota-legala">Notă legală</a>
               <span className="dot">•</span>
               <button
                 onClick={() => typeof window !== "undefined" && window.dispatchEvent(new Event("cv_open_cookie_settings"))}
@@ -1999,19 +1759,13 @@ export default function Home() {
               >
                 Cookies
               </button>
-              <span className="dot">•</span>
-              <a href="/acord-marketing">Acord marketing</a>
-              <span className="dot">•</span>
-              <a href="/nota-legala">Notă legală</a>
             </div>
-            <div className="footer-copyright">
-              <span>© {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
-              <span className="tagline">Credit Advisory & Financial Optimization</span>
-            </div>
-          </div>
-
-          <div className="legal-disclaimer">
-            * Disclaimer legal: CV Finance funcționează ca birou de consultanță financiară independentă fondat de Cristian Văduva. Birou în zona centrală — Piața Victoriei, București. Analiza este gratuită și nu garantează aprobarea unui credit. Soluțiile financiare depind direct de criteriile și evaluarea individuală a instituțiilor bancare partenere.
+            <p className="footer-copy-text">
+              © {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.
+            </p>
+            <p className="footer-disclaimer-text">
+              * Disclaimer legal: CV Finance funcționează ca birou de consultanță financiară independentă fondat de Cristian Văduva. Birou în zona centrală — Piața Victoriei, București. Analiza este gratuită și nu garantează aprobarea unui credit. Soluțiile financiare depind direct de criteriile și evaluarea bancară.
+            </p>
           </div>
         </footer>
 

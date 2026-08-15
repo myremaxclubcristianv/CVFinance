@@ -1,28 +1,6 @@
 import type { Metadata, Viewport } from "next";
-import { Manrope, Playfair_Display, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  weight: ["400", "600", "700", "800"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["600", "700"],
-  variable: "--font-playfair",
-  display: "swap",
-});
-
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["500"],
-  variable: "--font-mono",
-  display: "swap",
-});
 
 export const viewport: Viewport = {
   themeColor: "#FFFFFF",
@@ -110,7 +88,7 @@ import FloatingConversionCTA from "@/components/FloatingConversionCTA";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="ro" className={`${manrope.variable} ${playfair.variable} ${jetbrainsMono.variable}`}>
+    <html lang="ro">
       <head>
         <script
           type="application/ld+json"

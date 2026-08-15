@@ -90,36 +90,17 @@ export default function Header() {
 
   return (
     <header className="nav">
-      <Link href="/" className="brand" style={{ letterSpacing: "-1px" }}>
-        <span>CV</span> Finance
+      <Link href="/" className="brand">
+        CV Finance
       </Link>
       <nav>
-        {/* EXECUTIVE INTENT SELECTOR TRIGGER */}
-        <button
-          type="button"
-          className="nav-intent-trigger"
-          onClick={() => {
-            setIntentOpen(!intentOpen);
-            trackEvent("intent_menu_opened", { location: "header_nav" });
-          }}
-          aria-expanded={intentOpen}
-          aria-label="Selector intenție client CE CAUȚI?"
-        >
-          <Sparkles size={15} style={{ color: "#34D399" }} />
-          <span>CE CAUȚI?</span>
-          <ChevronDown size={14} style={{ transform: intentOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }} />
-        </button>
-
-        <Link href="/#totul-inainte-de-credit">Persoane</Link>
+        <Link href="/#totul-inainte-de-credit">Personal</Link>
         <Link href="/#business-finance">Business</Link>
-        <Link href="/#financial-intelligence">Intelligence</Link>
         <Link href="/#proces">Cum funcționează</Link>
-        <Link href="/referral">Recomandări</Link>
-        <Link href="/#faq">FAQ</Link>
-        <Link href="/#contact-direct">Contact</Link>
+        <Link href="/#contact-direct">Despre mine</Link>
       </nav>
       <a className="nav-cta" href="/#verificare-credit" onClick={handleCtaClick}>
-        VERIFICĂ SITUAȚIA <ArrowRight size={15} />
+        VERIFICĂ SITUAȚIA →
       </a>
       <button
         className="menu"
@@ -294,41 +275,17 @@ export default function Header() {
       {/* MOBILE NAV DRAWER */}
       {menu && (
         <div className="mobile-nav" id="mobile-nav-menu" role="navigation" aria-label="Meniu mobil">
-          <button
-            type="button"
-            className="mega-item-btn"
-            style={{ textAlign: "left", padding: "12px", background: "rgba(52,211,153,0.10)", border: "1px solid rgba(52,211,153,0.30)", borderRadius: "8px", marginBottom: "8px" }}
-            onClick={() => {
-              setMenu(false);
-              setIntentOpen(true);
-            }}
-          >
-            <div style={{ fontSize: "14px", fontWeight: 800, color: "#34D399", display: "flex", alignItems: "center", gap: "6px" }}>
-              <Sparkles size={16} /> CE CAUȚI? — SELECTEAZĂ SITUAȚIA TA
-            </div>
-            <div style={{ fontSize: "12px", color: "#CBD5E1", marginTop: "2px" }}>Alege situația și mergi direct la formular.</div>
-          </button>
-
           <Link href="/#totul-inainte-de-credit" onClick={() => setMenu(false)}>
-            Persoane Fizice
+            Personal
           </Link>
           <Link href="/#business-finance" onClick={() => setMenu(false)}>
-            Business Finance
-          </Link>
-          <Link href="/#financial-intelligence" onClick={() => setMenu(false)}>
-            Financial Intelligence
+            Business
           </Link>
           <Link href="/#proces" onClick={() => setMenu(false)}>
             Cum funcționează
           </Link>
-          <Link href="/referral" onClick={() => setMenu(false)}>
-            Recomandări
-          </Link>
-          <Link href="/#faq" onClick={() => setMenu(false)}>
-            FAQ
-          </Link>
           <Link href="/#contact-direct" onClick={() => setMenu(false)}>
-            Contact
+            Despre mine
           </Link>
         </div>
       )}

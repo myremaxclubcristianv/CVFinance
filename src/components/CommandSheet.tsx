@@ -7,7 +7,6 @@ import { trackEvent } from "@/lib/analytics";
 interface CommandRow {
   code: string;
   label: string;
-  desc: string;
   intent: string;
   targetId: string;
   type: "personal" | "business";
@@ -16,56 +15,49 @@ interface CommandRow {
 const COMMAND_ROWS: CommandRow[] = [
   {
     code: "01",
-    label: "VREAU BANI",
-    desc: "Finanțare nouă personală sau nevoi personale cu analiză rapidă.",
+    label: "Vreau bani",
     intent: "Am nevoie de o sumă nouă",
     targetId: "verificare-credit",
     type: "personal",
   },
   {
     code: "02",
-    label: "CUMPĂR O LOCUINȚĂ",
-    desc: "Pregătire dosar precalificare credit ipotecar sau imobiliar.",
+    label: "Vreau să cumpăr o locuință",
     intent: "Credit nou",
     targetId: "verificare-credit",
     type: "personal",
   },
   {
     code: "03",
-    label: "REFINANȚARE",
-    desc: "Consolidarea mai multor credite scumpe într-o rată unică mai mică.",
+    label: "Vreau să refinanțez",
     intent: "Refinanțare",
     targetId: "verificare-credit",
     type: "personal",
   },
   {
     code: "04",
-    label: "CREDIT DE NEVOI PERSONALE",
-    desc: "Credit rapid pentru orice destinație fără ipotecă.",
-    intent: "Credit nou",
+    label: "Am nevoie de bani pentru mine",
+    intent: "Am nevoie de o sumă nouă",
     targetId: "verificare-credit",
     type: "personal",
   },
   {
     code: "05",
-    label: "FINANȚARE BUSINESS",
-    desc: "Capital de lucru, leasing și linii de credit pentru companii SRL / PFA.",
+    label: "Am nevoie de finanțare pentru firmă",
     intent: "Finanțare firmă",
     targetId: "verificare-finantare-business",
     type: "business",
   },
   {
     code: "06",
-    label: "VREAU SĂ ȘTIU DACĂ MĂ ÎNCADREZ",
-    desc: "Calcul grad maxim de îndatorare permise de normele actuale BNR.",
+    label: "Vreau să știu dacă mă încadrez",
     intent: "Reduc rata",
     targetId: "verificare-credit",
     type: "personal",
   },
   {
     code: "07",
-    label: "RECOMANDĂ UN CLIENT",
-    desc: "Câștigă între 500 și 3.000 RON trimițând clienți eligibili.",
+    label: "Vreau să recomand un client",
     intent: "Recomandare client",
     targetId: "recomandari",
     type: "personal",
@@ -75,6 +67,11 @@ const COMMAND_ROWS: CommandRow[] = [
 export default function CommandSheet() {
   const handleSelect = (row: CommandRow) => {
     trackEvent("command_row_click", { code: row.code, label: row.label });
+
+    if (row.targetId === "recomandari") {
+      window.location.href = "/referral";
+      return;
+    }
 
     const targetEl = document.getElementById(row.targetId);
     if (targetEl) {
@@ -91,11 +88,7 @@ export default function CommandSheet() {
     <section className="command-sheet-section" id="ce-cauti">
       <div className="command-sheet-container">
         <div className="command-sheet-header">
-          <p className="command-eyebrow">02 / IDENTIFY</p>
-          <h2 className="command-title">CE CAUȚI?</h2>
-          <p className="command-subtitle">
-            Alege intenția ta financiară pentru a deschide direct analiza corespunzătoare.
-          </p>
+          <h2 className="command-title">De unde vrei să începem?</h2>
         </div>
 
         <div className="command-rows-list">
@@ -106,14 +99,10 @@ export default function CommandSheet() {
               className="command-row-btn"
               onClick={() => handleSelect(row)}
             >
-              <div className="command-row-left">
-                <span className="command-row-code">{row.code}</span>
-                <div className="command-row-content">
-                  <span className="command-row-label">{row.label}</span>
-                  <span className="command-row-desc">{row.desc}</span>
-                </div>
-              </div>
-              <ArrowRight size={20} className="command-row-arrow" />
+              <span className="command-row-label">
+                {row.code} — {row.label}
+              </span>
+              <ArrowRight size={22} className="command-row-arrow" />
             </button>
           ))}
         </div>
