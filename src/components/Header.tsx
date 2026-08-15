@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { Menu, X, ArrowRight } from "lucide-react";
@@ -8,8 +8,20 @@ import { trackEvent } from "@/lib/analytics";
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      if (totalHeight > 0) {
+        setScrollProgress((window.scrollY / totalHeight) * 100);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleCtaClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -69,6 +81,13 @@ export default function Header() {
             Business
           </Link>
           <Link
+            href="/#servicii"
+            className="cv-nav-link"
+            onClick={(e) => handleNavClick(e, "/#servicii")}
+          >
+            Servicii
+          </Link>
+          <Link
             href="/#cum-functioneaza"
             className="cv-nav-link"
             onClick={(e) => handleNavClick(e, "/#cum-functioneaza")}
@@ -126,6 +145,13 @@ export default function Header() {
             Business
           </Link>
           <Link
+            href="/#servicii"
+            className="text-base font-semibold text-neutral-900 py-1"
+            onClick={(e) => handleNavClick(e, "/#servicii")}
+          >
+            Servicii
+          </Link>
+          <Link
             href="/#cum-functioneaza"
             className="text-base font-semibold text-neutral-900 py-1"
             onClick={(e) => handleNavClick(e, "/#cum-functioneaza")}
@@ -155,6 +181,20 @@ export default function Header() {
           </a>
         </div>
       )}
+      {/* Scroll indicator rollbar */}
+      <div 
+        className="cv-scroll-rollbar"
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: `${scrollProgress}%`,
+          height: "2px",
+          backgroundColor: "var(--emerald)",
+          transition: "width 80ms ease-out",
+          zIndex: 100
+        }}
+      />
     </header>
   );
 }

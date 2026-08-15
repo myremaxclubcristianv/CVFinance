@@ -16,7 +16,6 @@ import {
   AlertCircle
 } from "lucide-react";
 import { trackEvent, getTrafficMetadata } from "@/lib/analytics";
-import Header from "@/components/Header";
 import CVFinanceHero from "@/components/CVFinanceHero";
 import CommandSheet from "@/components/CommandSheet";
 import FinancialIntelligence from "@/components/FinancialIntelligence";
@@ -385,9 +384,6 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      <Header />
-
       <main>
         {/* 08 — HERO */}
         <CVFinanceHero />
