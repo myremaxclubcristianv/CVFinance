@@ -1275,6 +1275,338 @@ export default function Home() {
           </div>
         </section>
 
+        {/* NATIVE MASTER SECTION: FINANCIAL INTELLIGENCE DASHBOARD */}
+        <section id="financial-intelligence" className="fi-section">
+          <div className="totul-master-container">
+            {/* SECTION HEADER */}
+            <div className="fi-header">
+              <p className="fi-eyebrow">
+                <span /> 01 / FINANCIAL INTELLIGENCE
+              </p>
+              <h2>Înainte să iei o decizie financiară, uită-te la cifre.</h2>
+              <p>
+                Urmărește evoluția dobânzilor, costul finanțării și principalele variante disponibile pentru persoane, antreprenori și companii.
+              </p>
+            </div>
+
+            {/* TOP GRID: CHART & MARKET SNAPSHOT */}
+            <div className="fi-grid-top">
+              {/* 01 — INTEREST RATE MARKET CHART */}
+              <div className="fi-card">
+                <div>
+                  <h3 className="fi-card-title">Evoluția dobânzilor medii la creditele ipotecare</h3>
+                  <p className="fi-card-subtitle">
+                    EXEMPLU ORIENTATIV — VALORI ILUSTRATIVE. Prezentarea reflectă o evoluție orientativă a pieței creditelor.
+                  </p>
+                </div>
+
+                {/* RESPONSIVE SVG LINE CHART */}
+                <div style={{ width: "100%", overflowX: "auto" }}>
+                  <svg
+                    viewBox="0 0 800 240"
+                    style={{ width: "100%", height: "auto", minWidth: "300px", display: "block" }}
+                    aria-label="Grafic evoluție dobânzi medii 2019-2026"
+                  >
+                    <defs>
+                      <linearGradient id="fiEmeraldGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stopColor="#34D399" stopOpacity="0.25" />
+                        <stop offset="100%" stopColor="#34D399" stopOpacity="0.0" />
+                      </linearGradient>
+                    </defs>
+
+                    {/* Grid lines */}
+                    <line x1="50" y1="40" x2="750" y2="40" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 4" />
+                    <line x1="50" y1="90" x2="750" y2="90" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 4" />
+                    <line x1="50" y1="140" x2="750" y2="140" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 4" />
+                    <line x1="50" y1="190" x2="750" y2="190" stroke="rgba(255,255,255,0.06)" strokeDasharray="4 4" />
+
+                    {/* Area fill */}
+                    <path
+                      d="M 50,56 L 150,73 L 250,111 L 350,138 L 450,138 L 550,197 L 650,78 L 750,89 L 750,210 L 50,210 Z"
+                      fill="url(#fiEmeraldGradient)"
+                    />
+
+                    {/* Chart path */}
+                    <path
+                      d="M 50,56 L 150,73 L 250,111 L 350,138 L 450,138 L 550,197 L 650,78 L 750,89"
+                      fill="none"
+                      stroke="#34D399"
+                      strokeWidth="3"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+
+                    {/* Data Points & Labels */}
+                    {[
+                      { year: "2019", val: "6.70%", x: 50, y: 56 },
+                      { year: "2020", val: "6.40%", x: 150, y: 73 },
+                      { year: "2021", val: "5.70%", x: 250, y: 111 },
+                      { year: "2022", val: "5.20%", x: 350, y: 138 },
+                      { year: "2023", val: "5.20%", x: 450, y: 138 },
+                      { year: "2024", val: "4.10%", x: 550, y: 197 },
+                      { year: "2025", val: "6.30%", x: 650, y: 78 },
+                      { year: "2026", val: "6.10%", x: 750, y: 89 },
+                    ].map((pt, i) => (
+                      <g key={i}>
+                        <circle cx={pt.x} cy={pt.y} r="5" fill="#0D1117" stroke="#34D399" strokeWidth="2.5" />
+                        <text x={pt.x} y={pt.y - 12} fill="#F8FAFC" fontSize="11" fontWeight="700" textAnchor="middle">
+                          {pt.val}
+                        </text>
+                        <text x={pt.x} y="225" fill="#94A3B8" fontSize="11" fontWeight="600" textAnchor="middle">
+                          {pt.year}
+                        </text>
+                      </g>
+                    ))}
+                  </svg>
+                </div>
+              </div>
+
+              {/* 02 — 2025 → 2026 MARKET SNAPSHOT */}
+              <div className="fi-card">
+                <div>
+                  <h3 className="fi-card-title">Market Snapshot 2025 → 2026</h3>
+                  <p className="fi-card-subtitle">
+                    Comparație orientativă a nivelului dobânzilor de referință.
+                  </p>
+
+                  <div className="fi-snapshot-grid">
+                    <div className="fi-metric-card">
+                      <div className="fi-metric-label">DOBÂNDĂ 2025</div>
+                      <div className="fi-metric-value">6.30%</div>
+                    </div>
+                    <div className="fi-metric-card">
+                      <div className="fi-metric-label">DOBÂNDĂ 2026</div>
+                      <div className="fi-metric-value emerald">6.10%</div>
+                    </div>
+                    <div className="fi-metric-card">
+                      <div className="fi-metric-label">VARIAȚIE</div>
+                      <div className="fi-metric-value emerald">−0.20</div>
+                      <div className="fi-metric-trend">↓ pp</div>
+                    </div>
+                  </div>
+
+                  <p className="fi-snapshot-microcopy">
+                    Scădere ușoară față de 2025. <i>*Nu garantează o rată mai mică pentru fiecare profil.</i>
+                  </p>
+                </div>
+
+                {/* 03 & 04 — WHAT DOES THIS MEAN & COST OF FINANCING */}
+                <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+                  <h4 style={{ fontSize: "15px", fontWeight: 800, color: "#F8FAFC", margin: "0 0 6px" }}>
+                    Ce înseamnă pentru finanțarea ta?
+                  </h4>
+                  <p style={{ fontSize: "13px", color: "#CBD5E1", margin: "0 0 16px", lineHeight: 1.5 }}>
+                    O diferență mică de dobândă poate modifica semnificativ costul total. Rata lunară nu este singurul indicator care contează.
+                  </p>
+
+                  {/* Metric Summary Blocks */}
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "16px" }}>
+                    <div style={{ background: "#151B23", padding: "10px 8px", borderRadius: "8px", textAlign: "center" }}>
+                      <div style={{ fontSize: "10px", color: "#94A3B8", fontWeight: 700 }}>SUMA FINANȚATĂ</div>
+                      <div style={{ fontSize: "13px", color: "#F8FAFC", fontWeight: 800, marginTop: "2px" }}>500.000 RON</div>
+                    </div>
+                    <div style={{ background: "#151B23", padding: "10px 8px", borderRadius: "8px", textAlign: "center" }}>
+                      <div style={{ fontSize: "10px", color: "#94A3B8", fontWeight: 700 }}>PERIOADA</div>
+                      <div style={{ fontSize: "13px", color: "#F8FAFC", fontWeight: 800, marginTop: "2px" }}>25 ANI</div>
+                    </div>
+                    <div style={{ background: "#151B23", padding: "10px 8px", borderRadius: "8px", textAlign: "center" }}>
+                      <div style={{ fontSize: "10px", color: "#94A3B8", fontWeight: 700 }}>EXEMPLU RATĂ</div>
+                      <div style={{ fontSize: "13px", color: "#34D399", fontWeight: 800, marginTop: "2px" }}>~3.220 RON/lună</div>
+                    </div>
+                  </div>
+
+                  {/* Cost Visualizer Bar */}
+                  <div className="fi-cost-vis">
+                    <div className="fi-bar-legend">
+                      <div className="fi-bar-legend-item">
+                        <span className="fi-legend-dot" style={{ background: "#10B981" }} />
+                        <span>Capital: 500.000 RON</span>
+                      </div>
+                      <div className="fi-bar-legend-item">
+                        <span className="fi-legend-dot" style={{ background: "rgba(52, 211, 153, 0.40)" }} />
+                        <span>Rambursat total: ~966.000 RON</span>
+                      </div>
+                    </div>
+                    <div className="fi-bar-container">
+                      <div className="fi-bar-principal" />
+                      <div className="fi-bar-interest" />
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#94A3B8", textAlign: "right" }}>
+                      EXEMPLU ILUSTRATIV — NU REPREZINTĂ O OFERTĂ DE CREDIT
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* 05 — FINANCING MAP */}
+            <div style={{ marginTop: "48px" }}>
+              <div style={{ textAlign: "center", marginBottom: "24px" }}>
+                <h3 style={{ fontSize: "22px", fontWeight: 800, color: "#F8FAFC", margin: "0 0 6px" }}>
+                  Ce tip de finanțare poate avea sens?
+                </h3>
+                <p style={{ fontSize: "14px", color: "#CBD5E1", margin: 0 }}>
+                  Alege categoria potrivită obiectivului tău financiar pentru a accesa evaluarea gratuită.
+                </p>
+              </div>
+
+              <div className="fi-map-grid">
+                {[
+                  {
+                    num: "01 / IPOTECAR",
+                    title: "CREDITE IMOBILIARE",
+                    desc: "Achiziție locuință, teren sau investiție imobiliară.",
+                    target: "verificare-credit",
+                  },
+                  {
+                    num: "02 / FLOTĂ & AUTO",
+                    title: "CREDITE AUTO",
+                    desc: "Achiziție autoturism personal sau flotă comercială.",
+                    target: "verificare-credit",
+                  },
+                  {
+                    num: "03 / BUSINESS",
+                    title: "FINANȚARE COMPANII",
+                    desc: "Capital de lucru, echipamente, investiții și dezvoltare SRL/PFA.",
+                    target: "verificare-finantare-business",
+                  },
+                  {
+                    num: "04 / PERSONAL",
+                    title: "NEVOI PERSONALE",
+                    desc: "Finanțare personală rapidă pentru antreprenori și persoane fizice.",
+                    target: "verificare-credit",
+                  },
+                  {
+                    num: "05 / OPTIMIZARE",
+                    title: "REFINANȚARE",
+                    desc: "Consolidarea datoriilor și reducerea presiunii ratelor lunare.",
+                    target: "verificare-credit",
+                  },
+                ].map((item, idx) => (
+                  <div key={idx} className="fi-map-card">
+                    <div>
+                      <div className="fi-map-num">{item.num}</div>
+                      <h4 className="fi-map-title">{item.title}</h4>
+                      <p className="fi-map-desc">{item.desc}</p>
+                    </div>
+                    <button
+                      type="button"
+                      className="fi-map-link"
+                      onClick={() => {
+                        trackEvent("fi_map_click", { category: item.title });
+                        document.getElementById(item.target)?.scrollIntoView({ behavior: "smooth" });
+                      }}
+                    >
+                      <span>Analizează</span> <ArrowRight size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 06 & 07 — DUAL INTELLIGENCE PANELS */}
+            <div className="fi-dual-panels">
+              {/* 06 — ENTREPRENEUR / BUSINESS INTELLIGENCE */}
+              <div className="fi-intelligence-panel">
+                <div>
+                  <h3 className="fi-panel-title">
+                    Pentru antreprenori, cifra de afaceri nu este suficientă.
+                  </h3>
+                  <p className="fi-panel-copy">
+                    Finanțarea unei companii depinde de vechime, profitabilitate, cash-flow, credite existente, grad de îndatorare, destinația capitalului și profilul antreprenorului.
+                  </p>
+
+                  <div className="fi-indicator-tags">
+                    <div className="fi-indicator-tag"><span>•</span> COMPANIE (Vechime)</div>
+                    <div className="fi-indicator-tag"><span>•</span> PERFORMANȚĂ (Profit)</div>
+                    <div className="fi-indicator-tag"><span>•</span> CASH-FLOW (Numerar)</div>
+                    <div className="fi-indicator-tag"><span>•</span> DATORII (Rate)</div>
+                    <div className="fi-indicator-tag"><span>•</span> CAPITAL (Necesar)</div>
+                    <div className="fi-indicator-tag"><span>•</span> DESTINAȚIE (Investiție)</div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="fi-panel-cta"
+                  onClick={() => {
+                    trackEvent("fi_business_panel_click", { location: "dashboard" });
+                    document.getElementById("verificare-finantare-business")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Verifică opțiunile pentru business →</span>
+                </button>
+              </div>
+
+              {/* 07 — PERSONAL CREDIT INTELLIGENCE */}
+              <div className="fi-intelligence-panel">
+                <div>
+                  <h3 className="fi-panel-title">
+                    Nu ai scor FICO? Ai întârzieri? Ai fost refuzat?
+                  </h3>
+                  <p className="fi-panel-copy">
+                    Înainte să mai trimiți o cerere, verifică situația actuală. Istoricul de credit, întârzierile, creditele active, veniturile și gradul de îndatorare trebuie analizate împreună.
+                  </p>
+
+                  <div className="fi-indicator-tags">
+                    <div className="fi-indicator-tag"><span>•</span> BIROUL DE CREDIT</div>
+                    <div className="fi-indicator-tag"><span>•</span> ÎNTÂRZIERI</div>
+                    <div className="fi-indicator-tag"><span>•</span> CREDITE ACTIVE</div>
+                    <div className="fi-indicator-tag"><span>•</span> VENITURI</div>
+                    <div className="fi-indicator-tag"><span>•</span> RATE</div>
+                    <div className="fi-indicator-tag"><span>•</span> GRAD ÎNDATORARE</div>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  className="fi-panel-cta"
+                  onClick={() => {
+                    trackEvent("fi_personal_panel_click", { location: "dashboard" });
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Verifică situația mea →</span>
+                </button>
+              </div>
+            </div>
+
+            {/* 08 — DISCLAIMER / DATA INTEGRITY */}
+            <p className="fi-disclaimer">
+              * Valorile prezentate în exemplele de mai sus sunt orientative și au rol exclusiv informativ. Condițiile reale de finanțare diferă în funcție de profilul clientului, produsul ales, instituția finanțatoare, venituri, grad de îndatorare și alte criterii de eligibilitate.
+            </p>
+
+            {/* 09 — FINAL CLOSING CTA PANEL FOR DASHBOARD */}
+            <div className="totul-final-cta-panel" style={{ marginTop: 0 }}>
+              <h3>Analizează situația. Compară variantele. Apoi decide.</h3>
+              <p>Nu lua o decizie financiară doar după rata lunară.</p>
+              <div className="totul-final-cta-actions">
+                <button
+                  type="button"
+                  className="totul-final-cta-primary"
+                  onClick={() => {
+                    trackEvent("fi_final_cta_primary", { location: "dashboard" });
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Solicită analiza financiară →</span>
+                </button>
+
+                <a
+                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară direct pe WhatsApp.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="totul-final-cta-secondary"
+                  onClick={() => trackEvent("fi_final_cta_whatsapp", { location: "dashboard" })}
+                >
+                  <MessageCircle size={18} style={{ color: "#25D366" }} />
+                  <span>Prefer să discut direct</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* PROCES TRANSPARENT PAS CU PAS */}
         <section id="proces" className="section" style={{ paddingTop: "20px" }}>
           <div className="section-intro">

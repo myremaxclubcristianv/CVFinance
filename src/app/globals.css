@@ -2815,4 +2815,365 @@ footer {
   }
 }
 
+/* FINANCIAL INTELLIGENCE DASHBOARD */
+.fi-section {
+  padding: 80px 0;
+  background: #070A0F;
+  border-top: 1px solid rgba(52, 211, 153, 0.15);
+}
+
+.fi-header {
+  text-align: center;
+  max-width: 780px;
+  margin: 0 auto 56px;
+}
+
+.fi-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #34D399;
+  margin-bottom: 12px;
+}
+
+.fi-header h2 {
+  font-size: clamp(26px, 4.5vw, 42px);
+  font-weight: 800;
+  color: #F8FAFC;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.fi-header p {
+  font-size: 16px;
+  color: #CBD5E1;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.fi-grid-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+@media (max-width: 992px) {
+  .fi-grid-top {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fi-card {
+  background: #0D1117;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 16px;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.fi-card-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: #F8FAFC;
+  margin: 0 0 6px;
+  letter-spacing: -0.01em;
+}
+
+.fi-card-subtitle {
+  font-size: 13px;
+  color: #94A3B8;
+  margin: 0 0 20px;
+  line-height: 1.5;
+}
+
+/* Metric Cards Grid */
+.fi-snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 640px) {
+  .fi-snapshot-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fi-metric-card {
+  background: #151B23;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 12px;
+  padding: 20px 16px;
+  text-align: center;
+}
+
+.fi-metric-label {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94A3B8;
+  margin-bottom: 8px;
+}
+
+.fi-metric-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: #F8FAFC;
+  letter-spacing: -0.02em;
+}
+
+.fi-metric-value.emerald {
+  color: #34D399;
+}
+
+.fi-metric-trend {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #34D399;
+  background: rgba(52, 211, 153, 0.10);
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.fi-snapshot-microcopy {
+  font-size: 13px;
+  color: #CBD5E1;
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Financing Map Grid */
+.fi-map-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 16px;
+  margin: 40px 0;
+}
+
+@media (max-width: 1200px) {
+  .fi-map-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .fi-map-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .fi-map-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fi-map-card {
+  background: #0D1117;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 14px;
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.fi-map-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+.fi-map-num {
+  font-size: 12px;
+  font-weight: 800;
+  color: #34D399;
+  margin-bottom: 12px;
+  letter-spacing: 0.05em;
+}
+
+.fi-map-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #F8FAFC;
+  margin: 0 0 6px;
+}
+
+.fi-map-desc {
+  font-size: 13px;
+  color: #CBD5E1;
+  margin: 0 0 16px;
+  line-height: 1.4;
+  flex-grow: 1;
+}
+
+.fi-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #34D399;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.fi-map-link:hover {
+  color: #FFFFFF;
+}
+
+/* Dual Intelligence Panels (Entrepreneur & Personal Credit) */
+.fi-dual-panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+@media (max-width: 992px) {
+  .fi-dual-panels {
+    grid-template-columns: 1fr;
+  }
+}
+
+.fi-intelligence-panel {
+  background: linear-gradient(135deg, #0D1117 0%, #151B23 100%);
+  border: 1px solid rgba(52, 211, 153, 0.20);
+  border-radius: 16px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.fi-panel-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #F8FAFC;
+  margin: 0 0 12px;
+  line-height: 1.3;
+}
+
+.fi-panel-copy {
+  font-size: 14px;
+  color: #CBD5E1;
+  line-height: 1.6;
+  margin: 0 0 24px;
+}
+
+.fi-indicator-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 28px;
+}
+
+.fi-indicator-tag {
+  background: #151B23;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #CBD5E1;
+}
+
+.fi-indicator-tag span {
+  color: #34D399;
+  margin-right: 4px;
+}
+
+.fi-panel-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  font-weight: 800;
+  font-size: 14px;
+  padding: 14px 24px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.15s ease, background 0.15s ease;
+  width: 100%;
+}
+
+.fi-panel-cta:hover {
+  background: linear-gradient(135deg, #34D399 0%, #059669 100%);
+  transform: translateY(-2px);
+}
+
+.fi-disclaimer {
+  font-size: 12px;
+  color: #94A3B8;
+  line-height: 1.5;
+  text-align: center;
+  max-width: 840px;
+  margin: 0 auto 48px;
+}
+
+/* Cost Comparison Visualizer */
+.fi-bar-container {
+  height: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 7px;
+  overflow: hidden;
+  display: flex;
+  margin: 16px 0 12px;
+}
+
+.fi-bar-principal {
+  height: 100%;
+  background: #10B981;
+  width: 51.8%;
+}
+
+.fi-bar-interest {
+  height: 100%;
+  background: rgba(52, 211, 153, 0.35);
+  width: 48.2%;
+}
+
+.fi-bar-legend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #CBD5E1;
+}
+
+.fi-bar-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.fi-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
 
