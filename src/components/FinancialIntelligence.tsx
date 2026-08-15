@@ -30,7 +30,7 @@ export default function FinancialIntelligence() {
             </div>
           </div>
 
-          <div style={{ borderTop: "1px solid #333333", paddingTop: "1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: "1rem", fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "#A1A1AA" }}>
+          <div style={{ borderTop: "1px solid #333333", paddingTop: "1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "1.25rem", fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "#A1A1AA" }}>
             <div>
               <span style={{ color: "#71717A" }}>IRCC ACTUAL:</span> <strong style={{ color: "#FFFFFF" }}>5.99%</strong>
             </div>

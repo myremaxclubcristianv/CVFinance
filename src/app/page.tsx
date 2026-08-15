@@ -555,7 +555,7 @@ export default function Home() {
                 </a>
               </div>
 
-              <div className="lg:col-span-6 grid grid-cols-2 gap-x-8 gap-y-8" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "2rem 0" }}>
+              <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "2rem 0" }}>
                 <div>
                   <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem", display: "block", marginBottom: "0.5rem" }}>01 / CAPITAL DE LUCRU</span>
                   <h4 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>CAPITAL DE LUCRU</h4>

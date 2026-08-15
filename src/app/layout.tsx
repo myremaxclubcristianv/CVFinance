@@ -85,6 +85,7 @@ const jsonLd = {
 
 import Header from "@/components/Header";
 import FloatingConversionCTA from "@/components/FloatingConversionCTA";
+import MobileQuickNav from "@/components/MobileQuickNav";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -99,6 +100,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <Header />
         {children}
         <FloatingConversionCTA />
+        <MobileQuickNav />
         <CookieConsent />
       </body>
     </html>

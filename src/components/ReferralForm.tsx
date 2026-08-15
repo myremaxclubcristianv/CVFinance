@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { trackEvent } from "@/lib/analytics";
+import { AlertCircle, CheckCircle2 } from "lucide-react";
 
 const ReferralForm: React.FC = () => {
   // Form fields
@@ -25,7 +26,6 @@ const ReferralForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setError("");
 
     // Validation
@@ -34,7 +34,7 @@ const ReferralForm: React.FC = () => {
       return;
     }
     if (!phoneRegex.test(cleanPhone(referrerPhone))) {
-      setError("Telefonul recomandantului este invalid.");
+      setError("Telefonul recomandantului este invalid (ex: 07xxxxxxxx).");
       return;
     }
     if (referrerEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(referrerEmail)) {
@@ -46,7 +46,7 @@ const ReferralForm: React.FC = () => {
       return;
     }
     if (!phoneRegex.test(cleanPhone(clientPhone))) {
-      setError("Telefonul persoanei recomandate este invalid.");
+      setError("Telefonul persoanei recomandate este invalid (ex: 07xxxxxxxx).");
       return;
     }
     if (clientEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
@@ -58,11 +58,10 @@ const ReferralForm: React.FC = () => {
       return;
     }
     if (!consent) {
-      setError("Trebuie să confirmați consimțământul.");
+      setError("Trebuie să confirmați consimțământul pentru datele de contact.");
       return;
     }
     if (honeypot) {
-      // bot detected – silently ignore
       return;
     }
 
@@ -122,11 +121,15 @@ const ReferralForm: React.FC = () => {
 
   if (formState === "success") {
     return (
-      <div className="success-message" role="status" aria-live="polite" style={{ textAlign: "center", padding: "24px" }}>
-        <p style={{ fontSize: "1.1rem", marginBottom: "20px" }}>
-          Recomandarea a fost transmisă cu succes. Vom reveni către persoana recomandată în cel mai scurt timp.
+      <div className="totul-success-card">
+        <div className="success-icon-wrap">
+          <CheckCircle2 size={56} style={{ color: "var(--emerald)" }} />
+        </div>
+        <h1>Recomandare înregistrată</h1>
+        <p className="success-subtitle" style={{ maxWidth: "550px", margin: "0 auto 2rem" }}>
+          Datele au fost transmise cu succes. Vom analiza detaliile primite și vom contacta persoana recomandată pentru a structura cea mai bună strategie financiară.
         </p>
-        <button type="button" className="button" onClick={resetForm}>
+        <button type="button" className="totul-btn-next" onClick={resetForm}>
           Trimite o altă recomandare
         </button>
       </div>
@@ -135,59 +138,172 @@ const ReferralForm: React.FC = () => {
 
   return (
     <form className="referral-form" onSubmit={handleSubmit} noValidate>
-      {error && <p className="error" role="alert" aria-live="assertive" style={{ color: "red" }}>{error}</p>}
-      {/* Hidden honeypot */}
-      <input type="text" name="website" tabIndex={-1} aria-hidden="true" value={honeypot} onChange={(e) => setHoneypot(e.target.value)} style={{ display: "none" }} />
+      {error && (
+        <div className="totul-error-banner" style={{ marginBottom: "2rem" }}>
+          <AlertCircle size={18} />
+          <span>{error}</span>
+        </div>
+      )}
 
-      <h2 className="form-title">Recomandă un client</h2>
-      <div className="field-group">
-        <label className="field-label" htmlFor="referrerName">Numele tău*</label>
-        <input id="referrerName" className="input-field" type="text" value={referrerName} onChange={(e) => setReferrerName(e.target.value)} required />
-      </div>
-      <div className="field-group">
-        <label className="field-label" htmlFor="referrerPhone">Telefonul tău* ( <code>07xxxxxxxx</code> )</label>
-        <input id="referrerPhone" className="input-field" type="tel" value={referrerPhone} onChange={(e) => setReferrerPhone(e.target.value)} required />
-      </div>
-      <div className="field-group">
-        <label className="field-label" htmlFor="referrerEmail">Emailul tău (opțional)</label>
-        <input id="referrerEmail" className="input-field" type="email" value={referrerEmail} onChange={(e) => setReferrerEmail(e.target.value)} />
-      </div>
-      <div className="field-group">
-        <label className="field-label" htmlFor="clientName">Numele persoanei recomandate*</label>
-        <input id="clientName" className="input-field" type="text" value={clientName} onChange={(e) => setClientName(e.target.value)} required />
-      </div>
-      <div className="field-group">
-        <label className="field-label" htmlFor="clientPhone">Telefonul persoanei recomandate* ( <code>07xxxxxxxx</code> )</label>
-        <input id="clientPhone" className="input-field" type="tel" value={clientPhone} onChange={(e) => setClientPhone(e.target.value)} required />
-      </div>
-      <div className="field-group">
-        <label className="field-label" htmlFor="clientEmail">Emailul persoanei recomandate (opțional)</label>
-        <input id="clientEmail" className="input-field" type="email" value={clientEmail} onChange={(e) => setClientEmail(e.target.value)} />
-      </div>
-      <div className="field-group">
-        <label className="field-label" htmlFor="financialNeed">Ce tip de finanțare caută?</label>
-        <input id="financialNeed" className="input-field" type="text" value={financialNeed} onChange={(e) => setFinancialNeed(e.target.value)} required />
-      </div>
-      <div className="field-group">
-        <label className="field-label" htmlFor="message">Detalii / mesaj (opțional)</label>
-        <textarea id="message" className="input-field" value={message} onChange={(e) => setMessage(e.target.value)} rows={3} />
-      </div>
-      <div className="field-group" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <input
-          id="consent"
-          type="checkbox"
-          checked={consent}
-          onChange={(e) => setConsent(e.target.checked)}
-          required
-          aria-required="true"
-          aria-invalid={!consent && formState === "error"}
-        />
-        <label htmlFor="consent" className="field-label">Confirm că am dreptul să transmit datele persoanei recomandate și că aceasta a consimțat.*</label>
-      </div>
+      {/* Honeypot */}
+      <input
+        type="text"
+        name="website"
+        tabIndex={-1}
+        aria-hidden="true"
+        value={honeypot}
+        onChange={(e) => setHoneypot(e.target.value)}
+        style={{ display: "none" }}
+      />
 
-      <button type="submit" disabled={formState === "submitting"} className="button">
-        {formState === "submitting" ? "Trimitere..." : "Trimite recomandarea"}
-      </button>
+      <div style={{ display: "flex", flexDirection: "column", gap: "2.5rem" }}>
+        
+        {/* SECTION 1: Date Recomandant */}
+        <div>
+          <h3 className="cv-mono" style={{ color: "var(--emerald)", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "0.06em" }}>
+            01 / DATELE TALE (RECOMANDANT)
+          </h3>
+          <div className="fields-grid">
+            <div className="field-group">
+              <label htmlFor="referrerName">Nume complet*</label>
+              <input
+                id="referrerName"
+                type="text"
+                value={referrerName}
+                onChange={(e) => setReferrerName(e.target.value)}
+                placeholder="Numele tău complet"
+                required
+              />
+            </div>
+            <div className="field-group">
+              <label htmlFor="referrerPhone">Număr telefon*</label>
+              <input
+                id="referrerPhone"
+                type="tel"
+                value={referrerPhone}
+                onChange={(e) => setReferrerPhone(e.target.value)}
+                placeholder="ex: 07xxxxxxxx"
+                required
+              />
+            </div>
+            <div className="field-group">
+              <label htmlFor="referrerEmail">Email (opțional)</label>
+              <input
+                id="referrerEmail"
+                type="email"
+                value={referrerEmail}
+                onChange={(e) => setReferrerEmail(e.target.value)}
+                placeholder="adresa.ta@email.com"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 2: Date Client Recomandat */}
+        <div>
+          <h3 className="cv-mono" style={{ color: "var(--emerald)", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "0.06em" }}>
+            02 / DATELE CLIENTULUI RECOMANDAT
+          </h3>
+          <div className="fields-grid">
+            <div className="field-group">
+              <label htmlFor="clientName">Nume complet client*</label>
+              <input
+                id="clientName"
+                type="text"
+                value={clientName}
+                onChange={(e) => setClientName(e.target.value)}
+                placeholder="Numele complet al persoanei recomandate"
+                required
+              />
+            </div>
+            <div className="field-group">
+              <label htmlFor="clientPhone">Număr telefon client*</label>
+              <input
+                id="clientPhone"
+                type="tel"
+                value={clientPhone}
+                onChange={(e) => setClientPhone(e.target.value)}
+                placeholder="ex: 07xxxxxxxx"
+                required
+              />
+            </div>
+            <div className="field-group">
+              <label htmlFor="clientEmail">Email client (opțional)</label>
+              <input
+                id="clientEmail"
+                type="email"
+                value={clientEmail}
+                onChange={(e) => setClientEmail(e.target.value)}
+                placeholder="adresa.client@email.com"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 3: Finanțare & Detalii */}
+        <div>
+          <h3 className="cv-mono" style={{ color: "var(--emerald)", fontSize: "0.8rem", fontWeight: 700, textTransform: "uppercase", marginBottom: "1rem", letterSpacing: "0.06em" }}>
+            03 / NEVOIE FINANCIARĂ & CONTEXT
+          </h3>
+          <div className="fields-stack">
+            <div className="field-group">
+              <label htmlFor="financialNeed">Ce tip de finanțare are nevoie?*</label>
+              <input
+                id="financialNeed"
+                type="text"
+                value={financialNeed}
+                onChange={(e) => setFinancialNeed(e.target.value)}
+                placeholder="ex: Credit ipotecar, Refinanțare urgentă, Linii capital de lucru..."
+                required
+              />
+            </div>
+            <div className="field-group">
+              <label htmlFor="message">Detalii suplimentare (opțional)</label>
+              <textarea
+                id="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Orice alte detalii despre istoric, venituri sau urgență..."
+                rows={3}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* GDPR Consent */}
+        <div style={{ paddingTop: "1rem", borderTop: "1px solid var(--border)" }}>
+          <div className="checkboxes-group">
+            <label className="checkbox-row" htmlFor="consent">
+              <input
+                id="consent"
+                type="checkbox"
+                checked={consent}
+                onChange={(e) => setConsent(e.target.checked)}
+                required
+              />
+              <span className="checkbox-label" style={{ fontSize: "0.9rem" }}>
+                Confirm că am dreptul să transmit datele persoanei recomandate și că aceasta este de acord să fie contactată în scopul consilierii financiare.
+              </span>
+            </label>
+          </div>
+        </div>
+
+        {/* Submit */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "1rem", marginTop: "1rem" }}>
+          <button
+            type="submit"
+            disabled={formState === "submitting"}
+            className="totul-submit-btn"
+            style={{ width: "fit-content", padding: "1rem 2.5rem" }}
+          >
+            {formState === "submitting" ? "Se transmite..." : "TRIMITE RECOMANDAREA →"}
+          </button>
+          <p style={{ fontSize: "0.8rem", color: "var(--text-secondary)", fontFamily: "var(--font-mono)" }}>
+            * CÂMPURI OBLIGATORII. INFORMAȚIILE SUNT ENCRIPTATE ȘI PROTEJATE SECURED.
+          </p>
+        </div>
+
+      </div>
     </form>
   );
 };
