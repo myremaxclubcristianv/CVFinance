@@ -83,6 +83,7 @@ const jsonLd = {
   }
 };
 
+import LiveServicesTicker from "@/components/LiveServicesTicker";
 import Header from "@/components/Header";
 import FloatingConversionCTA from "@/components/FloatingConversionCTA";
 import Footer from "@/components/Footer";
@@ -97,6 +98,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         />
       </head>
       <body className="antialiased">
+        <LiveServicesTicker />
         <Header />
         {children}
         <Footer />
