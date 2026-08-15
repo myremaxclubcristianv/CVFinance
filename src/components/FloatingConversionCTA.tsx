@@ -147,11 +147,11 @@ export default function FloatingConversionCTA({
         <MessageCircle size={26} />
       </button>
 
-      {/* APPLE-STYLE MOBILE FIXED BOTTOM ACTION BAR (<767px) */}
+      {/* EXECUTIVE DARK MOBILE FIXED BOTTOM ACTION BAR (<767px) */}
       <div className="mobile-fixed-bottom-bar" role="navigation" aria-label="Acțiuni rapide mobil">
         <button
           type="button"
-          style={{ background: "#10B981", color: "#FFFFFF", border: "none", borderRadius: "10px", padding: "12px 14px", fontSize: "13.5px", fontWeight: 800, cursor: "pointer", flex: 1 }}
+          style={{ background: "#10B981", color: "#070A0F", border: "none", borderRadius: "10px", padding: "12px 14px", fontSize: "13.5px", fontWeight: 800, cursor: "pointer", flex: 1 }}
           onClick={() => {
             trackEvent("mobile_bottom_cta_click", { action: "verificare_credit" });
             const el = document.getElementById("verificare-credit");
@@ -169,7 +169,7 @@ export default function FloatingConversionCTA({
           href={`https://wa.me/${phone}?text=${encodeURIComponent(whatsappMessage)}`}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: "rgba(37, 211, 102, 0.12)", border: "1px solid rgba(37, 211, 102, 0.40)", color: "#25D366", borderRadius: "10px", padding: "12px 14px", fontSize: "13.5px", fontWeight: 800, textDecoration: "none", flex: 1 }}
+          style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px", background: "rgba(52, 211, 153, 0.12)", border: "1px solid rgba(52, 211, 153, 0.30)", color: "#34D399", borderRadius: "10px", padding: "12px 14px", fontSize: "13.5px", fontWeight: 800, textDecoration: "none", flex: 1 }}
           onClick={() => trackEvent("mobile_bottom_whatsapp_click", { action: "direct_chat" })}
         >
           <MessageCircle size={16} />

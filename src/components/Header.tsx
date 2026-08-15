@@ -119,7 +119,7 @@ export default function Header() {
         <Link href="/#contact-direct">Contact</Link>
       </nav>
       <a className="nav-cta" href="/#verificare-credit" onClick={handleCtaClick}>
-        Solicită analiza gratuită <ArrowRight size={15} />
+        VERIFICĂ SITUAȚIA <ArrowRight size={15} />
       </a>
       <button
         className="menu"
