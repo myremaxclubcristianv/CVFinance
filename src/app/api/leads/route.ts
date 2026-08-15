@@ -110,6 +110,69 @@ const totulLeadSchema = z.object({
   deviceType: z.string().max(50).optional().default("Desktop"),
 });
 
+const businessLeadSchema = z.object({
+  source: z.literal("homepage-business-finance"),
+  leadType: z.string().optional().default("business_finance_prequalification"),
+  selectedPurposes: z.array(z.string()).min(1, "Selectează cel puțin un scop al finanțării."),
+  companyType: z.string().trim().min(1).max(50),
+  companyAge: z.string().trim().min(1).max(50),
+  industry: z.string().trim().min(1).max(100),
+  location: z.string().trim().min(1).max(100),
+  employeeRange: z.string().trim().min(1).max(50),
+  companyName: z.string().trim().max(100).optional().default("Nespecificat"),
+
+  annualRevenue: z.string().trim().min(1).max(100),
+  approximateProfit: z.string().trim().min(1).max(100),
+  existingCredits: z.string().trim().min(1).max(100),
+  monthlyInstallments: z.coerce.number().min(0).max(1_000_000),
+  requestedAmountRange: z.string().trim().min(1).max(100),
+  currency: z.string().trim().min(1).max(10),
+
+  hasActiveCredits: z.string().trim().min(1).max(100),
+  hasDelays: z.string().trim().min(1).max(100),
+  previousRefusal: z.string().trim().min(1).max(100),
+  bureauStatus: z.string().trim().min(1).max(100),
+  urgency: z.string().trim().min(1).max(100),
+  clientMessage: z.string().trim().max(2000).optional().default(""),
+
+  name: z.string().trim().min(2).max(100),
+  phone: z
+    .string()
+    .trim()
+    .transform((val) => val.replace(/\s+/g, ""))
+    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Număr de telefon nevalid")),
+  email: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal(""))
+    .transform((val) => (!val ? undefined : val))
+    .pipe(z.string().email("Adresă de email nevalidă").max(120).optional()),
+
+  gdpr: z.literal(true, {
+    errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
+  }),
+  gdprConsent: z.literal(true, {
+    errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
+  }),
+  marketing: z.literal(true, {
+    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
+  }),
+  marketingConsent: z.literal(true, {
+    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
+  }),
+
+  // Traffic & Device Metadata
+  website: z.string().max(0).optional(), // Honeypot
+  utmSource: z.string().max(100).optional().default("direct"),
+  utmMedium: z.string().max(100).optional().default("—"),
+  utmCampaign: z.string().max(100).optional().default("—"),
+  utmContent: z.string().max(100).optional().default("—"),
+  referral: z.string().max(100).optional().default("—"),
+  pageUrl: z.string().max(2048).optional(),
+  deviceType: z.string().max(50).optional().default("Desktop"),
+});
+
 // Rate limiting (sliding window)
 const attempts = new Map<string, { count: number; resetAt: number }>();
 const RATE_LIMIT = 5;
@@ -180,6 +243,30 @@ function calculateLeadPriority(data: any): "HOT" | "WARM" | "INFORMATIONAL" {
 
   if (isWarm) return "WARM";
 
+  return "INFORMATIONAL";
+}
+
+function calculateBusinessLeadPriority(data: any): "HOT" | "WARM" | "INFORMATIONAL" {
+  const urgency = data.urgency || "";
+  const revenue = data.annualRevenue || "";
+  const requested = data.requestedAmountRange || "";
+  const companyAge = data.companyAge || "";
+
+  const isHighValue =
+    urgency.includes("sub 30 zile") ||
+    urgency.includes("URGENT") ||
+    revenue.includes("1M") ||
+    revenue.includes("5M") ||
+    requested.includes("250.000") ||
+    requested.includes("500.000");
+
+  const isEstablished =
+    companyAge.includes("1–3 ani") ||
+    companyAge.includes("3–5 ani") ||
+    companyAge.includes("Peste 5 ani");
+
+  if (isHighValue && isEstablished) return "HOT";
+  if (isHighValue || isEstablished) return "WARM";
   return "INFORMATIONAL";
 }
 
@@ -301,7 +388,12 @@ export async function POST(request: Request) {
     }
 
     const isTotulCredit = body?.source === "totul-inainte-de-credit" || body?.source === "homepage-totul-inainte-de-credit";
-    const parsed = isTotulCredit ? totulLeadSchema.safeParse(body) : standardLeadSchema.safeParse(body);
+    const isBusiness = body?.source === "homepage-business-finance";
+    const parsed = isBusiness
+      ? businessLeadSchema.safeParse(body)
+      : isTotulCredit
+      ? totulLeadSchema.safeParse(body)
+      : standardLeadSchema.safeParse(body);
     // Log payload for debugging
     console.log("RECEIVED LEAD PAYLOAD", JSON.stringify(body, null, 2));
     const { success, data, error } = parsed;
@@ -345,7 +437,61 @@ export async function POST(request: Request) {
     let telegramText = "";
     let fullLeadData: any = {};
 
-    if (isTotulCredit) {
+    if (isBusiness) {
+      const sanitizedMessage = clean(lead.clientMessage || "");
+      const priority = calculateBusinessLeadPriority(lead);
+      const priorityBadge = priority === "HOT" ? "🔥 HOT" : priority === "WARM" ? "🟡 WARM" : "🔵 INFORMATIONAL";
+      const purposesText = (lead.selectedPurposes || []).map((p: string) => `• ${p}`).join("\n");
+
+      fullLeadData = {
+        ...lead,
+        name: sanitizedName,
+        email: sanitizedEmail,
+        message: sanitizedMessage,
+        purpose: `Business Finance — ${lead.selectedPurposes?.join(", ")}`,
+        desiredAmount: lead.requestedAmountRange,
+        income: lead.annualRevenue,
+        employment: lead.companyAge,
+        ip,
+        userAgent,
+        referrer,
+        timestamp,
+      };
+
+      telegramText =
+        `🏢 <b>LEAD — BUSINESS FINANCE</b>\n\n` +
+        `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
+        `👤 <b>ANTREPRENOR</b>\n` +
+        `Nume: ${sanitizedName}\n` +
+        `Telefon: <code>${lead.phone}</code>\n` +
+        `Email: ${sanitizedEmail || "—"}\n\n` +
+        `🏢 <b>BUSINESS</b>\n` +
+        `Firma: ${clean(lead.companyName || "Nespecificat")}\n` +
+        `Tip: ${lead.companyType} | Vechime: ${lead.companyAge}\n` +
+        `Domeniu: ${clean(lead.industry || "—")} | Localitate: ${clean(lead.location || "—")}\n` +
+        `Angajați: ${lead.employeeRange}\n\n` +
+        `💰 <b>PROFIL FINANCIAR</b>\n` +
+        `Cifră de afaceri: ${lead.annualRevenue}\n` +
+        `Profit: ${lead.approximateProfit}\n` +
+        `Sumă dorită: <b>${lead.requestedAmountRange} (${lead.currency})</b>\n` +
+        `Credite/Rate active: ${lead.existingCredits} (${lead.monthlyInstallments} RON/lună)\n\n` +
+        `🎯 <b>DESTINAȚIE FINANȚARE</b>\n` +
+        `${purposesText || "• Nespecificat"}\n\n` +
+        `⚠️ <b>RISC & CONTEXT</b>\n` +
+        `Biroul de credit: ${lead.bureauStatus}\n` +
+        `Întârzieri: ${lead.hasDelays}\n` +
+        `Refuzuri anterioare: ${lead.previousRefusal}\n` +
+        `Urgență: ${lead.urgency}\n\n` +
+        `📝 <b>MESAJ CLIENT</b>\n` +
+        `${sanitizedMessage || "Nicio mențiune adăugată."}\n\n` +
+        `🌐 <b>TRAFFIC</b>\n` +
+        `Sursă: Homepage Business Finance\n` +
+        `Device: ${lead.deviceType || "Desktop"}\n` +
+        `Referrer: ${referrer}\n` +
+        `UTM: ${lead.utmSource} / ${lead.utmMedium} / ${lead.utmCampaign}\n\n` +
+        `🕐 <b>TIMESTAMP</b>\n` +
+        `${timestamp}`;
+    } else if (isTotulCredit) {
       const sanitizedMessage = clean(lead.clientMessage || "");
       const formattedIncome = new Intl.NumberFormat("ro-RO").format(lead.income);
       const formattedInstallments = new Intl.NumberFormat("ro-RO").format(lead.monthlyInstallments);

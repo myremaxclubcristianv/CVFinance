@@ -34,6 +34,8 @@ import { trackEvent, getTrafficMetadata } from "@/lib/analytics";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Header from "@/components/Header";
 import TotulInainteDeCreditFunnel from "@/components/TotulInainteDeCreditFunnel";
+import BusinessFinanceFunnel from "@/components/BusinessFinanceFunnel";
+import { BUSINESS_PURPOSE_CARDS, INTENT_PILLS, DIAGNOSTIC_MATRIX_ITEMS } from "@/lib/business-constants";
 import { CONTACT } from "@/lib/constants";
 
 const servicesList = [
@@ -145,6 +147,7 @@ export default function Home() {
   const [marketing, setMarketing] = useState(false);
   const [honeypot, setHoneypot] = useState("");
   const [selectedProblemPill, setSelectedProblemPill] = useState<string | null>(null);
+  const [selectedBusinessIntent, setSelectedBusinessIntent] = useState<string | null>(null);
 
   const [footerYear, setFooterYear] = useState(2026);
   useEffect(() => { setFooterYear(new Date().getFullYear()); }, []);
@@ -1100,6 +1103,194 @@ export default function Home() {
                 >
                   <MessageCircle size={18} style={{ color: "#25D366" }} />
                   <span>Prefer să discut direct pe WhatsApp</span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* NATIVE MASTER SECTION: BUSINESS FINANCE INTELLIGENCE CENTER */}
+        <section id="business-finance" className="section totul-homepage-master-section" style={{ borderTop: "1px solid rgba(52, 211, 153, 0.15)" }}>
+          <div className="totul-master-container">
+            {/* Header / Intro */}
+            <div className="totul-master-header">
+              <p className="eyebrow">
+                <span /> 01 / BUSINESS FINANCE
+              </p>
+              <h2>FINANȚARE PENTRU ANTREPRENORI ȘI COMPANII</h2>
+              <p className="totul-banner-lead" style={{ fontSize: "1.25rem", color: "#34D399", fontWeight: 700, margin: "12px 0" }}>
+                Ai o firmă. Ai un proiect. Ai nevoie de capital.
+              </p>
+              <p className="totul-master-lead">
+                Înainte să aplici la întâmplare, analizăm compania, situația financiară, destinația banilor și profilul antreprenorului pentru a identifica variantele de finanțare care merită analizate.
+              </p>
+              <div style={{ marginTop: "24px", display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+                <button
+                  type="button"
+                  className="button totul-primary-btn"
+                  onClick={() => {
+                    trackEvent("business_finance_started", { location: "hero_primary_cta" });
+                    document.getElementById("verificare-finantare-business")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Vreau să verific opțiunile de finanțare →</span>
+                </button>
+                <a
+                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc să discut despre finanțarea companiei mele.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="totul-final-cta-secondary"
+                  onClick={() => trackEvent("business_finance_whatsapp", { location: "hero_secondary_cta" })}
+                >
+                  <MessageCircle size={18} style={{ color: "#25D366" }} />
+                  <span>Prefer să discut direct</span>
+                </a>
+              </div>
+            </div>
+
+            {/* 6 Business Intelligence Cards Grid */}
+            <div className="totul-six-cards-grid">
+              {BUSINESS_PURPOSE_CARDS.map((card) => (
+                <div key={card.id} className="totul-quadrant-card">
+                  <div className="card-top-bar">
+                    <span className="card-label">{card.category}</span>
+                  </div>
+                  <h3>{card.title}</h3>
+                  <p className="card-desc">{card.description}</p>
+                  <div className="card-pills-row">
+                    {card.tags.map((tag, idx) => (
+                      <span key={idx} className="micro-pill">{tag}</span>
+                    ))}
+                  </div>
+                  <button
+                    type="button"
+                    className="card-cta-btn"
+                    onClick={() => {
+                      trackEvent("business_finance_purpose_selected", { card: card.id });
+                      setSelectedBusinessIntent(card.title);
+                      document.getElementById("verificare-finantare-business")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                  >
+                    <span>{card.ctaText}</span>
+                    <ArrowRight size={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
+
+            {/* COMPACT BUSINESS STATEMENT */}
+            <div style={{ textAlign: "center", maxWidth: "780px", margin: "0 auto 40px", padding: "24px", background: "rgba(15, 23, 42, 0.6)", borderRadius: "16px", border: "1px solid rgba(255, 255, 255, 0.08)" }}>
+              <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "#34D399", margin: "0 0 8px" }}>
+                O firmă nu se finanțează doar după cifra de afaceri.
+              </h3>
+              <p style={{ fontSize: "0.95rem", color: "#CBD5E1", margin: 0, lineHeight: 1.6 }}>
+                Contează vechimea companiei, profitabilitatea, cash-flow-ul, creditele existente, destinația finanțării, istoricul antreprenorului și suma necesară.
+              </p>
+            </div>
+
+            {/* DIAGNOSTIC MATRIX AUDIT GRID */}
+            <div className="totul-ce-verific-box" style={{ margin: "48px 0 56px", textAlign: "center" }}>
+              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 800, marginBottom: "12px", color: "#F8FAFC" }}>
+                DIAGNOSTIC MATRIX — PARAMETRI ANALIZAȚI
+              </h3>
+              <p style={{ color: "#CBD5E1", fontSize: "15px", maxWidth: "680px", margin: "0 auto 32px" }}>
+                Nu caut doar suma pe care vrei să o împrumuți. Înțeleg mai întâi structura business-ului.
+              </p>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "16px", maxWidth: "1080px", margin: "0 auto" }}>
+                {DIAGNOSTIC_MATRIX_ITEMS.map((item) => (
+                  <div
+                    key={item.code}
+                    style={{
+                      background: "#151B23",
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      borderRadius: "12px",
+                      padding: "16px 20px",
+                      textAlign: "left",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.08em" }}>
+                      {item.code} {item.title}
+                    </span>
+                    <span style={{ fontSize: "14px", fontWeight: 700, color: "#F8FAFC", marginTop: "6px" }}>
+                      {item.sub}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* BUSINESS TYPE SELECTOR */}
+            <div className="totul-problem-recognition-box">
+              <h4 style={{ color: "#F8FAFC" }}>Ce cauți?</h4>
+              <div className="problem-pills-interactive-grid">
+                {INTENT_PILLS.map((intent, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`problem-pill-btn ${selectedBusinessIntent === intent ? "active" : ""}`}
+                    onClick={() => {
+                      trackEvent("business_finance_purpose_selected", { intent });
+                      setSelectedBusinessIntent(intent);
+                      document.getElementById("verificare-finantare-business")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                  >
+                    <Check size={14} style={{ color: selectedBusinessIntent === intent ? "#34D399" : "#94A3B8" }} />
+                    <span>{intent}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* EMBEDDED BUSINESS FUNNEL CONTAINER */}
+            <div id="verificare-finantare-business" className="totul-homepage-funnel-wrapper">
+              <div className="funnel-intro-box">
+                <h3>Evaluare financiară pentru companie & antreprenor</h3>
+                <p>
+                  Spune-ne ce vrei să construiești, cât capital îți trebuie și cum arată business-ul tău. Analizez informațiile și revin către tine telefonic.
+                </p>
+              </div>
+
+              <BusinessFinanceFunnel
+                source="homepage-business-finance"
+                initialSelectedPurposes={selectedBusinessIntent ? [selectedBusinessIntent] : []}
+              />
+
+              <p className="totul-homepage-legal-note">
+                * Evaluarea identifică opțiunile legale de finanțare disponibile conform criteriilor bancare și nebancare partenere, fără comisioane ascunse sau promisiuni garantate.
+              </p>
+            </div>
+
+            {/* POWERFUL FINAL CLOSING PANEL */}
+            <div className="totul-final-cta-panel">
+              <h3>Capitalul trebuie să servească businessului. Nu invers.</h3>
+              <p>
+                Trimite-mi situația companiei tale. O analizez înainte să faci următoarea cerere de finanțare.
+              </p>
+              <div className="totul-final-cta-actions">
+                <button
+                  type="button"
+                  className="totul-final-cta-primary"
+                  onClick={() => {
+                    trackEvent("business_finance_started", { location: "final_cta_panel" });
+                    document.getElementById("verificare-finantare-business")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Vreau să verific opțiunile →</span>
+                </button>
+
+                <a
+                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc să discut despre finanțarea companiei mele.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="totul-final-cta-secondary"
+                  onClick={() => trackEvent("business_finance_whatsapp", { location: "final_cta_panel" })}
+                >
+                  <MessageCircle size={18} style={{ color: "#25D366" }} />
+                  <span>Prefer să discut direct</span>
                 </a>
               </div>
             </div>
