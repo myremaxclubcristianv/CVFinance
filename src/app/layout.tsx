@@ -84,6 +84,7 @@ const jsonLd = {
 };
 
 import Header from "@/components/Header";
+import FloatingConversionCTA from "@/components/FloatingConversionCTA";
 import Footer from "@/components/Footer";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -97,8 +98,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="antialiased">
         <Header />
-        <main className="cv-site">{children}</main>
+        {children}
         <Footer />
+        <FloatingConversionCTA />
         <CookieConsent />
       </body>
     </html>
