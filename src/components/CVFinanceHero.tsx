@@ -23,9 +23,9 @@ export default function CVFinanceHero() {
         {/* LEFT COLUMN: EDITORIAL STATEMENT & ACTIONS */}
         <div className="cv-hero-left">
           <span className="cv-eyebrow">
-            CREDIT ADVISORY & FINANCIAL OPTIMIZATION
+            CREDIT ADVISORY &amp; FINANCIAL OPTIMIZATION
           </span>
-          
+
           <h1 className="cv-hero-title">
             Nu lua primul credit<br />
             care ți se oferă.<br />
@@ -58,16 +58,20 @@ export default function CVFinanceHero() {
             <div className="cv-readout-rows">
               <div className="cv-readout-row">
                 <span className="cv-readout-label">VENIT NET</span>
-                <span className="cv-readout-value">— — — lei</span>
+                <span className="cv-readout-value">12.500 lei</span>
               </div>
               <div className="cv-readout-row">
                 <span className="cv-readout-label">GRAD DE ÎNDATORARE</span>
-                <span className="cv-readout-value">— — %</span>
+                <span className="cv-readout-value">35 %</span>
               </div>
               <div className="cv-readout-row">
                 <span className="cv-readout-label">FINANȚARE POSIBILĂ</span>
-                <span className="cv-readout-value emerald">— — — lei</span>
+                <span className="cv-readout-value emerald">≈ 300.000 lei</span>
               </div>
+            </div>
+
+            <div className="cv-readout-disclaimer">
+              EXEMPLU ORIENTATIV
             </div>
 
             <div className="cv-readout-footer">
