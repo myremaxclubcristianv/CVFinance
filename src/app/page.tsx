@@ -776,7 +776,7 @@ export default function Home() {
                 <span /> 01 / TOTUL ÎNAINTE DE CREDIT
               </p>
               <h2>Ai fost refuzat pentru un credit?</h2>
-              <p className="totul-banner-lead" style={{ fontSize: "1.25rem", color: "#38BDF8", fontWeight: 700, margin: "12px 0" }}>
+              <p className="totul-banner-lead" style={{ fontSize: "1.25rem", color: "#34D399", fontWeight: 700, margin: "12px 0" }}>
                 Nu aplica la întâmplare la încă un creditor. În primul rând, verifică-ți situația.
               </p>
               <p className="totul-master-lead">
