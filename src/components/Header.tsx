@@ -147,11 +147,9 @@ export default function Header() {
       <div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "58px", paddingLeft: "20px", paddingRight: "20px", alignItems: "center", justifyContent: "space-between" }}>
         {/* LEFT: BRANDING */}
         <Link href="/" className="cv-brand" onClick={() => setMobileMenuOpen(false)}>
-          <span className="cv-brand-title" style={{ fontSize: "1.15rem", fontWeight: 800 }}>CV Finance</span>
-          <span className="cv-brand-subtitle" style={{ fontSize: "0.62rem", fontWeight: 500, letterSpacing: "0.08em", color: "var(--text-secondary)", textTransform: "uppercase", marginTop: "1px" }}>CREDIT ADVISORY</span>
+          <span className="cv-brand-title" style={{ fontSize: "1.15rem", fontWeight: 800 }}>CV</span>
         </Link>
-
-        {/* RIGHT: COMPACT MENU TRIGGER */}
+        {/* RIGHT: MENU TRIGGER */}
         <button
           type="button"
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -165,11 +163,15 @@ export default function Header() {
             padding: "0.5rem",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "center",
+            fontSize: "0.85rem",
+            fontWeight: 600,
+            textTransform: "uppercase"
           }}
           aria-label={mobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
         >
-          {mobileMenuOpen ? <X size={20} strokeWidth={2} /> : <Menu size={20} strokeWidth={2} />}
+          {mobileMenuOpen ? <X size={16} strokeWidth={2} /> : <Menu size={16} strokeWidth={2} />}
+          <span style={{ marginLeft: "4px" }}>{mobileMenuOpen ? "ÎNCHIDE" : "MENU"}</span>
         </button>
       </div>
 
