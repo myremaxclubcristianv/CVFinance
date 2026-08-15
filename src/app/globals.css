@@ -4165,13 +4165,44 @@ footer {
 }
 
 /* ACCESSIBILITY: PREFERS-REDUCED-MOTION COMPLIANCE */
-@media (prefers-reduced-motion: reduce) {
-  *, ::before, ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+/* TARGETED MOBILE UX & CONTRAST CORRECTIONS (<767px) */
+@media (max-width: 767px) {
+  /* 1. HIDE MOBILE HEADER CTA */
+  header.nav .nav-cta,
+  .nav .nav-cta {
+    display: none !important;
+  }
+
+  /* 2. STICKY MOBILE HEADER ALWAYS VISIBLE */
+  header.nav,
+  .nav {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1000 !important;
+    background: #FFFFFF !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+  }
+
+  /* 3. REMOVE EXCESSIVE GAP AFTER TICKER / ROLL BAR */
+  .cv-hero-section {
+    padding-top: 24px !important;
+  }
+
+  /* 4-8. HIGH-CONTRAST CONTENT COPY FOR MOBILE BLOCKS */
+  .card h3,
+  .card-title,
+  .info-title {
+    color: #0F172A !important;
+    font-weight: 700 !important;
+  }
+
+  .card p,
+  .card-desc,
+  .info-desc {
+    color: #334155 !important;
+    line-height: 1.6 !important;
   }
 }
+
 
 
