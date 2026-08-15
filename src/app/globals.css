@@ -109,19 +109,50 @@ html, body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.015);
 }
 
+.desktop-navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 72px;
+  width: 100%;
+}
+
 .cv-header-inner {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  width: 100%;
 }
 
-.cv-header-inner-mobile {
-  display: flex;
+.cv-header-inner-mobile,
+.cv-mobile-bar {
+  display: none;
   align-items: center;
   justify-content: space-between;
-  height: 58px;
+  height: 60px;
   width: 100%;
+}
+
+@media (max-width: 767px) {
+  .desktop-navigation {
+    display: none !important;
+  }
+  .cv-header-inner-mobile,
+  .cv-mobile-bar {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .desktop-navigation {
+    display: flex !important;
+  }
+  .cv-header-inner-mobile,
+  .cv-mobile-bar,
+  .cv-mobile-overlay {
+    display: none !important;
+  }
 }
 
 .cv-brand {

@@ -6,12 +6,12 @@ import { useRouter, usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 
 const MOBILE_MENU_ITEMS = [
-  { code: "01", title: "PERSONAL", desc: "Credite, refinanțare, locuință", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
-  { code: "02", title: "BUSINESS", desc: "Finanțare pentru companie", href: "/#business-finance", id: "business-finance" },
-  { code: "03", title: "SERVICII", desc: "Analiză și consultanță", href: "/#servicii", id: "servicii" },
-  { code: "04", title: "CUM FUNCȚIONEAZĂ", desc: "De la situație la soluție", href: "/#cum-functioneaza", id: "cum-functioneaza" },
-  { code: "05", title: "DESPRE MINE", desc: "Cristian Văduva", href: "/#despre", id: "despre" },
-  { code: "06", title: "CONTACT", desc: "Vorbim direct", href: "/#contact", id: "contact" },
+  { code: "01", title: "PERSONAL", desc: "Credite, refinanțare și soluții pentru persoane", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
+  { code: "02", title: "BUSINESS", desc: "Finanțare pentru companie și capital", href: "/#business-finance", id: "business-finance" },
+  { code: "03", title: "SERVICII", desc: "Soluții de creditare și optimizare", href: "/#servicii", id: "servicii" },
+  { code: "04", title: "CUM FUNCȚIONEAZĂ", desc: "Procesul de analiză și consultanță", href: "/#cum-functioneaza", id: "cum-functioneaza" },
+  { code: "05", title: "DESPRE MINE", desc: "Experiență și abordare", href: "/#despre", id: "despre" },
+  { code: "06", title: "CONTACT", desc: "Ia legătura direct", href: "/#contact", id: "contact" },
 ];
 
 export default function Header() {
@@ -60,6 +60,7 @@ export default function Header() {
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (e.key === "Escape" && mobileMenuOpen) {
       setMobileMenuOpen(false);
+      document.body.style.overflow = "";
     }
   }, [mobileMenuOpen]);
 
@@ -71,6 +72,7 @@ export default function Header() {
   const handleCtaClick = (e: React.MouseEvent) => {
     e.preventDefault();
     setMobileMenuOpen(false);
+    document.body.style.overflow = "";
     trackEvent("cta_analysis_clicked", { source: "header_nav_cta" });
 
     const scrollToForm = () => {
@@ -81,7 +83,7 @@ export default function Header() {
     };
 
     if (pathname === "/") {
-      scrollToForm();
+      setTimeout(scrollToForm, 100);
     } else {
       router.push("/#verificare-credit");
       setTimeout(scrollToForm, 300);
@@ -90,11 +92,12 @@ export default function Header() {
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id: string) => {
     setMobileMenuOpen(false);
+    document.body.style.overflow = "";
     if (pathname === "/") {
       const targetEl = document.getElementById(id);
       if (targetEl) {
         e.preventDefault();
-        setTimeout(() => targetEl.scrollIntoView({ behavior: "smooth" }), 60);
+        setTimeout(() => targetEl.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
       }
     }
   };
@@ -102,6 +105,27 @@ export default function Header() {
   return (
     <>
       <style>{`
+        /* ── Responsive visibility isolation ── */
+        @media (max-width: 767px) {
+          .desktop-navigation {
+            display: none !important;
+          }
+          .cv-mobile-bar,
+          .cv-header-inner-mobile {
+            display: flex !important;
+          }
+        }
+        @media (min-width: 768px) {
+          .desktop-navigation {
+            display: flex !important;
+          }
+          .cv-mobile-bar,
+          .cv-header-inner-mobile,
+          .cv-mobile-overlay {
+            display: none !important;
+          }
+        }
+
         /* ── Mobile header bar ── */
         .cv-mobile-bar {
           display: none;
@@ -113,11 +137,10 @@ export default function Header() {
           background: var(--bg-primary, #FAFAF8);
           position: relative;
           box-sizing: border-box;
+          width: 100%;
         }
-        @media (max-width: 767px) {
-          .cv-mobile-bar { display: flex; }
-        }
-        /* Clamp gutters at 320px so nothing overflows */
+
+        /* Clamp gutters at 320px */
         @media (max-width: 340px) {
           .cv-mobile-bar { padding-left: 16px; padding-right: 16px; }
           .cv-overlay-header { padding-left: 16px; padding-right: 16px; }
@@ -141,10 +164,8 @@ export default function Header() {
           color: #111111;
           line-height: 1;
           position: relative;
-          /* prevent text from being selectable / highlighted on tap */
           user-select: none;
         }
-        /* Subtle emerald dot — accent, not decoration */
         .cv-mobile-brand-mark::after {
           content: '';
           display: inline-block;
@@ -168,7 +189,6 @@ export default function Header() {
           background: none;
           border: none;
           cursor: pointer;
-          /* Invisible padding for 44×44 touch target */
           padding: 12px 0 12px 16px;
           margin-right: -4px;
           min-width: 44px;
@@ -187,11 +207,9 @@ export default function Header() {
             transform 200ms ease-out,
             opacity   160ms ease-out;
         }
-        /* Closed: longer top, shorter bottom — intentional asymmetry */
         .cv-menu-trigger-line:first-child { width: 22px; }
         .cv-menu-trigger-line:last-child  { width: 14px; }
 
-        /* Open: precise X — both lines equal, cross at midpoint */
         .cv-menu-trigger[aria-expanded="true"] .cv-menu-trigger-line {
           width: 18px;
         }
@@ -214,7 +232,9 @@ export default function Header() {
         .cv-mobile-overlay {
           position: fixed;
           inset: 0;
-          z-index: 9999;
+          z-index: 99999;
+          width: 100vw;
+          height: 100dvh;
           background: var(--bg-primary, #FAFAF8);
           display: flex;
           flex-direction: column;
@@ -232,7 +252,7 @@ export default function Header() {
           pointer-events: all;
         }
 
-        /* Overlay top row — mirrors bar exactly */
+        /* Overlay top row */
         .cv-overlay-header {
           display: flex;
           align-items: center;
@@ -251,7 +271,6 @@ export default function Header() {
           display: flex;
           flex-direction: column;
           padding: 0 20px;
-          /* no top padding — first item has border-top + margin */
         }
         .cv-overlay-item {
           display: flex;
@@ -270,7 +289,7 @@ export default function Header() {
           margin-top: 10px;
         }
 
-        /* Mono index — small, recessed */
+        /* Mono index */
         .cv-overlay-index {
           font-family: 'JetBrains Mono', 'Courier New', monospace;
           font-size: 9.5px;
@@ -287,7 +306,6 @@ export default function Header() {
           gap: 3px;
           min-width: 0;
         }
-        /* Primary: title is the dominant element */
         .cv-overlay-title {
           font-family: var(--font-sans, 'Inter', sans-serif);
           font-size: 15px;
@@ -299,7 +317,6 @@ export default function Header() {
           overflow: hidden;
           text-overflow: ellipsis;
         }
-        /* Secondary: description is clearly subordinate */
         .cv-overlay-desc {
           font-family: var(--font-sans, 'Inter', sans-serif);
           font-size: 11.5px;
@@ -346,8 +363,8 @@ export default function Header() {
       `}</style>
 
       <header className={`cv-header ${isScrolled ? "scrolled" : ""}`}>
-        {/* ── DESKTOP NAVIGATION — unchanged ── */}
-        <div className="desktop-navigation hidden md:flex cv-header-inner" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
+        {/* ── DESKTOP NAVIGATION — visible >=768px only ── */}
+        <div className="desktop-navigation cv-header-inner" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
           <Link href="/" className="cv-brand">
             <span className="cv-brand-title">CV Finance</span>
             <span className="cv-brand-subtitle">CREDIT ADVISORY &amp; FINANCIAL OPTIMIZATION</span>
@@ -365,8 +382,8 @@ export default function Header() {
           </div>
         </div>
 
-        {/* ── MOBILE NAVIGATION BAR ── */}
-        <div className="cv-mobile-bar">
+        {/* ── MOBILE NAVIGATION BAR — visible <768px only ── */}
+        <div className="cv-mobile-bar cv-header-inner-mobile">
           <Link
             href="/"
             className="cv-mobile-brand"
@@ -392,7 +409,7 @@ export default function Header() {
           <div className="cv-mobile-bar-border" />
         </div>
 
-        {/* Scroll progress bar — inside header, bottom edge */}
+        {/* Scroll progress bar */}
         <div
           style={{
             position: "absolute",
@@ -408,16 +425,16 @@ export default function Header() {
         />
       </header>
 
-      {/* ── MOBILE FULL-SCREEN OVERLAY (outside <header>) ── */}
+      {/* ── MOBILE FULL-SCREEN OVERLAY ── */}
       {menuMounted && (
         <div
           id="mobile-nav-panel"
           role="dialog"
           aria-modal="true"
           aria-label="Navigație"
-          className={`cv-mobile-overlay md:hidden ${mobileMenuOpen ? "is-open" : ""}`}
+          className={`cv-mobile-overlay ${mobileMenuOpen ? "is-open" : ""}`}
         >
-          {/* Overlay top row — mirrors bar */}
+          {/* Overlay top row */}
           <div className="cv-overlay-header">
             <Link
               href="/"
