@@ -9,10 +9,10 @@ export default function MobileQuickNav() {
   const [activeSection, setActiveSection] = useState("");
 
   const navItems = [
-    { label: "Personal", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
-    { label: "Business", href: "/#business-finance", id: "business-finance" },
-    { label: "Servicii", href: "/#servicii", id: "servicii" },
-    { label: "Cum lucrăm", href: "/#cum-functioneaza", id: "cum-functioneaza" },
+    { label: "PERSONAL", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
+    { label: "BUSINESS", href: "/#business-finance", id: "business-finance" },
+    { label: "SERVICII", href: "/#servicii", id: "servicii" },
+    { label: "PROCES", href: "/#cum-functioneaza", id: "cum-functioneaza" },
   ];
 
   useEffect(() => {
@@ -48,7 +48,7 @@ export default function MobileQuickNav() {
   };
 
   return (
-    <div className="cv-mobile-quick-nav md:hidden">
+    <div className="cv-mobile-quick-nav md:hidden" aria-label="Navigare rapidă pe mobil">
       <div className="cv-mobile-quick-nav-inner">
         {navItems.map((item) => {
           const isActive = activeSection === item.id;
