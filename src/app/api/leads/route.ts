@@ -152,15 +152,11 @@ const businessLeadSchema = z.object({
   gdpr: z.literal(true, {
     errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
   }),
-  gdprConsent: z.literal(true, {
-    errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
-  }),
+  gdprConsent: z.boolean().optional().default(true),
   marketing: z.literal(true, {
     errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
   }),
-  marketingConsent: z.literal(true, {
-    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
-  }),
+  marketingConsent: z.boolean().optional().default(true),
 
   // Traffic & Device Metadata
   website: z.string().max(0).optional(), // Honeypot
