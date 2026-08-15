@@ -3,17 +3,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
-const MENU_ITEMS = [
-  { code: "01", title: "PERSONAL", desc: "Credit personal & verificare", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
-  { code: "02", title: "BUSINESS", desc: "Finanțare pentru companie", href: "/#business-finance", id: "business-finance" },
-  { code: "03", title: "SERVICII", desc: "Consultanță & optimizare", href: "/#servicii", id: "servicii" },
-  { code: "04", title: "TIPURI DE CREDITE", desc: "Soluții de finanțare", href: "/#tipuri-credite", id: "tipuri-credite" },
-  { code: "05", title: "CUM FUNCȚIONEAZĂ", desc: "De la situație la soluție", href: "/#cum-functioneaza", id: "cum-functioneaza" },
-  { code: "06", title: "DESPRE MINE", desc: "Cristian Văduva", href: "/#despre", id: "despre" },
-  { code: "07", title: "CONTACT", desc: "Vorbim direct", href: "/#contact", id: "contact" },
+const MOBILE_MENU_ITEMS = [
+  { code: "01", title: "PERSONAL", desc: "Credit & finanțare personală", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
+  { code: "02", title: "BUSINESS", desc: "Finanțarea companiei", href: "/#business-finance", id: "business-finance" },
+  { code: "03", title: "SERVICII", desc: "Ce pot face pentru tine", href: "/#servicii", id: "servicii" },
+  { code: "04", title: "CUM FUNCȚIONEAZĂ", desc: "Procesul de lucru", href: "/#cum-functioneaza", id: "cum-functioneaza" },
+  { code: "05", title: "DESPRE MINE", desc: "Cristian Văduva", href: "/#despre", id: "despre" },
+  { code: "06", title: "CONTACT", desc: "Vorbește direct cu mine", href: "/#contact", id: "contact" },
 ];
 
 export default function Header() {
@@ -127,17 +125,10 @@ export default function Header() {
           >
             Despre mine
           </Link>
-          <Link
-            href="/#contact"
-            className="cv-nav-link"
-            onClick={(e) => handleNavClick(e, "/#contact", "contact")}
-          >
-            Contact
-          </Link>
         </nav>
 
         {/* PRIMARY ACTION CTA */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center">
           <a href="#verificare-credit" className="cv-btn-primary" onClick={handleCtaClick}>
             VERIFICĂ SITUAȚIA →
           </a>
@@ -145,11 +136,11 @@ export default function Header() {
       </div>
 
       {/* MOBILE HEADER INNER */}
-      <div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "56px", alignItems: "center", justifyContent: "space-between" }}>
+      <div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "58px", paddingLeft: "18px", paddingRight: "18px", alignItems: "center", justifyContent: "space-between" }}>
         {/* LEFT: BRANDING */}
         <Link href="/" className="cv-brand" onClick={() => setMobileMenuOpen(false)}>
           <span className="cv-brand-title" style={{ fontSize: "1.15rem", fontWeight: 800 }}>CV Finance</span>
-          <span className="cv-brand-subtitle" style={{ fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.08em", color: "var(--emerald)", textTransform: "uppercase" }}>CREDIT ADVISORY</span>
+          <span className="cv-brand-subtitle" style={{ fontSize: "0.62rem", fontWeight: 500, letterSpacing: "0.08em", color: "var(--text-secondary)", textTransform: "uppercase", marginTop: "1px" }}>CREDIT ADVISORY</span>
         </Link>
 
         {/* RIGHT: COMPACT MENU TRIGGER */}
@@ -160,20 +151,18 @@ export default function Header() {
           aria-controls="mobile-nav-panel"
           style={{
             fontFamily: "var(--font-mono)",
-            fontSize: "0.75rem",
-            fontWeight: 700,
-            letterSpacing: "0.06em",
+            fontSize: "10.5px",
+            fontWeight: 600,
+            letterSpacing: "0.12em",
             textTransform: "uppercase",
-            color: "var(--text-primary)",
+            color: "#111111",
             background: "none",
             border: "none",
             cursor: "pointer",
-            padding: "0.5rem 0",
-            display: "flex",
-            alignItems: "center"
+            padding: "0.5rem 0"
           }}
         >
-          {mobileMenuOpen ? "CLOSE ×" : "MENU ───"}
+          {mobileMenuOpen ? "CLOSE  ×" : "MENU  +"}
         </button>
       </div>
 
@@ -181,54 +170,47 @@ export default function Header() {
       {mobileMenuOpen && (
         <div 
           id="mobile-nav-panel"
-          className="md:hidden fixed inset-x-0 bottom-0 bg-white z-[999] px-5 py-6 flex flex-col justify-between" 
+          className="md:hidden fixed inset-x-0 bottom-0 bg-white z-[999] px-6 py-6 flex flex-col justify-between" 
           style={{ 
-            top: "calc(56px + env(safe-area-inset-top, 0px))", 
-            height: "calc(100vh - (56px + env(safe-area-inset-top, 0px)))", 
+            top: "calc(58px + env(safe-area-inset-top, 0px))", 
+            height: "calc(100vh - (58px + env(safe-area-inset-top, 0px)))", 
             overflowY: "auto",
-            borderTop: "1px solid var(--border)"
+            borderTop: "1px solid rgba(17, 17, 17, 0.08)"
           }}
         >
-          <div className="flex flex-col gap-6">
-            <span className="cv-mono" style={{ color: "var(--text-secondary)", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}>
-              CV ADVISORY / NAVIGARE
-            </span>
-            <nav className="flex flex-col">
-              {MENU_ITEMS.map((item) => (
+          <div className="flex flex-col gap-6" style={{ marginTop: "1rem" }}>
+            <nav className="flex flex-col" style={{ borderTop: "1px solid rgba(17, 17, 17, 0.08)" }}>
+              {MOBILE_MENU_ITEMS.map((item) => (
                 <Link
                   key={item.id}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href, item.id)}
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "36px 1fr",
-                    alignItems: "center",
-                    padding: "1rem 0",
-                    borderBottom: "1px solid #E4E8E6",
+                    display: "block",
+                    padding: "1.5rem 0",
+                    borderBottom: "1px solid rgba(17, 17, 17, 0.08)",
                     textDecoration: "none",
-                    color: "var(--text-primary)"
+                    color: "#111111"
                   }}
                 >
-                  <span className="cv-mono" style={{ fontSize: "0.72rem", color: "var(--text-secondary)", fontWeight: 600 }}>
+                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--text-secondary)", fontWeight: 500, display: "block", marginBottom: "0.35rem" }}>
                     {item.code}
                   </span>
-                  <div style={{ display: "flex", flexDirection: "column", gap: "0.15rem" }}>
-                    <span style={{ fontSize: "0.95rem", fontWeight: 800, letterSpacing: "-0.01em" }}>
-                      {item.title}
-                    </span>
-                    <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)" }}>
-                      {item.desc}
-                    </span>
-                  </div>
+                  <span style={{ fontFamily: "var(--font-sans)", fontSize: "clamp(26px, 8vw, 36px)", fontWeight: 500, letterSpacing: "-0.03em", display: "block", lineHeight: "1.1" }}>
+                    {item.title}
+                  </span>
+                  <span style={{ fontSize: "12.5px", color: "var(--text-secondary)", display: "block", marginTop: "0.25rem" }}>
+                    {item.desc}
+                  </span>
                 </Link>
               ))}
             </nav>
           </div>
 
-          <div style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))", marginTop: "2rem" }}>
+          <div style={{ paddingBottom: "calc(2rem + env(safe-area-inset-bottom, 0px))", marginTop: "3rem" }}>
             <a
               href="#verificare-credit"
-              className="cv-btn-primary w-full text-center py-4"
+              className="cv-btn-primary w-full text-center"
               style={{
                 display: "block",
                 height: "52px",
@@ -251,7 +233,7 @@ export default function Header() {
         </div>
       )}
 
-      {/* Scroll indicator rollbar */}
+      {/* Scroll indicator progress bar */}
       <div 
         className="cv-scroll-rollbar"
         style={{
