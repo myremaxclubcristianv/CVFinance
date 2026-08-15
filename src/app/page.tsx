@@ -22,6 +22,12 @@ import FinancialIntelligence from "@/components/FinancialIntelligence";
 import TotulInainteDeCreditFunnel from "@/components/TotulInainteDeCreditFunnel";
 import BusinessFinanceFunnel from "@/components/BusinessFinanceFunnel";
 import { CONTACT } from "@/lib/constants";
+import DiagnosticSection from "@/components/DiagnosticSection";
+import PersonalSection from "@/components/PersonalSection";
+import ServicesDirectory from "@/components/ServicesDirectory";
+import LoanTypesDirectory from "@/components/LoanTypesDirectory";
+import Manifesto from "@/components/Manifesto";
+import EducationalGuide from "@/components/EducationalGuide";
 
 const servicesList = [
   {
@@ -389,16 +395,7 @@ export default function Home() {
         <CVFinanceHero />
 
         {/* 09 — CORE PROMISE */}
-        <section className="cv-promise-section">
-          <div className="cv-container">
-            <h2 className="cv-promise-headline">
-              <span className="cv-promise-line-muted">TU ÎMI SPUI SITUAȚIA.</span><br />
-              <span className="cv-promise-line-dark">EU MĂ UIT LA CIFRE.</span><br />
-              <span className="cv-promise-line-emerald">ÎȚI SPUN CE SE POATE FACE.</span><br />
-              <span className="cv-promise-line-bold">APOI VORBESC CU BANCA.</span>
-            </h2>
-          </div>
-        </section>
+        <Manifesto />
 
         {/* 10 — 01 / DE UNDE ÎNCEPEM */}
         <CommandSheet />
@@ -435,6 +432,7 @@ export default function Home() {
               </div>
             </div>
           </div>
+          <PersonalSection />
         </section>
 
         {/* 12 — 03 / PERSONAL FINANCE CHAPTER */}
@@ -442,87 +440,13 @@ export default function Home() {
           <div className="cv-container">
             <span className="cv-section-marker">03 / PERSONAL FINANCE</span>
             
-            {/* MODULE A — INTRO */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start" style={{ marginBottom: "5rem" }}>
-              <div className="lg:col-span-5">
-                <h2 className="cv-section-title" style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", marginBottom: "1.25rem" }}>
-                  HAI SĂ VEDEM<br />
-                  CE POȚI OBȚINE.
-                </h2>
-                <p className="cv-section-sub">
-                  Fiecare profil financiar este diferit. Analizăm în detaliu posibilitățile reale de finanțare înainte de a înainta vreun dosar.
-                </p>
-              </div>
-
-              <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div style={{ borderTop: "2px solid var(--border)", paddingTop: "1.25rem" }}>
-                  <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem" }}>01</span>
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.5rem 0 0.25rem" }}>Îți analizez situația</h3>
-                  <p style={{ fontSize: "0.9rem", color: "#5F6368", lineHeight: "1.45" }}>Verificăm posibilitățile de încadrare și gradul de îndatorare.</p>
-                </div>
-                <div style={{ borderTop: "2px solid var(--border)", paddingTop: "1.25rem" }}>
-                  <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem" }}>02</span>
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.5rem 0 0.25rem" }}>Îți arăt opțiunile</h3>
-                  <p style={{ fontSize: "0.9rem", color: "#5F6368", lineHeight: "1.45" }}>Comparăm produsele bancare disponibile și structura ratelor.</p>
-                </div>
-                <div style={{ borderTop: "2px solid var(--border)", paddingTop: "1.25rem" }}>
-                  <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem" }}>03</span>
-                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.5rem 0 0.25rem" }}>Discut cu banca</h3>
-                  <p style={{ fontSize: "0.9rem", color: "#5F6368", lineHeight: "1.45" }}>Preluăm comunicarea și susținerea dosarului în fața creditorului.</p>
-                </div>
-              </div>
-            </div>
+          <PersonalSection />
 
             {/* MODULE B — DIAGNOSTIC */}
-            <div style={{ marginBottom: "5rem" }}>
-              <h3 className="cv-section-title" style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>
-                CE VERIFIC ÎNAINTE SĂ TE SUN?
-              </h3>
-              <div className="cv-diag-table">
-                {diagnosticRows.map((row) => (
-                  <div key={row.code} className="cv-diag-row">
-                    <span className="cv-diag-code">{row.code}</span>
-                    <span className="cv-diag-name">{row.name}</span>
-                    <span className="cv-diag-desc">{row.desc}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            <DiagnosticSection diagnosticRows={diagnosticRows} />
 
             {/* MODULE C — EDUCATIONAL GUIDE */}
-            <div style={{ marginBottom: "5rem" }}>
-              <h3 className="cv-section-title" style={{ fontSize: "1.5rem", marginBottom: "1.5rem" }}>
-                ÎNAINTE SĂ APLICI, TREBUIE SĂ ȘTII
-              </h3>
-              <div className="cv-accordion-list">
-                {personalEduQuestions.map((item, idx) => {
-                  const isOpen = openEduIndex === idx;
-                  const numStr = String(idx + 1).padStart(2, "0");
-                  return (
-                    <div key={idx} className="cv-accordion-item">
-                      <button
-                        className="cv-accordion-trigger"
-                        onClick={() => setOpenEduIndex(isOpen ? null : idx)}
-                        style={{ display: "flex", width: "100%", alignItems: "center", justifyContent: "space-between" }}
-                      >
-                        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-                          <span className="cv-mono" style={{ fontSize: "0.85rem", color: "#087F5B", fontWeight: 700 }}>{numStr}</span>
-                          <span style={{ fontWeight: 600 }}>{item.q}</span>
-                        </div>
-                        <span className="cv-mono" style={{ fontSize: "1.25rem", fontWeight: 500, color: "#5F6368" }}>
-                          {isOpen ? "−" : "+"}
-                        </span>
-                      </button>
-                      {isOpen && (
-                        <div className="cv-accordion-content" style={{ paddingLeft: "3.25rem" }}>
-                          {item.a}
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+            <EducationalGuide personalEduQuestions={personalEduQuestions} openEduIndex={openEduIndex} setOpenEduIndex={setOpenEduIndex} />
 
             {/* MODULE D — PERSONAL FUNNEL INTEGRATION */}
             <TotulInainteDeCreditFunnel />
@@ -612,143 +536,9 @@ export default function Home() {
         <section className="cv-section" id="tipuri-credite">
           <div className="cv-container">
             <span className="cv-section-marker">06 / TIPURI DE CREDITE</span>
-            <div className="cv-section-header">
-              <h2 className="cv-section-title">SOLUȚII ADAPTATE SITUAȚIEI TALE</h2>
-              <p className="cv-section-sub">Structurăm soluția potrivită în funcție de destinația fondurilor.</p>
-            </div>
-
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2rem" }}>
-              {loanTypesList.map((item) => (
-                <div key={item.code} style={{ borderTop: "2px solid #E4E8E6", paddingTop: "1.25rem" }}>
-                  <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem" }}>{item.code}</span>
-                  <h3 style={{ fontSize: "1.15rem", fontWeight: 700, margin: "0.5rem 0" }}>{item.title}</h3>
-                  <p style={{ fontSize: "0.92rem", color: "#5F6368" }}>{item.desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* 16 — 07 / CALCULATOR FINANCIAL INSTRUMENT */}
-        <section className="cv-section" id="calculator">
-          <div className="cv-container">
-            <span className="cv-section-marker">07 / CALCULATOR</span>
-            <div className="cv-section-header">
-              <h2 className="cv-section-title">ESTIMEAZĂ ECONOMIA SAU FINANȚAREA POSIBILĂ</h2>
-              <p className="cv-section-sub">Află cât poți economisi lunar sau ce sumă suplimentară poți obține prin optimizare.</p>
-            </div>
-
-            <div className="cv-calc-grid">
-              <div className="cv-calc-inputs">
-                <div className="cv-calc-field">
-                  <div className="cv-calc-label">
-                    <span>Sold credit / Sumă dorită</span>
-                    <span className="cv-calc-val-badge">{calcAmount.toLocaleString("ro-RO")} RON</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="10000"
-                    max="500000"
-                    step="5000"
-                    value={calcAmount}
-                    onChange={(e) => setCalcAmount(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
-                </div>
-
-                <div className="cv-calc-field">
-                  <div className="cv-calc-label">
-                    <span>Rată actuală lunară</span>
-                    <span className="cv-calc-val-badge">{calcPayment.toLocaleString("ro-RO")} RON</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="500"
-                    max="10000"
-                    step="100"
-                    value={calcPayment}
-                    onChange={(e) => setCalcPayment(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
-                </div>
-
-                <div className="cv-calc-field">
-                  <div className="cv-calc-label">
-                    <span>Venit lunar net</span>
-                    <span className="cv-calc-val-badge">{calcIncome.toLocaleString("ro-RO")} RON</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="2500"
-                    max="30000"
-                    step="500"
-                    value={calcIncome}
-                    onChange={(e) => setCalcIncome(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
-                </div>
-
-                <div className="cv-calc-field">
-                  <div className="cv-calc-label">
-                    <span>Dobândă actuală estimată</span>
-                    <span className="cv-calc-val-badge">{calcRate}%</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="6"
-                    max="25"
-                    step="0.5"
-                    value={calcRate}
-                    onChange={(e) => setCalcRate(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
-                </div>
+                
               </div>
 
-              {/* DOMINANT CALCULATOR TERMINAL OUTPUT */}
-              <div className="cv-calc-terminal">
-                <div>
-                  <div className="cv-calc-output-main">
-                    <div className="cv-calc-output-label">RATĂ ESTIMATĂ NOUĂ</div>
-                    <div className="cv-calc-output-big">{estimatedNewPayment.toLocaleString("ro-RO")} lei</div>
-                    <div className="cv-mono" style={{ fontSize: "0.82rem", color: "#087F5B", fontWeight: 700, marginTop: "0.5rem", letterSpacing: "0.02em" }}>
-                      6,10% DOBÂNDĂ ESTIMATĂ
-                    </div>
-                  </div>
-
-                  <div className="cv-calc-stat-group">
-                    <div className="cv-calc-stat-row">
-                      <span style={{ color: "#5F6368" }}>SOLD CREDIT / SUMĂ</span>
-                      <span>{calcAmount.toLocaleString("ro-RO")} lei</span>
-                    </div>
-                    <div className="cv-calc-stat-row">
-                      <span style={{ color: "#5F6368" }}>ECONOMISIRE LUNARĂ</span>
-                      <span className="cv-calc-stat-val">−{monthlySaving.toLocaleString("ro-RO")} lei / lună</span>
-                    </div>
-                    <div className="cv-calc-stat-row">
-                      <span style={{ color: "#5F6368" }}>ECONOMISIRE ANUALĂ</span>
-                      <span className="cv-calc-stat-val">−{annualSaving.toLocaleString("ro-RO")} lei / an</span>
-                    </div>
-                    <div className="cv-calc-stat-row">
-                      <span style={{ color: "#5F6368" }}>FINANȚARE SUPLIMENTARĂ</span>
-                      <span className="cv-calc-stat-val">până la {extraCashPossibility.toLocaleString("ro-RO")} lei</span>
-                    </div>
-                  </div>
-                </div>
-
-                <a
-                  href="#verificare-credit"
-                  className="cv-btn-primary w-full text-center mt-4"
-                  onClick={() => {
-                    trackEvent("calculator_complete", { amount: calcAmount, payment: calcPayment });
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  APLICĂ CU ACESTE CIFRE →
-                </a>
-              </div>
-            </div>
-          </div>
         </section>
 
         {/* 17 — 08 / REZULTATE */}
