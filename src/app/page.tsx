@@ -35,6 +35,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Header from "@/components/Header";
 import TotulInainteDeCreditFunnel from "@/components/TotulInainteDeCreditFunnel";
 import BusinessFinanceFunnel from "@/components/BusinessFinanceFunnel";
+import { PROBLEM_CARDS } from "@/lib/totul-constants";
 import { BUSINESS_PURPOSE_CARDS, INTENT_PILLS, DIAGNOSTIC_MATRIX_ITEMS } from "@/lib/business-constants";
 import { CONTACT } from "@/lib/constants";
 
@@ -773,300 +774,162 @@ export default function Home() {
         {/* NATIVE HIGH-CONVERSION MASTER SECTION: TOTUL ÎNAINTE DE CREDIT */}
         <section id="totul-inainte-de-credit" className="section totul-homepage-master-section">
           <div className="totul-master-container">
-            {/* Header / Positioning */}
+            {/* 01 — HERO / POSITIONING */}
             <div className="totul-master-header">
               <p className="eyebrow">
                 <span /> 01 / TOTUL ÎNAINTE DE CREDIT
               </p>
-              <h2>Ai fost refuzat pentru un credit?</h2>
+              <h2>AI FOST REFUZAT PENTRU UN CREDIT?</h2>
               <p className="totul-banner-lead" style={{ fontSize: "1.25rem", color: "#34D399", fontWeight: 700, margin: "12px 0" }}>
-                Nu aplica la întâmplare la încă un creditor. În primul rând, verifică-ți situația.
+                Înainte să aplici din nou, verifică ce se întâmplă cu adevărat în situația ta financiară.
               </p>
               <p className="totul-master-lead">
-                Verific dacă există variante mai potrivite pentru situația ta înainte să faci o nouă solicitare.
+                Analizez istoricul din Biroul de Credit, întârzierile, creditele existente, veniturile, ratele, gradul de îndatorare și situația ta actuală pentru a identifica ce opțiuni pot exista pentru profilul tău.
               </p>
-              <div style={{ marginTop: "24px" }}>
+              <div style={{ marginTop: "24px", display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
                 <button
                   type="button"
                   className="button totul-primary-btn"
                   onClick={() => {
-                    trackEvent("homepage_totul_credit_started", { location: "master_header_cta" });
+                    trackEvent("homepage_totul_credit_started", { location: "hero_primary_cta" });
                     document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  <span>Vreau să verific situația mea</span>
-                  <ArrowRight size={18} />
+                  <span>VREAU SĂ-MI VERIFIC SITUAȚIA →</span>
                 </button>
+                <a
+                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc să verific situația mea înainte de un credit.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="totul-final-cta-secondary"
+                  onClick={() => trackEvent("homepage_totul_credit_whatsapp", { location: "hero_secondary_cta" })}
+                >
+                  <MessageCircle size={18} style={{ color: "#25D366" }} />
+                  <span>Prefer să discut direct</span>
+                </a>
               </div>
             </div>
 
-            {/* 6 Premium Cards Grid */}
-            <div className="totul-six-cards-grid">
-              {/* Card 01: PROBLEME ÎN BIROUL DE CREDIT */}
-              <div className="totul-quadrant-card">
-                <div className="card-top-bar">
-                  <span className="card-label">01 / ISTORIC</span>
-                </div>
-                <h3>PROBLEME ÎN BIROUL DE CREDIT</h3>
-                <p className="card-desc">
-                  Verific situația și dacă există informații care pot fi corectate, contestate sau actualizate, atunci când există temei legal.
-                </p>
-                <div className="card-pills-row">
-                  {["Corectare", "Contestare", "Actualizare", "Temei legal"].map((pill, idx) => (
-                    <span key={idx} className="micro-pill">{pill}</span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="card-cta-btn"
-                  onClick={() => {
-                    trackEvent("homepage_totul_credit_problem_selected", { card: "biroul_de_credit" });
-                    setSelectedProblemPill("Am probleme în Biroul de Credit");
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span>Verific situația →</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-
-              {/* Card 02: ÎNTÂRZIERI */}
-              <div className="totul-quadrant-card">
-                <div className="card-top-bar">
-                  <span className="card-label">02 / ÎNTÂRZIERI</span>
-                </div>
-                <h3>ÎNTÂRZIERI</h3>
-                <p className="card-desc">
-                  Analizez impactul întârzierilor și ce opțiuni pot exista în funcție de situația actuală.
-                </p>
-                <div className="card-pills-row">
-                  {["Istoric negativ", "Impact scor", "Optimizare"].map((pill, idx) => (
-                    <span key={idx} className="micro-pill">{pill}</span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="card-cta-btn"
-                  onClick={() => {
-                    trackEvent("homepage_totul_credit_problem_selected", { card: "intarzieri" });
-                    setSelectedProblemPill("Am întârzieri la credite");
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span>Analizez opțiunile →</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-
-              {/* Card 03: CREDIT DUPĂ REFUZ */}
-              <div className="totul-quadrant-card">
-                <div className="card-top-bar">
-                  <span className="card-label">03 / REFUZ</span>
-                </div>
-                <h3>CREDIT DUPĂ REFUZ</h3>
-                <p className="card-desc">
-                  Dacă ai fost refuzat de bancă, verific ce alternative pot exista în funcție de profilul tău.
-                </p>
-                <div className="card-pills-row">
-                  {["Refuz bancar", "Refuz IFN", "Alternative"].map((pill, idx) => (
-                    <span key={idx} className="micro-pill">{pill}</span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="card-cta-btn"
-                  onClick={() => {
-                    trackEvent("homepage_totul_credit_problem_selected", { card: "refuz_bancar" });
-                    setSelectedProblemPill("Am fost refuzat de bancă");
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span>Verific situația →</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-
-              {/* Card 04: CREDIT CU ISTORIC NEGATIV */}
-              <div className="totul-quadrant-card">
-                <div className="card-top-bar">
-                  <span className="card-label">04 / PROFIL</span>
-                </div>
-                <h3>CREDIT CU ISTORIC NEGATIV</h3>
-                <p className="card-desc">
-                  Analizez situația înainte să faci o nouă solicitare.
-                </p>
-                <div className="card-pills-row">
-                  {["Verificare", "Profilare", "Fără riscuri"].map((pill, idx) => (
-                    <span key={idx} className="micro-pill">{pill}</span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="card-cta-btn"
-                  onClick={() => {
-                    trackEvent("homepage_totul_credit_problem_selected", { card: "istoric_negativ" });
-                    setSelectedProblemPill("Am istoric negativ");
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span>Analizez situația →</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-
-              {/* Card 05: REFINANȚARE */}
-              <div className="totul-quadrant-card">
-                <div className="card-top-bar">
-                  <span className="card-label">05 / REFINANȚARE</span>
-                </div>
-                <h3>REFINANȚARE</h3>
-                <p className="card-desc">
-                  Verific dacă refinanțarea poate aduce condiții mai potrivite sau o rată lunară mai ușor de susținut.
-                </p>
-                <div className="card-pills-row">
-                  {["Rată mai mică", "Comasare datori", "Economie"].map((pill, idx) => (
-                    <span key={idx} className="micro-pill">{pill}</span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="card-cta-btn"
-                  onClick={() => {
-                    trackEvent("homepage_totul_credit_problem_selected", { card: "refinantare" });
-                    setSelectedProblemPill("Vreau refinanțare");
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span>Verific opțiunile →</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-
-              {/* Card 06: RATE / OPTIMIZARE */}
-              <div className="totul-quadrant-card">
-                <div className="card-top-bar">
-                  <span className="card-label">06 / OPTIMIZARE</span>
-                </div>
-                <h3>RATE / OPTIMIZARE</h3>
-                <p className="card-desc">
-                  Analizez dacă există variante prin care structura actuală a creditelor poate fi optimizată.
-                </p>
-                <div className="card-pills-row">
-                  {["Reorganizare", "Diminuare cost", "Evaluare"].map((pill, idx) => (
-                    <span key={idx} className="micro-pill">{pill}</span>
-                  ))}
-                </div>
-                <button
-                  type="button"
-                  className="card-cta-btn"
-                  onClick={() => {
-                    trackEvent("homepage_totul_credit_problem_selected", { card: "optimizare_rate" });
-                    setSelectedProblemPill("Vreau rate mai mici");
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  <span>Vezi variantele →</span>
-                  <ArrowRight size={16} />
-                </button>
-              </div>
-            </div>
-
-            {/* 04 — CE VERIFIC ÎNAINTE SĂ TE SUN? */}
-            <div className="totul-ce-verific-box" style={{ margin: "48px 0 56px", textAlign: "center" }}>
-              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 800, marginBottom: "12px" }}>
-                Ce verific înainte să te sun?
-              </h3>
-              <p style={{ color: "var(--muted, #94A3B8)", fontSize: "15px", maxWidth: "680px", margin: "0 auto 28px" }}>
-                Nu îți recomand să aplici la întâmplare. Mai întâi înțeleg situația. Apoi îți spun ce variante merită analizate.
-              </p>
-              <div className="problem-pills-interactive-grid" style={{ maxWidth: "960px", margin: "0 auto" }}>
-                {[
-                  "Biroul de Credit",
-                  "Întârzieri",
-                  "Credite active",
-                  "Rate lunare",
-                  "Venituri",
-                  "Grad de îndatorare",
-                  "Refinanțare",
-                  "Refuzuri anterioare",
-                  "Opțiuni bancare / IFN",
-                ].map((item, idx) => (
-                  <div key={idx} className="micro-pill" style={{ fontSize: "12px", padding: "8px 16px" }}>
-                    ✓ {item}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* 06 — TRUST / POSITIONING: 3 PRINCIPII */}
-            <div className="totul-trust-principles-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", marginBottom: "56px" }}>
-              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
-                <span className="card-label">01 / ANALIZEZ</span>
-                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px" }}>Înțeleg situația ta</h4>
-                <p style={{ fontSize: "13px", color: "var(--muted, #94A3B8)", margin: 0, lineHeight: 1.5 }}>
-                  Verificăm parametrii financiari relevanți înainte de următoarea ta cerere la creditori.
-                </p>
-              </div>
-
-              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
-                <span className="card-label">02 / VERIFIC</span>
-                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px" }}>Caut variante reale</h4>
-                <p style={{ fontSize: "13px", color: "var(--muted, #94A3B8)", margin: 0, lineHeight: 1.5 }}>
-                  Identificăm opțiunile disponibile din piață care au sens pentru profilul tău financiar.
-                </p>
-              </div>
-
-              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
-                <span className="card-label">03 / ÎȚI SPUN CE URMEAZĂ</span>
-                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px" }}>Revin cu răspuns</h4>
-                <p style={{ fontSize: "13px", color: "var(--muted, #94A3B8)", margin: 0, lineHeight: 1.5 }}>
-                  Te contactez telefonic după analiză pentru a discuta deschis variantele legale posibile.
-                </p>
-              </div>
-            </div>
-
-            {/* PROBLEM RECOGNITION SELECTOR */}
-            <div className="totul-problem-recognition-box">
-              <h4>Poate te regăsești într-una dintre situațiile de mai jos:</h4>
+            {/* 02 — SITUAȚII FRECVENTE (10 PILLS/CARDS) */}
+            <div className="totul-problem-recognition-box" style={{ marginBottom: "56px" }}>
+              <h4 style={{ color: "#F8FAFC", marginBottom: "20px", fontSize: "18px", fontWeight: 700 }}>
+                Dacă te regăsești în una dintre situațiile de mai jos, începe de aici:
+              </h4>
               <div className="problem-pills-interactive-grid">
-                {[
-                  "Am fost refuzat de bancă",
-                  "Am fost refuzat de IFN",
-                  "Am întârzieri la credite",
-                  "Am probleme în Biroul de Credit",
-                  "Am istoric negativ",
-                  "Am prea multe rate",
-                  "Vreau refinanțare",
-                  "Vreau un credit nou",
-                  "Nu știu de ce sunt refuzat",
-                ].map((item, idx) => (
+                {PROBLEM_CARDS.map((card) => (
                   <button
-                    key={idx}
+                    key={card.id}
                     type="button"
-                    className={`problem-pill-btn ${selectedProblemPill === item ? "active" : ""}`}
+                    className={`problem-pill-btn ${selectedProblemPill === card.label ? "active" : ""}`}
                     onClick={() => {
-                      trackEvent("homepage_totul_credit_problem_selected", { problem: item });
-                      setSelectedProblemPill(item);
+                      trackEvent("homepage_totul_credit_problem_selected", { problem: card.label });
+                      setSelectedProblemPill(card.label);
                       document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
                     }}
                   >
-                    <Check size={14} style={{ color: selectedProblemPill === item ? "#34D399" : "#94A3B8" }} />
-                    <span>{item}</span>
+                    <Check size={14} style={{ color: selectedProblemPill === card.label ? "#34D399" : "#94A3B8" }} />
+                    <span>{card.label}</span>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* EMBEDDED HOMEPAGE FUNNEL CONTAINER */}
+            {/* 03 — CE VERIFIC ÎNAINTE SĂ TE SUN? (7 DIAGNOSTIC CARDS) */}
+            <div className="totul-ce-verific-box" style={{ margin: "48px 0 56px", textAlign: "center" }}>
+              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 800, marginBottom: "12px", color: "#F8FAFC" }}>
+                CE VERIFIC ÎNAINTE SĂ TE SUN?
+              </h3>
+              <p style={{ color: "#CBD5E1", fontSize: "15px", maxWidth: "680px", margin: "0 auto 32px" }}>
+                Analiza pe care o realizez este una riguroasă, bazată pe date reale și norme bancare actualizate.
+              </p>
+              
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: "16px", maxWidth: "1080px", margin: "0 auto" }}>
+                {[
+                  { code: "01 / BIROUL DE CREDIT", title: "Situația din Biroul de Credit", desc: "Verific raportările existente, scorul FICO și eventualele înregistrări active." },
+                  { code: "02 / ÎNTÂRZIERI", title: "Istoricul întârzierilor", desc: "Evaluez vechimea întârzierilor și dacă restanțele au fost stinse." },
+                  { code: "03 / CREDITE & IFN-URI", title: "Creditele și IFN-urile", desc: "Analizez totalul datoriilor curente și structura ratelor de la fiecare creditor." },
+                  { code: "04 / RATE", title: "Nivelul actual al ratelor", desc: "Calculez gradul tău real de îndatorare raportat la veniturile nete eligibile." },
+                  { code: "05 / VENITURI", title: "Veniturile declarate", desc: "Verific ce tipuri de venituri pot fi luate în calcul (salarii, pensii, PFA, chirii)." },
+                  { code: "06 / NECESAR FINANȚARE", title: "Necesarul de finanțare", desc: "Stabilesc dacă suma dorită este realistă raportată la profilul tău de risc." },
+                  { code: "07 / VARIANTE", title: "Variantele eligibile", desc: "Identific opțiunile care merită analizate fără aplicații inutile." },
+                ].map((item) => (
+                  <div
+                    key={item.code}
+                    style={{
+                      background: "#151B23",
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      borderRadius: "12px",
+                      padding: "20px",
+                      textAlign: "left",
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.08em" }}>
+                      {item.code}
+                    </span>
+                    <h4 style={{ fontSize: "15px", fontWeight: 700, color: "#F8FAFC", margin: "8px 0 6px" }}>
+                      {item.title}
+                    </h4>
+                    <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 04 — GHID DE ÎNȚELEGERE („ÎNAINTE SĂ APLICI, TREBUIE SĂ ȘTII”) - ACCORDION */}
+            <div className="totul-ghid-section" style={{ margin: "56px 0", textAlign: "center" }}>
+              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 30px)", fontWeight: 800, marginBottom: "12px", color: "#F8FAFC" }}>
+                ÎNAINTE SĂ APLICI, TREBUIE SĂ ȘTII
+              </h3>
+              <p style={{ color: "#CBD5E1", fontSize: "15px", maxWidth: "680px", margin: "0 auto 28px" }}>
+                Află cum funcționează evaluarea financiară și ce opțiuni ai când te confrunți cu obstacole de creditare:
+              </p>
+
+              <div style={{ maxWidth: "860px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "12px", textAlign: "left" }}>
+                {[
+                  { q: "Ce înseamnă o problemă în Biroul de Credit?", a: "O raportare negativă în Biroul de Credit apare atunci când ai avut întârzieri la plata ratelor de peste 30 de zile. Aceste date rămân vizibile timp de 4 ani de la data achitării ultimei restanțe și pot influența decizia băncilor." },
+                  { q: "Se poate corecta o informație din Biroul de Credit?", a: "Verificăm dacă există informații care pot fi corectate sau contestate legal atunci când există temei juridic (raportări eronate, nerespectarea notificării prealabile sau erori ale creditorului). Datele raportate corect nu pot fi șterse garantat." },
+                  { q: "Ce faci dacă ai fost refuzat de bancă?", a: "Refuzul unei bănci nu înseamnă că toate ușile sunt închise. Fiecare bancă are norme proprii de risc. Important este să afli motivul exact al respingerii înainte de a trimite noi cereri." },
+                  { q: "Ce opțiuni există după un refuz?", a: "Opțiunile pot include: refinanțarea creditelor actuale cu aducerea unui girant/co-plătitor, refacerea scorului FICO prin stingerea datoriilor mici sau orientarea către instituții cu norme mai flexibile." },
+                  { q: "Pot refinanța după întârzieri?", a: "Dacă ai stins restanțele și ai venituri constante, refinanțarea îți poate permite să unifici ratele scumpe într-o singură rată lunară sustenabilă, scăzând presiunea financiară." },
+                  { q: "Pot obține un credit nou după un istoric negativ?", a: "Obținerea unui credit nou depinde de vechimea problemelor din trecut. Dacă întârzierile au fost ocazionale și reduse ca valoare, anumite instituții pot aproba dosarul după o analiză amănunțită." },
+                  { q: "Ce trebuie să știu despre IFN?", a: "Creditele de la IFN-uri reprezintă o variantă accesibilă pe termen scurt, dar vin cu costuri ridicate. Analizăm dacă o astfel de soluție este oportună sau dacă există alternative bancare mai avantajoase." },
+                  { q: "De ce nu este bine să aplic la întâmplare?", a: "Trimiterea simultană de aplicații la 5-10 bănci creează interogări repetate în Biroul de Credit. Sistemul FICO interpretează acest comportament drept stare de urgență financiară și scade automat scorul de credit." },
+                ].map((guide, idx) => (
+                  <details
+                    key={idx}
+                    style={{
+                      background: "#151B23",
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      borderRadius: "12px",
+                      padding: "16px 20px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <summary style={{ fontSize: "16px", fontWeight: 700, color: "#F8FAFC", outline: "none" }}>
+                      {guide.q}
+                    </summary>
+                    <p style={{ fontSize: "14px", color: "#CBD5E1", marginTop: "12px", lineHeight: 1.6, margin: "12px 0 0" }}>
+                      {guide.a}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+
+            {/* 05 — EMBEDDED HOMEPAGE FUNNEL CONTAINER */}
             <div id="verificare-credit" className="totul-homepage-funnel-wrapper">
               <div className="funnel-intro-box">
-                <h3>Analiză confidențială & precalificare financiară</h3>
+                <h3>ANALIZĂ CONFIDENȚIALĂ & PRECALIFICARE FINANCIARĂ</h3>
                 <p>
-                  Înainte să mai trimiți o cerere către un creditor, trimite-mi situația ta. Analizez informațiile pe care mi le trimiți și revin cu telefon pentru a discuta ce opțiuni pot exista.
+                  Înainte să mai trimiți o cerere către un creditor, trimite-mi situația ta. Analizez informațiile și revin telefonic.
                 </p>
               </div>
 
-              {/* Embedded 5-Step Funnel Component */}
               <TotulInainteDeCreditFunnel
                 source="homepage-totul-inainte-de-credit"
                 initialSelectedProblems={selectedProblemPill ? [selectedProblemPill] : []}
@@ -1077,7 +940,74 @@ export default function Home() {
               </p>
             </div>
 
-            {/* POWERFUL FINAL CTA PANEL */}
+            {/* 06 — 3 PRINCIPII („CUM LUCREZ”) */}
+            <div className="totul-trust-principles-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", margin: "56px 0" }}>
+              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
+                <span className="card-label">01 / ANALIZEZ</span>
+                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px", color: "#F8FAFC" }}>Înțeleg situația ta</h4>
+                <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
+                  Înțeleg situația ta înainte de următoarea cerere.
+                </p>
+              </div>
+
+              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
+                <span className="card-label">02 / VERIFIC</span>
+                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px", color: "#F8FAFC" }}>Caut variante reale</h4>
+                <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
+                  Caut variantele care pot avea sens pentru profilul tău.
+                </p>
+              </div>
+
+              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
+                <span className="card-label">03 / ÎȚI SPUN CE URMEAZĂ</span>
+                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px", color: "#F8FAFC" }}>Revin cu răspuns</h4>
+                <p style={{ fontSize: "13px", color: "#CBD5E1", margin: 0, lineHeight: 1.5 }}>
+                  Revin către tine telefonic după analiză.
+                </p>
+              </div>
+            </div>
+
+            {/* 07 — FAQ (7 ACCORDION ITEMS) */}
+            <div className="totul-faq-section" style={{ margin: "56px 0", textAlign: "center" }}>
+              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 30px)", fontWeight: 800, marginBottom: "12px", color: "#F8FAFC" }}>
+                ÎNTREBĂRI FRECVENTE
+              </h3>
+              <p style={{ color: "#CBD5E1", fontSize: "15px", maxWidth: "680px", margin: "0 auto 28px" }}>
+                Tot ce trebuie să știi înainte de a aplica pentru o evaluare:
+              </p>
+
+              <div style={{ maxWidth: "860px", margin: "0 auto", display: "flex", flexDirection: "column", gap: "12px", textAlign: "left" }}>
+                {[
+                  { q: "Se poate șterge istoricul din Biroul de Credit?", a: "Dacă raportarea a fost efectuată cu nerespectarea prevederilor legale sau dacă datele sunt eronate, există temei juridic pentru rectificare sau contestație. Nu există nicio garanție automată de ștergere a datelor raportate corect." },
+                  { q: "Pot obține credit dacă am avut întârzieri?", a: "Da, în anumite condiții. Șansele depind de vechimea întârzierilor, dacă au fost achitate integral, nivelul actual al veniturilor și instituția financiară aleasă." },
+                  { q: "Ce fac dacă am fost refuzat de bancă?", a: "Primul pas este să nu aplici la întâmplare la alte instituții. Verificăm mai întâi motivul refuzului pentru a identificat opțiunile eligibile." },
+                  { q: "Pot refinanța dacă am avut întârzieri?", a: "Refinanțarea este posibilă în special dacă întârzierile au fost remediate, iar scopul este consolidarea tuturor ratelor într-o rată mai mică." },
+                  { q: "Pot obține finanțare prin IFN după un refuz bancar?", a: "IFN-urile au criterii mai flexibile față de bănci, însă costurile pot fi mai mari. Înainte de a contracta un credit IFN, este esențial să evaluăm dacă există opțiuni bancare." },
+                  { q: "De ce sunt refuzat repetat?", a: "Refuzul repetat apare adesea din cauza scorului FICO scăzut, a numărului mare de interogări recente sau a gradului depășit de îndatorare." },
+                  { q: "Ce verific înainte să trimit o nouă aplicație?", a: "Trebuie să verifici raportul Biroului de Credit, venitul net eligibil, totalul ratelor actuale și criteriile exacte ale finanțatorului." },
+                ].map((faq, idx) => (
+                  <details
+                    key={idx}
+                    style={{
+                      background: "#151B23",
+                      border: "1px solid rgba(255, 255, 255, 0.10)",
+                      borderRadius: "12px",
+                      padding: "16px 20px",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <summary style={{ fontSize: "16px", fontWeight: 700, color: "#F8FAFC", outline: "none" }}>
+                      {faq.q}
+                    </summary>
+                    <p style={{ fontSize: "14px", color: "#CBD5E1", marginTop: "12px", lineHeight: 1.6, margin: "12px 0 0" }}>
+                      {faq.a}
+                    </p>
+                  </details>
+                ))}
+              </div>
+            </div>
+
+            {/* 08 — FINAL CTA */}
             <div className="totul-final-cta-panel">
               <h3>Înainte să mai faci o cerere de credit, verifică mai întâi situația ta.</h3>
               <p>Îmi trimiți situația. O analizez și revin către tine telefonic.</p>
@@ -1090,8 +1020,7 @@ export default function Home() {
                     document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  <span>Vreau să verific situația mea</span>
-                  <ArrowRight size={18} />
+                  <span>VREAU SĂ-MI VERIFIC SITUAȚIA →</span>
                 </button>
 
                 <a
@@ -1102,7 +1031,7 @@ export default function Home() {
                   onClick={() => trackEvent("homepage_totul_credit_whatsapp", { location: "final_cta_panel" })}
                 >
                   <MessageCircle size={18} style={{ color: "#25D366" }} />
-                  <span>Prefer să discut direct pe WhatsApp</span>
+                  <span>PREFER SĂ DISCUT DIRECT</span>
                 </a>
               </div>
             </div>
