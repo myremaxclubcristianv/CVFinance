@@ -524,6 +524,31 @@ export default function Home() {
         {/* 01 / ARRIVE — UNBOXED EDITORIAL HERO */}
         <CVFinanceHero />
 
+        {/* FINANCIAL MESSAGE: EU TE SUN. BANCA NU. */}
+        <section className="financial-message-section">
+          <div className="financial-message-container">
+            <span className="message-badge">FILOZOFIA NOASTRĂ</span>
+            <h2 className="message-title">
+              EU TE SUN.<br />
+              <span className="emerald">BANCA NU.</span>
+            </h2>
+            <div className="message-grid">
+              <div className="message-item">
+                <span className="message-num">01</span>
+                <p className="message-text"><strong>Tu vorbești cu mine.</strong> Stăruim asupra detaliilor pentru a înțelege exact profilul tău financiar.</p>
+              </div>
+              <div className="message-item">
+                <span className="message-num">02</span>
+                <p className="message-text"><strong>Eu analizez situația.</strong> Verificăm normele de creditare de la peste 20 de bănci partenere.</p>
+              </div>
+              <div className="message-item">
+                <span className="message-num">03</span>
+                <p className="message-text"><strong>Eu discut cu banca.</strong> Negociem direct cele mai bune condiții, fără ca tu să pierzi timp la ghișee.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 02 / IDENTIFY — EDITORIAL COMMAND SHEET */}
         <CommandSheet />
 
@@ -873,6 +898,20 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* EMBEDDED HOMEPAGE BUSINESS FUNNEL CONTAINER */}
+        <div id="verificare-finantare-business" className="bf-homepage-funnel-wrapper">
+          <div className="funnel-intro-box">
+            <h3>ANALIZĂ CONFIDENȚIALĂ & PRECALIFICARE BUSINESS</h3>
+            <p>
+              Completează detaliile despre compania ta. Analizăm opțiunile de finanțare și revenim cu un apel telefonic.
+            </p>
+          </div>
+          <BusinessFinanceFunnel
+            source="homepage-business-finance"
+            initialSelectedPurposes={selectedBusinessIntent ? [selectedBusinessIntent] : []}
+          />
+        </div>
 
         {/* 05 / FINANCIAL INTELLIGENCE — BLOOMBERG / FT RESEARCH TERMINAL */}
         <FinancialIntelligence />

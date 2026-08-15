@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 
 export default function FinancialIntelligence() {
@@ -15,8 +14,8 @@ export default function FinancialIntelligence() {
           </p>
         </div>
 
-        {/* EDITORIAL RESEARCH TABLE */}
-        <div className="fi-table-wrapper">
+        {/* DESKTOP TABLE VIEW */}
+        <div className="fi-table-wrapper fi-desktop-only">
           <table className="fi-editorial-table">
             <thead>
               <tr>
@@ -51,6 +50,72 @@ export default function FinancialIntelligence() {
               </tr>
             </tbody>
           </table>
+        </div>
+
+        {/* MOBILE STACKED CARDS VIEW */}
+        <div className="fi-mobile-cards">
+          <div className="fi-mobile-card">
+            <div className="fi-mobile-card-header">
+              <span className="fi-mobile-year">2023</span>
+              <span className="status-pill gray">VÂRF DE DOBÂNDĂ</span>
+            </div>
+            <div className="fi-mobile-card-grid">
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">DOBÂNDĂ REFERINȚĂ</span>
+                <span className="fi-mobile-val">6,70%</span>
+              </div>
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">RATĂ LUNARĂ</span>
+                <span className="fi-mobile-val">~3.430 RON</span>
+              </div>
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">TOTAL RAMBURSAT</span>
+                <span className="fi-mobile-val">~1.029.000 RON</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="fi-mobile-card active">
+            <div className="fi-mobile-card-header">
+              <span className="fi-mobile-year green">2025</span>
+              <span className="status-pill green">CONDIȚII ACTUALE</span>
+            </div>
+            <div className="fi-mobile-card-grid">
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">DOBÂNDĂ REFERINȚĂ</span>
+                <span className="fi-mobile-val green">6,30%</span>
+              </div>
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">RATĂ LUNARĂ</span>
+                <span className="fi-mobile-val bold">~3.290 RON</span>
+              </div>
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">TOTAL RAMBURSAT</span>
+                <span className="fi-mobile-val bold">~987.000 RON</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="fi-mobile-card">
+            <div className="fi-mobile-card-header">
+              <span className="fi-mobile-year">2026</span>
+              <span className="status-pill green">TREND DESCENDENT</span>
+            </div>
+            <div className="fi-mobile-card-grid">
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">DOBÂNDĂ REFERINȚĂ</span>
+                <span className="fi-mobile-val">6,10%</span>
+              </div>
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">EVOLUȚIE</span>
+                <span className="fi-mobile-val green">−0,20% ref</span>
+              </div>
+              <div className="fi-mobile-metric">
+                <span className="fi-mobile-label">TOTAL RAMBURSAT</span>
+                <span className="fi-mobile-val">—</span>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* FOOTNOTE */}

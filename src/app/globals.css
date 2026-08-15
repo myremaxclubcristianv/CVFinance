@@ -12,6 +12,30 @@
   --text-primary: #0F172A;
   --text-secondary: #334155;
   --muted: #64748B;
+
+  /* Mobile Design Tokens */
+  --mobile-bg: #FFFFFF;
+  --mobile-surface: #F8FAFC;
+  --mobile-elevated: #FFFFFF;
+  --mobile-text-primary: #0F172A;
+  --mobile-text-secondary: #334155;
+  --mobile-text-muted: #64748B;
+  --mobile-green: #087F5B;
+  --mobile-green-dark: #056B4D;
+  --mobile-green-light: #E8F5EF;
+  --mobile-border: #E2E8F0;
+
+  /* Executive White & Emerald Institutional Palette */
+  --paper: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --card-elevated: #F1F5F9;
+  --line: #E2E8F0;
+  --line-dark: #CBD5E1;
+  --ink: #0F172A;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --muted: #64748B;
   
   /* Bloomberg & Institutional advisory */
   --bloomberg-navy: #0F172A;
@@ -78,12 +102,6 @@ body {
   overflow-x: hidden;
   padding-bottom: env(safe-area-inset-bottom);
 }
-@media (max-width: 767px) {
-  body {
-    padding-top: 120px !important; /* header (56) + ticker (40) + breathing (24) */
-  }
-}
-
 
 /* Accessibility Focus Ring */
 :focus-visible {
@@ -179,27 +197,6 @@ h3 {
 }
 
 /* Navigation Bar */
-
-@media (max-width: 767px) {
-  .nav {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    height: 56px !important;
-    z-index: 99999 !important;
-    background: #FFFFFF !important;
-    border-bottom: 1px solid var(--line) !important;
-  }
-header.nav .nav-cta,
-.nav .nav-cta,
-a.nav-cta {
-  display: none !important;
-}
-}
-
-/* Desktop Navigation Bar */
 .nav {
   height: 76px;
   display: flex;
@@ -213,7 +210,6 @@ a.nav-cta {
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(20px);
 }
-
 
 .brand {
   font-size: 22px;
@@ -306,12 +302,6 @@ a.nav-cta {
   padding: 8px;
   color: var(--bloomberg-navy);
 }
-@media (max-width: 767px) {
-  .menu {
-    display: block;
-  }
-}
-  
 
 .mobile-nav {
   position: absolute;
@@ -327,12 +317,6 @@ a.nav-cta {
   z-index: 60;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 }
-@media (max-width: 767px) {
-  .mobile-nav {
-    top: 56px !important;
-  }
-}
-
 
 .mobile-nav a {
   font-size: 15px;
@@ -537,12 +521,6 @@ a.nav-cta {
   display: grid;
   gap: 24px;
 }
-@media (max-width: 767px) {
-  .grid {
-    gap: 16px;
-  }
-}
-
 
 .grid-2 { grid-template-columns: repeat(2, 1fr); }
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
@@ -559,13 +537,6 @@ a.nav-cta {
   padding: 100px 24px 80px;
   border-bottom: 1px solid #E2E8F0;
 }
-@media (max-width: 767px) {
-  .cv-hero-section {
-    padding-top: 24px !important;
-    padding-bottom: 40px !important;
-  }
-}
-
 .cv-hero-container {
   max-width: 1280px;
   margin: 0 auto;
@@ -3221,27 +3192,17 @@ footer {
 
 /* EXECUTIVE SERVICE TICKER / MARQUEE — ALWAYS VISIBLE STICKY BAR */
 .cv-service-ticker-bar {
-  position: relative;
+  width: 100%;
+  background: #0D1117;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 46px;
+  overflow: hidden;
+  position: sticky;
+  top: 76px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  overflow-x: auto;
-  padding: 12px 24px;
-  background: var(--bg-secondary);
-  border-bottom: 1px solid var(--line);
-}
-@media (max-width: 767px) {
-  .cv-service-ticker-bar {
-    position: fixed !important;
-    top: 56px !important;
-    left: 0 !important;
-    right: 0 !important;
-    width: 100% !important;
-    height: 40px !important;
-    z-index: 99998 !important;
-    background: var(--bg-secondary) !important;
-    border-bottom: 1px solid var(--line) !important;
-  }
+  user-select: none;
+  z-index: 45;
 }
 
 .cv-ticker-track-wrapper {
@@ -3283,7 +3244,7 @@ footer {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #0F172A;
+  color: #CBD5E1;
   text-decoration: none;
   padding: 0 16px;
   transition: color 0.15s ease;
@@ -3294,18 +3255,18 @@ footer {
 }
 
 .cv-ticker-item:hover {
-  color: #087F5B;
+  color: #34D399;
 }
 
 .cv-ticker-item:focus-visible {
-  color: #087F5B;
+  color: #34D399;
   outline: none;
-  box-shadow: inset 0 0 0 2px #087F5B;
+  box-shadow: inset 0 0 0 2px #34D399;
   border-radius: 4px;
 }
 
 .cv-ticker-separator {
-  color: #087F5B;
+  color: rgba(52, 211, 153, 0.45);
   font-size: 14px;
   margin: 0 4px;
   user-select: none;
@@ -4227,19 +4188,74 @@ footer {
   }
 }
 
-/* =========================================================
-   PERMANENT MOBILE FIXED NAVIGATION & GLOBAL CONTRAST SYSTEM (<767px)
-   ========================================================= */
+/* ACCESSIBILITY: PREFERS-REDUCED-MOTION COMPLIANCE */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
+
+/* ================================================== */
+/* EXECUTIVE WHITE & EMERALD MOBILE UI RECONSTRUCTION */
+/* ================================================== */
 @media (max-width: 767px) {
-  /* 1. HIDE MOBILE HEADER CTA COMPLETELY */
-  header.nav .nav-cta,
-  .nav .nav-cta,
-  a.nav-cta {
-    display: none !important;
+  /* 0. ROOT DESIGN SYSTEM VARIABLES OVERRIDE */
+  :root {
+    --bg: #FFFFFF;
+    --surface: #F8FAFC;
+    --surface-elevated: #FFFFFF;
+    --surface-green: #F0FDF7;
+    --ink: #0F172A;
+    --text: #334155;
+    --muted: #64748B;
+    --emerald: #087F5B;
+    --emerald-dark: #056B4D;
+    --emerald-soft: #E8F5EF;
+    --border: #E2E8F0;
+    --border-strong: #CBD5E1;
   }
 
-  /* 2. FIXED MOBILE HEADER — ALWAYS ON TOP */
+  /* 1. VIEWPORT, MAIN & BODY CLEARANCE */
+  html, body, main {
+    max-width: 100vw;
+    overflow-x: hidden;
+    background: #FFFFFF !important;
+    color: #334155 !important;
+  }
+  
+  body {
+    padding-top: 120px !important; /* Header (56px) + Ticker (40px) + 24px breathing room */
+  }
+
+  main {
+    padding-top: 0 !important;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  /* 2. SECTION SPACING & CONTAINER PADDING */
+  .section,
+  .fi-terminal-section,
+  .command-sheet-section,
+  .financial-message-section,
+  .bf-homepage-funnel-wrapper,
+  .totul-homepage-funnel-wrapper {
+    padding: 32px 16px !important;
+    background: #FFFFFF !important;
+    border: none !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+  }
+
+  /* Make form / funnel containers distinct but premium */
+  .bf-homepage-funnel-wrapper,
+  .totul-homepage-funnel-wrapper {
+    background: #F8FAFC !important;
+  }
+
+  /* 3. FIXED MOBILE HEADER */
   header.nav,
   .nav {
     position: fixed !important;
@@ -4251,10 +4267,49 @@ footer {
     z-index: 99999 !important;
     background: #FFFFFF !important;
     border-bottom: 1px solid #E2E8F0 !important;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 16px !important;
   }
 
-  /* 3. FIXED MOBILE ROLL BAR — ALWAYS DIRECTLY UNDER HEADER */
+  /* Completely remove the header CTA button */
+  header.nav .nav-cta,
+  .nav .nav-cta,
+  a.nav-cta {
+    display: none !important;
+  }
+
+  header.nav nav,
+  .nav nav {
+    display: none !important; /* Hide desktop nav links on mobile */
+  }
+
+  header.nav .menu,
+  .nav .menu {
+    display: flex !important;
+    background: transparent !important;
+    border: none !important;
+    color: #0F172A !important;
+    cursor: pointer !important;
+    padding: 4px !important;
+  }
+
+  header.nav .brand,
+  .nav .brand {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+    text-decoration: none !important;
+  }
+
+  header.nav .brand span,
+  .nav .brand span {
+    color: #087F5B !important;
+  }
+
+  /* 4. FIXED SERVICE TICKER */
   .cv-service-ticker-bar {
     position: fixed !important;
     top: 56px !important;
@@ -4263,55 +4318,882 @@ footer {
     width: 100% !important;
     height: 40px !important;
     z-index: 99998 !important;
-    background: #F8FAFC !important;
+    background: #FFFFFF !important;
     border-bottom: 1px solid #E2E8F0 !important;
+    display: flex !important;
+    align-items: center !important;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+  }
+
+  .cv-ticker-track-wrapper {
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .cv-ticker-item {
-    color: #0F172A !important;
+    color: #334155 !important;
     font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.02em !important;
+    text-decoration: none !important;
     padding: 0 12px !important;
+    white-space: nowrap !important;
+    text-transform: uppercase !important;
   }
-  .cv-ticker-item:hover {
-    color: #087F5B !important;
-  }
+
   .cv-ticker-separator {
     color: #087F5B !important;
+    font-weight: bold !important;
   }
 
-  /* 4. EXACT CONTENT TOP CLEARANCE (56px Header + 40px Ticker + 24px Breathing Space = 120px) */
-  main,
-  .cv-hero-section {
-    padding-top: 120px !important;
-  }
-
-  /* 5. GLOBAL HIGH-CONTRAST TYPOGRAPHY RULES */
+  /* 5. TYPOGRAPHY & HEADINGS */
   h1, h2, h3, h4, h5, h6,
-  .title, .heading, .card-title, .info-title {
+  .cv-hero-title, .command-title, .fi-title, .section-intro h2, .funnel-intro-box h3 {
+    color: #0F172A !important;
+    font-weight: 800 !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.025em !important;
+    text-transform: none !important;
+  }
+
+  h1 {
+    font-size: clamp(30px, 8vw, 36px) !important;
+  }
+
+  h2 {
+    font-size: clamp(24px, 6.5vw, 28px) !important;
+    margin-bottom: 16px !important;
+  }
+
+  h3 {
+    font-size: clamp(19px, 5vw, 22px) !important;
+    margin-bottom: 12px !important;
+  }
+
+  p, span, li, label,
+  .cv-hero-copy, .command-subtitle, .fi-subtitle, .section-intro p, .funnel-intro-box p {
+    color: #334155 !important;
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+  }
+
+  .eyebrow,
+  .cv-hero-badge,
+  .command-eyebrow,
+  .fi-eyebrow,
+  .message-badge {
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    color: #087F5B !important;
+    letter-spacing: 0.10em !important;
+    text-transform: uppercase !important;
+    margin-bottom: 8px !important;
+    display: inline-block !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .emerald,
+  .emerald-text {
+    color: #087F5B !important;
+  }
+
+  /* 6. CARD REDESIGN SYSTEM (AUDIT OF ALL HOMEPAGE CARDS) */
+  .card,
+  .totul-card,
+  .totul-quadrant-card,
+  .bf-card,
+  .diagnostic-card,
+  .form-card,
+  .faq-item,
+  .totul-final-cta-panel,
+  .cv-hero-anchor-card,
+  .mega-item-btn {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 14px !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03) !important;
+    color: #0F172A !important;
+    padding: 20px 24px !important;
+    margin-bottom: 16px !important;
+    text-align: left !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  /* Secondary surface cards */
+  .totul-quadrant-card,
+  .faq-item {
+    background: #F8FAFC !important;
+  }
+
+  /* Active state */
+  .card.active,
+  .totul-card.active,
+  .fi-mobile-card.active,
+  .option-btn.selected {
+    background: #E8F5EF !important;
+    border-color: #087F5B !important;
+  }
+
+  /* Remove inline padding or sizes that break card layout on mobile */
+  .totul-trust-principles-grid,
+  .totul-final-cta-actions,
+  .fi-mobile-cards {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin: 24px 0 !important;
+    width: 100% !important;
+  }
+
+  /* Ensure grids stack nicely on mobile */
+  .grid-2, .grid-3, .grid-4, .grid,
+  .totul-ce-verific-box > div,
+  .totul-faq-section > div,
+  .totul-ghid-section > div {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Card typography overrides */
+  .card-label,
+  .card span[style*="font-size"] {
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    color: #64748B !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+  }
+
+  .card h3,
+  .card h4 {
+    font-size: 17px !important;
+    color: #0F172A !important;
+    margin: 4px 0 !important;
+  }
+
+  .card p {
+    font-size: 13.5px !important;
+    color: #334155 !important;
+    margin: 0 !important;
+  }
+
+  /* 7. HERO SECTION SPECIFICS */
+  .cv-hero-section {
+    background: #FFFFFF !important;
+    padding: 32px 16px !important;
+    text-align: left !important;
+  }
+
+  .cv-hero-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+
+  .cv-hero-left {
+    padding: 0 !important;
+  }
+
+  .cv-hero-title {
+    font-size: clamp(32px, 9vw, 40px) !important;
+    line-height: 1.08 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .cv-hero-copy {
+    font-size: 15px !important;
+    margin-bottom: 24px !important;
+    color: #334155 !important;
+  }
+
+  .cv-hero-cta-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  /* Hero Benchmark Mini-Card */
+  .cv-hero-anchor-card {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 14px !important;
+    padding: 20px !important;
+    margin: 12px 0 0 0 !important;
+    width: 100% !important;
+  }
+
+  .cv-hero-anchor-card .anchor-header {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    color: #64748B !important;
+    text-transform: uppercase !important;
+  }
+
+  .cv-hero-anchor-card .anchor-metric {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 8px !important;
+    margin: 12px 0 !important;
+  }
+
+  .cv-hero-anchor-card .metric-val {
+    font-size: 32px !important;
+    font-weight: 900 !important;
     color: #0F172A !important;
   }
 
-  p, span, li, td,
-  .body-copy, .card-desc, .info-desc, .description {
-    color: #334155 !important;
-    line-height: 1.6 !important;
+  .cv-hero-anchor-card .metric-tag {
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    color: #087F5B !important;
   }
 
-  .muted-text, .meta-text, .cv-hero-meta-item, .fi-disclaimer-note {
+  .cv-hero-anchor-card .anchor-rows {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    border-top: 1px solid #E2E8F0 !important;
+    padding-top: 12px !important;
+  }
+
+  .cv-hero-anchor-card .anchor-row {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 13px !important;
+  }
+
+  .cv-hero-anchor-card .row-label {
+    color: #64748B !important;
+    font-weight: 700 !important;
+  }
+
+  .cv-hero-anchor-card .row-val {
+    color: #0F172A !important;
+    font-weight: 800 !important;
+  }
+
+  .cv-hero-anchor-card .row-val.green {
+    color: #087F5B !important;
+  }
+
+  /* Hide bottom financial data strip on mobile if it clutters */
+  .cv-hero-data-strip {
+    display: none !important;
+  }
+
+  /* 8. FINANCIAL MESSAGE "EU TE SUN. BANCA NU." */
+  .financial-message-section {
+    background: #FFFFFF !important;
+  }
+
+  .financial-message-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  .message-title {
+    font-size: clamp(28px, 8vw, 34px) !important;
+    line-height: 1.1 !important;
+    margin-bottom: 16px !important;
+  }
+
+  .message-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .message-item {
+    display: flex !important;
+    gap: 16px !important;
+    align-items: flex-start !important;
+    padding-bottom: 16px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+  }
+
+  .message-item:last-child {
+    border-bottom: none !important;
+  }
+
+  .message-num {
+    font-size: 16px !important;
+    font-weight: 900 !important;
+    color: #087F5B !important;
+    font-family: monospace !important;
+    margin-top: 2px !important;
+  }
+
+  .message-text {
+    font-size: 14.5px !important;
+    margin: 0 !important;
+    color: #334155 !important;
+    line-height: 1.5 !important;
+  }
+
+  /* 9. COMMAND SHEET */
+  .command-sheet-section {
+    background: #F8FAFC !important;
+  }
+
+  .command-rows-list {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+  }
+
+  .command-row-btn {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 12px !important;
+    min-height: 64px !important;
+    padding: 12px 16px !important;
+    color: #0F172A !important;
+    text-align: left !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.02) !important;
+    transition: all 0.15s ease !important;
+  }
+
+  .command-row-btn:hover,
+  .command-row-btn:active {
+    background: #E8F5EF !important;
+    border-color: #087F5B !important;
+    padding-left: 16px !important; /* Keep padding consistent on mobile */
+  }
+
+  .command-row-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+  }
+
+  .command-row-code {
+    font-size: 12px !important;
+    font-weight: 800 !important;
+    color: #087F5B !important;
+    font-family: monospace !important;
+    min-width: 20px !important;
+  }
+
+  .command-row-content {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .command-row-label {
+    font-size: 14.5px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+  }
+
+  .command-row-desc {
+    font-size: 12px !important;
+    color: #64748B !important;
+    margin-top: 2px !important;
+    line-height: 1.4 !important;
+  }
+
+  .command-row-arrow {
+    color: #087F5B !important;
+  }
+
+  /* 10. DIAGNOSTIC CARD BUTTONS & BLANKET INLINE ACCORDION OVERRIDES */
+  #totul-inainte-de-credit button[type="button"] {
+    min-height: 64px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    padding: 14px 0 !important;
+  }
+
+  #totul-inainte-de-credit button[type="button"] > div > span {
+    color: #087F5B !important; /* Index/Code number */
+  }
+
+  #totul-inainte-de-credit button[type="button"] div div span:first-child {
+    color: #0F172A !important; /* Label */
+  }
+
+  #totul-inainte-de-credit button[type="button"] div div span:last-child {
+    color: #64748B !important; /* Description */
+  }
+
+  /* Blanket overrides for all dark cards and details elements inside diagnostic section */
+  #totul-inainte-de-credit div[style*="background"],
+  #totul-inainte-de-credit details {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 14px !important;
+    color: #0F172A !important;
+  }
+
+  #totul-inainte-de-credit details {
+    padding: 16px 20px !important;
+    margin-bottom: 12px !important;
+  }
+
+  #totul-inainte-de-credit details summary {
+    color: #0F172A !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    outline: none !important;
+  }
+
+  #totul-inainte-de-credit details p {
+    color: #334155 !important;
+    font-size: 13.5px !important;
+    margin-top: 12px !important;
+  }
+
+  /* 11. FINANCIAL INTELLIGENCE CARDS */
+  .fi-desktop-only {
+    display: none !important; /* Hide table on mobile */
+  }
+
+  .fi-mobile-cards {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .fi-mobile-card {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    border-radius: 14px !important;
+    padding: 16px 20px !important;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .fi-mobile-card-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    padding-bottom: 8px !important;
+  }
+
+  .fi-mobile-year {
+    font-size: 18px !important;
+    font-weight: 900 !important;
+    color: #0F172A !important;
+  }
+
+  .fi-mobile-year.green {
+    color: #087F5B !important;
+  }
+
+  .fi-mobile-card-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .fi-mobile-metric {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .fi-mobile-label {
+    font-size: 9.5px !important;
+    font-weight: 800 !important;
+    color: #64748B !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  .fi-mobile-val {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+  }
+
+  .fi-mobile-val.green {
+    color: #087F5B !important;
+  }
+
+  .fi-mobile-val.bold {
+    color: #0F172A !important;
+    font-weight: 900 !important;
+  }
+
+  /* Status Pills Override */
+  .status-pill {
+    font-size: 10px !important;
+    font-weight: 800 !important;
+    padding: 3px 8px !important;
+    border-radius: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.03em !important;
+  }
+
+  .status-pill.gray {
+    background: #F1F5F9 !important;
     color: #64748B !important;
   }
 
-  /* BUTTON & CTA CONTRAST ENFORCEMENT */
-  .button, .cv-hero-primary-btn, .totul-submit-btn, .btn-primary {
+  .status-pill.green {
+    background: #E8F5EF !important;
+    color: #087F5B !important;
+  }
+
+  /* 12. BUSINESS FINANCE BUTTONS & TEXT OVERRIDES */
+  #business-finance button[type="button"] {
+    min-height: 64px !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    padding: 14px 0 !important;
+  }
+
+  #business-finance button[type="button"] span {
+    color: #087F5B !important; /* Code number */
+  }
+
+  #business-finance button[type="button"] div div span:first-child {
+    color: #0F172A !important; /* Title */
+  }
+
+  #business-finance button[type="button"] div div span:last-child {
+    color: #64748B !important; /* Description */
+  }
+
+  #business-finance h2 {
+    color: #0F172A !important;
+  }
+
+  #business-finance p {
+    color: #334155 !important;
+  }
+
+  /* 13. FORMS & INPUTS SYSTEM */
+  .input-field,
+  input[type="text"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="email"],
+  select,
+  textarea {
+    width: 100% !important;
+    min-height: 48px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 8px !important;
+    padding: 12px !important;
+    color: #0F172A !important;
+    font-size: 15px !important;
+    box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.02) !important;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  }
+
+  .input-field:focus,
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: #087F5B !important;
+    box-shadow: 0 0 0 3px rgba(8, 127, 91, 0.10) !important;
+    outline: none !important;
+  }
+
+  .field-label {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #334155 !important;
+    margin-bottom: 6px !important;
+    display: block !important;
+  }
+
+  /* Multi-step form step buttons */
+  .options-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)) !important;
+    gap: 8px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .option-btn {
+    min-height: 48px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 8px !important;
+    color: #334155 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    padding: 8px 12px !important;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02) !important;
+  }
+
+  .option-btn.selected {
+    background: #E8F5EF !important;
+    border-color: #087F5B !important;
+    color: #087F5B !important;
+  }
+
+  /* Back button in forms */
+  .multi-step-form .back {
+    min-height: 48px !important;
+    background: transparent !important;
+    border: 1px solid #CBD5E1 !important;
+    border-radius: 8px !important;
+    color: #64748B !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    padding: 0 16px !important;
+  }
+
+  /* Form Step Indicators */
+  .form-steps {
+    display: flex !important;
+    gap: 8px !important;
+    justify-content: space-between !important;
+    overflow-x: auto !important;
+    padding-bottom: 8px !important;
+  }
+
+  .step-item {
+    font-size: 10px !important;
+    white-space: nowrap !important;
+  }
+
+  /* 14. BUTTONS SYSTEM */
+  .button,
+  .cv-hero-primary-btn,
+  .totul-submit-btn,
+  .btn-primary,
+  button[type="submit"],
+  .totul-final-cta-primary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    background: #087F5B !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    transition: background 0.15s ease !important;
+    text-decoration: none !important;
+  }
+
+  .button:hover,
+  .cv-hero-primary-btn:hover,
+  button[type="submit"]:hover {
+    background: #056B4D !important;
+  }
+
+  /* Secondary button styling */
+  .cv-hero-secondary-link,
+  .totul-final-cta-secondary,
+  .button.secondary {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 48px !important;
+    background: #FFFFFF !important;
+    border: 1px solid #087F5B !important;
+    border-radius: 12px !important;
+    color: #087F5B !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    gap: 8px !important;
+  }
+
+  .cv-hero-secondary-link:hover,
+  .totul-final-cta-secondary:hover {
+    background: #E8F5EF !important;
+  }
+
+  /* 15. DECIDE & ECOSYSTEM SECTIONS COLOR FIXES */
+  section[style*="text-align: center"] h2,
+  section[style*="text-align: center"] p,
+  #ecosistem h2,
+  #ecosistem p {
+    color: #0F172A !important;
+  }
+
+  #recomandari div[style*="linear-gradient"] {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03) !important;
+    color: #0F172A !important;
+  }
+
+  #recomandari h2 {
+    color: #0F172A !important;
+  }
+
+  #recomandari p {
+    color: #334155 !important;
+  }
+
+  #recomandari div[style*="rgba(255,255,255,0.05)"] {
+    background: #E8F5EF !important;
+    border: 1px solid #087F5B !important;
+    color: #087F5B !important;
+  }
+
+  #recomandari span[style*="background: var(--lime"] {
+    background: #087F5B !important;
+  }
+
+  /* 16. MOBILE DRAWER AND OVERLAYS */
+  .mobile-nav {
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: #FFFFFF !important;
+    z-index: 99990 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 24px !important;
+    gap: 16px !important;
+    overflow-y: auto !important;
+  }
+
+  .mobile-nav a {
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    color: #0F172A !important;
+    text-decoration: none !important;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+  }
+
+  .mega-intent-menu-overlay {
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: #FFFFFF !important;
+    z-index: 99997 !important;
+    padding: 20px !important;
+    overflow-y: auto !important;
+  }
+
+  .mega-intent-header h4 {
+    color: #0F172A !important;
+  }
+
+  .mega-intent-header p {
+    color: #64748B !important;
+  }
+
+  .mega-col-title span {
+    color: #0F172A !important;
+  }
+
+  .mega-pill {
+    background: #E8F5EF !important;
+    color: #087F5B !important;
+  }
+
+  .mega-close-btn {
+    color: #0F172A !important;
+  }
+
+  .mega-item-btn {
+    background: #FFFFFF !important;
+    border: 1px solid #E2E8F0 !important;
+    padding: 12px 16px !important;
+    border-radius: 10px !important;
+    color: #0F172A !important;
+  }
+
+  .mega-item-headline {
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+  }
+
+  .mega-item-sub {
+    font-size: 11px !important;
+    color: #64748B !important;
+  }
+
+  .mega-utility-bar {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    border-top: 1px solid #E2E8F0 !important;
+    padding-top: 16px !important;
+    margin-top: 16px !important;
+  }
+
+  .mega-utility-btn {
+    background: #F8FAFC !important;
+    border: 1px solid #E2E8F0 !important;
+    color: #0F172A !important;
+    padding: 12px !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+  }
+
+  /* 17. MOBILE BOTTOM STICKY CTA */
+  .mobile-cta,
+  a[class="mobile-cta"],
+  .mobile-fixed-bottom-bar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: #FFFFFF !important;
+    border-top: 1px solid #E2E8F0 !important;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 99990 !important;
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.05) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  .mobile-cta,
+  a[class="mobile-cta"] {
     background: #087F5B !important;
     color: #FFFFFF !important;
     font-weight: 800 !important;
+    min-height: 48px !important;
+    text-decoration: none !important;
+    border-radius: 0 !important;
+    border: none !important;
   }
-  .button:hover, .cv-hero-primary-btn:hover, .totul-submit-btn:hover {
+
+  .mobile-cta:hover {
     background: #056B4D !important;
-    color: #FFFFFF !important;
   }
 }
-
-
 
