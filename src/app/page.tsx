@@ -1485,16 +1485,16 @@ export default function Home() {
                   {/* 04 — 2026 ILLUSTRATIVE MORTGAGE EXAMPLE */}
                   <div style={{ background: "#151B23", padding: "16px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.10)" }}>
                     <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#F8FAFC", margin: "0 0 8px" }}>
-                      Exemplu credit ipotecar 500.000 RON pe 25 ani (Nivel 2026)
+                      Exemplu credit ipotecar 500.000 RON pe 25 ani (Nivel 2025)
                     </h4>
                     <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                       <div>
                         <div style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 700 }}>RATA LUNARĂ APROXIMATIV</div>
-                        <div style={{ fontSize: "18px", fontWeight: 800, color: "#34D399", marginTop: "2px" }}>3.220 RON</div>
+                        <div style={{ fontSize: "18px", fontWeight: 800, color: "#34D399", marginTop: "2px" }}>3.290 RON</div>
                       </div>
                       <div>
                         <div style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 700 }}>TOTAL PLĂTIT APROXIMATIV</div>
-                        <div style={{ fontSize: "18px", fontWeight: 800, color: "#F8FAFC", marginTop: "2px" }}>966.000 RON</div>
+                        <div style={{ fontSize: "18px", fontWeight: 800, color: "#F8FAFC", marginTop: "2px" }}>987.000 RON</div>
                       </div>
                     </div>
                   </div>

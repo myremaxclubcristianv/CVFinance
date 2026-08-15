@@ -3454,11 +3454,11 @@ footer {
 }
 
 /* ================================================== */
-/* FORENSIC MOBILE-FIRST UI/UX DESIGN SYSTEM OVERRIDES */
+/* APPLE-STYLE MOBILE RECOMPOSITION SYSTEM (<767px)   */
 /* ================================================== */
 
-@media (max-width: 768px) {
-  /* 1. Global Viewport & Document Container Safety */
+@media (max-width: 767px) {
+  /* 1. Global Viewport & Editorial Content Padding */
   html, body, main {
     max-width: 100vw;
     overflow-x: hidden;
@@ -3469,101 +3469,114 @@ footer {
   .bf-master-container,
   .container,
   .section {
-    padding-left: 16px !important;
-    padding-right: 16px !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
   }
 
   .section,
   .fi-section,
   .totul-hero-section,
   .bf-hero-section {
-    padding-top: 36px !important;
-    padding-bottom: 36px !important;
+    padding-top: 56px !important;
+    padding-bottom: 56px !important;
   }
 
   .section-intro,
   .fi-header,
   .totul-hero-header,
   .bf-header {
-    margin-bottom: 20px !important;
+    margin-bottom: 28px !important;
   }
 
-  /* 2. Responsive Mobile Typography */
+  /* 2. Apple Mobile Typography Scale & Line-Wrapping */
   h1, .hero-title, .totul-hero-title, .bf-hero-title {
-    font-size: clamp(25px, 7.5vw, 34px) !important;
-    line-height: 1.18 !important;
-    letter-spacing: -0.02em !important;
+    font-size: clamp(34px, 9vw, 44px) !important;
+    line-height: 1.08 !important;
+    letter-spacing: -0.035em !important;
+    font-weight: 800 !important;
     text-wrap: balance;
   }
 
   h2, .section-title, .fi-header h2, .totul-section-title, .bf-section-title {
-    font-size: clamp(21px, 5.5vw, 26px) !important;
-    line-height: 1.25 !important;
-    letter-spacing: -0.01em !important;
+    font-size: clamp(26px, 7vw, 32px) !important;
+    line-height: 1.15 !important;
+    letter-spacing: -0.025em !important;
+    font-weight: 800 !important;
     text-wrap: balance;
   }
 
   h3, .card-title, .fi-card-title, .totul-card-title, .bf-card-title {
-    font-size: clamp(16px, 4.5vw, 18px) !important;
-    line-height: 1.3 !important;
+    font-size: clamp(18px, 5vw, 21px) !important;
+    line-height: 1.25 !important;
+    font-weight: 800 !important;
     text-wrap: balance;
   }
 
   p, .section-intro p, .fi-header p, .totul-hero-copy, .bf-copy {
-    font-size: 14px !important;
-    line-height: 1.5 !important;
+    font-size: 16px !important;
+    line-height: 1.55 !important;
+    color: #CBD5E1 !important;
   }
 
   .eyebrow, .fi-eyebrow, .totul-eyebrow, .bf-eyebrow {
     font-size: 11px !important;
-    letter-spacing: 0.08em !important;
+    letter-spacing: 0.10em !important;
+    text-transform: uppercase !important;
   }
 
-  /* 3. Single-Surface Flattening & Compact Card System */
-  .card,
-  .fi-card,
-  .totul-card,
-  .bf-card,
-  .calculator-box,
-  .form-card,
-  .totul-final-cta-panel {
-    padding: 16px 14px !important;
-    border-radius: 12px !important;
-    margin-bottom: 12px !important;
+  /* 3. 60-70% Card Elimination — Replace Cards with Apple Editorial Rows */
+  .grid-2, .grid-3, .grid-4, .fi-map-grid, .bf-diagnostic-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
   }
 
-  /* Eliminate inner card visual redundancy (cards inside cards) */
-  .card .card,
-  .fi-card .fi-card,
-  .totul-card .totul-card,
-  .bf-card .bf-card {
-    border: none !important;
+  .card, .fi-map-card, .bf-card, .totul-card {
     background: transparent !important;
-    padding: 0 !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 0 !important;
+    padding: 18px 0 !important;
     margin-bottom: 0 !important;
     box-shadow: none !important;
   }
 
-  /* 4. Form Controls, Radio Cards & Touch Target Safety */
-  input,
-  select,
-  textarea,
-  button,
-  .totul-radio-card,
-  .bf-purpose-card {
-    min-height: 48px !important;
+  .card:last-child, .fi-map-card:last-child {
+    border-bottom: none !important;
   }
 
-  .totul-problem-card,
-  .totul-radio-card,
-  .bf-purpose-card,
-  .hero-intent-btn {
-    padding: 12px 14px !important;
-    border-radius: 10px !important;
-    font-size: 13.5px !important;
+  /* Flatten nested cards completely */
+  .card .card, .fi-card .fi-card, .totul-card .totul-card {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
   }
 
-  /* 5. Financial Intelligence Mobile Layout */
+  /* 4. Apple Primary CTAs */
+  .btn-primary, .totul-hero-primary, .bf-hero-primary, .fi-panel-cta, .nav-cta, .totul-final-cta-primary {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 54px !important;
+    font-size: 15px !important;
+    font-weight: 800 !important;
+    border-radius: 12px !important;
+    letter-spacing: 0.02em !important;
+  }
+
+  /* 5. Inputs & Touch Targets */
+  input, select, textarea, button, .totul-radio-card, .bf-purpose-card {
+    min-height: 52px !important;
+  }
+
+  .totul-problem-card, .totul-radio-card, .bf-purpose-card, .hero-intent-btn {
+    padding: 14px 16px !important;
+    border-radius: 12px !important;
+    font-size: 14px !important;
+  }
+
+  /* 6. Financial Intelligence Mobile Layout */
   .fi-snapshot-grid {
     grid-template-columns: repeat(3, 1fr) !important;
     gap: 6px !important;
@@ -3571,6 +3584,9 @@ footer {
 
   .fi-metric-card {
     padding: 10px 4px !important;
+    background: #0D1117 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 10px !important;
   }
 
   .fi-metric-label {
@@ -3584,35 +3600,15 @@ footer {
 
   .fi-dual-panels {
     grid-template-columns: 1fr !important;
-    gap: 16px !important;
+    gap: 20px !important;
   }
 
   .fi-intelligence-panel {
-    padding: 18px 14px !important;
-    border-radius: 14px !important;
+    padding: 24px 20px !important;
+    border-radius: 16px !important;
   }
 
-  .fi-panel-title {
-    font-size: 17px !important;
-  }
-
-  .fi-map-grid {
-    grid-template-columns: 1fr !important;
-    gap: 8px !important;
-  }
-
-  .fi-map-card {
-    padding: 12px 14px !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-  }
-
-  .fi-map-desc {
-    display: none !important;
-  }
-
-  /* 6. Header Intent MegaMenu Mobile Optimization */
+  /* 7. Header Intent MegaMenu Mobile Optimization */
   .mega-intent-menu-overlay {
     position: fixed !important;
     top: 76px !important;
@@ -3621,7 +3617,7 @@ footer {
     bottom: 0 !important;
     max-height: calc(100vh - 76px) !important;
     overflow-y: auto !important;
-    padding: 16px 16px 40px !important;
+    padding: 20px 20px 40px !important;
     background: #070A0F !important;
   }
 
@@ -3635,27 +3631,27 @@ footer {
   }
 
   .mega-item-btn {
-    padding: 12px 14px !important;
+    padding: 14px 16px !important;
+    border-radius: 12px !important;
   }
 
   .mega-item-headline {
-    font-size: 12.5px !important;
+    font-size: 13px !important;
   }
 
   .mega-item-sub {
-    font-size: 11.5px !important;
+    font-size: 12px !important;
   }
 }
 
 @media (max-width: 420px) {
-  /* Narrow viewport visual tuning (320px–390px) */
   .fi-snapshot-grid {
     grid-template-columns: 1fr !important;
     gap: 8px !important;
   }
 
   .fi-metric-card {
-    padding: 12px 14px !important;
+    padding: 12px 16px !important;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -3668,6 +3664,36 @@ footer {
 
   .fi-metric-value {
     font-size: 20px !important;
+  }
+}
+
+/* MOBILE FIXED BOTTOM ACTION BAR (<767px) */
+.mobile-fixed-bottom-bar {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .mobile-fixed-bottom-bar {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(7, 10, 15, 0.94);
+    backdrop-filter: blur(16px);
+    border-top: 1px solid rgba(52, 211, 153, 0.25);
+    padding: 10px 16px calc(10px + env(safe-area-inset-bottom, 0px));
+    z-index: 99;
+    gap: 10px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.6);
+  }
+
+  .floating-trigger-btn {
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  footer, main {
+    padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
   }
 }
 
