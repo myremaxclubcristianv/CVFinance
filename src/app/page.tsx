@@ -551,15 +551,18 @@ export default function Home() {
         <section className="promise-section">
           <div className="promise-container">
             <h2 className="promise-headline">
-              TU ÎMI SPUI SITUAȚIA.<br />
-              EU MĂ UIT LA CIFRE.<br />
-              ÎȚI SPUN CE SE POATE FACE.<br />
-              APOI VORBESC CU BANCA.
+              <span className="promise-line-muted">TU ÎMI SPUI SITUAȚIA.</span><br />
+              <span className="promise-line-dark">EU MĂ UIT LA CIFRE.</span><br />
+              <span className="promise-line-emerald">ÎȚI SPUN CE SE POATE FACE.</span><br />
+              <span className="promise-line-bold">APOI VORBESC CU BANCA.</span>
             </h2>
           </div>
         </section>
 
-        {/* 03 / CUM LUCRĂM — EU TE SUN. BANCA NU. */}
+        {/* 01 / DE UNDE ÎNCEPEM — COMMAND SHEET DIRECTORY */}
+        <CommandSheet />
+
+        {/* 02 / CUM LUCRĂM — EU TE SUN. BANCA NU. */}
         <section className="philosophy-section">
           <div className="philosophy-container">
             <span className="section-marker">02 / CUM LUCRĂM</span>
@@ -592,9 +595,6 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        {/* COMMAND SHEET DIRECTORY */}
-        <CommandSheet />
 
         {/* 03 / DIAGNOSE — PERSONAL FINANCE */}
         <section id="totul-inainte-de-credit" className="personal-section">
@@ -731,28 +731,6 @@ export default function Home() {
                 <p className="principle-desc">Revin către tine telefonic după analiză.</p>
               </div>
             </div>
-
-            {/* FAQ Accordions */}
-            <div className="personal-faq-accordions">
-              <h3 className="accordions-title">ÎNTREBĂRI FRECVENTE</h3>
-              <p className="accordions-subtitle">Tot ce trebuie să știi înainte de a aplica pentru o evaluare:</p>
-              <div className="editorial-accordions">
-                {[
-                  { q: "Se poate șterge istoricul din Biroul de Credit?", a: "Dacă raportarea a fost efectuată cu nerespectarea prevederilor legale sau dacă datele sunt eronate, există temei juridic pentru rectificare sau contestație. Nu există nicio garanție automată de ștergere a datelor raportate corect." },
-                  { q: "Pot obține credit dacă am avut întârzieri?", a: "Da, în anumite condiții. Șansele depind de vechimea întârzierilor, dacă au fost achitate integral, nivelul actual al veniturilor și instituția financiară aleasă." },
-                  { q: "Ce fac dacă am fost refuzat de bancă?", a: "Primul pas este să nu aplici la întâmplare la alte instituții. Verificăm mai întâi motivul refuzului pentru a identificat opțiunile eligibile." },
-                  { q: "Pot refinanța dacă am avut întârzieri?", a: "Refinanțarea este posibilă în special dacă întârzierile au fost remediate, iar scopul este consolidarea tuturor ratelor într-o rată mai mică." },
-                  { q: "Pot obține finanțare prin IFN după un refuz bancar?", a: "IFN-urile au criterii mai flexibile față de bănci, însă costurile pot fi mai mari. Înainte de a contracta un credit IFN, este esențial să evaluăm dacă există opțiuni bancare." },
-                  { q: "De ce sunt refuzat repetat?", a: "Refuzul repetat apare adesea din cauza scorului FICO scăzut, a numărului mare de interogări recente sau a gradului depășit de îndatorare." },
-                  { q: "Ce verific înainte să trimit o nouă aplicație?", a: "Trebuie să verifici raportul Biroului de Credit, venitul net eligibil, totalul ratelor actuale și criteriile exacte ale finanțatorului." },
-                ].map((faq, idx) => (
-                  <details key={idx} className="editorial-details">
-                    <summary className="editorial-summary">{faq.q}</summary>
-                    <p className="editorial-details-content">{faq.a}</p>
-                  </details>
-                ))}
-              </div>
-            </div>
           </div>
         </section>
 
@@ -833,44 +811,7 @@ export default function Home() {
           />
         </div>
 
-        {/* 05 / FINANCIAL INTELLIGENCE — BLOOMBERG / FT RESEARCH TERMINAL */}
-        <FinancialIntelligence />
-
-        {/* OUTCOMES SECTION: CE CÂȘTIGI? */}
-        <section id="proces" className="outcomes-section">
-          <div className="outcomes-container">
-            <span className="section-marker">08 / REZULTATE</span>
-            <h2 className="outcomes-main-title">CE CÂȘTIGI?</h2>
-            
-            <div className="outcomes-grid">
-              <div className="outcome-item">
-                <span className="outcome-number">01</span>
-                <span className="outcome-label">CLARITATE</span>
-                <p className="outcome-text">Știi unde te încadrezi.</p>
-              </div>
-
-              <div className="outcome-item">
-                <span className="outcome-number">02</span>
-                <span className="outcome-label">OPȚIUNI</span>
-                <p className="outcome-text">Nu depinzi de prima ofertă.</p>
-              </div>
-
-              <div className="outcome-item">
-                <span className="outcome-number">03</span>
-                <span className="outcome-label">TIMP</span>
-                <p className="outcome-text">Nu pierzi zile între bănci.</p>
-              </div>
-
-              <div className="outcome-item">
-                <span className="outcome-number">04</span>
-                <span className="outcome-label">NEGOCIERE</span>
-                <p className="outcome-text">Ai pe cineva care discută cu banca.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 4. SERVICES SECTION */}
+        {/* 05 / SERVICES SECTION */}
         <section id="servicii" className="section">
           <div className="section-intro">
             <div>
@@ -905,7 +846,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 5. CREDIT TYPES */}
+        {/* 06 / CREDIT TYPES */}
         <section id="tipuri-credite" className="section" style={{ paddingTop: "40px" }}>
           <div className="section-intro">
             <div>
@@ -927,7 +868,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 6. CALCULATOR FINANCIAR */}
+        {/* 07 / CALCULATOR FINANCIAR */}
         <section id="calculator" className="section calculator-section">
           <div className="calculator-box">
             <div className="calc-copy">
@@ -1059,7 +1000,305 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 06 / ANALYZE — QUALIFICATION TERMINAL */}
+        {/* 08 / OUTCOMES SECTION: CE CÂȘTIGI? */}
+        <section id="proces" className="outcomes-section">
+          <div className="outcomes-container">
+            <span className="section-marker">08 / REZULTATE</span>
+            <h2 className="outcomes-main-title">CE CÂȘTIGI?</h2>
+            
+            <div className="outcomes-grid">
+              <div className="outcome-item">
+                <span className="outcome-number">01</span>
+                <span className="outcome-label">CLARITATE</span>
+                <p className="outcome-text">Știi unde te încadrezi.</p>
+              </div>
+
+              <div className="outcome-item">
+                <span className="outcome-number">02</span>
+                <span className="outcome-label">OPȚIUNI</span>
+                <p className="outcome-text">Nu depinzi de prima ofertă.</p>
+              </div>
+
+              <div className="outcome-item">
+                <span className="outcome-number">03</span>
+                <span className="outcome-label">TIMP</span>
+                <p className="outcome-text">Nu pierzi zile între bănci.</p>
+              </div>
+
+              <div className="outcome-item">
+                <span className="outcome-number">04</span>
+                <span className="outcome-label">NEGOCIERE</span>
+                <p className="outcome-text">Ai pe cineva care discută cu banca.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 09 / FINANCIAL INTELLIGENCE — BLOOMBERG / FT RESEARCH TERMINAL */}
+        <FinancialIntelligence />
+        <section id="despre" className="about-section">
+          <div className="about-container">
+            <div className="about-left-col">
+              <span className="section-marker">10 / DESPRE MINE</span>
+              <h2 className="about-title">
+                Cristian Văduva
+              </h2>
+              <p className="about-story-lead">
+                Eu nu vreau să îți spun ce credit să iei înainte să înțeleg ce vrei să faci.
+              </p>
+              <p className="about-story-text">
+                Începem cu situația ta. Analizez cifrele, caut variantele și apoi discut cu banca. Scopul este simplu: să înțelegi ce poți obține și să alegi informat.
+              </p>
+              <a className="button" href="#cum-functioneaza" style={{ marginTop: "16px" }}>
+                AFLĂ CUM LUCREZ →
+              </a>
+            </div>
+            <div className="about-right-col">
+              <div className="about-statement-box">
+                <h3 className="about-statement-headline">
+                  Nu vând primul credit.
+                </h3>
+                <h3 className="about-statement-subheadline">
+                  Caut varianta care are sens pentru tine.
+                </h3>
+                <div className="about-statement-divider" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* TRUST REPORT SECTION */}
+        <section id="incredere" className="section">
+          <div className="section-intro">
+            <div>
+              <p className="eyebrow">
+                <span /> DE CE CLIENȚII ALEG CV FINANCE
+              </p>
+              <h2>Partenerul tău independent de încredere</h2>
+            </div>
+          </div>
+
+          <div className="trust-report-grid">
+            {[
+              { icon: UserCheck, title: "Consultanță personalizată", desc: "Analizăm situația ta individual și găsim strategia potrivită profilului tău." },
+              { icon: Building2, title: "Acces la multiple oferte", desc: "Comparăm direct ofertele celor peste 20 de instituții financiare partenere." },
+              { icon: Award, title: "Experiență și expertiză", desc: "Echipa noastră oferă recomandări obiective și orientate către rezultate." },
+              { icon: ShieldCheck, title: "Analiză fără obligații", desc: "Evaluezi soluțiile gratuit, fără niciun cost ascuns sau obligație contractuală." },
+              { icon: BadgeCheck, title: "Consultant dedicat", desc: "Un singur punct de contact competent pe parcursul întregului proces." },
+              { icon: Lock, title: "Confidențialitate garantată", desc: "Datele tale sunt complet asigurate și protejate conform GDPR." },
+            ].map((item, idx) => {
+              const IconComp = item.icon;
+              return (
+                <div key={idx} className="trust-column">
+                  <div className="trust-column-header">
+                    <IconComp size={20} className="trust-column-icon" />
+                    <h3 className="trust-column-title">{item.title}</h3>
+                  </div>
+                  <p className="trust-column-desc">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* REFERRAL PROGRAM */}
+        <section id="recomandari" className="section">
+          <div className="referral-panel">
+            <div className="referral-header">
+              <div className="referral-icon">
+                <Gift size={28} />
+              </div>
+              <div className="referral-header-text">
+                <span className="referral-label">PROGRAM DE RECOMANDĂRI</span>
+                <h2 className="referral-title">Recomandă și câștigă</h2>
+              </div>
+            </div>
+
+            <p className="referral-desc">
+              Recomandă o persoană interesată de optimizarea unui credit și poți primi un bonus pentru fiecare recomandare eligibilă.
+            </p>
+
+            <div className="referral-action-row">
+              <div className="referral-badge">
+                500 – 3.000 RON / recomandare
+              </div>
+
+              <a className="button" href="/referral" onClick={() => trackEvent("referral_click")}>
+                Recomandă un client <Share2 size={18} />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ SECTION */}
+        <section id="faq" className="section faq-section">
+          <div className="faq-split-container">
+            <div className="section-intro" style={{ margin: 0, padding: 0 }}>
+              <div>
+                <p className="eyebrow">
+                  <span /> ÎNTREBĂRI FRECVENTE
+                </p>
+                <h2>Răspunsuri la întrebările tale</h2>
+              </div>
+            </div>
+
+            <div className="faq-list">
+              {faqs.map(([question, answer], index) => {
+                const isOpen = openFaq === index;
+                return (
+                  <div key={index} className={`faq-item ${isOpen ? "open" : ""}`}>
+                    <button
+                      className="faq-question"
+                      onClick={() => setOpenFaq(isOpen ? null : index)}
+                    >
+                      <span>{question}</span>
+                      <ChevronDown size={20} className={`arrow ${isOpen ? "rotated" : ""}`} />
+                    </button>
+                    {isOpen && <div className="faq-answer"><p>{answer}</p></div>}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
+        {/* 11. PROCESS SECTION */}
+        <section id="cum-functioneaza" className="section">
+          <div className="section-intro">
+            <div>
+              <span className="section-marker">11 / CUM FUNCȚIONEAZĂ</span>
+              <h2>Cum funcționează</h2>
+            </div>
+          </div>
+
+          <div className="process-steps-row">
+            <div className="process-step-item">
+              <span className="process-step-num">01</span>
+              <h3 className="process-step-title">Completezi analiza gratuită</h3>
+              <p className="process-step-desc">Durează sub 2 minute să introduci datele tale financiare de bază.</p>
+            </div>
+            <div className="process-step-item">
+              <span className="process-step-num">02</span>
+              <h3 className="process-step-title">Un consultant analizează situația ta</h3>
+              <p className="process-step-desc">Evaluăm opțiunile disponibile din piață de la peste 20 de bănci partenere.</p>
+            </div>
+            <div className="process-step-item">
+              <span className="process-step-num">03</span>
+              <h3 className="process-step-title">Primești soluțiile potrivite</h3>
+              <p className="process-step-desc">Alegi varianta optimă pentru reducerea ratelor sau obținerea fondurilor.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* 12. CONTACT DIRECT SECTION */}
+        <section id="contact-direct" className="section" style={{ paddingTop: "40px" }}>
+          <div className="section-intro">
+            <div>
+              <span className="section-marker">12 / CONTACT DIRECT</span>
+              <h2>Contact direct</h2>
+              <p style={{ color: "var(--muted)", maxWidth: "600px", marginTop: "8px" }}>
+                Discutăm situația ta financiară și identificăm opțiunile potrivite pentru cazul tău.
+              </p>
+            </div>
+          </div>
+
+          <div className="contact-rows-list">
+            <a
+              href="https://wa.me/436509536345?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83%20a%20op%C8%9Biunilor%20mele%20financiare."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="contact-row-item"
+            >
+              <div className="contact-row-left">
+                <MessageCircle size={24} className="contact-row-icon" />
+                <div className="contact-row-info">
+                  <span className="contact-row-label">WhatsApp</span>
+                  <h3 className="contact-row-title">Vorbește direct cu mine</h3>
+                  <p className="contact-row-desc">Preferat pentru întrebări rapide și trimiterea informațiilor de credit.</p>
+                </div>
+              </div>
+              <div className="contact-row-value">
+                +43 650 953 6345 →
+              </div>
+            </a>
+
+            <a
+              href="tel:+40767110439"
+              className="contact-row-item"
+            >
+              <div className="contact-row-left">
+                <UserCheck size={24} className="contact-row-icon" />
+                <div className="contact-row-info">
+                  <span className="contact-row-label">Telefon</span>
+                  <h3 className="contact-row-title">Discutăm situația ta</h3>
+                  <p className="contact-row-desc">Luni – Vineri 09:00 – 18:00 pentru convorbiri directe.</p>
+                </div>
+              </div>
+              <div className="contact-row-value">
+                0767 110 439 →
+              </div>
+            </a>
+
+            <a
+              href="mailto:cristianvaduva@duck.com"
+              className="contact-row-item"
+            >
+              <div className="contact-row-left">
+                <Landmark size={24} className="contact-row-icon" />
+                <div className="contact-row-info">
+                  <span className="contact-row-label">Email</span>
+                  <h3 className="contact-row-title">Trimite-mi detaliile</h3>
+                  <p className="contact-row-desc">Trimite întrebări detaliate sau documente necesare analizei dosarului.</p>
+                </div>
+              </div>
+              <div className="contact-row-value">
+                cristianvaduva@duck.com →
+              </div>
+            </a>
+          </div>
+        </section>
+
+        {/* 13. ECOSYSTEM AUTHORITY SECTION */}
+        <section id="ecosistem" className="section" style={{ paddingTop: "40px", paddingBottom: "60px" }}>
+          <div className="section-intro">
+            <div>
+              <span className="section-marker">13 / ECOSISTEM</span>
+              <h2>Parte din ecosistemul Cristian Văduva Intelligence</h2>
+              <p style={{ color: "var(--muted)", maxWidth: "680px", marginTop: "8px", lineHeight: 1.6 }}>
+                CV Finance face parte dintr-un ecosistem digital construit pentru decizii mai bune în domeniul financiar, imobiliar, asigurări, business intelligence și sănătate.
+              </p>
+            </div>
+          </div>
+
+          <div className="ecosystem-inline-list">
+            {[
+              { name: "cristianvaduva.com", url: "https://cristianvaduva.com", desc: "Personal brand, professional profile and advisory platform." },
+              { name: "AiXLuxury.com", url: "https://AiXLuxury.com", desc: "Luxury real estate, premium properties and private advisory." },
+              { name: "HomeFind", url: "https://homefind.cristianvaduva.com", desc: "Real estate intelligence, proprietăți și analiză de piață." },
+              { name: "Insurance", url: "https://insurance.cristianvaduva.com", desc: "Analiză și soluții de protecție financiară." },
+              { name: "Subvenții", url: "https://subventii.cristianvaduva.com", desc: "Platformă de intelligence pentru finanțări și programe guvernamentale." },
+              { name: "AiX Media", url: "https://aixmedia.cristianvaduva.com", desc: "Business, economie, tehnologie și intelligence." },
+              { name: "Health", url: "https://health.cristianvaduva.com", desc: "Tehnologie și intelligence pentru sănătate." },
+              { name: "OS", url: "https://os.cristianvaduva.com", desc: "Ecosistem operațional și instrumente digitale inteligente." },
+            ].map((eco, idx) => (
+              <a
+                key={idx}
+                href={eco.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="ecosystem-link-item"
+              >
+                <div className="ecosystem-link-left">
+                  <span className="ecosystem-link-name">{eco.name}</span>
+                  <span className="ecosystem-link-desc">{eco.desc}</span>
+                </div>
+                <span className="ecosystem-link-arrow">↗</span>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        {/* 14. QUALIFICATION TERMINAL */}
         <section id="aplica" className="qualification-section">
           <div className="qualification-container">
             <span className="section-marker">14 / ANALIZĂ & CALIFICARE</span>
@@ -1449,253 +1688,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 8. PROCESS SECTION */}
-        <section id="cum-functioneaza" className="section">
-          <div className="section-intro">
-            <div>
-              <span className="section-marker">11 / CUM FUNCȚIONEAZĂ</span>
-              <h2>Cum funcționează</h2>
-            </div>
-          </div>
-
-          <div className="process-steps-row">
-            <div className="process-step-item">
-              <span className="process-step-num">01</span>
-              <h3 className="process-step-title">Completezi analiza gratuită</h3>
-              <p className="process-step-desc">Durează sub 2 minute să introduci datele tale financiare de bază.</p>
-            </div>
-            <div className="process-step-item">
-              <span className="process-step-num">02</span>
-              <h3 className="process-step-title">Un consultant analizează situația ta</h3>
-              <p className="process-step-desc">Evaluăm opțiunile disponibile din piață de la peste 20 de bănci partenere.</p>
-            </div>
-            <div className="process-step-item">
-              <span className="process-step-num">03</span>
-              <h3 className="process-step-title">Primești soluțiile potrivite</h3>
-              <p className="process-step-desc">Alegi varianta optimă pentru reducerea ratelor sau obținerea fondurilor.</p>
-            </div>
-          </div>
-        </section>
-
-        {/* 10. TRANSPARENCY SECTION — ABOUT CRISTIAN VĂDUVA */}
-        <section id="despre" className="about-section">
-          <div className="about-container">
-            <div className="about-left-col">
-              <span className="section-marker">10 / DESPRE MINE</span>
-              <h2 className="about-title">
-                Cristian Văduva
-              </h2>
-              <p className="about-story-lead">
-                Eu nu vreau să îți spun ce credit să iei înainte să înțeleg ce vrei să faci.
-              </p>
-              <p className="about-story-text">
-                Începem cu situația ta. Analizez cifrele, caut variantele și apoi discut cu banca. Scopul este simplu: să înțelegi ce poți obține și să alegi informat.
-              </p>
-              <a className="button" href="#cum-functioneaza" style={{ marginTop: "16px" }}>
-                AFLĂ CUM LUCREZ →
-              </a>
-            </div>
-            <div className="about-right-col">
-              <div className="about-statement-box">
-                <h3 className="about-statement-headline">
-                  Nu vând primul credit.
-                </h3>
-                <h3 className="about-statement-subheadline">
-                  Caut varianta care are sens pentru tine.
-                </h3>
-                <div className="about-statement-divider" />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* 10. TRUST SECTION */}
-        <section id="incredere" className="section">
-          <div className="section-intro">
-            <div>
-              <p className="eyebrow">
-                <span /> DE CE CLIENȚII ALEG CV FINANCE
-              </p>
-              <h2>Partenerul tău independent de încredere</h2>
-            </div>
-          </div>
-
-          <div className="trust-report-grid">
-            {[
-              { icon: UserCheck, title: "Consultanță personalizată", desc: "Analizăm situația ta individual și găsim strategia potrivită profilului tău." },
-              { icon: Building2, title: "Acces la multiple oferte", desc: "Comparăm direct ofertele celor peste 20 de instituții financiare partenere." },
-              { icon: Award, title: "Experiență și expertiză", desc: "Echipa noastră oferă recomandări obiective și orientate către rezultate." },
-              { icon: ShieldCheck, title: "Analiză fără obligații", desc: "Evaluezi soluțiile gratuit, fără niciun cost ascuns sau obligație contractuală." },
-              { icon: BadgeCheck, title: "Consultant dedicat", desc: "Un singur punct de contact competent pe parcursul întregului proces." },
-              { icon: Lock, title: "Confidențialitate garantată", desc: "Datele tale sunt complet asigurate și protejate conform GDPR." },
-            ].map((item, idx) => {
-              const IconComp = item.icon;
-              return (
-                <div key={idx} className="trust-column">
-                  <div className="trust-column-header">
-                    <IconComp size={20} className="trust-column-icon" />
-                    <h3 className="trust-column-title">{item.title}</h3>
-                  </div>
-                  <p className="trust-column-desc">{item.desc}</p>
-                </div>
-              );
-            })}
-          </div>
-        </section>
-
-        {/* 10. REFERRAL PROGRAM */}
-        <section id="recomandari" className="section">
-          <div className="referral-panel">
-            <div className="referral-header">
-              <div className="referral-icon">
-                <Gift size={28} />
-              </div>
-              <div className="referral-header-text">
-                <span className="referral-label">PROGRAM DE RECOMANDĂRI</span>
-                <h2 className="referral-title">Recomandă și câștigă</h2>
-              </div>
-            </div>
-
-            <p className="referral-desc">
-              Recomandă o persoană interesată de optimizarea unui credit și poți primi un bonus pentru fiecare recomandare eligibilă.
-            </p>
-
-            <div className="referral-action-row">
-              <div className="referral-badge">
-                500 – 3.000 RON / recomandare
-              </div>
-
-              <a className="button" href="/referral" onClick={() => trackEvent("referral_click")}>
-                Recomandă un client <Share2 size={18} />
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* 11. FAQ SECTION */}
-        <section id="faq" className="section faq-section">
-          <div className="section-intro">
-            <div>
-              <p className="eyebrow">
-                <span /> ÎNTREBĂRI FRECVENTE
-              </p>
-              <h2>Răspunsuri la întrebările tale</h2>
-            </div>
-          </div>
-
-          <div className="faq-list">
-            {faqs.map(([question, answer], index) => {
-              const isOpen = openFaq === index;
-              return (
-                <div key={index} className={`faq-item ${isOpen ? "open" : ""}`}>
-                  <button
-                    className="faq-question"
-                    onClick={() => setOpenFaq(isOpen ? null : index)}
-                  >
-                    <span>{question}</span>
-                    <ChevronDown size={20} className={`arrow ${isOpen ? "rotated" : ""}`} />
-                  </button>
-                  {isOpen && <div className="faq-answer"><p>{answer}</p></div>}
-                </div>
-              );
-            })}
-          </div>
-        </section>
-        {/* 07 / DECIDE — FINAL CTA */}
-        <section className="final-cta-section">
-          <div className="final-cta-container">
-            <h2 className="final-cta-title">
-              NU TREBUIE SĂ ȘTII TU CE BANCĂ ESTE POTRIVITĂ.
-            </h2>
-            <h2 className="final-cta-title highlight">
-              Trebuie doar să-mi spui ce vrei să faci.
-            </h2>
-
-            <div className="final-cta-actions">
-              <a
-                href="#verificare-credit"
-                className="final-cta-primary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  trackEvent("final_decide_primary_cta_click");
-                  document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                VERIFICĂ SITUAȚIA →
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* 12. CONTACT DIRECT SECTION */}
-        <section id="contact-direct" className="section" style={{ paddingTop: "40px" }}>
-          <div className="section-intro">
-            <div>
-              <span className="section-marker">12 / CONTACT DIRECT</span>
-              <h2>Contact direct</h2>
-              <p style={{ color: "var(--muted)", maxWidth: "600px", marginTop: "8px" }}>
-                Discutăm situația ta financiară și identificăm opțiunile potrivite pentru cazul tău.
-              </p>
-            </div>
-          </div>
-
-          <div className="contact-rows-list">
-            <a
-              href="https://wa.me/436509536345?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83%20a%20op%C8%9Biunilor%20mele%20financiare."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="contact-row-item"
-            >
-              <div className="contact-row-left">
-                <MessageCircle size={24} className="contact-row-icon" />
-                <div className="contact-row-info">
-                  <span className="contact-row-label">WhatsApp</span>
-                  <h3 className="contact-row-title">Vorbește direct cu mine</h3>
-                  <p className="contact-row-desc">Preferat pentru întrebări rapide și trimiterea informațiilor de credit.</p>
-                </div>
-              </div>
-              <div className="contact-row-value">
-                +43 650 953 6345 →
-              </div>
-            </a>
-
-            <a
-              href="tel:+40767110439"
-              className="contact-row-item"
-            >
-              <div className="contact-row-left">
-                <UserCheck size={24} className="contact-row-icon" />
-                <div className="contact-row-info">
-                  <span className="contact-row-label">Telefon</span>
-                  <h3 className="contact-row-title">Discutăm situația ta</h3>
-                  <p className="contact-row-desc">Luni – Vineri 09:00 – 18:00 pentru convorbiri directe.</p>
-                </div>
-              </div>
-              <div className="contact-row-value">
-                0767 110 439 →
-              </div>
-            </a>
-
-            <a
-              href="mailto:cristianvaduva@duck.com"
-              className="contact-row-item"
-            >
-              <div className="contact-row-left">
-                <Landmark size={24} className="contact-row-icon" />
-                <div className="contact-row-info">
-                  <span className="contact-row-label">Email</span>
-                  <h3 className="contact-row-title">Trimite-mi detaliile</h3>
-                  <p className="contact-row-desc">Trimite întrebări detaliate sau documente necesare analizei dosarului.</p>
-                </div>
-              </div>
-              <div className="contact-row-value">
-                cristianvaduva@duck.com →
-              </div>
-            </a>
-          </div>
-        </section>
-
-        {/* 13. ECOSYSTEM AUTHORITY SECTION */}
+        {/* 13 / ECOSISTEM */}
         <section id="ecosistem" className="section" style={{ paddingTop: "40px", paddingBottom: "60px" }}>
           <div className="section-intro">
             <div>
