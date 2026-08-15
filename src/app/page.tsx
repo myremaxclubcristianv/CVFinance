@@ -804,7 +804,7 @@ export default function Home() {
                 </p>
                 <div style={{ fontSize: "1rem", color: "#5F6368", display: "flex", flexDirection: "column", gap: "1rem", lineHeight: "1.65" }}>
                   <p>
-                    Lucrez în domeniul financiar cu o filozofie simplă: nu vând produse bancare, ci ofer consultanță obiectivă celor care vor să ia decizii financiare inteligente.
+                    Lucrez în domeniul financiar cu o filozofie simplă: nu valorific produse bancare, ci ofer consultanță obiectivă celor care vor să ia decizii financiare inteligente.
                   </p>
                   <p>
                     Analizez cifrele în detaliu, înțeleg provocările fiecărui dosar și pregătesc cea mai bună strategie de finanțare înainte de orice aplicare la bancă.
@@ -824,7 +824,7 @@ export default function Home() {
 
               <div style={{ borderLeft: "2px solid #087F5B", paddingLeft: "2rem", display: "flex", alignItems: "center" }}>
                 <blockquote className="cv-serif" style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.25rem)", fontWeight: 700, lineHeight: "1.3", color: "#111111", letterSpacing: "-0.02em" }}>
-                  „Nu vând primul credit.<br />
+                  „Nu valorific primul credit.<br />
                   <span style={{ color: "#087F5B" }}>Caut varianta care are sens pentru tine.”</span>
                 </blockquote>
               </div>

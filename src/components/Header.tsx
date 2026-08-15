@@ -12,6 +12,7 @@ const MOBILE_MENU_ITEMS = [
   { code: "04", title: "CUM FUNCȚIONEAZĂ", desc: "Procesul de analiză și consultanță", href: "/#cum-functioneaza", id: "cum-functioneaza" },
   { code: "05", title: "DESPRE MINE", desc: "Experiență și abordare", href: "/#despre", id: "despre" },
   { code: "06", title: "CONTACT", desc: "Ia legătura direct", href: "/#contact", id: "contact" },
+  { code: "07", title: "RECOMANDĂ UN CLIENT", desc: "Recomandă un client și primește recompensa", href: "/referral", id: "referral" },
 ];
 
 export default function Header() {
@@ -93,7 +94,7 @@ export default function Header() {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string, id: string) => {
     setMobileMenuOpen(false);
     document.body.style.overflow = "";
-    if (pathname === "/") {
+    if (href.startsWith("/#") && pathname === "/") {
       const targetEl = document.getElementById(id);
       if (targetEl) {
         e.preventDefault();
@@ -151,32 +152,44 @@ export default function Header() {
         /* Brand wordmark */
         .cv-mobile-brand {
           display: inline-flex;
-          align-items: center;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: center;
           text-decoration: none;
-          line-height: 1;
+          line-height: 1.1;
           -webkit-tap-highlight-color: transparent;
+          user-select: none;
+          max-width: calc(100% - 56px);
         }
-        .cv-mobile-brand-mark {
+        .cv-mobile-brand-title {
           font-family: var(--font-sans, 'Inter', sans-serif);
           font-size: 15.5px;
           font-weight: 700;
           letter-spacing: -0.02em;
-          color: #111111;
-          line-height: 1;
-          position: relative;
-          user-select: none;
+          color: var(--text-primary, #111111);
+          line-height: 1.15;
+          white-space: nowrap;
         }
-        .cv-mobile-brand-mark::after {
-          content: '';
-          display: inline-block;
-          width: 3px;
-          height: 3px;
-          border-radius: 50%;
-          background: #087F5B;
-          margin-left: 2px;
-          position: relative;
-          top: -5px;
-          flex-shrink: 0;
+        .cv-mobile-brand-accent {
+          color: var(--emerald, #087F5B);
+        }
+        .cv-mobile-brand-subtitle {
+          font-family: var(--font-mono, 'JetBrains Mono', monospace);
+          font-size: 7.5px;
+          color: var(--text-secondary, #5F6368);
+          font-weight: 400;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          line-height: 1.2;
+          margin-top: 2px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
+        }
+        @media (max-width: 360px) {
+          .cv-mobile-brand-title { font-size: 14.5px; }
+          .cv-mobile-brand-subtitle { font-size: 6.8px; letter-spacing: 0.05em; }
         }
 
         /* ── Menu trigger ── */
@@ -195,6 +208,7 @@ export default function Header() {
           min-height: 44px;
           position: relative;
           -webkit-tap-highlight-color: transparent;
+          flex-shrink: 0;
         }
         .cv-menu-trigger-line {
           display: block;
@@ -390,7 +404,12 @@ export default function Header() {
             onClick={() => setMobileMenuOpen(false)}
             aria-label="CV Finance — acasă"
           >
-            <span className="cv-mobile-brand-mark">CV</span>
+            <span className="cv-mobile-brand-title">
+              <span className="cv-mobile-brand-accent">CV</span> Finance
+            </span>
+            <span className="cv-mobile-brand-subtitle">
+              CREDIT ADVISORY &amp; FINANCIAL OPTIMIZATION
+            </span>
           </Link>
 
           <button
@@ -442,7 +461,12 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
               aria-label="CV Finance — acasă"
             >
-              <span className="cv-mobile-brand-mark">CV</span>
+              <span className="cv-mobile-brand-title">
+                <span className="cv-mobile-brand-accent">CV</span> Finance
+              </span>
+              <span className="cv-mobile-brand-subtitle">
+                CREDIT ADVISORY &amp; FINANCIAL OPTIMIZATION
+              </span>
             </Link>
 
             <button
