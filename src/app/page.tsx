@@ -36,6 +36,9 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import Header from "@/components/Header";
 import TotulInainteDeCreditFunnel from "@/components/TotulInainteDeCreditFunnel";
 import BusinessFinanceFunnel from "@/components/BusinessFinanceFunnel";
+import CVFinanceHero from "@/components/CVFinanceHero";
+import CommandSheet from "@/components/CommandSheet";
+import FinancialIntelligence from "@/components/FinancialIntelligence";
 import { PROBLEM_CARDS } from "@/lib/totul-constants";
 import { BUSINESS_PURPOSE_CARDS, INTENT_PILLS, DIAGNOSTIC_MATRIX_ITEMS } from "@/lib/business-constants";
 import { CONTACT } from "@/lib/constants";
@@ -519,115 +522,10 @@ export default function Home() {
         <ServiceTicker />
 
         {/* 01 / ARRIVE — UNBOXED EDITORIAL HERO */}
-        <section id="top" className="section" style={{ padding: "64px 24px 48px", maxWidth: "1280px", margin: "0 auto" }}>
-          <div style={{ maxWidth: "780px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "16px" }}>
-              01 / CV FINANCE
-            </p>
-            <h1 style={{ fontSize: "clamp(34px, 7vw, 64px)", fontWeight: 900, color: "#F8FAFC", lineHeight: 1.08, letterSpacing: "-0.035em", margin: "0 0 20px" }}>
-              FINANȚARE.<br />CLARĂ.<br />STRATEGICĂ.
-            </h1>
-            <p style={{ fontSize: "16px", color: "#CBD5E1", lineHeight: 1.6, maxWidth: "34rem", margin: "0 0 32px" }}>
-              Nu alegem un credit înainte să înțelegem situația financiară. Analizăm profilul, contextul și obiectivul tău pentru a identifica variantele care merită luate în calcul.
-            </p>
+        <CVFinanceHero />
 
-            <div style={{ display: "flex", gap: "20px", alignItems: "center", flexWrap: "wrap" }}>
-              <a
-                href="#verificare-credit"
-                className="button"
-                style={{ height: "54px", minHeight: "54px", padding: "0 28px", fontSize: "15px", fontWeight: 700, borderRadius: "12px", background: "#10B981", color: "#070A0F", display: "inline-flex", alignItems: "center", gap: "8px", textDecoration: "none" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  trackEvent("hero_primary_cta_click");
-                  document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                <span>VERIFICĂ SITUAȚIA →</span>
-              </a>
-
-              <a
-                href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară direct pe WhatsApp.")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ fontSize: "15px", fontWeight: 600, color: "#CBD5E1", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "6px" }}
-                onClick={() => trackEvent("hero_secondary_whatsapp_click")}
-              >
-                <MessageCircle size={18} style={{ color: "#34D399" }} />
-                <span>Discută direct →</span>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        {/* 02 / IDENTIFY — EDITORIAL COMMAND CENTER */}
-        <section id="intent-discovery" className="section" style={{ padding: "48px 24px 64px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
-          <div style={{ marginBottom: "32px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "8px" }}>
-              02 / IDENTIFY
-            </p>
-            <h2 style={{ fontSize: "clamp(26px, 5vw, 36px)", fontWeight: 800, color: "#F8FAFC", margin: 0 }}>
-              CE CAUȚI?
-            </h2>
-          </div>
-
-          <div style={{ display: "flex", flexDirection: "column" }}>
-            {[
-              { code: "01", label: "VREAU BANI", desc: "Am nevoie de finanțare", type: "personal", preselect: "Am nevoie de o sumă nouă", target: "verificare-credit" },
-              { code: "02", label: "AM FOST REFUZAT", desc: "Vreau să înțeleg situația", type: "personal", preselect: "Am fost refuzat de bancă", target: "verificare-credit" },
-              { code: "03", label: "AM ÎNTÂRZIERI / BC", desc: "Situația mea trebuie analizată", type: "personal", preselect: "Am probleme în Biroul de Credit", target: "verificare-credit" },
-              { code: "04", label: "FINANȚARE FIRMĂ", desc: "Capital pentru companie", type: "business", preselect: "Finanțare firmă", target: "verificare-finantare-business" },
-              { code: "05", label: "CAPITAL DE LUCRU", desc: "Lichiditate pentru business", type: "business", preselect: "Capital de lucru", target: "verificare-finantare-business" },
-              { code: "06", label: "REFINANȚARE", desc: "Vreau o structură mai bună", type: "personal", preselect: "Vreau să-mi reduc rata lunară", target: "verificare-credit" },
-              { code: "07", label: "RECOMANDĂ UN CLIENT", desc: "Pentru parteneri și recomandări", link: "/referral" },
-            ].map((item) => (
-              <button
-                key={item.code}
-                type="button"
-                style={{
-                  minHeight: "68px",
-                  padding: "18px 0",
-                  background: "transparent",
-                  border: "none",
-                  borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  cursor: "pointer",
-                  textAlign: "left",
-                  transition: "all 200ms cubic-bezier(0.16, 1, 0.3, 1)",
-                }}
-                onClick={() => {
-                  if (item.link) {
-                    trackEvent("command_row_selected", { code: item.code, label: item.label });
-                    router.push(item.link);
-                  } else if (item.target && item.preselect) {
-                    trackEvent("command_row_selected", { code: item.code, label: item.label });
-                    const targetEl = document.getElementById(item.target);
-                    if (targetEl) {
-                      targetEl.scrollIntoView({ behavior: "smooth" });
-                    }
-                    window.dispatchEvent(new CustomEvent("cv_intent_select", { detail: { type: item.type, preselectValue: item.preselect } }));
-                  }
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                  <span style={{ fontSize: "12px", fontWeight: 800, color: "#94A3B8", fontFamily: "monospace", minWidth: "24px" }}>
-                    {item.code}
-                  </span>
-                  <div>
-                    <span style={{ fontSize: "17px", fontWeight: 700, color: "#F8FAFC", display: "block" }}>
-                      {item.label}
-                    </span>
-                    <span style={{ fontSize: "13px", color: "#94A3B8", display: "block", marginTop: "2px" }}>
-                      {item.desc}
-                    </span>
-                  </div>
-                </div>
-                <ArrowRight size={18} style={{ color: "#34D399" }} />
-              </button>
-            ))}
-          </div>
-        </section>
+        {/* 02 / IDENTIFY — EDITORIAL COMMAND SHEET */}
+        <CommandSheet />
 
         {/* 03 / DIAGNOSE — PERSONAL CREDIT DIAGNOSTIC INDEX */}
         <section id="totul-inainte-de-credit" className="section" style={{ padding: "64px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
@@ -977,56 +875,7 @@ export default function Home() {
         </section>
 
         {/* 05 / FINANCIAL INTELLIGENCE — BLOOMBERG / FT RESEARCH TERMINAL */}
-        <section id="financial-intelligence" className="section" style={{ padding: "64px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
-          <div style={{ marginBottom: "40px" }}>
-            <p style={{ fontSize: "11px", fontWeight: 800, color: "#34D399", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "8px" }}>
-              05 / FINANCIAL INTELLIGENCE
-            </p>
-            <h2 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#F8FAFC", letterSpacing: "-0.02em", margin: "0 0 12px" }}>
-              COSTUL BANILOR SE SCHIMBĂ.
-            </h2>
-            <p style={{ fontSize: "14px", color: "#94A3B8", fontFamily: "monospace", textTransform: "uppercase", letterSpacing: "0.05em", margin: 0 }}>
-              BENCHMARK ROMÂNIA · EXECUTIV MORTGAGE DATASET
-            </p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
-            {/* 2023 */}
-            <div style={{ borderTop: "2px solid rgba(255, 255, 255, 0.12)", paddingTop: "20px" }}>
-              <span style={{ fontSize: "12px", fontWeight: 800, color: "#94A3B8", fontFamily: "monospace" }}>2023</span>
-              <div style={{ fontSize: "clamp(36px, 6vw, 48px)", fontWeight: 900, color: "#F8FAFC", margin: "8px 0" }}>
-                6,70%
-              </div>
-              <div style={{ fontSize: "14px", color: "#CBD5E1", lineHeight: 1.6 }}>
-                Rată: <strong style={{ color: "#F8FAFC" }}>~3.430 RON / lună</strong><br />
-                Total: <strong style={{ color: "#F8FAFC" }}>~1.029.000 RON</strong>
-              </div>
-            </div>
-
-            {/* 2025 */}
-            <div style={{ borderTop: "2px solid #34D399", paddingTop: "20px" }}>
-              <span style={{ fontSize: "12px", fontWeight: 800, color: "#34D399", fontFamily: "monospace" }}>2025</span>
-              <div style={{ fontSize: "clamp(36px, 6vw, 48px)", fontWeight: 900, color: "#34D399", margin: "8px 0" }}>
-                6,30%
-              </div>
-              <div style={{ fontSize: "14px", color: "#CBD5E1", lineHeight: 1.6 }}>
-                Rată: <strong style={{ color: "#F8FAFC" }}>~3.290 RON / lună</strong><br />
-                Total: <strong style={{ color: "#F8FAFC" }}>~987.000 RON</strong>
-              </div>
-            </div>
-
-            {/* 2026 */}
-            <div style={{ borderTop: "2px solid rgba(255, 255, 255, 0.12)", paddingTop: "20px" }}>
-              <span style={{ fontSize: "12px", fontWeight: 800, color: "#94A3B8", fontFamily: "monospace" }}>2026</span>
-              <div style={{ fontSize: "clamp(36px, 6vw, 48px)", fontWeight: 900, color: "#F8FAFC", margin: "8px 0" }}>
-                6,10%
-              </div>
-              <div style={{ fontSize: "14px", color: "#34D399", fontWeight: 700, lineHeight: 1.6 }}>
-                Trend: −0,20% referință
-              </div>
-            </div>
-          </div>
-        </section>
+        <FinancialIntelligence />
 
         {/* PROCES TRANSPARENT PAS CU PAS */}
         <section id="proces" className="section" style={{ paddingTop: "20px" }}>

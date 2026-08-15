@@ -498,6 +498,309 @@ h3 {
 .grid-3 { grid-template-columns: repeat(3, 1fr); }
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
+/* =========================================================
+   EXECUTIVE DARK INSTITUTIONAL COMPONENT SYSTEM
+   ========================================================= */
+
+/* HERO SECTION */
+.cv-hero-section {
+  background: #070A0F;
+  color: #F8FAFC;
+  padding: 100px 24px 80px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.cv-hero-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.cv-hero-meta-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+.cv-hero-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #34D399;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+.cv-hero-meta-item {
+  font-size: 12px;
+  color: #94A3B8;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+}
+.cv-hero-title {
+  font-size: clamp(36px, 8vw, 76px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.04em;
+  color: #F8FAFC;
+  margin: 0 0 32px;
+}
+.cv-hero-title .emerald {
+  color: #34D399;
+}
+.cv-hero-copy {
+  font-size: clamp(16px, 2.2vw, 19px);
+  color: #CBD5E1;
+  max-width: 38rem;
+  line-height: 1.6;
+  margin: 0 0 40px;
+}
+.cv-hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 64px;
+}
+.cv-hero-primary-btn {
+  height: 54px;
+  padding: 0 36px;
+  font-size: 15px;
+  font-weight: 800;
+  border-radius: 12px;
+  background: #10B981;
+  color: #070A0F;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+.cv-hero-primary-btn:hover {
+  background: #34D399;
+  transform: translateY(-2px);
+}
+.cv-hero-secondary-link {
+  font-size: 15px;
+  font-weight: 600;
+  color: #CBD5E1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+.cv-hero-secondary-link:hover {
+  color: #F8FAFC;
+}
+.cv-hero-data-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 32px;
+}
+.cv-data-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cv-data-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #94A3B8;
+  letter-spacing: 0.08em;
+}
+.cv-data-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: #F8FAFC;
+  font-family: monospace;
+}
+
+/* COMMAND SHEET SECTION */
+.command-sheet-section {
+  background: #0D1117;
+  padding: 80px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.command-sheet-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.command-sheet-header {
+  margin-bottom: 40px;
+}
+.command-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  color: #34D399;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.command-title {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 900;
+  color: #F8FAFC;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+}
+.command-subtitle {
+  font-size: 15px;
+  color: #94A3B8;
+  margin: 0;
+}
+.command-rows-list {
+  display: flex;
+  flex-direction: column;
+}
+.command-row-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 68px;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.2s ease, padding-left 0.2s ease;
+}
+.command-row-btn:hover {
+  background: #151B23;
+  padding-left: 28px;
+}
+.command-row-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+.command-row-code {
+  font-size: 12px;
+  font-weight: 800;
+  color: #94A3B8;
+  font-family: monospace;
+  min-width: 24px;
+}
+.command-row-content {
+  display: flex;
+  flex-direction: column;
+}
+.command-row-label {
+  font-size: 17px;
+  font-weight: 700;
+  color: #F8FAFC;
+}
+.command-row-desc {
+  font-size: 13px;
+  color: #94A3B8;
+  margin-top: 2px;
+}
+.command-row-arrow {
+  color: #34D399;
+  transition: transform 0.2s ease;
+}
+.command-row-btn:hover .command-row-arrow {
+  transform: translateX(4px);
+}
+
+/* FINANCIAL INTELLIGENCE TERMINAL SECTION */
+.fi-terminal-section {
+  background: #070A0F;
+  padding: 80px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.fi-terminal-container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+.fi-terminal-header {
+  margin-bottom: 48px;
+}
+.fi-eyebrow {
+  font-size: 11px;
+  font-weight: 800;
+  color: #34D399;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.fi-title {
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 900;
+  color: #F8FAFC;
+  letter-spacing: -0.03em;
+  margin: 0 0 12px;
+}
+.fi-subtitle {
+  font-size: 13px;
+  color: #94A3B8;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  margin: 0;
+}
+.fi-dataset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 32px;
+  margin-bottom: 40px;
+}
+.fi-data-card {
+  padding: 24px 0;
+  border-top: 2px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fi-data-card.fi-card-current {
+  border-top: 2px solid #34D399;
+}
+.fi-year-badge {
+  font-size: 13px;
+  font-weight: 800;
+  color: #94A3B8;
+  font-family: monospace;
+}
+.fi-year-badge.active {
+  color: #34D399;
+}
+.fi-stat-main {
+  font-size: clamp(40px, 7vw, 56px);
+  font-weight: 900;
+  color: #F8FAFC;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+.fi-stat-main.active {
+  color: #34D399;
+}
+.fi-stat-sub {
+  font-size: 14px;
+  color: #CBD5E1;
+  line-height: 1.5;
+}
+.fi-stat-sub.green {
+  color: #34D399;
+  font-weight: 700;
+}
+.fi-meta-tag {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 800;
+  color: #94A3B8;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+.fi-meta-tag.active {
+  color: #34D399;
+}
+.fi-disclaimer-note {
+  font-size: 11px;
+  color: #94A3B8;
+  font-family: monospace;
+  margin: 0;
+}
+
 /* Card Component (Apple Card Shadow 0 8px 30px) */
 .card {
   background: #FFFFFF;
