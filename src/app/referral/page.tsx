@@ -169,21 +169,44 @@ export default function ReferralPage() {
 
         {/* TERMS / TRUST SECTION */}
         <section className="cv-section" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div className="cv-container" style={{ maxWidth: "800px", textAlign: "center" }}>
-            <div style={{ display: "inline-flex", padding: "1rem", backgroundColor: "var(--bg-secondary)", borderRadius: "50%", marginBottom: "1.5rem" }}>
-              <ShieldCheck size={32} style={{ color: "var(--emerald)" }} />
+          <div className="cv-container" style={{ maxWidth: "880px" }}>
+            <span className="cv-section-marker">LEGAL / TERMENI RECOMANDĂRI</span>
+            <div className="cv-section-header" style={{ marginBottom: "2.5rem" }}>
+              <h2 className="cv-section-title">CONDIȚII DE RECOMPENSARE TRANSPARENTE</h2>
+              <p className="cv-section-sub">Regulamentul clar privind eligibilitatea recomandărilor, calculul comisionului și plata.</p>
             </div>
-            <h3 style={{ fontSize: "1.35rem", fontWeight: 700, marginBottom: "1rem" }}>CONDIȚII DE RECOMPENSARE TRANSPARENTE</h3>
-            <div style={{ fontSize: "0.95rem", color: "var(--text-secondary)", lineHeight: "1.6", display: "flex", flexDirection: "column", gap: "1rem", textAlign: "left" }}>
-              <p>
-                <strong>1. Validarea Recomandării:</strong> Recompensa se acordă pentru persoanele fizice sau juridice recomandate care nu sunt deja în discuții active cu CV Finance și care finalizează un dosar de finanțare (creditul este aprobat și decontat de bancă).
+
+            <div className="cv-legal-callout" style={{ marginBottom: "2.5rem" }}>
+              <div className="cv-legal-callout-title">GARANȚIA PARTENERIATULUI</div>
+              <p className="cv-legal-callout-text">
+                Fiecare recomandare este înregistrată oficial în sistemul CV Finance, cu protecția datelor și asigurarea plății comisionului imediat după acordarea creditului.
               </p>
-              <p>
-                <strong>2. Valoarea Comisionului:</strong> Comisionul variază între 500 RON (pentru credite de nevoi personale / sume mai mici) și 3.000 RON (pentru credite ipotecare de valori mari sau finanțări business corporative complexe).
-              </p>
-              <p>
-                <strong>3. Momentul Plății:</strong> Plata se efectuează în termen de maximum 5 zile lucrătoare de la momentul în care banca parteneră virează fondurile creditului către client și încheie decontul cu CV Finance.
-              </p>
+            </div>
+
+            <div className="cv-legal-article" style={{ gap: "2rem" }}>
+              <div className="cv-legal-section">
+                <span className="cv-legal-num">01</span>
+                <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Validarea Recomandării</h3>
+                <p className="cv-legal-text" style={{ fontSize: "0.95rem" }}>
+                  Recompensa se acordă pentru persoanele fizice sau juridice recomandate care nu sunt deja în discuții active cu CV Finance și care finalizează cu succes un dosar de finanțare (creditul este aprobat și decontat de bancă).
+                </p>
+              </div>
+
+              <div className="cv-legal-section">
+                <span className="cv-legal-num">02</span>
+                <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Valoarea Comisionului</h3>
+                <p className="cv-legal-text" style={{ fontSize: "0.95rem" }}>
+                  Comisionul variază între <strong>500 RON</strong> (pentru credite de nevoi personale / sume mai mici) și <strong>3.000 RON</strong> (pentru credite ipotecare de valori mari sau finanțări business corporative complexe), în funcție de volumul finanțării acordate.
+                </p>
+              </div>
+
+              <div className="cv-legal-section">
+                <span className="cv-legal-num">03</span>
+                <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Momentul Plății</h3>
+                <p className="cv-legal-text" style={{ fontSize: "0.95rem" }}>
+                  Plata se efectuează în termen de maximum <strong>5 zile lucrătoare</strong> de la momentul în care banca parteneră virează fondurile creditului către client și încheie decontul cu CV Finance.
+                </p>
+              </div>
             </div>
           </div>
         </section>

@@ -12,76 +12,132 @@ export const metadata: Metadata = {
 
 export default function GDPRPage() {
   return (
-    <main className="legal">
-      <Link href="/" className="brand" style={{ letterSpacing: "-1px", display: "inline-block", marginBottom: "24px" }}>
-        <span>CV</span> Finance
-      </Link>
-
-      <p className="eyebrow"><span /> GHID SIMPLIFICAT</p>
-      <h1>Protecția Datelor Tale (GDPR)</h1>
-      <p style={{ color: "var(--muted)", marginBottom: "40px" }}>Transparență totală în utilizarea datelor personale.</p>
-
-      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "32px", marginBottom: "40px" }}>
-        <h3 style={{ color: "var(--emerald)", marginTop: 0 }}>Principiul nostru principal:</h3>
-        <p style={{ fontSize: "1.2rem", color: "var(--ink)", fontWeight: 600, margin: 0 }}>
-          &ldquo;Datele tale sunt folosite doar pentru a analiza situația ta și pentru a te contacta în legătură cu solicitarea trimisă.&rdquo;
-        </p>
-      </div>
-
-      <div className="grid grid-2" style={{ marginBottom: "40px" }}>
-        <div className="card">
-          <div className="icon">
-            <Lock size={24} />
+    <main className="cv-legal-main">
+      <div className="cv-legal-container">
+        {/* Page Hero */}
+        <div className="cv-legal-header">
+          <span className="cv-legal-eyebrow">
+            LEGAL / GHID SIMPLIFICAT
+          </span>
+          <h1 className="cv-legal-title">Protecția Datelor Tale (GDPR)</h1>
+          <p className="cv-legal-sub">
+            Transparență totală în utilizarea, prelucrarea și securizarea datelor cu caracter personal.
+          </p>
+          <div className="cv-legal-meta">
+            <span>ULTIMA ACTUALIZARE: 6 AUGUST 2026</span>
+            <span>REGULAMENT (UE) 2016/679</span>
           </div>
-          <h3>Securitate garantată</h3>
-          <p>Folosim conexiuni criptate SSL și servere securizate de nivel bancar. Nimeni neautorizat nu are acces la datele tale.</p>
         </div>
 
-        <div className="card">
-          <div className="icon">
-            <ShieldCheck size={24} />
+        <article className="cv-legal-article">
+          {/* Main Principle Callout */}
+          <div className="cv-legal-callout">
+            <div className="cv-legal-callout-title">PRINCIPIUL NOSTRU FUNDAMENTAL</div>
+            <p className="cv-legal-callout-text" style={{ fontSize: "1.1rem", fontWeight: 600 }}>
+              &ldquo;Datele tale sunt folosite exclusiv pentru a analiza situația ta financiară și pentru a te contacta în legătură cu solicitarea trimisă.&rdquo;
+            </p>
           </div>
-          <h3>Confidențialitate 100%</h3>
-          <p>Nu vindem și nu închiriem baza de date niciunei terțe părți. Datele sunt procesate strict pentru solicitarea ta.</p>
+
+          {/* Section 01: Core Pillars */}
+          <section className="cv-legal-section">
+            <div className="cv-legal-section-header">
+              <span className="cv-legal-num">01</span>
+              <h2 className="cv-legal-heading">Garanțiile de Securitate și Confidențialitate</h2>
+            </div>
+            <div className="cv-legal-grid">
+              <div className="cv-legal-card emerald">
+                <div className="cv-legal-card-header">
+                  <div className="cv-legal-card-icon">
+                    <Lock size={18} />
+                  </div>
+                  <h3 className="cv-legal-card-title">Securitate garantată</h3>
+                </div>
+                <p className="cv-legal-card-desc">
+                  Folosim conexiuni criptate SSL/TLS și servere securizate de nivel bancar. Nimeni neautorizat nu are acces la datele tale.
+                </p>
+              </div>
+
+              <div className="cv-legal-card emerald">
+                <div className="cv-legal-card-header">
+                  <div className="cv-legal-card-icon">
+                    <ShieldCheck size={18} />
+                  </div>
+                  <h3 className="cv-legal-card-title">Confidențialitate 100%</h3>
+                </div>
+                <p className="cv-legal-card-desc">
+                  Nu vindem și nu închiriem baza de date niciunei terțe părți. Datele sunt procesate strict pentru soluționarea cererii tale.
+                </p>
+              </div>
+
+              <div className="cv-legal-card emerald">
+                <div className="cv-legal-card-header">
+                  <div className="cv-legal-card-icon">
+                    <CheckCircle2 size={18} />
+                  </div>
+                  <h3 className="cv-legal-card-title">Consimțământ sub controlul tău</h3>
+                </div>
+                <p className="cv-legal-card-desc">
+                  Tu decizi dacă dorești doar analiza gratuită sau dacă permiți module cookie analitice sau de marketing.
+                </p>
+              </div>
+
+              <div className="cv-legal-card emerald">
+                <div className="cv-legal-card-header">
+                  <div className="cv-legal-card-icon">
+                    <KeyRound size={18} />
+                  </div>
+                  <h3 className="cv-legal-card-title">Dreptul de a fi uitat</h3>
+                </div>
+                <p className="cv-legal-card-desc">
+                  Dacă te răzgândești, ne trimiți un simplu email și îți ștergem toate datele din sistemele noastre în termen de 24–48 de ore.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          {/* Section 02: Cookies Management */}
+          <section className="cv-legal-section">
+            <div className="cv-legal-section-header">
+              <span className="cv-legal-num">02</span>
+              <h2 className="cv-legal-heading">Gestionarea preferințelor de Cookie-uri</h2>
+            </div>
+            <p className="cv-legal-text">
+              Îți poți schimba opțiunile de consimțământ în orice moment accesând link-ul <strong>&bdquo;Setări Cookie-uri&rdquo;</strong> din subsolul oricărei pagini a site-ului.
+            </p>
+          </section>
+
+          {/* Section 03: Rights Overview */}
+          <section className="cv-legal-section">
+            <div className="cv-legal-section-header">
+              <span className="cv-legal-num">03</span>
+              <h2 className="cv-legal-heading">Drepturile tale pe scurt</h2>
+            </div>
+            <ul className="cv-legal-list">
+              <li className="cv-legal-list-item">
+                Poți cere oricând să vezi ce date deținem în sistem despre profilul tău.
+              </li>
+              <li className="cv-legal-list-item">
+                Poți cere corectarea sau actualizarea numărului de telefon sau a adresei de email.
+              </li>
+              <li className="cv-legal-list-item">
+                Poți solicita ștergerea definitivă a tuturor datelor transmise.
+              </li>
+              <li className="cv-legal-list-item">
+                Poți opri sau porni cookie-urile analitice și de marketing oricând dorești.
+              </li>
+            </ul>
+          </section>
+        </article>
+
+        {/* Back Link */}
+        <div className="cv-legal-back-row">
+          <Link href="/" className="cv-legal-back-link">
+            <ArrowLeft size={16} /> Înapoi la pagina principală
+          </Link>
+          <span className="cv-legal-meta">CV Finance — Toate drepturile rezervate</span>
         </div>
-
-        <div className="card">
-          <div className="icon">
-            <CheckCircle2 size={24} />
-          </div>
-          <h3>Consimțământ sub controlul tău</h3>
-          <p>Tu decizi dacă dorești doar analiza gratuită sau dacă permiți cookie-uri analitice sau de marketing.</p>
-        </div>
-
-        <div className="card">
-          <div className="icon">
-            <KeyRound size={24} />
-          </div>
-          <h3>Dreptul de a fi uitat</h3>
-          <p>Dacă te răzgândești, ne trimiți un simplu email și îți ștergem toate datele din sistemele noastre în 24-48h.</p>
-        </div>
-      </div>
-
-      <h2>Gestionarea preferințelor de Cookie-uri</h2>
-      <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "12px", padding: "24px", marginBottom: "32px" }}>
-        <p style={{ color: "var(--ink)", margin: 0, fontSize: "1.05rem", fontWeight: 600 }}>
-          &ldquo;Îți poți schimba preferințele de cookie-uri în orice moment accesând link-ul <strong>Setări Cookie-uri</strong> din subsolul paginii.&rdquo;
-        </p>
-      </div>
-
-      <h2>Drepturile tale pe scurt</h2>
-      <ul style={{ color: "var(--muted)", paddingLeft: "20px" }}>
-        <li>Poți cere oricând să vezi ce date avem despre tine.</li>
-        <li>Poți cere corectarea numărului de telefon sau a adresei de email.</li>
-        <li>Poți solicita ștergerea definitivă a datelor.</li>
-        <li>Poți opri sau porni cookie-urile analitice și de marketing oricând dorești.</li>
-      </ul>
-
-      <div style={{ marginTop: "48px" }}>
-        <Link href="/" className="button white" style={{ display: "inline-flex", alignItems: "center", gap: "8px" }}>
-          <ArrowLeft size={16} /> Înapoi la pagina principală
-        </Link>
       </div>
     </main>
   );
 }
+
