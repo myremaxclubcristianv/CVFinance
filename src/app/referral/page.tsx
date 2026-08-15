@@ -49,7 +49,7 @@ export default function ReferralPage() {
 
   return (
     <>
-      <main className="cv-main-wrapper" style={{ paddingTop: "80px" }}>
+      <main className="cv-main-wrapper">
         
         {/* HERO SECTION */}
         <section className="cv-hero-section" style={{ borderBottom: "1px solid var(--border)", paddingBottom: "5rem" }}>

@@ -199,9 +199,9 @@ html, body {
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
   border-bottom: 1px solid transparent;
-  padding-top: env(safe-area-inset-top, 0px);
-  box-sizing: content-box;
-  transition: background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  box-sizing: border-box;
+  transition: transform 220ms ease-out, background-color 200ms ease, border-color 200ms ease, box-shadow 200ms ease;
+  will-change: transform;
 }
 
 .cv-header.scrolled {
@@ -236,6 +236,19 @@ html, body {
 }
 
 @media (max-width: 767px) {
+  .cv-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    transform: translateY(0);
+  }
+
+  .cv-header.is-hidden-on-scroll {
+    transform: translateY(-100%);
+  }
+
   .desktop-navigation {
     display: none !important;
   }
@@ -246,6 +259,14 @@ html, body {
 }
 
 @media (min-width: 768px) {
+  .cv-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    transform: none !important;
+  }
   .desktop-navigation {
     display: flex !important;
   }
@@ -351,7 +372,7 @@ html, body {
 
 @media (max-width: 767px) {
   .cv-hero-section {
-    padding-top: 2.5rem;
+    padding-top: calc(88px + env(safe-area-inset-top, 0px) + 2rem);
     padding-bottom: 3rem;
   }
 }
@@ -2627,10 +2648,10 @@ html, body {
 
 @media (max-width: 767px) {
   .cv-legal-main {
-    padding-top: 0.5rem;
+    padding-top: calc(88px + env(safe-area-inset-top, 0px) + 1rem);
   }
   .cv-legal-container {
-    padding: 2rem 20px 4rem;
+    padding: 1.5rem 20px 4rem;
   }
 }
 

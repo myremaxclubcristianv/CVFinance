@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
+import LiveServicesTicker from "@/components/LiveServicesTicker";
 
 const MOBILE_MENU_ITEMS = [
   { code: "01", title: "PERSONAL", desc: "Credite, refinanțare și soluții pentru persoane", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
@@ -18,22 +19,69 @@ const MOBILE_MENU_ITEMS = [
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [menuMounted, setMenuMounted] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+    let ticking = false;
+    const SCROLL_THRESHOLD = 8;
+
+    const updateScrollDirection = () => {
+      const currentScrollY = window.scrollY;
+
+      // If mobile menu is open, never hide header
+      if (mobileMenuOpen) {
+        setIsHeaderHidden(false);
+        lastScrollY = currentScrollY;
+        ticking = false;
+        return;
+      }
+
+      // If at or near top of the page, always show header
+      if (currentScrollY <= 8) {
+        setIsHeaderHidden(false);
+        lastScrollY = currentScrollY;
+        ticking = false;
+        return;
+      }
+
+      const diff = currentScrollY - lastScrollY;
+
+      // Only toggle visibility if scroll difference exceeds threshold
+      if (Math.abs(diff) >= SCROLL_THRESHOLD) {
+        if (diff > 0 && currentScrollY > 60) {
+          // Scrolling down
+          setIsHeaderHidden(true);
+        } else if (diff < 0) {
+          // Scrolling up
+          setIsHeaderHidden(false);
+        }
+        lastScrollY = currentScrollY;
+      }
+
+      ticking = false;
+    };
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
       const totalHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       if (totalHeight > 0) {
         setScrollProgress((window.scrollY / totalHeight) * 100);
       }
+
+      if (!ticking) {
+        window.requestAnimationFrame(updateScrollDirection);
+        ticking = true;
+      }
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [mobileMenuOpen]);
 
   // Mount/unmount with animation timing
   useEffect(() => {
@@ -376,7 +424,10 @@ export default function Header() {
         }
       `}</style>
 
-      <header className={`cv-header ${isScrolled ? "scrolled" : ""}`}>
+      <header className={`cv-header ${isScrolled ? "scrolled" : ""} ${isHeaderHidden ? "is-hidden-on-scroll" : ""}`}>
+        {/* ── LIVE SERVICES TICKER — top strip ── */}
+        <LiveServicesTicker />
+
         {/* ── DESKTOP NAVIGATION — visible >=768px only ── */}
         <div className="desktop-navigation cv-header-inner" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
           <Link href="/" className="cv-brand">

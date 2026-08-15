@@ -273,12 +273,12 @@ async function saveLead(leadData: any): Promise<boolean> {
       income: String(leadData.income),
       employment: leadData.employment,
 
-      credit_types: leadData.creditTypes,
-      credit_type: leadData.creditTypes.join(", "),
+      credit_types: Array.isArray(leadData.creditTypes) ? leadData.creditTypes : [String(leadData.creditTypes || "Nespecificat")],
+      credit_type: Array.isArray(leadData.creditTypes) ? leadData.creditTypes.join(", ") : String(leadData.creditTypes || "Nespecificat"),
 
-      monthly_payment: String(leadData.monthlyPayment),
-      delays: leadData.delays,
-      credit_bureau: leadData.creditBureau,
+      monthly_payment: String(leadData.monthlyPayment || "0"),
+      delays: leadData.delays || "Nu",
+      credit_bureau: leadData.creditBureau || "Nu știu",
 
       message: leadData.message,
 
