@@ -1275,7 +1275,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* NATIVE MASTER SECTION: FINANCIAL INTELLIGENCE DASHBOARD */}
+        {/* NATIVE MASTER SECTION: FINANCIAL INTELLIGENCE DASHBOARD (LOCKED DATASET v1.0) */}
         <section id="financial-intelligence" className="fi-section">
           <div className="totul-master-container">
             {/* SECTION HEADER */}
@@ -1289,14 +1289,27 @@ export default function Home() {
               </p>
             </div>
 
-            {/* TOP GRID: CHART & MARKET SNAPSHOT */}
+            {/* KEY MARKET MESSAGES BADGES */}
+            <div style={{ display: "flex", justifyContent: "center", gap: "12px", flexWrap: "wrap", marginBottom: "32px" }}>
+              <div style={{ background: "#151B23", border: "1px solid rgba(52,211,153,0.30)", borderRadius: "20px", padding: "6px 16px", fontSize: "13px", fontWeight: 700, color: "#34D399" }}>
+                ✓ Dobânzi în scădere
+              </div>
+              <div style={{ background: "#151B23", border: "1px solid rgba(52,211,153,0.30)", borderRadius: "20px", padding: "6px 16px", fontSize: "13px", fontWeight: 700, color: "#34D399" }}>
+                ✓ Condiții mai bune
+              </div>
+              <div style={{ background: "#151B23", border: "1px solid rgba(52,211,153,0.30)", borderRadius: "20px", padding: "6px 16px", fontSize: "13px", fontWeight: 700, color: "#34D399" }}>
+                ✓ Plătești mai puțin
+              </div>
+            </div>
+
+            {/* TOP GRID: CHART & 2023 vs 2025 COMPARISON */}
             <div className="fi-grid-top">
-              {/* 01 — INTEREST RATE MARKET CHART */}
+              {/* 01 — HISTORICAL MORTGAGE INTEREST RATE CHART */}
               <div className="fi-card">
                 <div>
-                  <h3 className="fi-card-title">Evoluția dobânzilor medii la creditele ipotecare</h3>
+                  <h3 className="fi-card-title">Evoluția dobânzilor medii anuale la creditele ipotecare în România</h3>
                   <p className="fi-card-subtitle">
-                    EXEMPLU ORIENTATIV — VALORI ILUSTRATIVE. Prezentarea reflectă o evoluție orientativă a pieței creditelor.
+                    EXEMPLU ORIENTATIV — VALORILE SUNT ILUSTRATIVE ȘI NU REPREZINTĂ O OFERTĂ DE CREDIT.
                   </p>
                 </div>
 
@@ -1338,14 +1351,14 @@ export default function Home() {
 
                     {/* Data Points & Labels */}
                     {[
-                      { year: "2019", val: "6.70%", x: 50, y: 56 },
-                      { year: "2020", val: "6.40%", x: 150, y: 73 },
-                      { year: "2021", val: "5.70%", x: 250, y: 111 },
-                      { year: "2022", val: "5.20%", x: 350, y: 138 },
-                      { year: "2023", val: "5.20%", x: 450, y: 138 },
-                      { year: "2024", val: "4.10%", x: 550, y: 197 },
-                      { year: "2025", val: "6.30%", x: 650, y: 78 },
-                      { year: "2026", val: "6.10%", x: 750, y: 89 },
+                      { year: "2019", val: "6,70%", x: 50, y: 56 },
+                      { year: "2020", val: "6,40%", x: 150, y: 73 },
+                      { year: "2021", val: "5,70%", x: 250, y: 111 },
+                      { year: "2022", val: "5,20%", x: 350, y: 138 },
+                      { year: "2023", val: "5,20%", x: 450, y: 138 },
+                      { year: "2024", val: "4,10%", x: 550, y: 197 },
+                      { year: "2025", val: "6,30%", x: 650, y: 78 },
+                      { year: "2026", val: "6,10%", x: 750, y: 89 },
                     ].map((pt, i) => (
                       <g key={i}>
                         <circle cx={pt.x} cy={pt.y} r="5" fill="#0D1117" stroke="#34D399" strokeWidth="2.5" />
@@ -1359,80 +1372,80 @@ export default function Home() {
                     ))}
                   </svg>
                 </div>
+
+                {/* 05 — 2023 → 2026 SAVINGS & COMPARISON INDICATION */}
+                <div style={{ marginTop: "20px", padding: "16px", background: "#151B23", borderRadius: "12px", border: "1px solid rgba(52,211,153,0.25)", display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
+                  <div>
+                    <div style={{ fontSize: "11px", fontWeight: 800, color: "#94A3B8", letterSpacing: "0.08em", textTransform: "uppercase" }}>
+                      ECONOMISEȘTI APROXIMATIV
+                    </div>
+                    <div style={{ fontSize: "22px", fontWeight: 800, color: "#34D399" }}>
+                      +63.000 RON
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: "14px", fontWeight: 700, color: "#F8FAFC" }}>
+                      Rată lunară mai mică cu ~210 RON
+                    </div>
+                    <div style={{ fontSize: "11px", color: "#94A3B8" }}>
+                      Comparație orientativă 2023 vs 2026
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* 02 — 2025 → 2026 MARKET SNAPSHOT */}
+              {/* RIGHT SIDE: 02 & 03 — COMPARISON & SNAPSHOT & 2026 EXAMPLE */}
               <div className="fi-card">
                 <div>
-                  <h3 className="fi-card-title">Market Snapshot 2025 → 2026</h3>
+                  <h3 className="fi-card-title">Comparație 2023 vs 2025 vs 2026</h3>
                   <p className="fi-card-subtitle">
-                    Comparație orientativă a nivelului dobânzilor de referință.
+                    Market Snapshot & evoluție estimativă rată lunară și total plătit.
                   </p>
 
-                  <div className="fi-snapshot-grid">
-                    <div className="fi-metric-card">
-                      <div className="fi-metric-label">DOBÂNDĂ 2025</div>
-                      <div className="fi-metric-value">6.30%</div>
+                  {/* 02 — 2023 vs 2025 COMPARISON GRID */}
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "16px" }}>
+                    {/* 2023 Block */}
+                    <div style={{ background: "#151B23", padding: "14px", borderRadius: "10px", border: "1px solid rgba(255,255,255,0.08)" }}>
+                      <div style={{ fontSize: "12px", fontWeight: 800, color: "#94A3B8" }}>ANUL 2023</div>
+                      <div style={{ fontSize: "20px", fontWeight: 800, color: "#F8FAFC", margin: "2px 0" }}>6,70%</div>
+                      <div style={{ fontSize: "12px", color: "#CBD5E1" }}>Rată: ~3.430 RON/lună</div>
+                      <div style={{ fontSize: "11px", color: "#94A3B8", marginTop: "2px" }}>Total: ~1.029.000 RON</div>
                     </div>
-                    <div className="fi-metric-card">
-                      <div className="fi-metric-label">DOBÂNDĂ 2026</div>
-                      <div className="fi-metric-value emerald">6.10%</div>
-                    </div>
-                    <div className="fi-metric-card">
-                      <div className="fi-metric-label">VARIAȚIE</div>
-                      <div className="fi-metric-value emerald">−0.20</div>
-                      <div className="fi-metric-trend">↓ pp</div>
+
+                    {/* 2025 Block */}
+                    <div style={{ background: "#151B23", padding: "14px", borderRadius: "10px", border: "1px solid rgba(52,211,153,0.25)" }}>
+                      <div style={{ fontSize: "12px", fontWeight: 800, color: "#34D399" }}>ANUL 2025</div>
+                      <div style={{ fontSize: "20px", fontWeight: 800, color: "#34D399", margin: "2px 0" }}>6,30%</div>
+                      <div style={{ fontSize: "12px", color: "#CBD5E1" }}>Rată: ~3.290 RON/lună</div>
+                      <div style={{ fontSize: "11px", color: "#94A3B8", marginTop: "2px" }}>Total: ~987.000 RON</div>
                     </div>
                   </div>
 
-                  <p className="fi-snapshot-microcopy">
-                    Scădere ușoară față de 2025. <i>*Nu garantează o rată mai mică pentru fiecare profil.</i>
-                  </p>
-                </div>
-
-                {/* 03 & 04 — WHAT DOES THIS MEAN & COST OF FINANCING */}
-                <div style={{ marginTop: "24px", paddingTop: "20px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-                  <h4 style={{ fontSize: "15px", fontWeight: 800, color: "#F8FAFC", margin: "0 0 6px" }}>
-                    Ce înseamnă pentru finanțarea ta?
-                  </h4>
-                  <p style={{ fontSize: "13px", color: "#CBD5E1", margin: "0 0 16px", lineHeight: 1.5 }}>
-                    O diferență mică de dobândă poate modifica semnificativ costul total. Rata lunară nu este singurul indicator care contează.
-                  </p>
-
-                  {/* Metric Summary Blocks */}
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px", marginBottom: "16px" }}>
-                    <div style={{ background: "#151B23", padding: "10px 8px", borderRadius: "8px", textAlign: "center" }}>
-                      <div style={{ fontSize: "10px", color: "#94A3B8", fontWeight: 700 }}>SUMA FINANȚATĂ</div>
-                      <div style={{ fontSize: "13px", color: "#F8FAFC", fontWeight: 800, marginTop: "2px" }}>500.000 RON</div>
+                  {/* 03 — 2025 → 2026 MARKET SNAPSHOT SUMMARY */}
+                  <div style={{ background: "rgba(52,211,153,0.08)", padding: "12px 16px", borderRadius: "10px", border: "1px solid rgba(52,211,153,0.20)", marginBottom: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div>
+                      <span style={{ fontSize: "12px", fontWeight: 800, color: "#F8FAFC" }}>Tendință 2026: </span>
+                      <span style={{ fontSize: "14px", fontWeight: 800, color: "#34D399" }}>−0,20%</span>
                     </div>
-                    <div style={{ background: "#151B23", padding: "10px 8px", borderRadius: "8px", textAlign: "center" }}>
-                      <div style={{ fontSize: "10px", color: "#94A3B8", fontWeight: 700 }}>PERIOADA</div>
-                      <div style={{ fontSize: "13px", color: "#F8FAFC", fontWeight: 800, marginTop: "2px" }}>25 ANI</div>
-                    </div>
-                    <div style={{ background: "#151B23", padding: "10px 8px", borderRadius: "8px", textAlign: "center" }}>
-                      <div style={{ fontSize: "10px", color: "#94A3B8", fontWeight: 700 }}>EXEMPLU RATĂ</div>
-                      <div style={{ fontSize: "13px", color: "#34D399", fontWeight: 800, marginTop: "2px" }}>~3.220 RON/lună</div>
+                    <div style={{ fontSize: "12px", fontWeight: 700, color: "#CBD5E1" }}>
+                      Dobânzile continuă să scadă ușor.
                     </div>
                   </div>
 
-                  {/* Cost Visualizer Bar */}
-                  <div className="fi-cost-vis">
-                    <div className="fi-bar-legend">
-                      <div className="fi-bar-legend-item">
-                        <span className="fi-legend-dot" style={{ background: "#10B981" }} />
-                        <span>Capital: 500.000 RON</span>
+                  {/* 04 — 2026 ILLUSTRATIVE MORTGAGE EXAMPLE */}
+                  <div style={{ background: "#151B23", padding: "16px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.10)" }}>
+                    <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#F8FAFC", margin: "0 0 8px" }}>
+                      Exemplu credit ipotecar 500.000 RON pe 25 ani (Nivel 2026)
+                    </h4>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                      <div>
+                        <div style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 700 }}>RATA LUNARĂ APROXIMATIV</div>
+                        <div style={{ fontSize: "18px", fontWeight: 800, color: "#34D399", marginTop: "2px" }}>3.220 RON</div>
                       </div>
-                      <div className="fi-bar-legend-item">
-                        <span className="fi-legend-dot" style={{ background: "rgba(52, 211, 153, 0.40)" }} />
-                        <span>Rambursat total: ~966.000 RON</span>
+                      <div>
+                        <div style={{ fontSize: "11px", color: "#94A3B8", fontWeight: 700 }}>TOTAL PLĂTIT APROXIMATIV</div>
+                        <div style={{ fontSize: "18px", fontWeight: 800, color: "#F8FAFC", marginTop: "2px" }}>966.000 RON</div>
                       </div>
-                    </div>
-                    <div className="fi-bar-container">
-                      <div className="fi-bar-principal" />
-                      <div className="fi-bar-interest" />
-                    </div>
-                    <div style={{ fontSize: "11px", color: "#94A3B8", textAlign: "right" }}>
-                      EXEMPLU ILUSTRATIV — NU REPREZINTĂ O OFERTĂ DE CREDIT
                     </div>
                   </div>
                 </div>
@@ -1571,15 +1584,20 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 08 — DISCLAIMER / DATA INTEGRITY */}
+            {/* 07 — INSTITUTIONAL DISCLAIMER */}
             <p className="fi-disclaimer">
-              * Valorile prezentate în exemplele de mai sus sunt orientative și au rol exclusiv informativ. Condițiile reale de finanțare diferă în funcție de profilul clientului, produsul ales, instituția finanțatoare, venituri, grad de îndatorare și alte criterii de eligibilitate.
+              * EXEMPLU ORIENTATIV — VALORILE SUNT ILUSTRATIVE ȘI NU REPREZINTĂ O OFERTĂ DE CREDIT. Condițiile, dobânda, rata și costul total diferă în funcție de profilul clientului, produsul ales și instituția finanțatoare.
             </p>
 
-            {/* 09 — FINAL CLOSING CTA PANEL FOR DASHBOARD */}
+            {/* 08 — CLOSING CTA PANEL WITH LOCKED COPY & BADGE */}
             <div className="totul-final-cta-panel" style={{ marginTop: 0 }}>
-              <h3>Analizează situația. Compară variantele. Apoi decide.</h3>
-              <p>Nu lua o decizie financiară doar după rata lunară.</p>
+              <div style={{ display: "inline-block", background: "rgba(52,211,153,0.12)", border: "1px solid rgba(52,211,153,0.30)", padding: "4px 14px", borderRadius: "20px", fontSize: "12px", fontWeight: 800, color: "#34D399", marginBottom: "16px", letterSpacing: "0.05em" }}>
+                Consultanță expertă
+              </div>
+              <h3>Te ajutăm să iei decizia corectă, în funcție de situația ta.</h3>
+              <p style={{ color: "#CBD5E1" }}>
+                ANALIZĂ PERSONALIZATĂ • SOLUȚII AVANTAJOASE • FĂRĂ COSTURI, FĂRĂ OBLIGAȚII
+              </p>
               <div className="totul-final-cta-actions">
                 <button
                   type="button"
@@ -1589,11 +1607,11 @@ export default function Home() {
                     document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
                   }}
                 >
-                  <span>Solicită analiza financiară →</span>
+                  <span>Solicită analiza gratuită →</span>
                 </button>
 
                 <a
-                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară direct pe WhatsApp.")}`}
+                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară gratuită direct pe WhatsApp.")}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="totul-final-cta-secondary"
