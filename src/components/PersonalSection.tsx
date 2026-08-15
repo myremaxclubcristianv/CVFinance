@@ -3,7 +3,7 @@ import React from 'react';
 export default function PersonalSection() {
   return (
     <section className="cv-section" id="personal" style={{ marginBottom: '5rem' }}>
-      <div className="cv-container">
+      <div className="cv-section-inner">
         <span className="cv-section-marker">02 / PERSONAL</span>
         <div className="cv-section-header">
           <h2 className="cv-section-title" style={{ fontSize: 'clamp(2rem, 3.5vw, 3rem)', marginBottom: '1.5rem' }}>

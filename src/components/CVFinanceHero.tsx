@@ -19,7 +19,7 @@ export default function CVFinanceHero() {
 
   return (
     <section className="cv-hero-section" id="hero">
-      <div className="cv-container cv-hero-grid">
+      <div className="cv-section-inner cv-hero-grid">
         {/* LEFT COLUMN: EDITORIAL STATEMENT & ACTIONS */}
         <div className="cv-hero-left">
           <span className="cv-eyebrow">

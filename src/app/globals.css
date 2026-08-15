@@ -1695,3 +1695,47 @@ html, body {
 }
 
 
+
+/* Added design system utilities */
+.cv-section-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+@media (max-width: 767px) {
+  .cv-section-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+.hr-thin {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin: 2rem 0;
+}
+
+.cv-input {
+  border: none;
+  border-bottom: 1px solid var(--border);
+  padding: 0.5rem 0;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: transparent;
+}
+.cv-input:focus {
+  outline: none;
+  border-bottom-color: var(--emerald);
+}
+
+.cv-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+.cv-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}

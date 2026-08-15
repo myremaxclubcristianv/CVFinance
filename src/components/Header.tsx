@@ -144,36 +144,42 @@ export default function Header() {
       </div>
 
       {/* MOBILE HEADER INNER */}
-      <div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "58px", paddingLeft: "20px", paddingRight: "20px", alignItems: "center", justifyContent: "space-between" }}>
-        {/* LEFT: BRANDING */}
-        <Link href="/" className="cv-brand" onClick={() => setMobileMenuOpen(false)}>
-          <span className="cv-brand-title" style={{ fontSize: "1.15rem", fontWeight: 800 }}>CV</span>
-        </Link>
-        {/* RIGHT: MENU TRIGGER */}
-        <button
-          type="button"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-expanded={mobileMenuOpen}
-          aria-controls="mobile-nav-panel"
-          style={{
-            color: "#111111",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            padding: "0.5rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: "0.85rem",
-            fontWeight: 600,
-            textTransform: "uppercase"
-          }}
-          aria-label={mobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
-        >
-          {mobileMenuOpen ? <X size={16} strokeWidth={2} /> : <Menu size={16} strokeWidth={2} />}
-          <span style={{ marginLeft: "4px" }}>{mobileMenuOpen ? "ÎNCHIDE" : "MENU"}</span>
-        </button>
-      </div>
+{/* MOBILE HEADER INNER */}
+<div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "60px", paddingTop: "env(safe-area-inset-top)", paddingLeft: "20px", paddingRight: "20px", alignItems: "center", justifyContent: "space-between", background: "var(--bg-primary)", borderBottom: "1px solid var(--border)" }}>
+  {/* LEFT: BRANDING */}
+  <Link href="/" className="cv-brand" onClick={() => setMobileMenuOpen(false)}>
+    <span className="cv-brand-title" style={{ fontSize: "18px", fontWeight: 800, letterSpacing: "-0.01em" }}>CV Finance</span>
+  </Link>
+  {/* RIGHT: MENU TRIGGER */}
+  <button
+    type="button"
+    onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+    aria-expanded={mobileMenuOpen}
+    aria-controls="mobile-nav-panel"
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+      width: "70px",
+      height: "36px",
+      background: "none",
+      border: "none",
+      cursor: "pointer",
+      padding: 0
+    }}
+    aria-label={mobileMenuOpen ? "Închide meniul" : "Deschide meniul"}
+  >
+    {mobileMenuOpen ? (
+      <X size={16} strokeWidth={2} />
+    ) : (
+      <div style={{ width: "16px", height: "1px", backgroundColor: "#111111", marginBottom: "2px" }} />
+    )}
+    <span style={{ fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.14em", fontFamily: "monospace", lineHeight: "1" }}>
+      {mobileMenuOpen ? "ÎNCHIDE" : "MENU"}
+    </span>
+  </button>
+</div>
 
       {/* FULL-SCREEN MOBILE NAVIGATION PANEL */}
       {mobileMenuOpen && (

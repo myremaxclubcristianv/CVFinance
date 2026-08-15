@@ -3,7 +3,7 @@ import React from 'react';
 export default function DecisionSelector() {
   return (
     <section className="cv-section" id="cum-functioneaza">
-      <div className="cv-container">
+      <div className="cv-section-inner">
         <span className="cv-section-marker">02 / CUM LUCRĂM</span>
         <h2 className="cv-section-title">
           EU TE SUN.<br />

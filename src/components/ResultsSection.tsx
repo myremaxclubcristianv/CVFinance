@@ -3,13 +3,13 @@ import React from 'react';
 export default function ResultsSection() {
   return (
     <section className="cv-section" id="rezultate">
-      <div className="cv-container">
+      <div className="cv-section-inner">
         <span className="cv-section-marker">08 / REZULTATE</span>
         <div className="cv-section-header">
           <h2 className="cv-section-title">CE CÂȘTIGI?</h2>
           <p className="cv-section-sub">Valoarea adăugată a unei consultanțe financiare independente.</p>
         </div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "2rem" }}>
+        <div className="cv-grid-2">
           <div style={{ borderTop: "2px solid #E4E8E6", paddingTop: "1.25rem" }}>
             <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700 }}>01</span>
             <h3 style={{ fontSize: "1.25rem", fontWeight: 800, margin: "0.5rem 0" }}>CLARITATE</h3>
