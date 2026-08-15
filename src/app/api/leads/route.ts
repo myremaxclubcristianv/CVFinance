@@ -3,51 +3,47 @@ import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 const standardLeadSchema = z.object({
   // Step 1: Purpose & Requested Amount
-  purpose: z.string().trim().min(2).max(100),
-  desiredAmount: z.coerce.number().positive().max(5_000_000),
+  purpose: z.string().trim().min(2, "Selectează un obiectiv financiar.").max(100),
+  desiredAmount: z.coerce.number().positive("Suma dorită trebuie să fie mai mare ca 0.").max(5_000_000),
 
   // Step 2: Financial Profile
-  income: z.coerce.number().positive().max(1_000_000),
-  employment: z.enum(["Sub 3 luni", "3–12 luni", "1–3 ani", "Peste 3 ani"]),
+  income: z.coerce.number().positive("Venitul trebuie să fie mai mare ca 0.").max(1_000_000),
+  employment: z.string().trim().min(1, "Selectează vechimea în muncă.").max(100),
   creditTypes: z
-    .array(z.enum(["Bancă", "IFN", "Card de credit", "Leasing", "Nu am"]))
+    .array(z.string())
     .min(1)
-    .max(5),
-  monthlyPayment: z.coerce.number().min(0).max(100_000),
-  delays: z.enum(["Nu", "Da"]),
-  creditBureau: z.enum(["Nu", "Da", "Nu știu", "Nu stiu"]),
+    .max(10)
+    .optional()
+    .default(["Bancă"]),
+  monthlyPayment: z.coerce.number().min(0).max(100_000).optional().default(0),
+  delays: z.string().trim().max(100).optional().default("Nu"),
+  creditBureau: z.string().trim().max(100).optional().default("Nu știu"),
 
   // Step 3: Contact & Consents
-  name: z.string().trim().min(2).max(100),
+  name: z.string().trim().min(2, "Te rugăm să introduci numele complet (minimum 2 caractere).").max(100),
   phone: z
     .string()
     .trim()
     .transform((val) => val.replace(/\s+/g, ""))
-    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Număr de telefon nevalid")),
+    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Te rugăm să introduci un număr de telefon valid din România.")),
   email: z
     .string()
     .trim()
     .optional()
     .or(z.literal(""))
     .transform((val) => (!val ? undefined : val))
-    .pipe(z.string().email("Adresă de email nevalidă").max(120).optional()),
-  birthYear: z.coerce.number().int().min(1930).max(new Date().getFullYear() - 18),
+    .pipe(z.string().email("Adresă de email nevalidă.").max(120).optional()),
+  birthYear: z.coerce.number().int().min(1930).max(new Date().getFullYear() - 18).optional().default(1990),
   message: z.string().trim().max(1000).optional().default(""),
   gdpr: z.literal(true, {
     errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
   }),
-  gdprConsent: z.literal(true, {
-    errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
-  }),
-  marketing: z.literal(true, {
-    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
-  }),
-  marketingConsent: z.literal(true, {
-    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
-  }),
+  gdprConsent: z.boolean().optional().default(true),
+  marketing: z.boolean().optional().default(false),
+  marketingConsent: z.boolean().optional().default(false),
 
   // Traffic & Device Metadata
-  website: z.string().max(0).optional(), // Honeypot
+  website: z.string().max(0).optional().default(""), // Honeypot
   utmSource: z.string().max(100).optional().default("direct"),
   utmMedium: z.string().max(100).optional().default("—"),
   utmCampaign: z.string().max(100).optional().default("—"),
@@ -61,9 +57,9 @@ const totulLeadSchema = z.object({
   source: z.enum(["totul-inainte-de-credit", "homepage-totul-inainte-de-credit"]),
   leadType: z.string().optional().default("credit_prequalification"),
   problemTypes: z.array(z.string()).min(1, "Selectează cel puțin o problemă sau situație."),
-  income: z.coerce.number().min(0).max(1_000_000),
-  incomeType: z.string().trim().min(2).max(100),
-  employmentDuration: z.string().trim().min(2).max(100),
+  income: z.coerce.number().min(0, "Venitul nu poate fi negativ.").max(1_000_000),
+  incomeType: z.string().trim().min(2, "Selectează tipul venitului.").max(100),
+  employmentDuration: z.string().trim().min(2, "Selectează vechimea în muncă.").max(100),
   monthlyInstallments: z.coerce.number().min(0).max(100_000),
   activeCreditCount: z.string().trim().min(1).max(50),
   requestedAmount: z.coerce.number().min(0).max(5_000_000),
@@ -72,35 +68,29 @@ const totulLeadSchema = z.object({
   delayPeriod: z.string().trim().max(200).optional().default("—"),
   clientMessage: z.string().trim().max(2000).optional().default(""),
 
-  name: z.string().trim().min(2).max(100),
+  name: z.string().trim().min(2, "Te rugăm să introduci numele complet (minimum 2 caractere).").max(100),
   phone: z
     .string()
     .trim()
     .transform((val) => val.replace(/\s+/g, ""))
-    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Număr de telefon nevalid")),
+    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Te rugăm să introduci un număr de telefon valid din România.")),
   email: z
     .string()
     .trim()
     .optional()
     .or(z.literal(""))
     .transform((val) => (!val ? undefined : val))
-    .pipe(z.string().email("Adresă de email nevalidă").max(120).optional()),
+    .pipe(z.string().email("Adresă de email nevalidă.").max(120).optional()),
 
   gdpr: z.literal(true, {
     errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
   }),
-  gdprConsent: z.literal(true, {
-    errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
-  }),
-  marketing: z.literal(true, {
-    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
-  }),
-  marketingConsent: z.literal(true, {
-    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
-  }),
+  gdprConsent: z.boolean().optional().default(true),
+  marketing: z.boolean().optional().default(false),
+  marketingConsent: z.boolean().optional().default(false),
 
   // Traffic & Device Metadata
-  website: z.string().max(0).optional(), // Honeypot
+  website: z.string().max(0).optional().default(""), // Honeypot
   utmSource: z.string().max(100).optional().default("direct"),
   utmMedium: z.string().max(100).optional().default("—"),
   utmCampaign: z.string().max(100).optional().default("—"),
@@ -135,31 +125,29 @@ const businessLeadSchema = z.object({
   urgency: z.string().trim().min(1).max(100),
   clientMessage: z.string().trim().max(2000).optional().default(""),
 
-  name: z.string().trim().min(2).max(100),
+  name: z.string().trim().min(2, "Te rugăm să introduci numele complet (minimum 2 caractere).").max(100),
   phone: z
     .string()
     .trim()
     .transform((val) => val.replace(/\s+/g, ""))
-    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Număr de telefon nevalid")),
+    .pipe(z.string().regex(/^(?:\+40|0040|0)7\d{8}$/, "Te rugăm să introduci un număr de telefon valid din România.")),
   email: z
     .string()
     .trim()
     .optional()
     .or(z.literal(""))
     .transform((val) => (!val ? undefined : val))
-    .pipe(z.string().email("Adresă de email nevalidă").max(120).optional()),
+    .pipe(z.string().email("Adresă de email nevalidă.").max(120).optional()),
 
   gdpr: z.literal(true, {
     errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
   }),
   gdprConsent: z.boolean().optional().default(true),
-  marketing: z.literal(true, {
-    errorMap: () => ({ message: "Acordul de marketing este obligatoriu." }),
-  }),
-  marketingConsent: z.boolean().optional().default(true),
+  marketing: z.boolean().optional().default(false),
+  marketingConsent: z.boolean().optional().default(false),
 
   // Traffic & Device Metadata
-  website: z.string().max(0).optional(), // Honeypot
+  website: z.string().max(0).optional().default(""), // Honeypot
   utmSource: z.string().max(100).optional().default("direct"),
   utmMedium: z.string().max(100).optional().default("—"),
   utmCampaign: z.string().max(100).optional().default("—"),
@@ -400,10 +388,12 @@ export async function POST(request: Request) {
     }
     if (!success) {
       console.error("LEAD VALIDATION FAILED", JSON.stringify(error?.flatten(), null, 2));
+      const firstIssue = error?.issues?.[0];
+      const errorMessage = firstIssue?.message || "Datele introduse sunt incomplete sau invalide.";
       return NextResponse.json(
         {
           ok: false,
-          message: "Datele introduse sunt incomplete sau invalide.",
+          message: errorMessage,
           ...(process.env.NODE_ENV !== "production" ? { errors: error?.flatten() } : {}),
         },
         { status: 400 }

@@ -27,14 +27,12 @@ export default function CVFinanceHero() {
           </span>
 
           <h1 className="cv-hero-title">
-            Nu lua primul credit<br />
-            care ți se oferă.<br />
-            <span className="emerald-accent">Găsește varianta care<br />
-            are sens pentru tine.</span>
+            NU TREBUIE SĂ ȘTII TU<br />
+            <span className="emerald-accent">CE BANCĂ ESTE POTRIVITĂ.</span>
           </h1>
 
           <p className="cv-hero-desc">
-            Îmi spui ce vrei să faci. Eu analizez situația, caut opțiunile potrivite și discut cu banca în locul tău.
+            Trebuie doar să-mi spui ce vrei să faci. Eu analizez situația, caut opțiunile potrivite și discut cu banca în locul tău.
           </p>
 
           <div className="cv-hero-actions">

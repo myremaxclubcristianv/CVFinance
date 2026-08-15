@@ -162,14 +162,16 @@ const faqs = [
 ];
 
 const ecosystemLinks = [
-  { name: "cristianvaduva.com", desc: "Advisory & Financial Optimization", href: "https://cristianvaduva.com" },
-  { name: "AiXLuxury.com", desc: "Real Estate & Luxury Advisory", href: "https://aixluxury.com" },
-  { name: "HomeFind", desc: "Real Estate Matching Platform", href: "#" },
-  { name: "Insurance", desc: "Financial Protection Advisory", href: "#" },
-  { name: "Subvenții", desc: "Non-reimbursable Business Funds", href: "#" },
-  { name: "AiX Media", desc: "Digital Media & Strategy", href: "#" },
-  { name: "Health", desc: "Medical Advisory Network", href: "#" },
-  { name: "OS", desc: "Operating System & Systems", href: "#" },
+  { name: "AiX Media", desc: "Digital Media & Strategy", href: "https://aixmedia.cristianvaduva.com/" },
+  { name: "AiX OS", desc: "Operating System & Systems", href: "https://os.cristianvaduva.com/" },
+  { name: "Health", desc: "Medical Advisory Network", href: "https://health.cristianvaduva.com/" },
+  { name: "Subventii", desc: "Non-reimbursable Business Funds", href: "https://subventii.cristianvaduva.com/" },
+  { name: "Home Find", desc: "Real Estate Matching Platform", href: "https://homefind.cristianvaduva.com/" },
+  { name: "CV Finance / Credite", desc: "Credit Advisory & Financial Optimization", href: "https://credite.cristianvaduva.com/" },
+  { name: "Insurance", desc: "Financial Protection Advisory", href: "https://insurance.cristianvaduva.com/" },
+  { name: "Cristian Văduva", desc: "Advisory & Financial Optimization", href: "https://cristianvaduva.com/" },
+  { name: "AiX Luxury", desc: "Real Estate & Luxury Advisory", href: "https://aixluxury.com/" },
+  { name: "Market Pulse", desc: "Macroeconomic & Real Estate Intelligence", href: "https://cristianvaduva.com/market-pulse" },
 ];
 
 export default function Home() {
@@ -279,16 +281,25 @@ export default function Home() {
     setFormError("");
 
     if (!name.trim() || name.trim().length < 2) {
-      setFormError("Te rugăm să introduceți numele complet.");
+      setFormError("Te rugăm să introduci numele complet (minimum 2 caractere).");
       setFormState("error");
       return;
     }
 
     const cleanPhone = phone.replace(/\s+/g, "");
     if (!cleanPhone || !/^(?:\+40|0040|0)7\d{8}$/.test(cleanPhone)) {
-      setFormError("Te rugăm să introduceți un număr de telefon valid din România (ex: 0722123456).");
+      setFormError("Te rugăm să introduci un număr de telefon valid din România (ex: 0722123456).");
       setFormState("error");
       return;
+    }
+
+    if (email.trim()) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email.trim())) {
+        setFormError("Adresa de email nu are un format valid.");
+        setFormState("error");
+        return;
+      }
     }
 
     if (!gdpr) {
@@ -302,23 +313,23 @@ export default function Home() {
 
     const payload = {
       purpose,
-      desiredAmount: Number(desiredAmount),
+      desiredAmount: Number(desiredAmount) || 85000,
       income: numericIncome,
-      employment,
-      creditTypes,
-      monthlyPayment: Number(monthlyPayment),
-      delays,
+      employment: employment || "1–3 ani",
+      creditTypes: creditTypes.length > 0 ? creditTypes : ["Bancă"],
+      monthlyPayment: Number(monthlyPayment) || 0,
+      delays: delays || "Nu",
       creditBureau: creditBureau || "Nu știu",
       name: name.trim(),
       phone: cleanPhone,
-      email: email.trim(),
+      email: email.trim() || undefined,
       birthYear: Number(birthYear) || 1990,
       message: messageText.trim(),
-      gdpr,
-      gdprConsent: gdpr,
-      marketing,
-      marketingConsent: marketing,
-      website: honeypot,
+      gdpr: true,
+      gdprConsent: true,
+      marketing: Boolean(marketing),
+      marketingConsent: Boolean(marketing),
+      website: honeypot || "",
       ...trafficMeta,
       pageUrl: typeof window !== "undefined" ? window.location.href : "https://credite.cristianvaduva.com",
     };
@@ -403,35 +414,82 @@ export default function Home() {
         {/* 10 — 01 / DE UNDE ÎNCEPEM */}
         <CommandSheet />
 
-        {/* 11 — 02 / CUM LUCRĂM */}
+        {/* 11 — 02 / CUM FUNCȚIONEAZĂ */}
         <section className="cv-section" id="cum-functioneaza">
           <div className="cv-container">
-            <span className="cv-section-marker">02 / CUM LUCRĂM</span>
-            <h2 className="cv-section-title">
-              EU TE SUN.<br />
-              <span style={{ color: "#087F5B" }}>BANCA NU.</span>
-            </h2>
+            <span className="cv-section-marker">02 / CUM FUNCȚIONEAZĂ</span>
             
+            <div style={{ marginBottom: "2.5rem" }}>
+              <h2 className="cv-section-title" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", lineHeight: 1.15, marginBottom: "1rem", letterSpacing: "-0.025em" }}>
+                NU TREBUIE SĂ ȘTII TU<br />
+                <span style={{ color: "#087F5B" }}>CE BANCĂ ESTE POTRIVITĂ.</span>
+              </h2>
+              <p className="cv-section-sub" style={{ fontSize: "1.15rem", color: "var(--text-secondary)", maxWidth: "680px" }}>
+                Trebuie doar să-mi spui ce vrei să faci.
+              </p>
+            </div>
+
+            {/* CORE PROMISE EDITORIAL BANNER */}
+            <div className="cv-promise-banner" style={{
+              padding: "1.75rem 0",
+              borderTop: "1px solid var(--border)",
+              borderBottom: "1px solid var(--border)",
+              marginBottom: "3.5rem",
+              display: "flex",
+              flexWrap: "wrap",
+              alignItems: "baseline",
+              justifyContent: "space-between",
+              gap: "1.25rem"
+            }}>
+              <div>
+                <span style={{
+                  fontFamily: "var(--font-mono, 'JetBrains Mono', monospace)",
+                  fontSize: "0.75rem",
+                  fontWeight: 700,
+                  letterSpacing: "0.08em",
+                  color: "#087F5B",
+                  textTransform: "uppercase",
+                  display: "block",
+                  marginBottom: "0.35rem"
+                }}>
+                  PRINCIPIU
+                </span>
+                <span style={{
+                  fontFamily: "var(--font-sans, 'Inter', sans-serif)",
+                  fontSize: "clamp(1.25rem, 2.8vw, 1.6rem)",
+                  fontWeight: 800,
+                  letterSpacing: "-0.02em",
+                  color: "var(--text-primary)"
+                }}>
+                  EU TE SUN. <span style={{ color: "#087F5B" }}>BANCA NU.</span>
+                </span>
+              </div>
+              <p style={{ margin: 0, fontSize: "0.98rem", color: "var(--text-secondary)", fontWeight: 500 }}>
+                Tu îmi spui ce vrei să faci. Eu mă ocup de restul.
+              </p>
+            </div>
+            
+            {/* 4-STEP EDITORIAL PROCESS */}
             <div className="cv-process-grid">
               <div className="cv-process-item active">
                 <span className="cv-process-num">01</span>
-                <h3 className="cv-process-title">Tu vorbești cu mine.</h3>
-                <p className="cv-process-desc">Îmi spui ce vrei să faci și care este situația ta actuală.</p>
+                <h3 className="cv-process-title">TU VORBEȘTI CU MINE.</h3>
+                <p className="cv-process-desc">&bdquo;Îmi spui ce vrei să faci și care este situația ta actuală.&rdquo;</p>
               </div>
               <div className="cv-process-item">
                 <span className="cv-process-num">02</span>
-                <h3 className="cv-process-title">Eu analizez situația.</h3>
-                <p className="cv-process-desc">Mă uit la venituri, obligații, istoricul de credit și obiectiv.</p>
+                <h3 className="cv-process-title">EU ANALIZEZ SITUAȚIA.</h3>
+                <p className="cv-process-desc">&bdquo;Mă uit la venituri, obligații, istoricul de credit și obiectiv.&rdquo;</p>
               </div>
               <div className="cv-process-item">
                 <span className="cv-process-num">03</span>
-                <h3 className="cv-process-title">Eu discut cu banca.</h3>
-                <p className="cv-process-desc">Caut varianta potrivită și negociez condițiile în locul tău.</p>
+                <h3 className="cv-process-title">EU DISCUT CU BANCA.</h3>
+                <p className="cv-process-desc">&bdquo;Caut varianta potrivită și negociez condițiile în locul tău.&rdquo;</p>
               </div>
               <div className="cv-process-item">
                 <span className="cv-process-num">04</span>
-                <h3 className="cv-process-title">Tu primești răspunsul.</h3>
-                <p className="cv-process-desc">Știi exact unde te încadrezi și ce opțiuni ai fără drumuri inutile.</p>
+                <h3 className="cv-process-title">TU PRIMEȘTI RĂSPUNSUL.</h3>
+                <p className="cv-process-desc">&bdquo;Știi exact unde te încadrezi și ce opțiuni ai fără drumuri inutile.&rdquo;</p>
               </div>
             </div>
           </div>
@@ -997,24 +1055,25 @@ export default function Home() {
             <span className="cv-section-marker">13 / ECOSISTEM</span>
             <div className="cv-section-header">
               <h2 className="cv-section-title">REȚEAUA CV ADVISORY</h2>
-              <p className="cv-section-sub">Parteneriate și ecosistemul de servicii conexe.</p>
+              <p className="cv-section-sub">Parteneriate și ecosistemul integrat de servicii conexe.</p>
             </div>
 
             <div className="cv-directory-list">
               {ecosystemLinks.map((item, idx) => {
                 const numStr = String(idx + 1).padStart(2, "0");
+                const isInternal = item.href.startsWith("/") || item.href === "https://cristianvaduva.com/market-pulse";
                 return (
                   <a
-                    key={idx}
+                    key={item.name}
                     href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    {...(!isInternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                     className="cv-dir-row"
+                    aria-label={`${item.name} — ${item.desc}`}
                   >
                     <span className="cv-dir-code">{numStr}</span>
                     <span className="cv-dir-title">{item.name}</span>
                     <span className="cv-dir-desc">{item.desc}</span>
-                    <span className="cv-dir-arrow" style={{ fontSize: "1.1rem" }}>↗</span>
+                    <span className="cv-dir-arrow" style={{ fontSize: "1.1rem" }} aria-hidden="true">↗</span>
                   </a>
                 );
               })}

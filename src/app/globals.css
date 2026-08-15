@@ -551,14 +551,13 @@ html, body {
 .cv-directory-list {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--border);
 }
 
 .cv-dir-row {
   display: grid;
   grid-template-columns: 60px 1fr 40px;
   align-items: start;
-  padding: 1.5rem 0;
+  padding: 1.5rem 1rem;
   border-bottom: 1px solid var(--border);
   text-decoration: none;
   color: var(--text-primary);
@@ -566,18 +565,30 @@ html, body {
   cursor: pointer;
   width: 100%;
   text-align: left;
-  background: none;
+  background: transparent;
   border-left: none;
   border-right: none;
+  border-top: none;
+  box-sizing: border-box;
+  min-height: 52px;
 }
 
 .cv-dir-row:hover {
   background-color: var(--bg-secondary);
 }
 
+.cv-dir-row:hover .cv-dir-title {
+  color: var(--emerald);
+}
+
 .cv-dir-row:hover .cv-dir-arrow {
   transform: translateX(4px);
   color: var(--emerald);
+}
+
+.cv-dir-row:focus-visible {
+  outline: 2px solid var(--emerald);
+  outline-offset: -2px;
 }
 
 .cv-dir-code {
@@ -594,6 +605,7 @@ html, body {
   font-weight: 700;
   letter-spacing: -0.012em;
   color: var(--text-primary);
+  transition: color 150ms ease;
 }
 
 .cv-dir-desc {
@@ -615,9 +627,9 @@ html, body {
 
 @media (max-width: 767px) {
   .cv-dir-row {
-    grid-template-columns: 40px 1fr 30px;
-    padding: 1.5rem 0;
-    min-height: 100px;
+    grid-template-columns: 44px 1fr 28px;
+    padding: 1.25rem 0.5rem;
+    min-height: 54px;
   }
 }
 
@@ -625,7 +637,7 @@ html, body {
 .cv-process-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 2rem;
+  gap: 2.5rem 2rem;
   margin-top: 3rem;
 }
 
@@ -633,43 +645,17 @@ html, body {
   border-top: 2px solid var(--border);
   padding-top: 1.5rem;
   position: relative;
+  transition: border-color 180ms ease;
 }
 
-@media (max-width: 900px) {
-  .cv-process-grid {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    border-left: 2px solid var(--border);
-    padding-left: 1.5rem;
-    margin-left: 0.5rem;
-  }
-  .cv-process-item {
-    border-top: none;
-    padding-top: 0;
-    position: relative;
-  }
-  .cv-process-item::before {
-    content: "";
-    position: absolute;
-    left: calc(-1.5rem - 6px);
-    top: 5px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: var(--border);
-  }
-  .cv-process-item.active::before {
-    background-color: var(--emerald);
-  }
-}
-
+.cv-process-item:hover,
 .cv-process-item.active {
   border-top-color: var(--emerald);
 }
 
 .cv-process-num {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.92rem;
   font-weight: 700;
   color: var(--emerald);
   margin-bottom: 0.75rem;
@@ -677,17 +663,58 @@ html, body {
 }
 
 .cv-process-title {
-  font-size: 1.15rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 1.08rem;
+  font-weight: 800;
+  margin-bottom: 0.6rem;
   color: var(--text-primary);
   letter-spacing: -0.015em;
+  line-height: 1.25;
 }
 
 .cv-process-desc {
+  font-family: var(--font-sans, 'Inter', sans-serif);
   font-size: 0.92rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Tablet (768px–1023px): 2 × 2 clean layout */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cv-process-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+/* Mobile (<768px): clean vertical sequence, ultra-scannable */
+@media (max-width: 767px) {
+  .cv-process-grid {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    margin-top: 2rem;
+  }
+
+  .cv-process-item {
+    border-top: 1px solid var(--border);
+    padding-top: 1.25rem;
+  }
+
+  .cv-process-num {
+    font-size: 0.85rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .cv-process-title {
+    font-size: 1.02rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .cv-process-desc {
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
 }
 
 /* Diagnostic Report Component */
