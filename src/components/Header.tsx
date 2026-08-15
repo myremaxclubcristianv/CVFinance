@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
 const MOBILE_MENU_ITEMS = [
@@ -81,11 +82,11 @@ export default function Header() {
     <header className={`cv-header ${isScrolled ? "scrolled" : ""}`}>
       
       {/* DESKTOP HEADER INNER */}
-      <div className="cv-container hidden md:flex cv-header-inner">
+      <div className="cv-container hidden md:flex cv-header-inner" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
         {/* LEFT: BRANDING */}
         <Link href="/" className="cv-brand">
           <span className="cv-brand-title">CV Finance</span>
-          <span className="cv-brand-subtitle">Credit Advisory & Financial Optimization</span>
+          <span className="cv-brand-subtitle">CREDIT ADVISORY & FINANCIAL OPTIMIZATION</span>
         </Link>
 
         {/* DESKTOP NAV LINKS */}
@@ -125,6 +126,13 @@ export default function Header() {
           >
             Despre mine
           </Link>
+          <Link
+            href="/#contact"
+            className="cv-nav-link"
+            onClick={(e) => handleNavClick(e, "/#contact", "contact")}
+          >
+            Contact
+          </Link>
         </nav>
 
         {/* PRIMARY ACTION CTA */}
@@ -136,7 +144,7 @@ export default function Header() {
       </div>
 
       {/* MOBILE HEADER INNER */}
-      <div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "58px", paddingLeft: "18px", paddingRight: "18px", alignItems: "center", justifyContent: "space-between" }}>
+      <div className="cv-container flex md:hidden cv-header-inner-mobile" style={{ height: "58px", paddingLeft: "20px", paddingRight: "20px", alignItems: "center", justifyContent: "space-between" }}>
         {/* LEFT: BRANDING */}
         <Link href="/" className="cv-brand" onClick={() => setMobileMenuOpen(false)}>
           <span className="cv-brand-title" style={{ fontSize: "1.15rem", fontWeight: 800 }}>CV Finance</span>
@@ -159,10 +167,14 @@ export default function Header() {
             background: "none",
             border: "none",
             cursor: "pointer",
-            padding: "0.5rem 0"
+            padding: "0.5rem 0",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.35rem"
           }}
         >
-          {mobileMenuOpen ? "CLOSE  ×" : "MENU  +"}
+          <span>{mobileMenuOpen ? "CLOSE" : "MENU"}</span>
+          {mobileMenuOpen ? <X size={13} strokeWidth={2.5} /> : <Menu size={13} strokeWidth={2.5} />}
         </button>
       </div>
 
@@ -170,7 +182,7 @@ export default function Header() {
       {mobileMenuOpen && (
         <div 
           id="mobile-nav-panel"
-          className="md:hidden fixed inset-x-0 bottom-0 bg-white z-[999] px-6 py-6 flex flex-col justify-between" 
+          className="md:hidden fixed inset-x-0 bottom-0 bg-white z-[999] px-5 py-6 flex flex-col justify-between" 
           style={{ 
             top: "calc(58px + env(safe-area-inset-top, 0px))", 
             height: "calc(100vh - (58px + env(safe-area-inset-top, 0px)))", 
@@ -241,7 +253,7 @@ export default function Header() {
           bottom: 0,
           left: 0,
           width: `${scrollProgress}%`,
-          height: "2px",
+          height: "1px",
           backgroundColor: "var(--emerald)",
           transition: "width 80ms ease-out",
           zIndex: 100

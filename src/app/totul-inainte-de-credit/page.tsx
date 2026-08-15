@@ -433,59 +433,6 @@ export default function TotulInainteDeCreditPage() {
           </div>
         </section>
 
-        {/* FOOTER */}
-        <footer className="footer" style={{ borderTop: "1px solid var(--border)" }}>
-          <div className="footer-cols">
-            <div className="footer-col brand-col">
-              <Link href="/" className="brand" style={{ letterSpacing: "-1px" }}>
-                <span>CV</span> Finance
-              </Link>
-              <p className="brand-desc">
-                Credit Advisory & Financial Optimization. Consultanță și intermediere financiară independentă fondată de Cristian Văduva.
-              </p>
-              <div className="brand-meta">
-                <strong>Cristian Văduva</strong>
-                <span>Senior Sales · Credit & Financial Advisory</span>
-              </div>
-              <div className="contact-inline">
-                <a href={`tel:${CONTACT.PHONE}`}>Telefon</a>
-                <span className="dot">•</span>
-                <a href={`https://wa.me/${CONTACT.WHATSAPP}?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83.`} target="_blank" rel="noopener noreferrer">WhatsApp</a>
-                <span className="dot">•</span>
-                <a href={`mailto:${CONTACT.EMAIL}`}>Email</a>
-              </div>
-            </div>
-
-            <div className="footer-col">
-              <strong className="col-title">Navigație</strong>
-              <div className="link-strip">
-                <Link href="/">Acasă</Link>
-                <Link href="/credit-nevoi-personale">Credit nevoi personale</Link>
-                <Link href="/refinantare-credit">Refinanțare</Link>
-                <Link href="/credit-istoric-negativ">Istoric negativ</Link>
-                <Link href="/totul-inainte-de-credit">Totul înainte de credit</Link>
-                <Link href="/referral">Recomandări</Link>
-              </div>
-            </div>
-
-            <div className="footer-col">
-              <strong className="col-title">Legal</strong>
-              <div className="link-strip">
-                <Link href="/termeni-si-conditii">Termeni și condiții</Link>
-                <Link href="/politica-confidentialitate">Confidențialitate</Link>
-                <Link href="/gdpr">GDPR</Link>
-                <Link href="/nota-legala">Notă legală</Link>
-                <Link href="/acord-marketing">Acord marketing</Link>
-              </div>
-            </div>
-          </div>
-
-          <div className="footer-bottom">
-            <div className="footer-copyright">
-              <span>© {footerYear} CV Finance. Parte din Cristian Văduva Intelligence Ecosystem.</span>
-            </div>
-          </div>
-        </footer>
       </main>
     </>
   );

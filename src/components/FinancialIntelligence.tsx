@@ -30,18 +30,18 @@ export default function FinancialIntelligence() {
             </div>
           </div>
 
-          <div style={{ borderTop: "1px solid #333333", paddingTop: "1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "1.25rem", fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "#A1A1AA" }}>
+          <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "1.25rem", fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
             <div>
-              <span style={{ color: "#71717A" }}>IRCC ACTUAL:</span> <strong style={{ color: "#FFFFFF" }}>5.99%</strong>
+              <span>IRCC ACTUAL:</span> <strong style={{ color: "var(--text-primary)" }}>5.99%</strong>
             </div>
             <div>
-              <span style={{ color: "#71717A" }}>ROBOR 3M:</span> <strong style={{ color: "#FFFFFF" }}>5.82%</strong>
+              <span>ROBOR 3M:</span> <strong style={{ color: "var(--text-primary)" }}>5.82%</strong>
             </div>
             <div>
-              <span style={{ color: "#71717A" }}>MARJĂ MEDIE BĂNCI:</span> <strong style={{ color: "#FFFFFF" }}>2.10%</strong>
+              <span>MARJĂ MEDIE BĂNCI:</span> <strong style={{ color: "var(--text-primary)" }}>2.10%</strong>
             </div>
             <div>
-              <span style={{ color: "#71717A" }}>GRAD MAX ÎNDATORARE:</span> <strong style={{ color: "#FFFFFF" }}>40% NET</strong>
+              <span>GRAD MAX ÎNDATORARE:</span> <strong style={{ color: "var(--text-primary)" }}>40% NET</strong>
             </div>
           </div>
         </div>

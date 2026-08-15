@@ -85,6 +85,7 @@ const jsonLd = {
 
 import Header from "@/components/Header";
 import FloatingConversionCTA from "@/components/FloatingConversionCTA";
+import Footer from "@/components/Footer";
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -98,6 +99,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       <body className="antialiased">
         <Header />
         {children}
+        <Footer />
         <FloatingConversionCTA />
         <CookieConsent />
       </body>
