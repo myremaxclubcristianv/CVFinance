@@ -97,8 +97,8 @@ export default function Header() {
       <nav>
         <Link href="/#totul-inainte-de-credit">Personal</Link>
         <Link href="/#business-finance">Business</Link>
-        <Link href="/#proces">Cum funcționează</Link>
-        <Link href="/#contact-direct">Despre mine</Link>
+        <Link href="/#cum-functioneaza">Cum funcționează</Link>
+        <Link href="/#despre">Despre mine</Link>
       </nav>
       <a className="nav-cta" href="/#verificare-credit" onClick={handleCtaClick}>
         VERIFICĂ SITUAȚIA →
@@ -282,10 +282,10 @@ export default function Header() {
           <Link href="/#business-finance" onClick={() => setMenu(false)}>
             Business
           </Link>
-          <Link href="/#proces" onClick={() => setMenu(false)}>
+          <Link href="/#cum-functioneaza" onClick={() => setMenu(false)}>
             Cum funcționează
           </Link>
-          <Link href="/#contact-direct" onClick={() => setMenu(false)}>
+          <Link href="/#despre" onClick={() => setMenu(false)}>
             Despre mine
           </Link>
         </div>

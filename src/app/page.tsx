@@ -45,45 +45,68 @@ import { CONTACT } from "@/lib/constants";
 
 const servicesList = [
   {
-    title: "Biroul de Credit",
-    desc: "Analizez situația din Biroul de Credit și identific dacă există posibilități legale de corectare sau ștergere a unor informații, atunci când există temei.",
-    icon: FileCheck,
-  },
-  {
-    title: "Credit nou",
-    desc: "Verific opțiunile disponibile pentru obținerea unui credit nou adaptat nevoilor tale.",
+    title: "CONSULTANȚĂ DE CREDIT",
+    desc: "Analizăm opțiunile disponibile pentru obținerea unui credit nou adaptat nevoilor tale.",
     icon: Zap,
   },
   {
-    title: "Refinanțare",
-    desc: "Analizez dacă refinanțarea poate însemna condiții mai potrivite sau o rată lunară mai ușor de susținut.",
+    title: "ANALIZĂ FINANCIARĂ",
+    desc: "Verificăm situația din Biroul de Credit și identificăm posibilitățile legale de corectare.",
+    icon: FileCheck,
+  },
+  {
+    title: "FINANȚARE BUSINESS",
+    desc: "Soluții de finanțare pentru firme: capital de lucru, cash-flow, echipamente și investiții.",
+    icon: Landmark,
+  },
+  {
+    title: "REFINANȚARE",
+    desc: "Comasăm creditele existente într-o singură rată lunară mult mai ușor de susținut.",
     icon: TrendingDown,
   },
   {
-    title: "Optimizarea ratelor",
-    desc: "Caut variante prin care costul lunar al creditelor tale poate fi optimizat, dacă situația permite.",
+    title: "ACHIZIȚIE LOCUINȚĂ",
+    desc: "Ghidaj complet pentru credite ipotecare și identificarea celor mai mici dobânzi.",
     icon: Coins,
   },
   {
-    title: "Analiză rapidă",
-    desc: "Te ajut să identifici rapid variantele disponibile și pașii potriviți pentru situația ta.",
+    title: "OPTIMIZARE FINANCIARĂ",
+    desc: "Identificăm rapid soluțiile optime de reducere a costurilor și negociem direct cu banca.",
     icon: Clock3,
-  },
-  {
-    title: "Acces la oferte multiple",
-    desc: "Compar opțiuni de la mai mulți finanțatori pentru a identifica variante potrivite profilului tău.",
-    icon: Landmark,
   },
 ];
 
 const loanTypesList = [
-  "Credit pentru orice",
-  "Credit nevoi personale",
-  "Credit auto & Leasing",
-  "Renovare casă",
-  "Studii & Educație",
-  "Cheltuieli medicale",
-  "Istoric negativ sau întârzieri",
+  {
+    code: "01",
+    title: "CREDIT IPOTECAR",
+    desc: "Pentru achiziția unei locuințe.",
+  },
+  {
+    code: "02",
+    title: "CREDIT DE NEVOI PERSONALE",
+    desc: "Pentru proiectele și nevoile tale.",
+  },
+  {
+    code: "03",
+    title: "REFINANȚARE",
+    desc: "Pentru reorganizarea finanțării existente.",
+  },
+  {
+    code: "04",
+    title: "CREDIT BUSINESS",
+    desc: "Pentru capital de lucru și dezvoltare.",
+  },
+  {
+    code: "05",
+    title: "CREDIT INVESTIȚII",
+    desc: "Pentru proiecte și active.",
+  },
+  {
+    code: "06",
+    title: "SOLUȚII PERSONALIZATE",
+    desc: "Pentru situații care nu intră într-o categorie standard.",
+  },
 ];
 
 const faqs = [
@@ -539,7 +562,7 @@ export default function Home() {
         {/* 03 / CUM LUCRĂM — EU TE SUN. BANCA NU. */}
         <section className="philosophy-section">
           <div className="philosophy-container">
-            <span className="philosophy-eyebrow">CUM LUCRĂM</span>
+            <span className="section-marker">02 / CUM LUCRĂM</span>
             <h2 className="philosophy-title">
               EU TE SUN.<br />
               <span className="highlight-emerald">BANCA NU.</span>
@@ -570,12 +593,15 @@ export default function Home() {
           </div>
         </section>
 
+        {/* COMMAND SHEET DIRECTORY */}
+        <CommandSheet />
+
         {/* 03 / DIAGNOSE — PERSONAL FINANCE */}
         <section id="totul-inainte-de-credit" className="personal-section">
           <div className="personal-container">
             {/* Centered Editorial Intro */}
             <div className="personal-header">
-              <span className="personal-label">PERSONAL</span>
+              <span className="section-marker">03 / PERSONAL</span>
               <h2 className="personal-title">
                 HAI SĂ VEDEM<br />
                 CE POȚI OBȚINE.
@@ -733,7 +759,7 @@ export default function Home() {
         {/* 04 / BUSINESS FINANCE — PREMIUM CHAPTER */}
         <section id="business-finance" className="business-section">
           <div className="business-container">
-            <span className="business-label">BUSINESS</span>
+            <span className="section-marker">04 / BUSINESS</span>
             
             <div className="business-two-col">
               <div className="business-left-col">
@@ -813,6 +839,7 @@ export default function Home() {
         {/* OUTCOMES SECTION: CE CÂȘTIGI? */}
         <section id="proces" className="outcomes-section">
           <div className="outcomes-container">
+            <span className="section-marker">08 / REZULTATE</span>
             <h2 className="outcomes-main-title">CE CÂȘTIGI?</h2>
             
             <div className="outcomes-grid">
@@ -825,19 +852,19 @@ export default function Home() {
               <div className="outcome-item">
                 <span className="outcome-number">02</span>
                 <span className="outcome-label">OPȚIUNI</span>
-                <p className="outcome-text">Nu rămâi blocat la prima ofertă.</p>
+                <p className="outcome-text">Nu depinzi de prima ofertă.</p>
               </div>
 
               <div className="outcome-item">
                 <span className="outcome-number">03</span>
                 <span className="outcome-label">TIMP</span>
-                <p className="outcome-text">Nu pierzi zile discutând cu banca nepotrivită.</p>
+                <p className="outcome-text">Nu pierzi zile între bănci.</p>
               </div>
 
               <div className="outcome-item">
                 <span className="outcome-number">04</span>
                 <span className="outcome-label">NEGOCIERE</span>
-                <p className="outcome-text">Ai pe cineva care vorbește cu banca pentru tine.</p>
+                <p className="outcome-text">Ai pe cineva care discută cu banca.</p>
               </div>
             </div>
           </div>
@@ -847,31 +874,33 @@ export default function Home() {
         <section id="servicii" className="section">
           <div className="section-intro">
             <div>
-              <p className="eyebrow">
-                <span /> CUM TE PUTEM AJUTA
-              </p>
+              <span className="section-marker">05 / SERVICII</span>
               <h2>Serviciile noastre de optimizare</h2>
             </div>
           </div>
 
-          <div className="grid grid-3">
+          <div className="services-index">
             {servicesList.map((s, i) => {
               const IconComp = s.icon;
               return (
-                <div key={i} className="card">
-                  <div className="icon">
-                    <IconComp size={24} />
+                <div key={i} className="service-row">
+                  <div className="service-left">
+                    <span className="service-number">0{i+1}</span>
+                    <div className="service-title-box">
+                      <IconComp size={20} className="service-icon" />
+                      <h3 className="service-title">{s.title}</h3>
+                    </div>
                   </div>
-                  <h3>{s.title}</h3>
-                  <p>{s.desc}</p>
+                  <p className="service-desc">{s.desc}</p>
+                  <span className="service-arrow">→</span>
                 </div>
               );
             })}
           </div>
 
-          <div style={{ textAlign: "center", marginTop: "32px" }}>
-            <a className="button" href="#aplica" onClick={() => trackEvent("services_click")}>
-              Încep analiza <ArrowRight size={18} />
+          <div style={{ textAlign: "center", marginTop: "40px" }}>
+            <a className="button" href="#verificare-credit" onClick={() => trackEvent("services_click")}>
+              VERIFICĂ SITUAȚIA →
             </a>
           </div>
         </section>
@@ -880,38 +909,19 @@ export default function Home() {
         <section id="tipuri-credite" className="section" style={{ paddingTop: "40px" }}>
           <div className="section-intro">
             <div>
-              <p className="eyebrow">
-                <span /> PENTRU ORICE NEVOIE
-              </p>
-              <h2>Adaptat obiectivelor tale</h2>
+              <span className="section-marker">06 / TIPURI DE CREDITE</span>
+              <h2>Tipuri de credite</h2>
             </div>
           </div>
 
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))",
-              gap: "16px",
-            }}
-          >
+          <div className="loan-types-editorial">
             {loanTypesList.map((item, idx) => (
-              <div
-                key={idx}
-                style={{
-                  background: "#FFFFFF",
-                  border: "1px solid var(--line)",
-                  borderRadius: "18px",
-                  padding: "20px 24px",
-                  fontWeight: "700",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "12px",
-                  boxShadow: "0 4px 14px rgba(15, 23, 42, 0.04)",
-                  color: "var(--ink)",
-                }}
-              >
-                <Check size={18} style={{ color: "var(--neon-green)" }} />
-                <span>{item}</span>
+              <div key={idx} className="loan-type-item">
+                <span className="loan-type-num">{item.code}</span>
+                <div className="loan-type-body">
+                  <h3 className="loan-type-heading">{item.title}</h3>
+                  <p className="loan-type-text">{item.desc}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -921,9 +931,7 @@ export default function Home() {
         <section id="calculator" className="section calculator-section">
           <div className="calculator-box">
             <div className="calc-copy">
-              <p className="eyebrow">
-                <span /> CALCULATOR OPTIMIZARE
-              </p>
+              <span className="section-marker">07 / CALCULATOR</span>
               <h2>Vezi cât poți economisi</h2>
               <p>
                 Află în câteva secunde cum îți poți reduce rata lunară sau cum poți obține fonduri suplimentare.
@@ -1006,24 +1014,31 @@ export default function Home() {
 
             <div className="calc-result">
               <span className="badge">Rezultat Estimativ</span>
-              <p className="label">Este posibil să economisești:</p>
 
               <div className="result-main">
-                <small>Economisire lunară</small>
-                <strong>+ {formatMoney(saving)} RON</strong>
+                <small>RATĂ ESTIMATĂ</small>
+                <strong>{formatMoney(newPayment)} lei</strong>
                 <span className="per-year">
-                  Echivalent cu <b>+ {formatMoney(saving * 12)} RON / an</b>
+                  Noua rată estimată în urma analizei de optimizare.
                 </span>
               </div>
 
               <div className="result-details">
                 <div>
-                  <span>Noua rată estimată</span>
-                  <b>{formatMoney(newPayment)} RON / lună</b>
+                  <span>SOLD CREDIT / SUMĂ</span>
+                  <b>{formatMoney(amount)} lei</b>
                 </div>
                 <div>
-                  <span>Finanțare suplimentară posibilitate</span>
-                  <b>până la {formatMoney(extraCashPossibility)} RON</b>
+                  <span>ECONOMISIRE LUNARĂ</span>
+                  <b className="highlight-emerald">−{formatMoney(saving)} lei / lună</b>
+                </div>
+                <div>
+                  <span>ECONOMISIRE ANUALĂ</span>
+                  <b className="highlight-emerald">−{formatMoney(saving * 12)} lei / an</b>
+                </div>
+                <div>
+                  <span>FINANȚARE SUPLIMENTARĂ</span>
+                  <b>până la {formatMoney(extraCashPossibility)} lei</b>
                 </div>
               </div>
 
@@ -1031,8 +1046,8 @@ export default function Home() {
                 Verifică analiza <ArrowRight size={18} />
               </button>
 
-              <div style={{ background: "rgba(57, 255, 136, 0.05)", border: "1px solid rgba(57, 255, 136, 0.15)", borderRadius: "12px", padding: "12px 16px", marginTop: "16px" }}>
-                <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--neon-green)", fontWeight: 600 }}>
+              <div style={{ background: "#F1F6F3", border: "1px solid var(--border)", borderRadius: "12px", padding: "12px 16px", marginTop: "16px" }}>
+                <p style={{ margin: 0, fontSize: "0.88rem", color: "var(--emerald)", fontWeight: 600 }}>
                   Acesta este doar un calcul orientativ. Dacă analiza confirmă aceste valori, diferența anuală poate fi semnificativă.
                 </p>
               </div>
@@ -1047,6 +1062,7 @@ export default function Home() {
         {/* 06 / ANALYZE — QUALIFICATION TERMINAL */}
         <section id="aplica" className="qualification-section">
           <div className="qualification-container">
+            <span className="section-marker">14 / ANALIZĂ & CALIFICARE</span>
             <h2 className="qualification-title">ÎNCEPEM CU SITUAȚIA TA.</h2>
             <p className="qualification-subtitle">
               Câteva întrebări. O analiză clară. Apoi îți spun ce putem face.
@@ -1055,20 +1071,9 @@ export default function Home() {
 
           <div className="form-card">
             <div className="form-header">
-              {/* Progress Steps */}
-              <div className="form-steps" style={{ display: "flex", gap: "16px", justifyContent: "center", marginBottom: "28px" }}>
-                <div className={`step-item ${formStep >= 1 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 1 ? "#087F5B" : "#6B7280" }}>
-                  01 / 04 SITUAȚIE
-                </div>
-                <div className={`step-item ${formStep >= 2 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 2 ? "#087F5B" : "#6B7280" }}>
-                  02 / 04 NEVOIE
-                </div>
-                <div className={`step-item ${formStep >= 3 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 3 ? "#087F5B" : "#6B7280" }}>
-                  03 / 04 DATE
-                </div>
-                <div className={`step-item ${formStep >= 3 ? "active" : ""}`} style={{ fontSize: "12px", fontWeight: 800, fontFamily: "monospace", color: formStep >= 3 ? "#087F5B" : "#6B7280" }}>
-                  04 / 04 ANALIZĂ
-                </div>
+              {/* Progress Step Indicator */}
+              <div className="form-step-indicator" style={{ textAlign: "center", fontSize: "14px", fontWeight: 800, fontFamily: "monospace", color: "var(--emerald)", letterSpacing: "0.1em", marginBottom: "32px" }}>
+                0{formStep} / 03
               </div>
             </div>
 
@@ -1424,8 +1429,8 @@ export default function Home() {
                     </p>
 
                     {/* BIROUL DE CREDIT TRUST BLOCK */}
-                    <div style={{ background: "rgba(57, 255, 136, 0.05)", border: "1px solid rgba(57, 255, 136, 0.15)", borderRadius: "12px", padding: "14px 16px", marginBottom: "24px", fontSize: "0.85rem", color: "var(--ink)" }}>
-                      <strong style={{ color: "var(--neon-green)" }}>🔒 Analiza inițială nu afectează scorul tău la Biroul de Credit.</strong>
+                    <div style={{ background: "#F1F6F3", border: "1px solid var(--border)", borderRadius: "12px", padding: "14px 16px", marginBottom: "24px", fontSize: "0.85rem", color: "var(--ink)" }}>
+                      <strong style={{ color: "var(--emerald)" }}>🔒 Analiza inițială nu afectează scorul tău la Biroul de Credit.</strong>
                       <p style={{ margin: "4px 0 0", color: "var(--muted)", fontSize: "0.8rem" }}>Începem doar cu o evaluare a situației tale.</p>
                     </div>
 
@@ -1445,49 +1450,62 @@ export default function Home() {
         </section>
 
         {/* 8. PROCESS SECTION */}
-        <section id="proces" className="section">
+        <section id="cum-functioneaza" className="section">
           <div className="section-intro">
             <div>
-              <p className="eyebrow">
-                <span /> PAS CU PAS
-              </p>
+              <span className="section-marker">11 / CUM FUNCȚIONEAZĂ</span>
               <h2>Cum funcționează</h2>
             </div>
           </div>
 
-          <div className="grid grid-3">
-            <div className="card">
-              <div className="step-num">1</div>
-              <h3>Completezi analiza gratuită</h3>
-              <p>Durează sub 2 minute să introduci datele tale financiare de bază.</p>
+          <div className="process-steps-row">
+            <div className="process-step-item">
+              <span className="process-step-num">01</span>
+              <h3 className="process-step-title">Completezi analiza gratuită</h3>
+              <p className="process-step-desc">Durează sub 2 minute să introduci datele tale financiare de bază.</p>
             </div>
-            <div className="card">
-              <div className="step-num">2</div>
-              <h3>Un consultant analizează situația ta</h3>
-              <p>Evaluăm opțiunile disponibile din piață de la peste 20 de bănci partenere.</p>
+            <div className="process-step-item">
+              <span className="process-step-num">02</span>
+              <h3 className="process-step-title">Un consultant analizează situația ta</h3>
+              <p className="process-step-desc">Evaluăm opțiunile disponibile din piață de la peste 20 de bănci partenere.</p>
             </div>
-            <div className="card">
-              <div className="step-num">3</div>
-              <h3>Primești soluțiile potrivite</h3>
-              <p>Alegi varianta optimă pentru reducerea ratelor sau obținerea fondurilor.</p>
+            <div className="process-step-item">
+              <span className="process-step-num">03</span>
+              <h3 className="process-step-title">Primești soluțiile potrivite</h3>
+              <p className="process-step-desc">Alegi varianta optimă pentru reducerea ratelor sau obținerea fondurilor.</p>
             </div>
           </div>
         </section>
 
-        {/* 9. TRANSPARENCY SECTION */}
-        <section id="despre" className="section">
-          <div className="section-intro">
-            <div>
-              <p className="eyebrow">
-                <span /> TRANSPARENȚĂ FINANCIARĂ
+        {/* 10. TRANSPARENCY SECTION — ABOUT CRISTIAN VĂDUVA */}
+        <section id="despre" className="about-section">
+          <div className="about-container">
+            <div className="about-left-col">
+              <span className="section-marker">10 / DESPRE MINE</span>
+              <h2 className="about-title">
+                Cristian Văduva
+              </h2>
+              <p className="about-story-lead">
+                Eu nu vreau să îți spun ce credit să iei înainte să înțeleg ce vrei să faci.
               </p>
-              <h2>Despre CV Finance</h2>
+              <p className="about-story-text">
+                Începem cu situația ta. Analizez cifrele, caut variantele și apoi discut cu banca. Scopul este simplu: să înțelegi ce poți obține și să alegi informat.
+              </p>
+              <a className="button" href="#cum-functioneaza" style={{ marginTop: "16px" }}>
+                AFLĂ CUM LUCREZ →
+              </a>
             </div>
-          </div>
-          <div className="card" style={{ padding: "36px", maxWidth: "960px" }}>
-            <p style={{ fontSize: "1.15rem", lineHeight: "1.7", color: "var(--ink)", margin: 0 }}>
-              CV Finance este o platformă de consultanță financiară care ajută clienții să analizeze opțiunile disponibile pentru credite, refinanțări și optimizarea costurilor financiare.
-            </p>
+            <div className="about-right-col">
+              <div className="about-statement-box">
+                <h3 className="about-statement-headline">
+                  Nu vând primul credit.
+                </h3>
+                <h3 className="about-statement-subheadline">
+                  Caut varianta care are sens pentru tine.
+                </h3>
+                <div className="about-statement-divider" />
+              </div>
+            </div>
           </div>
         </section>
 
@@ -1502,104 +1520,48 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-3">
-            <div className="card">
-              <div className="icon">
-                <UserCheck size={24} />
-              </div>
-              <h3>Consultanță personalizată</h3>
-              <p>Analizăm situația ta individual și găsim strategia potrivită profilului tău.</p>
-            </div>
-            <div className="card">
-              <div className="icon">
-                <Building2 size={24} />
-              </div>
-              <h3>Acces la multiple oferte</h3>
-              <p>Comparăm direct ofertele celor peste 20 de instituții financiare partenere.</p>
-            </div>
-            <div className="card">
-              <div className="icon">
-                <Award size={24} />
-              </div>
-              <h3>Experiență și expertiză financiară</h3>
-              <p>Echipa noastră oferă recomandări obiective și orientate către rezultate.</p>
-            </div>
-            <div className="card">
-              <div className="icon">
-                <ShieldCheck size={24} />
-              </div>
-              <h3>Analiză fără obligații</h3>
-              <p>Evaluezi soluțiile gratuit, fără niciun cost ascuns sau obligație contractuală.</p>
-            </div>
-            <div className="card">
-              <div className="icon">
-                <BadgeCheck size={24} />
-              </div>
-              <h3>Consultant dedicat</h3>
-              <p>Un singur punct de contact pe parcursul întregului proces de finanțare.</p>
-            </div>
-            <div className="card">
-              <div className="icon">
-                <Lock size={24} />
-              </div>
-              <h3>Confidențialitate garantată</h3>
-              <p>Datele tale sunt protejate conform celor mai înalte standarde GDPR.</p>
-            </div>
+          <div className="trust-report-grid">
+            {[
+              { icon: UserCheck, title: "Consultanță personalizată", desc: "Analizăm situația ta individual și găsim strategia potrivită profilului tău." },
+              { icon: Building2, title: "Acces la multiple oferte", desc: "Comparăm direct ofertele celor peste 20 de instituții financiare partenere." },
+              { icon: Award, title: "Experiență și expertiză", desc: "Echipa noastră oferă recomandări obiective și orientate către rezultate." },
+              { icon: ShieldCheck, title: "Analiză fără obligații", desc: "Evaluezi soluțiile gratuit, fără niciun cost ascuns sau obligație contractuală." },
+              { icon: BadgeCheck, title: "Consultant dedicat", desc: "Un singur punct de contact competent pe parcursul întregului proces." },
+              { icon: Lock, title: "Confidențialitate garantată", desc: "Datele tale sunt complet asigurate și protejate conform GDPR." },
+            ].map((item, idx) => {
+              const IconComp = item.icon;
+              return (
+                <div key={idx} className="trust-column">
+                  <div className="trust-column-header">
+                    <IconComp size={20} className="trust-column-icon" />
+                    <h3 className="trust-column-title">{item.title}</h3>
+                  </div>
+                  <p className="trust-column-desc">{item.desc}</p>
+                </div>
+              );
+            })}
           </div>
         </section>
 
         {/* 10. REFERRAL PROGRAM */}
         <section id="recomandari" className="section">
-          <div
-            style={{
-              background: "linear-gradient(135deg, #1d1e1b 0%, #141513 100%)",
-              border: "1px solid var(--dark-border, #2e302b)",
-              borderRadius: "28px",
-              padding: "48px 36px",
-              color: "#ffffff",
-              display: "flex",
-              flexDirection: "column",
-              gap: "24px",
-              boxShadow: "0 24px 48px rgba(0,0,0,0.4)",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-              <div
-                style={{
-                  background: "rgba(200, 250, 80, 0.15)",
-                  color: "var(--lime, #c8fa50)",
-                  padding: "10px",
-                  borderRadius: "14px",
-                }}
-              >
+          <div className="referral-panel">
+            <div className="referral-header">
+              <div className="referral-icon">
                 <Gift size={28} />
               </div>
-              <div>
-                <p className="eyebrow" style={{ color: "var(--lime, #c8fa50)", marginBottom: "4px" }}>
-                  <span style={{ background: "var(--lime, #c8fa50)" }} /> PROGRAM DE RECOMANDĂRI
-                </p>
-                <h2 style={{ color: "#ffffff", margin: 0, fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)" }}>
-                  Recomandă și câștigă
-                </h2>
+              <div className="referral-header-text">
+                <span className="referral-label">PROGRAM DE RECOMANDĂRI</span>
+                <h2 className="referral-title">Recomandă și câștigă</h2>
               </div>
             </div>
 
-            <p style={{ fontSize: "1.15rem", color: "#a0a29a", maxWidth: "720px", margin: 0 }}>
+            <p className="referral-desc">
               Recomandă o persoană interesată de optimizarea unui credit și poți primi un bonus pentru fiecare recomandare eligibilă.
             </p>
 
-            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "20px", marginTop: "12px" }}>
-              <div
-                style={{
-                  background: "rgba(255,255,255,0.05)",
-                  border: "1px solid rgba(255,255,255,0.1)",
-                  borderRadius: "16px",
-                  padding: "12px 24px",
-                  fontSize: "1.2rem",
-                  fontWeight: "800",
-                  color: "var(--lime, #c8fa50)",
-                }}
-              >
+            <div className="referral-action-row">
+              <div className="referral-badge">
                 500 – 3.000 RON / recomandare
               </div>
 
@@ -1669,9 +1631,7 @@ export default function Home() {
         <section id="contact-direct" className="section" style={{ paddingTop: "40px" }}>
           <div className="section-intro">
             <div>
-              <p className="eyebrow">
-                <span /> CANALE OFICIALE
-              </p>
+              <span className="section-marker">12 / CONTACT DIRECT</span>
               <h2>Contact direct</h2>
               <p style={{ color: "var(--muted)", maxWidth: "600px", marginTop: "8px" }}>
                 Discutăm situația ta financiară și identificăm opțiunile potrivite pentru cazul tău.
@@ -1679,56 +1639,56 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-3" style={{ gap: "20px" }}>
+          <div className="contact-rows-list">
             <a
               href="https://wa.me/436509536345?text=Bun%C4%83%20ziua%2C%20doresc%20o%20analiz%C4%83%20gratuit%C4%83%20a%20op%C8%9Biunilor%20mele%20financiare."
               target="_blank"
               rel="noopener noreferrer"
-              className="card"
-              style={{ padding: "28px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+              className="contact-row-item"
             >
-              <div>
-                <span style={{ fontSize: "11px", fontWeight: 800, color: "var(--finance-green)", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "8px" }}>
-                  WhatsApp
-                </span>
-                <h3 style={{ fontSize: "1.1rem", marginBottom: "6px" }}>Răspuns rapid prin mesaj</h3>
-                <p style={{ fontSize: "0.9rem", color: "var(--muted)", margin: 0 }}>Preferat pentru întrebări rapide și trimiterea informațiilor.</p>
+              <div className="contact-row-left">
+                <MessageCircle size={24} className="contact-row-icon" />
+                <div className="contact-row-info">
+                  <span className="contact-row-label">WhatsApp</span>
+                  <h3 className="contact-row-title">Vorbește direct cu mine</h3>
+                  <p className="contact-row-desc">Preferat pentru întrebări rapide și trimiterea informațiilor de credit.</p>
+                </div>
               </div>
-              <div style={{ marginTop: "20px", fontSize: "1.05rem", fontWeight: 800, color: "var(--bloomberg-navy)", fontFamily: "var(--font-numbers)" }}>
+              <div className="contact-row-value">
                 +43 650 953 6345 →
               </div>
             </a>
 
             <a
               href="tel:+40767110439"
-              className="card"
-              style={{ padding: "28px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+              className="contact-row-item"
             >
-              <div>
-                <span style={{ fontSize: "11px", fontWeight: 800, color: "var(--finance-green)", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "8px" }}>
-                  Telefon
-                </span>
-                <h3 style={{ fontSize: "1.1rem", marginBottom: "6px" }}>Consultanță directă</h3>
-                <p style={{ fontSize: "0.9rem", color: "var(--muted)", margin: 0 }}>Luni – Vineri 09:00 – 18:00 pentru conversații telefonice direct cu consultantul.</p>
+              <div className="contact-row-left">
+                <UserCheck size={24} className="contact-row-icon" />
+                <div className="contact-row-info">
+                  <span className="contact-row-label">Telefon</span>
+                  <h3 className="contact-row-title">Discutăm situația ta</h3>
+                  <p className="contact-row-desc">Luni – Vineri 09:00 – 18:00 pentru convorbiri directe.</p>
+                </div>
               </div>
-              <div style={{ marginTop: "20px", fontSize: "1.05rem", fontWeight: 800, color: "var(--bloomberg-navy)", fontFamily: "var(--font-numbers)" }}>
+              <div className="contact-row-value">
                 0767 110 439 →
               </div>
             </a>
 
             <a
               href="mailto:cristianvaduva@duck.com"
-              className="card"
-              style={{ padding: "28px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+              className="contact-row-item"
             >
-              <div>
-                <span style={{ fontSize: "11px", fontWeight: 800, color: "var(--finance-green)", textTransform: "uppercase", letterSpacing: "0.08em", display: "block", marginBottom: "8px" }}>
-                  Email
-                </span>
-                <h3 style={{ fontSize: "1.1rem", marginBottom: "6px" }}>Solicitări și documente</h3>
-                <p style={{ fontSize: "0.9rem", color: "var(--muted)", margin: 0 }}>Trimite întrebări detaliate sau documente necesare pentru analiza dosarului.</p>
+              <div className="contact-row-left">
+                <Landmark size={24} className="contact-row-icon" />
+                <div className="contact-row-info">
+                  <span className="contact-row-label">Email</span>
+                  <h3 className="contact-row-title">Trimite-mi detaliile</h3>
+                  <p className="contact-row-desc">Trimite întrebări detaliate sau documente necesare analizei dosarului.</p>
+                </div>
               </div>
-              <div style={{ marginTop: "20px", fontSize: "1rem", fontWeight: 800, color: "var(--bloomberg-navy)", fontFamily: "var(--font-numbers)", wordBreak: "break-all" }}>
+              <div className="contact-row-value">
                 cristianvaduva@duck.com →
               </div>
             </a>
@@ -1739,9 +1699,7 @@ export default function Home() {
         <section id="ecosistem" className="section" style={{ paddingTop: "40px", paddingBottom: "60px" }}>
           <div className="section-intro">
             <div>
-              <p className="eyebrow">
-                <span /> CRISTIAN VĂDUVA INTELLIGENCE
-              </p>
+              <span className="section-marker">13 / ECOSISTEM</span>
               <h2>Parte din ecosistemul Cristian Văduva Intelligence</h2>
               <p style={{ color: "var(--muted)", maxWidth: "680px", marginTop: "8px", lineHeight: 1.6 }}>
                 CV Finance face parte dintr-un ecosistem digital construit pentru decizii mai bune în domeniul financiar, imobiliar, asigurări, business intelligence și sănătate.
@@ -1749,7 +1707,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="grid grid-3" style={{ gap: "16px" }}>
+          <div className="ecosystem-inline-list">
             {[
               { name: "cristianvaduva.com", url: "https://cristianvaduva.com", desc: "Personal brand, professional profile and advisory platform." },
               { name: "AiXLuxury.com", url: "https://AiXLuxury.com", desc: "Luxury real estate, premium properties and private advisory." },
@@ -1765,16 +1723,13 @@ export default function Home() {
                 href={eco.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="card"
-                style={{ padding: "20px 24px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}
+                className="ecosystem-link-item"
               >
-                <div>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                    <strong style={{ fontSize: "1.05rem", color: "var(--bloomberg-navy)" }}>{eco.name}</strong>
-                    <span style={{ fontSize: "12px", color: "var(--finance-green)", fontWeight: 700 }}>{eco.url.replace("https://", "")} ↗</span>
-                  </div>
-                  <p style={{ fontSize: "0.88rem", color: "var(--muted)", margin: 0, lineHeight: 1.5 }}>{eco.desc}</p>
+                <div className="ecosystem-link-left">
+                  <span className="ecosystem-link-name">{eco.name}</span>
+                  <span className="ecosystem-link-desc">{eco.desc}</span>
                 </div>
+                <span className="ecosystem-link-arrow">↗</span>
               </a>
             ))}
           </div>
@@ -1791,7 +1746,7 @@ export default function Home() {
               <div className="footer-links">
                 <a href="#totul-inainte-de-credit">Personal</a>
                 <a href="#business-finance">Business</a>
-                <a href="#proces">Cum funcționează</a>
+                <a href="#cum-functioneaza">Cum funcționează</a>
                 <a href="#contact-direct">Despre mine</a>
                 <a href="#contact-direct">Contact</a>
               </div>

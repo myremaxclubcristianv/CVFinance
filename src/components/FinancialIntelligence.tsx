@@ -6,6 +6,7 @@ export default function FinancialIntelligence() {
   return (
     <section className="fi-section" id="financial-intelligence">
       <div className="fi-container">
+        <span className="section-marker">09 / FINANCIAL INTELLIGENCE</span>
         <h2 className="fi-title">CE SE ÎNTÂMPLĂ ÎN PIAȚĂ?</h2>
         <p className="fi-lead-text">
           Dobânzile se schimbă. O ofertă bună astăzi nu înseamnă automat că este și cea mai bună pentru situația ta.

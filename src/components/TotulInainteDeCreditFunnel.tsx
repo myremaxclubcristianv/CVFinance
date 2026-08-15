@@ -280,7 +280,7 @@ export default function TotulInainteDeCreditFunnel({
     return (
       <div className="totul-success-card">
         <div className="success-icon-wrap">
-          <CheckCircle2 size={56} className="text-emerald-500" />
+          <CheckCircle2 size={56} style={{ color: "var(--emerald)" }} />
         </div>
         <h1>Am primit situația ta.</h1>
         <p className="success-subtitle">O analizez înainte să te sun.</p>

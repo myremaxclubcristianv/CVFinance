@@ -8,6 +8,7 @@ interface CommandRow {
   code: string;
   label: string;
   intent: string;
+  desc: string;
   targetId: string;
   type: "personal" | "business";
 }
@@ -17,6 +18,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "01",
     label: "Vreau bani",
     intent: "Am nevoie de o sumă nouă",
+    desc: "Analizăm varianta optimă pentru o sumă nouă.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -24,6 +26,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "02",
     label: "Vreau să cumpăr o locuință",
     intent: "Credit nou",
+    desc: "Găsim creditul ipotecar potrivit cu avans minim.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -31,6 +34,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "03",
     label: "Vreau să refinanțez",
     intent: "Refinanțare",
+    desc: "Reducem rata lunară și comasăm creditele existente.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -38,6 +42,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "04",
     label: "Am nevoie de bani pentru mine",
     intent: "Am nevoie de o sumă nouă",
+    desc: "Credit de nevoi personale cu aprobare rapidă.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -45,6 +50,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "05",
     label: "Am nevoie de finanțare pentru firmă",
     intent: "Finanțare firmă",
+    desc: "Capital de lucru, leasing sau credite de investiții.",
     targetId: "verificare-finantare-business",
     type: "business",
   },
@@ -52,6 +58,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "06",
     label: "Vreau să știu dacă mă încadrez",
     intent: "Reduc rata",
+    desc: "Calculăm gradul de îndatorare maxim admis de bănci.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -59,6 +66,7 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "07",
     label: "Vreau să recomand un client",
     intent: "Recomandare client",
+    desc: "Recomandă un prieten și obții comision la acordare.",
     targetId: "recomandari",
     type: "personal",
   },
@@ -88,6 +96,7 @@ export default function CommandSheet() {
     <section className="command-sheet-section" id="ce-cauti">
       <div className="command-sheet-container">
         <div className="command-sheet-header">
+          <span className="section-marker">01 / DE UNDE ÎNCEPEM</span>
           <h2 className="command-title">DE UNDE ÎNCEPEM?</h2>
           <p className="command-subtitle">Spune-mi ce vrei să faci. De acolo începem.</p>
         </div>
@@ -102,7 +111,10 @@ export default function CommandSheet() {
             >
               <div className="command-row-left">
                 <span className="command-row-code">{row.code}</span>
-                <span className="command-row-label">{row.label}</span>
+                <div className="command-row-text-group">
+                  <span className="command-row-label">{row.label}</span>
+                  <span className="command-row-desc">{row.desc}</span>
+                </div>
               </div>
               <ArrowRight size={20} className="command-row-arrow" />
             </button>
