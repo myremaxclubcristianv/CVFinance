@@ -6,7 +6,10 @@ export default function FinancialIntelligence() {
   return (
     <section className="fi-section" id="financial-intelligence">
       <div className="fi-container">
-        <h2 className="fi-title">Ce se întâmplă în piață?</h2>
+        <h2 className="fi-title">CE SE ÎNTÂMPLĂ ÎN PIAȚĂ?</h2>
+        <p className="fi-lead-text">
+          Dobânzile se schimbă. O ofertă bună astăzi nu înseamnă automat că este și cea mai bună pentru situația ta.
+        </p>
 
         <div className="fi-grid">
           <div className="fi-card">
@@ -18,10 +21,6 @@ export default function FinancialIntelligence() {
             <span className="fi-label">EVOLUȚIE</span>
           </div>
         </div>
-
-        <p className="fi-lead-text">
-          Dobânzile se schimbă. O ofertă bună pentru altcineva nu înseamnă automat că este bună și pentru tine.
-        </p>
       </div>
     </section>
   );

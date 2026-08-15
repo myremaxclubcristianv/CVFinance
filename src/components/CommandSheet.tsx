@@ -88,7 +88,8 @@ export default function CommandSheet() {
     <section className="command-sheet-section" id="ce-cauti">
       <div className="command-sheet-container">
         <div className="command-sheet-header">
-          <h2 className="command-title">De unde vrei să începem?</h2>
+          <h2 className="command-title">DE UNDE ÎNCEPEM?</h2>
+          <p className="command-subtitle">Spune-mi ce vrei să faci. De acolo începem.</p>
         </div>
 
         <div className="command-rows-list">
@@ -99,10 +100,11 @@ export default function CommandSheet() {
               className="command-row-btn"
               onClick={() => handleSelect(row)}
             >
-              <span className="command-row-label">
-                {row.code} — {row.label}
-              </span>
-              <ArrowRight size={22} className="command-row-arrow" />
+              <div className="command-row-left">
+                <span className="command-row-code">{row.code}</span>
+                <span className="command-row-label">{row.label}</span>
+              </div>
+              <ArrowRight size={20} className="command-row-arrow" />
             </button>
           ))}
         </div>

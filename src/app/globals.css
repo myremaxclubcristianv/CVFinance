@@ -2,7 +2,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Restrained Apple & Private Banking Design Tokens */
+  /* Premium Restrained Apple & Private Banking Design Tokens */
   --bg: #FFFFFF;
   --surface: #F7F9F8;
   --emerald: #087F5B;
@@ -20,7 +20,9 @@
   --transition: all 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Reset & Base Rules */
+/* ==========================================
+   GLOBAL RESET & CONTAINER SYSTEM
+   ========================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -31,11 +33,86 @@ html, body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
   overflow-x: hidden;
+}
+
+/* Unified Container system */
+.container,
+.hero-container,
+.promise-container,
+.philosophy-container,
+.command-sheet-container,
+.personal-container,
+.business-container,
+.outcomes-container,
+.fi-container,
+.qualification-container,
+.footer-container {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding-left: 32px;
+  padding-right: 32px;
+  width: 100%;
+}
+
+@media (max-width: 767px) {
+  .container,
+  .hero-container,
+  .promise-container,
+  .philosophy-container,
+  .command-sheet-container,
+  .personal-container,
+  .business-container,
+  .outcomes-container,
+  .fi-container,
+  .qualification-container,
+  .footer-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  html, body {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+}
+
+/* Consistent Spacing Rhythm for all Main Sections */
+.hero-section,
+.promise-section,
+.philosophy-section,
+.command-sheet-section,
+.personal-section,
+.business-section,
+.outcomes-section,
+.fi-section,
+.qualification-section,
+.final-cta-section,
+.faq-section,
+.section {
+  padding-top: 140px;
+  padding-bottom: 140px;
+}
+
+@media (max-width: 767px) {
+  .hero-section,
+  .promise-section,
+  .philosophy-section,
+  .command-sheet-section,
+  .personal-section,
+  .business-section,
+  .outcomes-section,
+  .fi-section,
+  .qualification-section,
+  .final-cta-section,
+  .faq-section,
+  .section {
+    padding-top: 90px;
+    padding-bottom: 90px;
+  }
 }
 
 /* Typography Hierarchy */
@@ -46,26 +123,8 @@ h1, h2, h3, h4 {
   letter-spacing: -0.03em;
 }
 
-h1 {
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  font-weight: 800;
-  letter-spacing: -0.04em;
-}
-
-h2 {
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-}
-
-h3 {
-  font-size: clamp(1.4rem, 3vw, 2.2rem);
-  font-weight: 700;
-}
-
 p {
   color: var(--text);
-  font-size: 16px;
 }
 
 a {
@@ -75,18 +134,19 @@ a {
 }
 
 /* ==========================================
-   NAVIGATION HEADER (APPLE STYLE)
+   HEADER & MARQUEE TICKER (FIXED CLEARANCE)
    ========================================== */
 .nav {
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
   background: rgba(255, 255, 255, 0.96);
   border-bottom: 1px solid var(--border);
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 99999;
   backdrop-filter: blur(12px);
 }
@@ -143,8 +203,10 @@ a {
   font-weight: 700;
   letter-spacing: 0.08em;
   color: var(--muted);
-  position: sticky;
+  position: fixed;
   top: 56px;
+  left: 0;
+  right: 0;
   z-index: 99998;
 }
 
@@ -175,65 +237,66 @@ a {
   100% { transform: translateX(-50%); }
 }
 
+/* Clearance offset for page body */
+body {
+  padding-top: 96px;
+}
+
 /* ==========================================
-   HERO SECTION (DRAMATIC EDITORIAL)
+   CENTERED HERO SECTION
    ========================================== */
 .hero-section {
-  padding: 120px 40px 80px;
-  max-width: 1280px;
-  margin: 0 auto;
+  padding-top: 120px;
+  padding-bottom: 80px;
   background: #FFFFFF;
 }
 
 .hero-container {
-  display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
-  gap: 80px;
-  align-items: center;
-}
-
-.hero-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
 }
 
 .hero-eyebrow {
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.15em;
-  color: var(--emerald);
+  color: var(--muted);
   margin-bottom: 24px;
   text-transform: uppercase;
 }
 
 .hero-title {
-  font-size: clamp(2.4rem, 5.5vw, 4.2rem);
-  font-weight: 800;
-  line-height: 1.1;
+  font-size: clamp(56px, 6vw, 88px);
+  line-height: 0.98;
+  letter-spacing: -0.045em;
   color: var(--ink);
   margin-bottom: 24px;
-  letter-spacing: -0.04em;
+  font-weight: 800;
 }
 
-.hero-title-secondary {
+.hero-title-emphasis {
   display: block;
-  font-weight: 400;
-  color: var(--muted);
-  margin-top: 8px;
+  color: var(--emerald);
+  font-weight: 800;
 }
 
 .hero-desc {
   font-size: 18px;
   line-height: 1.6;
   color: var(--text);
-  margin-bottom: 40px;
+  margin: 0 auto 40px;
+  max-width: 680px;
 }
 
 .hero-actions {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 28px;
+  margin-bottom: 64px;
+  width: 100%;
 }
 
 .hero-btn-primary {
@@ -260,73 +323,54 @@ a {
   color: var(--emerald);
   display: inline-flex;
   align-items: center;
-  gap: 4px;
 }
 
 .hero-btn-secondary:hover {
   color: var(--emerald-dark);
 }
 
-/* Hero Visual Composition */
-.hero-visual-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
+/* Centered visual card */
 .hero-visual-card {
   width: 100%;
-  max-width: 380px;
-  background: #FFFFFF;
+  max-width: 780px;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 12px;
-  padding: 32px;
-  box-shadow: none;
+  padding: 32px 48px;
 }
 
-.visual-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border);
-  padding-bottom: 16px;
-  margin-bottom: 24px;
-}
-
-.visual-title {
+.visual-card-title {
   font-size: 11px;
   font-weight: 800;
   color: var(--muted);
   letter-spacing: 0.1em;
+  margin-bottom: 24px;
+  text-align: left;
 }
 
-.visual-indicator-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--emerald);
-  border-radius: 50%;
+.visual-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  text-align: left;
 }
 
-.visual-body {
+.visual-metric-item {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 8px;
 }
 
-.visual-metric {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.visual-metric.highlight {
-  border-top: 1px solid var(--border);
-  padding-top: 16px;
+.visual-metric-item:not(:last-child) {
+  border-right: 1px solid var(--border);
+  padding-right: 24px;
 }
 
 .metric-label {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
 
 .metric-value {
@@ -336,94 +380,104 @@ a {
   letter-spacing: -0.02em;
 }
 
-.metric-value.emerald {
+.metric-value.highlight-emerald {
   color: var(--emerald);
 }
 
 /* ==========================================
-   THE CORE MESSAGE & PHILOSOPHY
+   THE CORE PROMISE (TRANSITION BANNER)
    ========================================== */
-.core-message-section {
-  padding: 120px 40px;
-  max-width: 1080px;
-  margin: 0 auto;
-  text-align: left;
+.promise-section {
+  padding-top: 160px;
+  padding-bottom: 160px;
+  background: #FFFFFF;
 }
 
-.core-message-container {
+.promise-container {
   display: flex;
-  flex-direction: column;
-  gap: 16px;
+  justify-content: center;
+  text-align: center;
 }
 
-.core-message-title {
-  font-size: clamp(2.2rem, 5vw, 3.8rem);
+.promise-headline {
+  font-size: clamp(32px, 5.5vw, 68px);
   font-weight: 800;
   line-height: 1.1;
-  color: var(--ink);
   letter-spacing: -0.04em;
+  color: var(--ink);
 }
 
-.core-message-desc {
-  font-size: 20px;
-  line-height: 1.6;
-  color: var(--text);
-  margin-top: 32px;
-  max-width: 780px;
-}
-
-/* philosophy / "EU TE SUN. BANCA NU." */
+/* ==========================================
+   CUM LUCRĂM — PROCESS SEGMENT
+   ========================================== */
 .philosophy-section {
-  padding: 120px 40px;
-  max-width: 1280px;
-  margin: 0 auto;
   border-top: 1px solid var(--border);
 }
 
 .philosophy-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 64px;
+}
+
+.philosophy-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
 }
 
 .philosophy-title {
-  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  font-size: clamp(34px, 5vw, 64px);
   font-weight: 800;
   line-height: 1.05;
   color: var(--ink);
   letter-spacing: -0.04em;
 }
 
-.philosophy-title-break {
-  display: block;
+.philosophy-title .highlight-emerald {
   color: var(--emerald);
 }
 
-.philosophy-steps-wrapper {
-  border-left: 2px solid var(--emerald);
-  padding-left: 32px;
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  text-align: left;
+  width: 100%;
 }
 
-.philosophy-steps {
+.philosophy-step-item {
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 12px;
 }
 
-.philosophy-step {
-  font-size: clamp(18px, 2.5vw, 24px);
+.step-number {
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 800;
+  color: var(--emerald);
+}
+
+.step-title {
+  font-size: 18px;
   font-weight: 700;
   color: var(--ink);
-  letter-spacing: -0.02em;
+}
+
+.step-desc {
+  font-size: 14.5px;
+  color: var(--text);
+  line-height: 1.5;
 }
 
 /* ==========================================
-   COMMAND SHEET SECTION
+   COMMAND SHEET LIST (SETTINGS STYLE)
    ========================================== */
 .command-sheet-section {
-  padding: 120px 40px;
-  max-width: 1280px;
-  margin: 0 auto;
   border-top: 1px solid var(--border);
 }
 
@@ -433,11 +487,22 @@ a {
   gap: 56px;
 }
 
+.command-sheet-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
 .command-title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(34px, 5vw, 56px);
   font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.03em;
+}
+
+.command-subtitle {
+  font-size: 18px;
+  color: var(--text);
 }
 
 .command-rows-list {
@@ -449,8 +514,8 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  min-height: 80px;
-  padding: 24px 0;
+  min-height: 72px;
+  padding: 20px 0;
   background: transparent;
   border: none;
   border-bottom: 1px solid var(--border);
@@ -459,11 +524,23 @@ a {
   transition: var(--transition);
 }
 
+.command-row-left {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.command-row-code {
+  font-size: 12px;
+  font-weight: 700;
+  font-family: monospace;
+  color: var(--muted);
+}
+
 .command-row-label {
-  font-size: clamp(18px, 2.5vw, 24px);
+  font-size: 18px;
   font-weight: 700;
   color: var(--ink);
-  letter-spacing: -0.02em;
   transition: var(--transition);
 }
 
@@ -484,31 +561,23 @@ a {
 }
 
 /* ==========================================
-   PERSONAL FINANCE SECTION
+   PERSONAL CREDIT SECTION (EDITORIAL TRANSITION)
    ========================================== */
 .personal-section {
-  padding: 120px 40px;
-  max-width: 1280px;
-  margin: 0 auto;
   border-top: 1px solid var(--border);
 }
 
 .personal-container {
   display: flex;
   flex-direction: column;
-  gap: 96px;
-}
-
-.personal-split {
-  display: grid;
-  grid-template-columns: 1fr 1.2fr;
   gap: 80px;
 }
 
-.personal-left {
+.personal-header {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  text-align: center;
 }
 
 .personal-label {
@@ -516,16 +585,58 @@ a {
   font-weight: 800;
   color: var(--emerald);
   letter-spacing: 0.15em;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .personal-title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(34px, 5vw, 64px);
   font-weight: 800;
   line-height: 1.1;
   color: var(--ink);
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   letter-spacing: -0.03em;
+}
+
+.personal-subtitle {
+  font-size: 18px;
+  color: var(--text);
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.personal-benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+
+.benefit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.benefit-number {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--emerald);
+}
+
+.benefit-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.benefit-desc {
+  font-size: 14.5px;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.personal-cta-box {
+  display: flex;
+  justify-content: center;
 }
 
 .personal-cta-link {
@@ -546,62 +657,24 @@ a {
   background: var(--emerald-dark);
 }
 
-.personal-right {
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-}
-
-.personal-lead {
-  font-size: 20px;
-  color: var(--ink);
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.personal-minimal-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.personal-minimal-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.minimal-label {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--ink);
-}
-
-.minimal-val {
-  font-size: 15px;
-  color: var(--emerald);
-  font-weight: 600;
-}
-
-/* Checklist Section Styling */
+/* Checklist Lines styling */
 .personal-checklist {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 24px;
+  border-top: 1px solid var(--border);
+  padding-top: 64px;
 }
 
 .checklist-title {
   font-size: 24px;
   font-weight: 800;
-  letter-spacing: -0.02em;
   color: var(--ink);
 }
 
 .checklist-subtitle {
   font-size: 15px;
   color: var(--muted);
-  max-width: 640px;
 }
 
 .checklist-lines {
@@ -611,9 +684,8 @@ a {
 
 .checklist-line {
   display: flex;
-  align-items: flex-start;
   gap: 32px;
-  padding: 24px 0;
+  padding: 20px 0;
   border-bottom: 1px solid var(--border);
 }
 
@@ -622,7 +694,6 @@ a {
   font-weight: 800;
   color: var(--emerald);
   font-family: monospace;
-  padding-top: 4px;
 }
 
 .checklist-line-main {
@@ -640,14 +711,12 @@ a {
 .checklist-line-desc {
   font-size: 14.5px;
   color: var(--text);
-  line-height: 1.5;
 }
 
-/* Editorial Accordions details tag styling */
+/* Borderless editorial accordions */
 .editorial-accordions {
   display: flex;
   flex-direction: column;
-  gap: 12px;
 }
 
 .editorial-details {
@@ -685,14 +754,14 @@ a {
   font-size: 15px;
   color: var(--text);
   margin-top: 16px;
-  line-height: 1.6;
 }
 
 .personal-funnel-wrapper {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 48px;
+  margin-top: 64px;
 }
 
 .funnel-intro-box {
@@ -702,6 +771,7 @@ a {
 .funnel-intro-title {
   font-size: 20px;
   font-weight: 800;
+  color: var(--ink);
   margin-bottom: 8px;
 }
 
@@ -720,12 +790,12 @@ a {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 40px;
+  margin-top: 64px;
 }
 
 .personal-principle-item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 12px;
 }
 
@@ -733,13 +803,12 @@ a {
   font-size: 11px;
   font-weight: 800;
   color: var(--emerald);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.15em;
 }
 
 .principle-heading {
   font-size: 18px;
   font-weight: 800;
-  color: var(--ink);
 }
 
 .principle-desc {
@@ -747,21 +816,23 @@ a {
   color: var(--text);
 }
 
+.personal-faq-accordions {
+  border-top: 1px solid var(--border);
+  padding-top: 64px;
+  margin-top: 64px;
+}
+
 /* ==========================================
-   BUSINESS FINANCE SECTION
+   BUSINESS FINANCE (2-COLUMN PREMIUM)
    ========================================== */
 .business-section {
-  padding: 120px 40px;
-  max-width: 1280px;
-  margin: 0 auto;
   border-top: 1px solid var(--border);
 }
 
 .business-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 32px;
+  gap: 40px;
 }
 
 .business-label {
@@ -769,60 +840,94 @@ a {
   font-weight: 800;
   color: var(--emerald);
   letter-spacing: 0.15em;
-  text-transform: uppercase;
+}
+
+.business-two-col {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 80px;
+}
+
+.business-left-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 32px;
 }
 
 .business-title {
-  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-size: clamp(34px, 5vw, 64px);
   font-weight: 800;
   line-height: 1.1;
   color: var(--ink);
-  letter-spacing: -0.04em;
+  letter-spacing: -0.03em;
 }
 
-.business-lead-keywords {
-  font-size: 22px;
+.business-desc {
+  font-size: 18px;
+  line-height: 1.6;
   color: var(--text);
-  font-weight: 400;
-  line-height: 1.5;
 }
 
-.business-statement-block {
-  border-left: 2px solid var(--border);
-  padding-left: 32px;
+.business-cta-box {
+  margin-top: 8px;
+}
+
+.business-cta-link {
+  height: 52px;
+  padding: 0 32px;
+  background: var(--emerald);
+  color: #FFFFFF;
+  font-size: 14.5px;
+  font-weight: 700;
+  border-radius: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+
+.business-cta-link:hover {
+  background: var(--emerald-dark);
+}
+
+.business-right-col {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-top: 24px;
 }
 
-.business-statement-title {
-  font-size: clamp(20px, 3vw, 28px);
+.business-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.category-item {
+  height: 64px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  font-size: 15px;
   font-weight: 700;
   color: var(--ink);
-  letter-spacing: -0.02em;
-}
-
-.business-statement-title.highlight {
-  color: var(--emerald);
+  letter-spacing: 0.05em;
+  background: var(--surface);
 }
 
 .bf-homepage-funnel-wrapper {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 48px;
-  max-width: 1280px;
-  margin: 0 auto 120px;
+  margin-bottom: 120px;
 }
 
 /* ==========================================
-   OUTCOMES SECTION
+   CE CÂȘTIGI? (2X2 GRID OR VERTICAL)
    ========================================== */
 .outcomes-section {
-  padding: 120px 40px;
-  max-width: 1280px;
-  margin: 0 auto;
   border-top: 1px solid var(--border);
 }
 
@@ -833,29 +938,28 @@ a {
 }
 
 .outcomes-main-title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(34px, 5vw, 64px);
   font-weight: 800;
   color: var(--ink);
 }
 
 .outcomes-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px 80px;
 }
 
 .outcome-item {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  gap: 16px;
 }
 
 .outcome-number {
-  font-size: clamp(3rem, 6vw, 4.5rem);
+  font-size: 32px;
   font-weight: 800;
   color: var(--border);
-  line-height: 1;
-  margin-bottom: 16px;
+  font-family: monospace;
 }
 
 .outcome-label {
@@ -863,57 +967,57 @@ a {
   font-weight: 800;
   color: var(--emerald);
   letter-spacing: 0.15em;
-  margin-bottom: 12px;
 }
 
 .outcome-text {
-  font-size: 15px;
+  font-size: 18px;
   color: var(--text);
   line-height: 1.5;
 }
 
 /* ==========================================
-   FINANCIAL INTELLIGENCE
+   CE SE ÎNTÂMPLĂ ÎN PIAȚĂ? (FINANCIAL INT.)
    ========================================== */
 .fi-section {
-  padding: 120px 40px;
-  max-width: 1280px;
-  margin: 0 auto;
   border-top: 1px solid var(--border);
 }
 
 .fi-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 48px;
+  gap: 32px;
 }
 
 .fi-title {
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(34px, 5vw, 56px);
   font-weight: 800;
   color: var(--ink);
 }
 
+.fi-lead-text {
+  font-size: 18px;
+  color: var(--text);
+  max-width: 680px;
+}
+
 .fi-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  width: 100%;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  margin-top: 32px;
 }
 
 .fi-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 8px;
+  gap: 12px;
 }
 
 .fi-value {
-  font-size: clamp(4rem, 8vw, 6.5rem);
+  font-size: clamp(56px, 8vw, 96px);
   font-weight: 800;
   color: var(--ink);
-  line-height: 1;
+  line-height: 0.95;
   letter-spacing: -0.04em;
 }
 
@@ -928,27 +1032,58 @@ a {
   letter-spacing: 0.15em;
 }
 
-.fi-lead-text {
-  font-size: clamp(18px, 2.5vw, 24px);
-  color: var(--text);
-  line-height: 1.5;
-  max-width: 780px;
-  margin-top: 16px;
+/* ==========================================
+   QUALIFICATION SECTION (EDITORIAL FORM)
+   ========================================== */
+.qualification-section {
+  border-top: 1px solid var(--border);
+  padding-top: 140px;
+  padding-bottom: 32px;
 }
 
-/* ==========================================
-   QUALIFICATION FORM (APPLE ONBOARDING)
-   ========================================== */
+.qualification-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.qualification-title {
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+
+.qualification-subtitle {
+  font-size: 18px;
+  color: var(--text);
+}
+
+.form-card {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0;
+}
+
 .multi-step-form {
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 40px;
+}
+
+.form-steps {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 40px;
 }
 
 .options-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) !important;
-  gap: 12px;
+  gap: 16px;
 }
 
 .option-btn {
@@ -980,7 +1115,7 @@ a {
 .field-group {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .field-label {
@@ -1040,17 +1175,18 @@ a {
 }
 
 /* ==========================================
-   FINAL CTA SECTION (MASSIVE WHITE FIELD)
+   FINAL CTA SECTION (SIMPLE & MASSIVE)
    ========================================== */
 .final-cta-section {
-  padding: 160px 40px;
+  padding-top: 180px;
+  padding-bottom: 180px;
   background: #FFFFFF;
   text-align: center;
   border-top: 1px solid var(--border);
 }
 
 .final-cta-container {
-  max-width: 960px;
+  max-width: 860px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -1059,9 +1195,9 @@ a {
 }
 
 .final-cta-title {
-  font-size: clamp(2rem, 5vw, 3.8rem);
+  font-size: clamp(34px, 5vw, 68px);
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.1;
   color: var(--ink);
   letter-spacing: -0.04em;
 }
@@ -1071,12 +1207,7 @@ a {
 }
 
 .final-cta-actions {
-  display: flex;
-  align-items: center;
-  gap: 32px;
   margin-top: 48px;
-  flex-wrap: wrap;
-  justify-content: center;
 }
 
 .final-cta-primary {
@@ -1097,29 +1228,17 @@ a {
   background: var(--emerald-dark);
 }
 
-.final-cta-secondary {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--emerald);
-  transition: var(--transition);
-}
-
-.final-cta-secondary:hover {
-  color: var(--emerald-dark);
-}
-
 /* ==========================================
    EDITORIAL FOOTER
    ========================================== */
 .editorial-footer {
-  padding: 80px 40px 60px;
+  padding-top: 80px;
+  padding-bottom: 60px;
   border-top: 1px solid var(--border);
   background: #FFFFFF;
 }
 
 .footer-container {
-  max-width: 1280px;
-  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -1128,7 +1247,7 @@ a {
 }
 
 .footer-brand {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
   color: var(--ink);
   letter-spacing: -0.03em;
@@ -1137,7 +1256,7 @@ a {
 }
 
 .footer-tagline {
-  font-size: 14px;
+  font-size: 13.5px;
   color: var(--muted);
 }
 
@@ -1147,7 +1266,7 @@ a {
 }
 
 .footer-links a {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   color: var(--text);
 }
@@ -1157,8 +1276,7 @@ a {
 }
 
 .footer-bottom-legal {
-  max-width: 1280px;
-  margin: 40px auto 0;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -1177,36 +1295,28 @@ a {
 }
 
 .footer-copy-text {
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--muted);
 }
 
 .footer-disclaimer-text {
-  font-size: 11.5px;
+  font-size: 11px;
   color: var(--muted);
   line-height: 1.5;
 }
 
 /* ==========================================
-   RESPONSIVE OVERRIDES
+   RESPONSIVE LAYOUT OVERRIDES (TABLET/MOBILE)
    ========================================== */
 @media (max-width: 991px) {
-  .hero-container {
-    grid-template-columns: 1fr;
-    gap: 56px;
-  }
-  .philosophy-container {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-  .personal-split {
-    grid-template-columns: 1fr;
-    gap: 48px;
-  }
-  .outcomes-grid {
+  .philosophy-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-  .fi-grid {
+  .personal-benefits-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .business-two-col {
     grid-template-columns: 1fr;
     gap: 48px;
   }
@@ -1238,10 +1348,10 @@ a {
     right: 0 !important;
   }
   .hero-section {
-    padding: 64px 20px 48px !important;
+    padding-top: 80px !important;
+    padding-bottom: 48px !important;
   }
   .hero-actions {
-    width: 100%;
     flex-direction: column;
     gap: 16px;
     align-items: stretch;
@@ -1252,13 +1362,28 @@ a {
   .hero-btn-secondary {
     justify-content: center;
   }
-  .philosophy-section, .command-sheet-section, .personal-section, .business-section, .outcomes-section, .fi-section, .final-cta-section {
-    padding: 80px 20px !important;
+  .hero-visual-card {
+    padding: 24px 20px !important;
+  }
+  .visual-metrics-grid {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  .visual-metric-item:not(:last-child) {
+    border-right: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding-right: 0 !important;
+    padding-bottom: 16px !important;
+  }
+  .philosophy-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
   }
   .outcomes-grid {
     grid-template-columns: 1fr !important;
+    gap: 32px !important;
   }
-  .personal-principles {
+  .fi-grid {
     grid-template-columns: 1fr !important;
     gap: 32px !important;
   }
@@ -1282,7 +1407,7 @@ a {
     background: #FFFFFF;
     display: flex;
     flex-direction: column;
-    padding: 40px 24px;
+    padding: 40px 20px;
     gap: 24px;
     z-index: 99999;
   }

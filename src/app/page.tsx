@@ -524,30 +524,47 @@ export default function Home() {
         {/* 01 / ARRIVE — UNBOXED EDITORIAL HERO */}
         <CVFinanceHero />
 
-        {/* THE CORE MESSAGE */}
-        <section className="core-message-section">
-          <div className="core-message-container">
-            <h2 className="core-message-title">Tu îmi spui ce vrei să faci.</h2>
-            <h2 className="core-message-title">Eu îți spun ce se poate face.</h2>
-            <p className="core-message-desc">
-              Fără să pierzi zile întregi între bănci. Fără să ghicești unde te încadrezi. Fără să alegi o ofertă doar pentru că este prima pe care ai primit-o.
-            </p>
+        {/* 02 / THE CORE PROMISE */}
+        <section className="promise-section">
+          <div className="promise-container">
+            <h2 className="promise-headline">
+              TU ÎMI SPUI SITUAȚIA.<br />
+              EU MĂ UIT LA CIFRE.<br />
+              ÎȚI SPUN CE SE POATE FACE.<br />
+              APOI VORBESC CU BANCA.
+            </h2>
           </div>
         </section>
 
-        {/* EU TE SUN. BANCA NU. */}
+        {/* 03 / CUM LUCRĂM — EU TE SUN. BANCA NU. */}
         <section className="philosophy-section">
           <div className="philosophy-container">
+            <span className="philosophy-eyebrow">CUM LUCRĂM</span>
             <h2 className="philosophy-title">
-              EU TE SUN.
-              <span className="philosophy-title-break">BANCA NU.</span>
+              EU TE SUN.<br />
+              <span className="highlight-emerald">BANCA NU.</span>
             </h2>
-            <div className="philosophy-steps-wrapper">
-              <div className="philosophy-steps">
-                <p className="philosophy-step">Tu vorbești cu mine.</p>
-                <p className="philosophy-step">Eu analizez situația.</p>
-                <p className="philosophy-step">Eu discut cu banca.</p>
-                <p className="philosophy-step">Tu primești răspunsul.</p>
+            
+            <div className="philosophy-grid">
+              <div className="philosophy-step-item">
+                <span className="step-number">01</span>
+                <h3 className="step-title">Tu vorbești cu mine.</h3>
+                <p className="step-desc">Îmi spui ce vrei să faci.</p>
+              </div>
+              <div className="philosophy-step-item">
+                <span className="step-number">02</span>
+                <h3 className="step-title">Eu analizez situația.</h3>
+                <p className="step-desc">Mă uit la venituri, obligații și obiectiv.</p>
+              </div>
+              <div className="philosophy-step-item">
+                <span className="step-number">03</span>
+                <h3 className="step-title">Eu discut cu banca.</h3>
+                <p className="step-desc">Caut varianta potrivită și clarific opțiunile.</p>
+              </div>
+              <div className="philosophy-step-item">
+                <span className="step-number">04</span>
+                <h3 className="step-title">Tu primești răspunsul.</h3>
+                <p className="step-desc">Știi exact unde te încadrezi și ce poți face.</p>
               </div>
             </div>
           </div>
@@ -556,43 +573,49 @@ export default function Home() {
         {/* 03 / DIAGNOSE — PERSONAL FINANCE */}
         <section id="totul-inainte-de-credit" className="personal-section">
           <div className="personal-container">
-            {/* Split Editorial Section */}
-            <div className="personal-split">
-              <div className="personal-left">
-                <span className="personal-label">PERSONAL</span>
-                <h2 className="personal-title">Hai să vedem ce poți obține.</h2>
-                <a
-                  href="#verificare-credit"
-                  className="personal-cta-link"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-                  }}
-                >
-                  VERIFICĂ SITUAȚIA →
-                </a>
+            {/* Centered Editorial Intro */}
+            <div className="personal-header">
+              <span className="personal-label">PERSONAL</span>
+              <h2 className="personal-title">
+                HAI SĂ VEDEM<br />
+                CE POȚI OBȚINE.
+              </h2>
+              <p className="personal-subtitle">
+                Nu trebuie să știi tu ce bancă îți acceptă situația. Spune-mi ce ai nevoie și pornim de acolo.
+              </p>
+            </div>
+
+            {/* Three Benefits Grid */}
+            <div className="personal-benefits-grid">
+              <div className="benefit-item">
+                <span className="benefit-number">01</span>
+                <h3 className="benefit-title">Îți analizez situația</h3>
+                <p className="benefit-desc">Venituri, obligații, istoric și obiectiv.</p>
               </div>
-              <div className="personal-right">
-                <p className="personal-lead">Nu trebuie să știi tu ce bancă îți acceptă situația.</p>
-                <div className="personal-minimal-list">
-                  <div className="personal-minimal-item">
-                    <span className="minimal-label">Venit</span>
-                    <span className="minimal-val">→ analizăm</span>
-                  </div>
-                  <div className="personal-minimal-item">
-                    <span className="minimal-label">Istoric</span>
-                    <span className="minimal-val">→ analizăm</span>
-                  </div>
-                  <div className="personal-minimal-item">
-                    <span className="minimal-label">Obligații</span>
-                    <span className="minimal-val">→ analizăm</span>
-                  </div>
-                  <div className="personal-minimal-item">
-                    <span className="minimal-label">Sumă dorită</span>
-                    <span className="minimal-val">→ analizăm</span>
-                  </div>
-                </div>
+              <div className="benefit-item">
+                <span className="benefit-number">02</span>
+                <h3 className="benefit-title">Îți arăt opțiunile</h3>
+                <p className="benefit-desc">Vezi ce variante au sens pentru tine.</p>
               </div>
+              <div className="benefit-item">
+                <span className="benefit-number">03</span>
+                <h3 className="benefit-title">Discut cu banca</h3>
+                <p className="benefit-desc">Tu nu pierzi timp încercând uși care nu se deschid.</p>
+              </div>
+            </div>
+
+            {/* Centered CTA */}
+            <div className="personal-cta-box">
+              <a
+                href="#verificare-credit"
+                className="personal-cta-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                VERIFICĂ SITUAȚIA →
+              </a>
             </div>
 
             {/* Checklist Section */}
@@ -711,16 +734,61 @@ export default function Home() {
         <section id="business-finance" className="business-section">
           <div className="business-container">
             <span className="business-label">BUSINESS</span>
-            <h2 className="business-title">
-              Ai o firmă?<br />
-              Hai să vedem cum o putem finanța.
-            </h2>
-            <p className="business-lead-keywords">
-              Capital de lucru. Echipamente. Investiții. Extindere. Proiecte noi.
-            </p>
-            <div className="business-statement-block">
-              <h3 className="business-statement-title">Spune-mi ce vrei să construiești.</h3>
-              <h3 className="business-statement-title highlight">Vedem cum poate fi finanțat.</h3>
+            
+            <div className="business-two-col">
+              <div className="business-left-col">
+                <h2 className="business-title">
+                  AI O FIRMĂ?<br />
+                  HAI SĂ VEDEM CUM O PUTEM FINANȚA.
+                </h2>
+                <p className="business-desc">
+                  Susținem creșterea companiei tale prin soluții de finanțare adaptate nevoilor tale. Fie că ai nevoie de fonduri pentru <strong>dezvoltare</strong>, optimizarea <strong>cash-flow-ului</strong>, achiziția de <strong>echipamente</strong>, noi <strong>investiții</strong> sau demararea unor <strong>proiecte</strong> strategice.
+                </p>
+                <div className="business-cta-box">
+                  <a
+                    href="#verificare-finantare-business"
+                    className="business-cta-link"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document.getElementById("verificare-finantare-business")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                  >
+                    VERIFICĂ FINANȚAREA PENTRU FIRMĂ →
+                  </a>
+                </div>
+              </div>
+              <div className="business-right-col">
+                <div className="business-categories">
+                  <div className="category-item">
+                    <span className="category-num">01</span>
+                    <div className="category-info">
+                      <h4 className="category-title">CAPITAL DE LUCRU</h4>
+                      <p className="category-desc">Lichiditate operațională și cash-flow curent.</p>
+                    </div>
+                  </div>
+                  <div className="category-item">
+                    <span className="category-num">02</span>
+                    <div className="category-info">
+                      <h4 className="category-title">ECHIPAMENTE</h4>
+                      <p className="category-desc">Leasing tehnic și achiziții de utilaje productive.</p>
+                    </div>
+                  </div>
+                  <div className="category-item">
+                    <span className="category-num">03</span>
+                    <div className="category-info">
+                      <h4 className="category-title">INVESTIȚII</h4>
+                      <p className="category-desc">Finanțare pentru active imobiliare și proiecte noi.</p>
+                    </div>
+                  </div>
+                  <div className="category-item">
+                    <span className="category-num">04</span>
+                    <div className="category-info">
+                      <h4 className="category-title">DEZVOLTARE</h4>
+                      <p className="category-desc">Linii de credit pe termen lung pentru extindere.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
@@ -745,31 +813,31 @@ export default function Home() {
         {/* OUTCOMES SECTION: CE CÂȘTIGI? */}
         <section id="proces" className="outcomes-section">
           <div className="outcomes-container">
-            <h2 className="outcomes-main-title">Ce câștigi?</h2>
+            <h2 className="outcomes-main-title">CE CÂȘTIGI?</h2>
             
             <div className="outcomes-grid">
               <div className="outcome-item">
                 <span className="outcome-number">01</span>
                 <span className="outcome-label">CLARITATE</span>
-                <p className="outcome-text">Știi unde te afli înainte să pierzi timp.</p>
+                <p className="outcome-text">Știi unde te încadrezi.</p>
               </div>
 
               <div className="outcome-item">
                 <span className="outcome-number">02</span>
                 <span className="outcome-label">OPȚIUNI</span>
-                <p className="outcome-text">Nu pornim de la o singură bancă.</p>
+                <p className="outcome-text">Nu rămâi blocat la prima ofertă.</p>
               </div>
 
               <div className="outcome-item">
                 <span className="outcome-number">03</span>
                 <span className="outcome-label">TIMP</span>
-                <p className="outcome-text">Nu alergi tu după fiecare răspuns.</p>
+                <p className="outcome-text">Nu pierzi zile discutând cu banca nepotrivită.</p>
               </div>
 
               <div className="outcome-item">
                 <span className="outcome-number">04</span>
                 <span className="outcome-label">NEGOCIERE</span>
-                <p className="outcome-text">Eu discut cu banca pentru tine.</p>
+                <p className="outcome-text">Ai pe cineva care vorbește cu banca pentru tine.</p>
               </div>
             </div>
           </div>
@@ -977,20 +1045,15 @@ export default function Home() {
         </section>
 
         {/* 06 / ANALYZE — QUALIFICATION TERMINAL */}
-        <section id="aplica" className="section" style={{ padding: "80px 24px", maxWidth: "1280px", margin: "0 auto", borderTop: "1px solid #E5E7EB" }}>
-          <div style={{ marginBottom: "32px", textAlign: "center" }}>
-            <p style={{ fontSize: "11px", fontWeight: 800, color: "#087F5B", letterSpacing: "0.10em", textTransform: "uppercase", marginBottom: "8px" }}>
-              FORMULAR DE CONTACT
-            </p>
-            <h2 style={{ fontSize: "clamp(26px, 5vw, 40px)", fontWeight: 900, color: "#111827", letterSpacing: "-0.02em", margin: "0 0 12px" }}>
-              Începem cu situația ta.
-            </h2>
-            <p style={{ fontSize: "15px", color: "#374151", maxWidth: "32rem", margin: "0 auto" }}>
+        <section id="aplica" className="qualification-section">
+          <div className="qualification-container">
+            <h2 className="qualification-title">ÎNCEPEM CU SITUAȚIA TA.</h2>
+            <p className="qualification-subtitle">
               Câteva întrebări. O analiză clară. Apoi îți spun ce putem face.
             </p>
           </div>
 
-          <div className="form-card" style={{ background: "#F7F9F8", border: "1px solid #E5E7EB", borderRadius: "16px", padding: "32px" }}>
+          <div className="form-card">
             <div className="form-header">
               {/* Progress Steps */}
               <div className="form-steps" style={{ display: "flex", gap: "16px", justifyContent: "center", marginBottom: "28px" }}>
@@ -1579,8 +1642,12 @@ export default function Home() {
         {/* 07 / DECIDE — FINAL CTA */}
         <section className="final-cta-section">
           <div className="final-cta-container">
-            <h2 className="final-cta-title">Nu trebuie să știi tu ce bancă este potrivită.</h2>
-            <h2 className="final-cta-title highlight">Trebuie doar să-mi spui ce vrei să faci.</h2>
+            <h2 className="final-cta-title">
+              NU TREBUIE SĂ ȘTII TU CE BANCĂ ESTE POTRIVITĂ.
+            </h2>
+            <h2 className="final-cta-title highlight">
+              Trebuie doar să-mi spui ce vrei să faci.
+            </h2>
 
             <div className="final-cta-actions">
               <a
@@ -1592,17 +1659,7 @@ export default function Home() {
                   document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
                 }}
               >
-                <span>VERIFICĂ SITUAȚIA →</span>
-              </a>
-
-              <a
-                href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară direct pe WhatsApp.")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="final-cta-secondary"
-                onClick={() => trackEvent("final_decide_whatsapp_click")}
-              >
-                <span>SAU VORBEȘTE CU MINE</span>
+                VERIFICĂ SITUAȚIA →
               </a>
             </div>
           </div>

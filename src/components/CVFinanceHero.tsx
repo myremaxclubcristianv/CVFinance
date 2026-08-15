@@ -19,46 +19,45 @@ export default function CVFinanceHero() {
   return (
     <section className="hero-section">
       <div className="hero-container">
-        <div className="hero-content">
-          <p className="hero-eyebrow">CREDIT • FINANȚARE • STRATEGIE</p>
-          <h1 className="hero-title">
-            Nu lua primul credit care ți se oferă.
-            <span className="hero-title-secondary">Găsește varianta care are sens pentru tine.</span>
-          </h1>
-          <p className="hero-desc">
-            Îmi spui ce vrei să faci.
-            <br />
-            Eu analizez situația, caut opțiunile potrivite și discut cu banca în locul tău.
-          </p>
-          <div className="hero-actions">
-            <a href="#verificare-credit" className="hero-btn-primary" onClick={handlePrimaryClick}>
-              VERIFICĂ SITUAȚIA →
-            </a>
-            <a href="#proces" className="hero-btn-secondary" onClick={handleSecondaryClick}>
-              Cum funcționează ↓
-            </a>
-          </div>
+        <p className="hero-eyebrow">CREDIT ADVISORY & FINANCIAL OPTIMIZATION</p>
+        
+        <h1 className="hero-title">
+          Nu lua primul credit<br />
+          care ți se oferă.
+          <span className="hero-title-emphasis">
+            Găsește varianta care<br />
+            are sens pentru tine.
+          </span>
+        </h1>
+
+        <p className="hero-desc">
+          Îmi spui ce vrei să faci. Eu analizez situația, caut opțiunile potrivite și discut cu banca în locul tău.
+        </p>
+
+        <div className="hero-actions">
+          <a href="#verificare-credit" className="hero-btn-primary" onClick={handlePrimaryClick}>
+            VERIFICĂ SITUAȚIA →
+          </a>
+          <a href="#proces" className="hero-btn-secondary" onClick={handleSecondaryClick}>
+            CUM FUNCȚIONEAZĂ
+          </a>
         </div>
 
-        <div className="hero-visual-wrapper">
-          <div className="hero-visual-card">
-            <div className="visual-header">
-              <span className="visual-title">SITUAȚIA TA</span>
-              <span className="visual-indicator-dot" />
+        {/* SITUAȚIA TA Visual snapshot */}
+        <div className="hero-visual-card">
+          <h3 className="visual-card-title">SITUAȚIA TA</h3>
+          <div className="visual-metrics-grid">
+            <div className="visual-metric-item">
+              <span className="metric-label">VENIT NET</span>
+              <span className="metric-value">7.500 RON</span>
             </div>
-            <div className="visual-body">
-              <div className="visual-metric">
-                <span className="metric-label">Venit</span>
-                <span className="metric-value">7.500 RON</span>
-              </div>
-              <div className="visual-metric">
-                <span className="metric-label">Obligații</span>
-                <span className="metric-value">1.200 RON</span>
-              </div>
-              <div className="visual-metric highlight">
-                <span className="metric-label">Finanțare posibilă</span>
-                <span className="metric-value emerald">→ analizăm</span>
-              </div>
+            <div className="visual-metric-item">
+              <span className="metric-label">GRAD DE ÎNDATORARE</span>
+              <span className="metric-value">16%</span>
+            </div>
+            <div className="visual-metric-item">
+              <span className="metric-label">FINANȚARE POSIBILĂ</span>
+              <span className="metric-value highlight-emerald">→ analizăm</span>
             </div>
           </div>
         </div>

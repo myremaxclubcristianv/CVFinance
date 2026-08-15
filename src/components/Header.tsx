@@ -91,7 +91,8 @@ export default function Header() {
   return (
     <header className="nav">
       <Link href="/" className="brand">
-        CV Finance
+        <span className="brand-title">CV Finance</span>
+        <span className="brand-subtitle">Credit Advisory & Financial Optimization</span>
       </Link>
       <nav>
         <Link href="/#totul-inainte-de-credit">Personal</Link>
