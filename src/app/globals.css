@@ -2715,7 +2715,10 @@ footer {
 
 .cv-ticker-track-wrapper {
   display: flex;
-  width: max-content;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+  flex-shrink: 0;
   overflow: hidden;
 }
 
@@ -2723,6 +2726,8 @@ footer {
   display: flex;
   align-items: center;
   white-space: nowrap;
+  width: max-content;
+  flex-shrink: 0;
   animation: cvTickerScroll 35s linear infinite;
   will-change: transform;
 }
