@@ -69,6 +69,18 @@ export default function BusinessFinanceFunnel({
   const [gdpr, setGdpr] = useState<boolean>(true);
   const [marketing, setMarketing] = useState<boolean>(true);
 
+  useEffect(() => {
+    const handleIntent = (e: Event) => {
+      const customEv = e as CustomEvent;
+      if (customEv.detail && customEv.detail.type === "business" && customEv.detail.preselectValue) {
+        setSelectedPurposes([customEv.detail.preselectValue]);
+        setHasStarted(true);
+      }
+    };
+    window.addEventListener("cv_intent_select", handleIntent);
+    return () => window.removeEventListener("cv_intent_select", handleIntent);
+  }, []);
+
   // UI States
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState<boolean>(false);

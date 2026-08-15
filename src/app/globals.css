@@ -3177,4 +3177,280 @@ footer {
   border-radius: 50%;
 }
 
+/* EXECUTIVE CONVERSION UX — MEGA MENU & HERO INTENT SELECTOR */
+
+.nav-intent-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(52, 211, 153, 0.10);
+  border: 1px solid rgba(52, 211, 153, 0.30);
+  color: #34D399;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  font-family: inherit;
+}
+
+.nav-intent-trigger:hover,
+.nav-intent-trigger:focus-visible {
+  background: rgba(52, 211, 153, 0.18);
+  border-color: #34D399;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.25);
+}
+
+.mega-intent-menu-overlay {
+  position: absolute;
+  top: 76px;
+  left: 0;
+  right: 0;
+  background: #070A0F;
+  border-bottom: 1px solid rgba(52, 211, 153, 0.25);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.85);
+  z-index: 60;
+  animation: megaSlideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes megaSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mega-intent-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.mega-intent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.mega-close-btn {
+  background: #151B23;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #CBD5E1;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.mega-close-btn:hover {
+  color: #FFFFFF;
+  border-color: #34D399;
+}
+
+.mega-intent-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+@media (max-width: 850px) {
+  .mega-intent-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.mega-col-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mega-pill {
+  background: rgba(52, 211, 153, 0.12);
+  border: 1px solid rgba(52, 211, 153, 0.30);
+  color: #34D399;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.mega-pill.business {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.35);
+  color: #34D399;
+}
+
+.mega-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mega-item-btn {
+  background: #0D1117;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 14px 16px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  width: 100%;
+  font-family: inherit;
+}
+
+.mega-item-btn:hover,
+.mega-item-btn:focus-visible {
+  background: #151B23;
+  border-color: rgba(52, 211, 153, 0.35);
+  transform: translateX(4px);
+  outline: none;
+}
+
+.mega-item-headline {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #F8FAFC;
+  margin-bottom: 2px;
+}
+
+.mega-item-sub {
+  font-size: 12px;
+  color: #CBD5E1;
+  line-height: 1.4;
+}
+
+.mega-utility-bar {
+  display: flex;
+  gap: 16px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  flex-wrap: wrap;
+}
+
+.mega-utility-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #151B23;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #F8FAFC;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 12px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+}
+
+.mega-utility-btn:hover {
+  border-color: rgba(52, 211, 153, 0.40);
+  background: #19212B;
+}
+
+.mega-utility-btn.whatsapp {
+  border-color: rgba(37, 211, 102, 0.30);
+  background: rgba(37, 211, 102, 0.08);
+}
+
+.mega-utility-btn.whatsapp:hover {
+  background: rgba(37, 211, 102, 0.15);
+  border-color: #25D366;
+}
+
+/* HERO INTENT DISCOVERY PANEL */
+.hero-intent-discovery-panel {
+  margin: 40px 0 60px;
+  background: linear-gradient(135deg, #0D1117 0%, #151B23 100%);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: 20px;
+  padding: 36px 28px;
+}
+
+.hero-intent-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 28px;
+}
+
+.hero-intent-header h3 {
+  font-size: clamp(20px, 3.5vw, 30px);
+  font-weight: 800;
+  color: #F8FAFC;
+  margin: 0 0 8px;
+  letter-spacing: -0.01em;
+}
+
+.hero-intent-header p {
+  font-size: 15px;
+  color: #CBD5E1;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.hero-intent-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 1100px) {
+  .hero-intent-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-intent-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.hero-intent-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #0D1117;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 16px 18px;
+  min-height: 54px;
+  text-align: left;
+  color: #F8FAFC;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  font-family: inherit;
+}
+
+.hero-intent-btn:hover,
+.hero-intent-btn:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(52, 211, 153, 0.40);
+  background: #151B23;
+  outline: none;
+}
+
 

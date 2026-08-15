@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef, Fragment } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ArrowRight,
   BadgeCheck,
@@ -159,6 +160,7 @@ function ServiceTicker() {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [menu, setMenu] = useState(false);
 
   // Calculator State
@@ -619,6 +621,54 @@ export default function Home() {
             </div>
             <div className="dash-footer">
               <BadgeCheck size={16} /> Datele tale sunt confidențiale și protejate.
+            </div>
+          </div>
+        </section>
+
+        {/* NATIVE HERO INTENT DISCOVERY PANEL */}
+        <section id="intent-discovery" style={{ padding: "0 24px", maxWidth: "1240px", margin: "0 auto" }}>
+          <div className="hero-intent-discovery-panel">
+            <div className="hero-intent-header">
+              <h3>Cu ce te pot ajuta?</h3>
+              <p>Alege situația care te descrie. Te ducem direct la analiza și formularul potrivit.</p>
+            </div>
+
+            <div className="hero-intent-grid">
+              {[
+                { label: "Am probleme în Biroul de Credit", type: "personal", preselect: "Am probleme în Biroul de Credit", target: "verificare-credit" },
+                { label: "Am fost refuzat de bancă / IFN", type: "personal", preselect: "Am fost refuzat de bancă", target: "verificare-credit" },
+                { label: "Am nevoie de un credit nou", type: "personal", preselect: "Am nevoie de o sumă nouă", target: "verificare-credit" },
+                { label: "Vreau refinanțare & rate mai mici", type: "personal", preselect: "Vreau să-mi reduc rata lunară", target: "verificare-credit" },
+                { label: "Am nevoie de finanțare pentru firmă", type: "business", preselect: "Finanțare firmă", target: "verificare-finantare-business" },
+                { label: "Am nevoie de capital pentru business", type: "business", preselect: "Capital de lucru", target: "verificare-finantare-business" },
+                { label: "Vreau să recomand un client", link: "/referral" },
+                { label: "Prefer să discut direct pe WhatsApp", whatsapp: true },
+              ].map((item, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className="hero-intent-btn"
+                  onClick={() => {
+                    if (item.whatsapp) {
+                      trackEvent("direct_contact_selected", { source: "hero_intent_selector" });
+                      window.open(`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară direct pe WhatsApp.")}`, "_blank");
+                    } else if (item.link) {
+                      trackEvent("referral_intent_selected", { source: "hero_intent_selector" });
+                      router.push(item.link);
+                    } else if (item.target && item.preselect) {
+                      trackEvent("intent_selected", { intent: item.preselect, source: "hero_intent_selector" });
+                      const targetEl = document.getElementById(item.target);
+                      if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: "smooth" });
+                      }
+                      window.dispatchEvent(new CustomEvent("cv_intent_select", { detail: { type: item.type, preselectValue: item.preselect } }));
+                    }
+                  }}
+                >
+                  <Sparkles size={16} style={{ color: "#34D399", flexShrink: 0 }} />
+                  <span>{item.label}</span>
+                </button>
+              ))}
             </div>
           </div>
         </section>
