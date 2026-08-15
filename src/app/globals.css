@@ -1,51 +1,55 @@
 @import "tailwindcss";
 
 :root {
-  /* Executive Dark Institutional Palette */
-  --paper: #070A0F;
-  --bg-secondary: #0D1117;
-  --card-bg: #0D1117;
-  --card-elevated: #151B23;
-  --line: rgba(255, 255, 255, 0.08);
-  --line-dark: rgba(255, 255, 255, 0.12);
-  --ink: #F8FAFC;
-  --text-primary: #F8FAFC;
-  --text-secondary: #CBD5E1;
-  --muted: #94A3B8;
+  /* Executive White & Emerald Institutional Palette */
+  --paper: #FFFFFF;
+  --bg-secondary: #F8FAFC;
+  --card-bg: #FFFFFF;
+  --card-elevated: #F1F5F9;
+  --line: #E2E8F0;
+  --line-dark: #CBD5E1;
+  --ink: #0F172A;
+  --text-primary: #0F172A;
+  --text-secondary: #334155;
+  --muted: #64748B;
   
   /* Bloomberg & Institutional advisory */
-  --bloomberg-navy: #F8FAFC;
-  --deep-finance-blue: #0D1117;
-  --executive-blue: #151B23;
+  --bloomberg-navy: #0F172A;
+  --deep-finance-blue: #087F5B;
+  --executive-blue: #056B4D;
   
-  /* Emerald Accents */
-  --apple-green: #34D399;
-  --finance-green: #10B981;
-  --finance-green-hover: #34D399;
-  --premium-emerald: #10B981;
-  --lime: #34D399;
-  --neon-green: #34D399;
-  --green: #10B981;
-  --green-bright: #34D399;
-  --green-dark: #059669;
+  /* Emerald Green Accents */
+  --apple-green: #087F5B;
+  --finance-green: #087F5B;
+  --finance-green-hover: #056B4D;
+  --premium-emerald: #087F5B;
+  --lime: #087F5B;
+  --neon-green: #087F5B;
+  --green: #087F5B;
+  --green-bright: #10B981;
+  --green-dark: #056B4D;
+  
+  /* Light Green Surfacing */
+  --light-green-bg: #E8F5EF;
+  --very-light-green: #F5FAF7;
   
   /* Terminal Indicators */
-  --terminal-amber: #F59E0B;
-  --market-gold: #D97706;
+  --terminal-amber: #D97706;
+  --market-gold: #B45309;
   
   /* Alerts */
-  --danger: #EF4444;
-  --danger-bg: rgba(239, 68, 68, 0.1);
-  --accent-blue: #34D399;
-  --dark: #070A0F;
-  --dark-surface: #0D1117;
-  --dark-border: rgba(255, 255, 255, 0.08);
+  --danger: #DC2626;
+  --danger-bg: #FEF2F2;
+  --accent-blue: #087F5B;
+  --dark: #0F172A;
+  --dark-surface: #F8FAFC;
+  --dark-border: #E2E8F0;
 
   /* Premium CV Finance tokens */
-  --cv-bg: #070A0F;
-  --cv-card: #0D1117;
-  --cv-gold: #34D399;
-  --cv-border: rgba(255, 255, 255, 0.08);
+  --cv-bg: #FFFFFF;
+  --cv-card: #FFFFFF;
+  --cv-gold: #087F5B;
+  --cv-border: #E2E8F0;
   
   /* Fonts */
   --font-body: var(--font-manrope), system-ui, -apple-system, sans-serif;
@@ -499,15 +503,15 @@ h3 {
 .grid-4 { grid-template-columns: repeat(4, 1fr); }
 
 /* =========================================================
-   EXECUTIVE DARK INSTITUTIONAL COMPONENT SYSTEM
+   EXECUTIVE WHITE & EMERALD INSTITUTIONAL COMPONENT SYSTEM
    ========================================================= */
 
 /* HERO SECTION */
 .cv-hero-section {
-  background: #070A0F;
-  color: #F8FAFC;
+  background: #FFFFFF;
+  color: #0F172A;
   padding: 100px 24px 80px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid #E2E8F0;
 }
 .cv-hero-container {
   max-width: 1280px;
@@ -523,13 +527,13 @@ h3 {
 .cv-hero-badge {
   font-size: 11px;
   font-weight: 800;
-  color: #34D399;
+  color: #087F5B;
   letter-spacing: 0.10em;
   text-transform: uppercase;
 }
 .cv-hero-meta-item {
   font-size: 12px;
-  color: #94A3B8;
+  color: #64748B;
   font-family: monospace;
   letter-spacing: 0.05em;
 }
@@ -538,15 +542,15 @@ h3 {
   font-weight: 900;
   line-height: 1.05;
   letter-spacing: -0.04em;
-  color: #F8FAFC;
+  color: #0F172A;
   margin: 0 0 32px;
 }
 .cv-hero-title .emerald {
-  color: #34D399;
+  color: #087F5B;
 }
 .cv-hero-copy {
   font-size: clamp(16px, 2.2vw, 19px);
-  color: #CBD5E1;
+  color: #334155;
   max-width: 38rem;
   line-height: 1.6;
   margin: 0 0 40px;
@@ -564,8 +568,8 @@ h3 {
   font-size: 15px;
   font-weight: 800;
   border-radius: 12px;
-  background: #10B981;
-  color: #070A0F;
+  background: #087F5B;
+  color: #FFFFFF;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -573,13 +577,13 @@ h3 {
   transition: background 0.2s ease, transform 0.2s ease;
 }
 .cv-hero-primary-btn:hover {
-  background: #34D399;
+  background: #056B4D;
   transform: translateY(-2px);
 }
 .cv-hero-secondary-link {
   font-size: 15px;
   font-weight: 600;
-  color: #CBD5E1;
+  color: #334155;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -587,13 +591,13 @@ h3 {
   transition: color 0.2s ease;
 }
 .cv-hero-secondary-link:hover {
-  color: #F8FAFC;
+  color: #0F172A;
 }
 .cv-hero-data-strip {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid #E2E8F0;
   padding-top: 32px;
 }
 .cv-data-cell {
@@ -604,21 +608,21 @@ h3 {
 .cv-data-label {
   font-size: 11px;
   font-weight: 700;
-  color: #94A3B8;
+  color: #64748B;
   letter-spacing: 0.08em;
 }
 .cv-data-val {
   font-size: 14px;
   font-weight: 800;
-  color: #F8FAFC;
+  color: #0F172A;
   font-family: monospace;
 }
 
 /* COMMAND SHEET SECTION */
 .command-sheet-section {
-  background: #0D1117;
+  background: #F8FAFC;
   padding: 80px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid #E2E8F0;
 }
 .command-sheet-container {
   max-width: 1280px;
@@ -630,7 +634,7 @@ h3 {
 .command-eyebrow {
   font-size: 11px;
   font-weight: 800;
-  color: #34D399;
+  color: #087F5B;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -638,13 +642,13 @@ h3 {
 .command-title {
   font-size: clamp(28px, 5vw, 42px);
   font-weight: 900;
-  color: #F8FAFC;
+  color: #0F172A;
   letter-spacing: -0.03em;
   margin: 0 0 12px;
 }
 .command-subtitle {
   font-size: 15px;
-  color: #94A3B8;
+  color: #64748B;
   margin: 0;
 }
 .command-rows-list {
@@ -657,17 +661,21 @@ h3 {
   justify-content: space-between;
   min-height: 68px;
   padding: 16px 20px;
-  background: transparent;
-  border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-bottom: none;
   color: inherit;
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s ease, padding-left 0.2s ease;
+  transition: background 0.2s ease, padding-left 0.2s ease, border-color 0.2s ease;
+}
+.command-row-btn:last-child {
+  border-bottom: 1px solid #E2E8F0;
 }
 .command-row-btn:hover {
-  background: #151B23;
+  background: #E8F5EF;
   padding-left: 28px;
+  border-color: #087F5B;
 }
 .command-row-left {
   display: flex;
@@ -677,7 +685,7 @@ h3 {
 .command-row-code {
   font-size: 12px;
   font-weight: 800;
-  color: #94A3B8;
+  color: #64748B;
   font-family: monospace;
   min-width: 24px;
 }
@@ -688,15 +696,15 @@ h3 {
 .command-row-label {
   font-size: 17px;
   font-weight: 700;
-  color: #F8FAFC;
+  color: #0F172A;
 }
 .command-row-desc {
   font-size: 13px;
-  color: #94A3B8;
+  color: #64748B;
   margin-top: 2px;
 }
 .command-row-arrow {
-  color: #34D399;
+  color: #087F5B;
   transition: transform 0.2s ease;
 }
 .command-row-btn:hover .command-row-arrow {
@@ -705,9 +713,9 @@ h3 {
 
 /* FINANCIAL INTELLIGENCE TERMINAL SECTION */
 .fi-terminal-section {
-  background: #070A0F;
+  background: #FFFFFF;
   padding: 80px 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid #E2E8F0;
 }
 .fi-terminal-container {
   max-width: 1280px;
@@ -719,7 +727,7 @@ h3 {
 .fi-eyebrow {
   font-size: 11px;
   font-weight: 800;
-  color: #34D399;
+  color: #087F5B;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   margin-bottom: 8px;
@@ -727,13 +735,13 @@ h3 {
 .fi-title {
   font-size: clamp(28px, 5vw, 42px);
   font-weight: 900;
-  color: #F8FAFC;
+  color: #0F172A;
   letter-spacing: -0.03em;
   margin: 0 0 12px;
 }
 .fi-subtitle {
   font-size: 13px;
-  color: #94A3B8;
+  color: #64748B;
   font-family: monospace;
   letter-spacing: 0.05em;
   margin: 0;
@@ -746,57 +754,57 @@ h3 {
 }
 .fi-data-card {
   padding: 24px 0;
-  border-top: 2px solid rgba(255, 255, 255, 0.12);
+  border-top: 2px solid #CBD5E1;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 .fi-data-card.fi-card-current {
-  border-top: 2px solid #34D399;
+  border-top: 2px solid #087F5B;
 }
 .fi-year-badge {
   font-size: 13px;
   font-weight: 800;
-  color: #94A3B8;
+  color: #64748B;
   font-family: monospace;
 }
 .fi-year-badge.active {
-  color: #34D399;
+  color: #087F5B;
 }
 .fi-stat-main {
   font-size: clamp(40px, 7vw, 56px);
   font-weight: 900;
-  color: #F8FAFC;
+  color: #0F172A;
   letter-spacing: -0.03em;
   line-height: 1;
 }
 .fi-stat-main.active {
-  color: #34D399;
+  color: #087F5B;
 }
 .fi-stat-sub {
   font-size: 14px;
-  color: #CBD5E1;
+  color: #334155;
   line-height: 1.5;
 }
 .fi-stat-sub.green {
-  color: #34D399;
+  color: #087F5B;
   font-weight: 700;
 }
 .fi-meta-tag {
   display: inline-block;
   font-size: 10px;
   font-weight: 800;
-  color: #94A3B8;
+  color: #64748B;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   margin-top: 8px;
 }
 .fi-meta-tag.active {
-  color: #34D399;
+  color: #087F5B;
 }
 .fi-disclaimer-note {
   font-size: 11px;
-  color: #94A3B8;
+  color: #64748B;
   font-family: monospace;
   margin: 0;
 }

@@ -35,10 +35,10 @@ export default function FinancialIntelligence() {
             <div className="fi-year-badge active">2025</div>
             <div className="fi-stat-main active">6,30%</div>
             <div className="fi-stat-sub">
-              Rată estimată: <strong style={{ color: "#F8FAFC" }}>~3.290 RON / lună</strong>
+              Rată estimată: <strong style={{ color: "#0F172A" }}>~3.290 RON / lună</strong>
             </div>
             <div className="fi-stat-sub">
-              Total plătit: <strong style={{ color: "#F8FAFC" }}>~987.000 RON</strong>
+              Total plătit: <strong style={{ color: "#0F172A" }}>~987.000 RON</strong>
             </div>
             <span className="fi-meta-tag active">CONDIȚII ACTUALE</span>
           </div>

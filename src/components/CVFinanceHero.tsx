@@ -34,7 +34,7 @@ export default function CVFinanceHero() {
 
         {/* EDITORIAL MEASURE BODY COPY */}
         <p className="cv-hero-copy">
-          Nu alegem un credit înainte să înțelegem situația ta financiară. Analizăm istoricul de credit, veniturile, gradul de îndatorare și obiectivele înainte de a recomanda o strategie de finanțare.
+          Nu alegem un credit înainte să înțelegem situația ta financiară. Analizăm profilul, contextul și obiectivul tău pentru a identifica variantele reale din piață.
         </p>
 
         {/* CTA BUTTON SYSTEM */}
@@ -54,7 +54,7 @@ export default function CVFinanceHero() {
             className="cv-hero-secondary-link"
             onClick={handleWhatsappClick}
           >
-            <MessageCircle size={18} style={{ color: "#34D399" }} />
+            <MessageCircle size={18} style={{ color: "#087F5B" }} />
             <span>Discută direct →</span>
           </a>
         </div>
