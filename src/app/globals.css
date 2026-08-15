@@ -4164,43 +4164,89 @@ footer {
   }
 }
 
-/* ACCESSIBILITY: PREFERS-REDUCED-MOTION COMPLIANCE */
-/* TARGETED MOBILE UX & CONTRAST CORRECTIONS (<767px) */
+/* =========================================================
+   PERMANENT MOBILE FIXED NAVIGATION & GLOBAL CONTRAST SYSTEM (<767px)
+   ========================================================= */
+
 @media (max-width: 767px) {
-  /* 1. HIDE MOBILE HEADER CTA */
+  /* 1. HIDE MOBILE HEADER CTA COMPLETELY */
   header.nav .nav-cta,
-  .nav .nav-cta {
+  .nav .nav-cta,
+  a.nav-cta {
     display: none !important;
   }
 
-  /* 2. STICKY MOBILE HEADER ALWAYS VISIBLE */
+  /* 2. FIXED MOBILE HEADER — ALWAYS ON TOP */
   header.nav,
   .nav {
-    position: sticky !important;
+    position: fixed !important;
     top: 0 !important;
-    z-index: 1000 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 56px !important;
+    z-index: 99999 !important;
     background: #FFFFFF !important;
+    border-bottom: 1px solid #E2E8F0 !important;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  }
+
+  /* 3. FIXED MOBILE ROLL BAR — ALWAYS DIRECTLY UNDER HEADER */
+  .cv-service-ticker-bar {
+    position: fixed !important;
+    top: 56px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 40px !important;
+    z-index: 99998 !important;
+    background: #F8FAFC !important;
     border-bottom: 1px solid #E2E8F0 !important;
   }
 
-  /* 3. REMOVE EXCESSIVE GAP AFTER TICKER / ROLL BAR */
-  .cv-hero-section {
-    padding-top: 24px !important;
-  }
-
-  /* 4-8. HIGH-CONTRAST CONTENT COPY FOR MOBILE BLOCKS */
-  .card h3,
-  .card-title,
-  .info-title {
+  .cv-ticker-item {
     color: #0F172A !important;
-    font-weight: 700 !important;
+    font-size: 11px !important;
+    padding: 0 12px !important;
+  }
+  .cv-ticker-item:hover {
+    color: #087F5B !important;
+  }
+  .cv-ticker-separator {
+    color: #087F5B !important;
   }
 
-  .card p,
-  .card-desc,
-  .info-desc {
+  /* 4. EXACT CONTENT TOP CLEARANCE (56px Header + 40px Ticker + 24px Breathing Space = 120px) */
+  main,
+  .cv-hero-section {
+    padding-top: 120px !important;
+  }
+
+  /* 5. GLOBAL HIGH-CONTRAST TYPOGRAPHY RULES */
+  h1, h2, h3, h4, h5, h6,
+  .title, .heading, .card-title, .info-title {
+    color: #0F172A !important;
+  }
+
+  p, span, li, td,
+  .body-copy, .card-desc, .info-desc, .description {
     color: #334155 !important;
     line-height: 1.6 !important;
+  }
+
+  .muted-text, .meta-text, .cv-hero-meta-item, .fi-disclaimer-note {
+    color: #64748B !important;
+  }
+
+  /* BUTTON & CTA CONTRAST ENFORCEMENT */
+  .button, .cv-hero-primary-btn, .totul-submit-btn, .btn-primary {
+    background: #087F5B !important;
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+  }
+  .button:hover, .cv-hero-primary-btn:hover, .totul-submit-btn:hover {
+    background: #056B4D !important;
+    color: #FFFFFF !important;
   }
 }
 
