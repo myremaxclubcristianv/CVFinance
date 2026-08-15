@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { MessageCircle, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { MessageCircle, Sparkles, ShieldCheck } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import { trackEvent } from "@/lib/analytics";
 import { CONTACT } from "@/lib/constants";
@@ -101,6 +102,27 @@ export default function FloatingConversionCTA({
             <MessageCircle size={18} className="action-icon" />
             <span>Discută pe WhatsApp</span>
           </button>
+
+          <a
+            href="/#verificare-credit"
+            role="menuitem"
+            onClick={(e) => {
+              e.preventDefault();
+              trackEvent("homepage_totul_credit_started", { source: "floating_popup" });
+              setIsOpen(false);
+              const el = document.getElementById("verificare-credit");
+              if (el) {
+                const isReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                el.scrollIntoView({ behavior: isReducedMotion ? "auto" : "smooth", block: "start" });
+              } else {
+                router.push("/#verificare-credit");
+              }
+            }}
+            className="popup-action-btn analysis-action"
+          >
+            <ShieldCheck size={18} className="action-icon" style={{ color: "#16A34A" }} />
+            <span>Verifică situația de credit</span>
+          </a>
 
           <a
             href="/#aplica"

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import {
   ArrowRight,
   BadgeCheck,
@@ -27,10 +28,12 @@ import {
   Shield,
   HelpCircle,
   Share2,
+  MessageCircle,
 } from "lucide-react";
 import { trackEvent, getTrafficMetadata } from "@/lib/analytics";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import Header from "@/components/Header";
+import TotulInainteDeCreditFunnel from "@/components/TotulInainteDeCreditFunnel";
 import { CONTACT } from "@/lib/constants";
 
 const servicesList = [
@@ -141,6 +144,7 @@ export default function Home() {
   const [gdpr, setGdpr] = useState(false);
   const [marketing, setMarketing] = useState(false);
   const [honeypot, setHoneypot] = useState("");
+  const [selectedProblemPill, setSelectedProblemPill] = useState<string | null>(null);
 
   const [footerYear, setFooterYear] = useState(2026);
   useEffect(() => { setFooterYear(new Date().getFullYear()); }, []);
@@ -477,7 +481,33 @@ export default function Home() {
                 Află ce opțiuni ai <ArrowRight size={18} />
               </a>
               <a className="button" href="#aplica" onClick={() => trackEvent("form_start")}>Solicită analiza gratuită <ArrowRight size={18} /></a>
-      <a className="button" href="/referral" onClick={() => trackEvent("referral_form_start")}>Recomandă un client <ArrowRight size={18} /></a>
+              <a className="button" href="/referral" onClick={() => trackEvent("referral_form_start")}>Recomandă un client <ArrowRight size={18} /></a>
+            </div>
+
+            <div style={{ marginTop: "16px", paddingTop: "14px", borderTop: "1px solid var(--line)" }}>
+              <p style={{ fontSize: "0.88rem", color: "var(--muted)", margin: "0 0 6px", fontWeight: 600 }}>
+                Probleme cu istoricul de credit sau ai fost refuzat?
+              </p>
+              <a
+                href="#verificare-credit"
+                style={{
+                  fontSize: "0.92rem",
+                  fontWeight: 700,
+                  color: "var(--finance-green)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  textDecoration: "none",
+                }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  trackEvent("homepage_totul_credit_started", { location: "hero_secondary_cta" });
+                  document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                }}
+              >
+                <span>Verifică situația înainte să aplici din nou</span>
+                <ArrowRight size={16} />
+              </a>
             </div>
 
             <div className="trust-row">
@@ -734,6 +764,345 @@ export default function Home() {
                 <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--ink)" }}>{text}</span>
               </div>
             ))}
+          </div>
+        </section>
+
+        {/* NATIVE HIGH-CONVERSION MASTER SECTION: TOTUL ÎNAINTE DE CREDIT */}
+        <section id="totul-inainte-de-credit" className="section totul-homepage-master-section">
+          <div className="totul-master-container">
+            {/* Header / Positioning */}
+            <div className="totul-master-header">
+              <p className="eyebrow">
+                <span /> 01 / TOTUL ÎNAINTE DE CREDIT
+              </p>
+              <h2>Ai fost refuzat pentru un credit?</h2>
+              <p className="totul-banner-lead" style={{ fontSize: "1.25rem", color: "#38BDF8", fontWeight: 700, margin: "12px 0" }}>
+                Nu aplica la întâmplare la încă un creditor. În primul rând, verifică-ți situația.
+              </p>
+              <p className="totul-master-lead">
+                Verific dacă există variante mai potrivite pentru situația ta înainte să faci o nouă solicitare.
+              </p>
+              <div style={{ marginTop: "24px" }}>
+                <button
+                  type="button"
+                  className="button totul-primary-btn"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_started", { location: "master_header_cta" });
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Vreau să verific situația mea</span>
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+            </div>
+
+            {/* 6 Premium Cards Grid */}
+            <div className="totul-six-cards-grid">
+              {/* Card 01: PROBLEME ÎN BIROUL DE CREDIT */}
+              <div className="totul-quadrant-card">
+                <div className="card-top-bar">
+                  <span className="card-label">01 / ISTORIC</span>
+                </div>
+                <h3>PROBLEME ÎN BIROUL DE CREDIT</h3>
+                <p className="card-desc">
+                  Verific situația și dacă există informații care pot fi corectate, contestate sau actualizate, atunci când există temei legal.
+                </p>
+                <div className="card-pills-row">
+                  {["Corectare", "Contestare", "Actualizare", "Temei legal"].map((pill, idx) => (
+                    <span key={idx} className="micro-pill">{pill}</span>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="card-cta-btn"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_problem_selected", { card: "biroul_de_credit" });
+                    setSelectedProblemPill("Am probleme în Biroul de Credit");
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Verific situația →</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
+              {/* Card 02: ÎNTÂRZIERI */}
+              <div className="totul-quadrant-card">
+                <div className="card-top-bar">
+                  <span className="card-label">02 / ÎNTÂRZIERI</span>
+                </div>
+                <h3>ÎNTÂRZIERI</h3>
+                <p className="card-desc">
+                  Analizez impactul întârzierilor și ce opțiuni pot exista în funcție de situația actuală.
+                </p>
+                <div className="card-pills-row">
+                  {["Istoric negativ", "Impact scor", "Optimizare"].map((pill, idx) => (
+                    <span key={idx} className="micro-pill">{pill}</span>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="card-cta-btn"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_problem_selected", { card: "intarzieri" });
+                    setSelectedProblemPill("Am întârzieri la credite");
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Analizez opțiunile →</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
+              {/* Card 03: CREDIT DUPĂ REFUZ */}
+              <div className="totul-quadrant-card">
+                <div className="card-top-bar">
+                  <span className="card-label">03 / REFUZ</span>
+                </div>
+                <h3>CREDIT DUPĂ REFUZ</h3>
+                <p className="card-desc">
+                  Dacă ai fost refuzat de bancă, verific ce alternative pot exista în funcție de profilul tău.
+                </p>
+                <div className="card-pills-row">
+                  {["Refuz bancar", "Refuz IFN", "Alternative"].map((pill, idx) => (
+                    <span key={idx} className="micro-pill">{pill}</span>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="card-cta-btn"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_problem_selected", { card: "refuz_bancar" });
+                    setSelectedProblemPill("Am fost refuzat de bancă");
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Verific situația →</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
+              {/* Card 04: CREDIT CU ISTORIC NEGATIV */}
+              <div className="totul-quadrant-card">
+                <div className="card-top-bar">
+                  <span className="card-label">04 / PROFIL</span>
+                </div>
+                <h3>CREDIT CU ISTORIC NEGATIV</h3>
+                <p className="card-desc">
+                  Analizez situația înainte să faci o nouă solicitare.
+                </p>
+                <div className="card-pills-row">
+                  {["Verificare", "Profilare", "Fără riscuri"].map((pill, idx) => (
+                    <span key={idx} className="micro-pill">{pill}</span>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="card-cta-btn"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_problem_selected", { card: "istoric_negativ" });
+                    setSelectedProblemPill("Am istoric negativ");
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Analizez situația →</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
+              {/* Card 05: REFINANȚARE */}
+              <div className="totul-quadrant-card">
+                <div className="card-top-bar">
+                  <span className="card-label">05 / REFINANȚARE</span>
+                </div>
+                <h3>REFINANȚARE</h3>
+                <p className="card-desc">
+                  Verific dacă refinanțarea poate aduce condiții mai potrivite sau o rată lunară mai ușor de susținut.
+                </p>
+                <div className="card-pills-row">
+                  {["Rată mai mică", "Comasare datori", "Economie"].map((pill, idx) => (
+                    <span key={idx} className="micro-pill">{pill}</span>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="card-cta-btn"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_problem_selected", { card: "refinantare" });
+                    setSelectedProblemPill("Vreau refinanțare");
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Verific opțiunile →</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+
+              {/* Card 06: RATE / OPTIMIZARE */}
+              <div className="totul-quadrant-card">
+                <div className="card-top-bar">
+                  <span className="card-label">06 / OPTIMIZARE</span>
+                </div>
+                <h3>RATE / OPTIMIZARE</h3>
+                <p className="card-desc">
+                  Analizez dacă există variante prin care structura actuală a creditelor poate fi optimizată.
+                </p>
+                <div className="card-pills-row">
+                  {["Reorganizare", "Diminuare cost", "Evaluare"].map((pill, idx) => (
+                    <span key={idx} className="micro-pill">{pill}</span>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  className="card-cta-btn"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_problem_selected", { card: "optimizare_rate" });
+                    setSelectedProblemPill("Vreau rate mai mici");
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Vezi variantele →</span>
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </div>
+
+            {/* 04 — CE VERIFIC ÎNAINTE SĂ TE SUN? */}
+            <div className="totul-ce-verific-box" style={{ margin: "48px 0 56px", textAlign: "center" }}>
+              <h3 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 800, marginBottom: "12px" }}>
+                Ce verific înainte să te sun?
+              </h3>
+              <p style={{ color: "var(--muted, #94A3B8)", fontSize: "15px", maxWidth: "680px", margin: "0 auto 28px" }}>
+                Nu îți recomand să aplici la întâmplare. Mai întâi înțeleg situația. Apoi îți spun ce variante merită analizate.
+              </p>
+              <div className="problem-pills-interactive-grid" style={{ maxWidth: "960px", margin: "0 auto" }}>
+                {[
+                  "Biroul de Credit",
+                  "Întârzieri",
+                  "Credite active",
+                  "Rate lunare",
+                  "Venituri",
+                  "Grad de îndatorare",
+                  "Refinanțare",
+                  "Refuzuri anterioare",
+                  "Opțiuni bancare / IFN",
+                ].map((item, idx) => (
+                  <div key={idx} className="micro-pill" style={{ fontSize: "12px", padding: "8px 16px" }}>
+                    ✓ {item}
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* 06 — TRUST / POSITIONING: 3 PRINCIPII */}
+            <div className="totul-trust-principles-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "20px", marginBottom: "56px" }}>
+              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
+                <span className="card-label">01 / ANALIZEZ</span>
+                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px" }}>Înțeleg situația ta</h4>
+                <p style={{ fontSize: "13px", color: "var(--muted, #94A3B8)", margin: 0, lineHeight: 1.5 }}>
+                  Verificăm parametrii financiari relevanți înainte de următoarea ta cerere la creditori.
+                </p>
+              </div>
+
+              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
+                <span className="card-label">02 / VERIFIC</span>
+                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px" }}>Caut variante reale</h4>
+                <p style={{ fontSize: "13px", color: "var(--muted, #94A3B8)", margin: 0, lineHeight: 1.5 }}>
+                  Identificăm opțiunile disponibile din piață care au sens pentru profilul tău financiar.
+                </p>
+              </div>
+
+              <div className="totul-quadrant-card" style={{ padding: "24px" }}>
+                <span className="card-label">03 / ÎȚI SPUN CE URMEAZĂ</span>
+                <h4 style={{ fontSize: "17px", fontWeight: 800, margin: "12px 0 8px" }}>Revin cu răspuns</h4>
+                <p style={{ fontSize: "13px", color: "var(--muted, #94A3B8)", margin: 0, lineHeight: 1.5 }}>
+                  Te contactez telefonic după analiză pentru a discuta deschis variantele legale posibile.
+                </p>
+              </div>
+            </div>
+
+            {/* PROBLEM RECOGNITION SELECTOR */}
+            <div className="totul-problem-recognition-box">
+              <h4>Poate te regăsești într-una dintre situațiile de mai jos:</h4>
+              <div className="problem-pills-interactive-grid">
+                {[
+                  "Am fost refuzat de bancă",
+                  "Am fost refuzat de IFN",
+                  "Am întârzieri la credite",
+                  "Am probleme în Biroul de Credit",
+                  "Am istoric negativ",
+                  "Am prea multe rate",
+                  "Vreau refinanțare",
+                  "Vreau un credit nou",
+                  "Nu știu de ce sunt refuzat",
+                ].map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`problem-pill-btn ${selectedProblemPill === item ? "active" : ""}`}
+                    onClick={() => {
+                      trackEvent("homepage_totul_credit_problem_selected", { problem: item });
+                      setSelectedProblemPill(item);
+                      document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                  >
+                    <Check size={14} style={{ color: selectedProblemPill === item ? "#34D399" : "#94A3B8" }} />
+                    <span>{item}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* EMBEDDED HOMEPAGE FUNNEL CONTAINER */}
+            <div id="verificare-credit" className="totul-homepage-funnel-wrapper">
+              <div className="funnel-intro-box">
+                <h3>Analiză confidențială & precalificare financiară</h3>
+                <p>
+                  Înainte să mai trimiți o cerere către un creditor, trimite-mi situația ta. Analizez informațiile pe care mi le trimiți și revin cu telefon pentru a discuta ce opțiuni pot exista.
+                </p>
+              </div>
+
+              {/* Embedded 5-Step Funnel Component */}
+              <TotulInainteDeCreditFunnel
+                source="homepage-totul-inainte-de-credit"
+                initialSelectedProblems={selectedProblemPill ? [selectedProblemPill] : []}
+              />
+
+              <p className="totul-homepage-legal-note">
+                * Evaluarea identifică opțiunile legale disponibile conform reglementărilor în vigoare, fără promisiuni nerealiste de aprobare garantată sau ștergere nefondată din Biroul de Credit.
+              </p>
+            </div>
+
+            {/* POWERFUL FINAL CTA PANEL */}
+            <div className="totul-final-cta-panel">
+              <h3>Înainte să mai faci o cerere de credit, verifică mai întâi situația ta.</h3>
+              <p>Îmi trimiți situația. O analizez și revin către tine telefonic.</p>
+              <div className="totul-final-cta-actions">
+                <button
+                  type="button"
+                  className="totul-final-cta-primary"
+                  onClick={() => {
+                    trackEvent("homepage_totul_credit_started", { location: "final_cta_panel" });
+                    document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
+                  }}
+                >
+                  <span>Vreau să verific situația mea</span>
+                  <ArrowRight size={18} />
+                </button>
+
+                <a
+                  href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc să verific situația mea înainte de un credit.")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="totul-final-cta-secondary"
+                  onClick={() => trackEvent("homepage_totul_credit_whatsapp", { location: "final_cta_panel" })}
+                >
+                  <MessageCircle size={18} style={{ color: "#25D366" }} />
+                  <span>Prefer să discut direct pe WhatsApp</span>
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -1745,6 +2114,7 @@ export default function Home() {
                 <a href="#servicii">Refinanțare</a>
                 <a href="#servicii">Optimizarea ratelor</a>
                 <a href="#servicii">Biroul de Credit</a>
+                <Link href="/totul-inainte-de-credit">Totul înainte de credit</Link>
                 <a href="#aplica">Analiză financiară</a>
                 <a href="#servicii">Oferte multiple</a>
               </div>

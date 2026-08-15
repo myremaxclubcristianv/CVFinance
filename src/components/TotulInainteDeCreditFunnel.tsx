@@ -20,10 +20,12 @@ import { PROBLEM_CARDS } from "@/lib/totul-constants";
 
 export interface TotulInainteDeCreditFunnelProps {
   initialSelectedProblems?: string[];
+  source?: string;
 }
 
 export default function TotulInainteDeCreditFunnel({
   initialSelectedProblems = [],
+  source = "totul-inainte-de-credit",
 }: TotulInainteDeCreditFunnelProps) {
   const [step, setStep] = useState<number>(1);
   const [hasStarted, setHasStarted] = useState<boolean>(false);
@@ -194,7 +196,7 @@ export default function TotulInainteDeCreditFunnel({
     const meta = getTrafficMetadata();
 
     const payload = {
-      source: "totul-inainte-de-credit",
+      source,
       leadType: "credit_prequalification",
       problemTypes,
       income: Number(income) || 0,

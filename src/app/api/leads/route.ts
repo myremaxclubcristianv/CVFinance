@@ -53,12 +53,12 @@ const standardLeadSchema = z.object({
   utmCampaign: z.string().max(100).optional().default("—"),
   utmContent: z.string().max(100).optional().default("—"),
   referral: z.string().max(100).optional().default("—"),
-  pageUrl: z.string().url().max(2048).optional(),
+  pageUrl: z.string().max(2048).optional(),
   deviceType: z.string().max(50).optional().default("Desktop"),
 });
 
 const totulLeadSchema = z.object({
-  source: z.literal("totul-inainte-de-credit"),
+  source: z.enum(["totul-inainte-de-credit", "homepage-totul-inainte-de-credit"]),
   leadType: z.string().optional().default("credit_prequalification"),
   problemTypes: z.array(z.string()).min(1, "Selectează cel puțin o problemă sau situație."),
   income: z.coerce.number().min(0).max(1_000_000),
@@ -106,7 +106,7 @@ const totulLeadSchema = z.object({
   utmCampaign: z.string().max(100).optional().default("—"),
   utmContent: z.string().max(100).optional().default("—"),
   referral: z.string().max(100).optional().default("—"),
-  pageUrl: z.string().url().max(2048).optional(),
+  pageUrl: z.string().max(2048).optional(),
   deviceType: z.string().max(50).optional().default("Desktop"),
 });
 
@@ -300,7 +300,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const isTotulCredit = body?.source === "totul-inainte-de-credit";
+    const isTotulCredit = body?.source === "totul-inainte-de-credit" || body?.source === "homepage-totul-inainte-de-credit";
     const parsed = isTotulCredit ? totulLeadSchema.safeParse(body) : standardLeadSchema.safeParse(body);
     // Log payload for debugging
     console.log("RECEIVED LEAD PAYLOAD", JSON.stringify(body, null, 2));
@@ -374,9 +374,12 @@ export async function POST(request: Request) {
       };
 
       const motivText = (lead.problemTypes || []).map((p: string) => `• ${p}`).join("\n");
+      const headerTitle = lead.source === "homepage-totul-inainte-de-credit"
+        ? "🔥 <b>LEAD — HOMEPAGE / TOTUL ÎNAINTE DE CREDIT</b>"
+        : "🔥 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>";
 
       telegramText =
-        `🔥 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>\n\n` +
+        `${headerTitle}\n\n` +
         `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
         `👤 <b>CLIENT</b>\n` +
         `Nume: ${sanitizedName}\n` +
