@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, Fragment } from "react";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -111,6 +111,52 @@ const faqs = [
 
 const formatMoney = (number: number) =>
   new Intl.NumberFormat("ro-RO", { maximumFractionDigits: 0 }).format(number);
+
+const TICKER_SERVICES = [
+  { label: "FINANȚARE PENTRU ANTREPRENORI", href: "#business-finance" },
+  { label: "FINANȚARE COMPANII", href: "#business-finance" },
+  { label: "CAPITAL DE LUCRU", href: "#verificare-finantare-business" },
+  { label: "INVESTIȚII & ECHIPAMENTE", href: "#verificare-finantare-business" },
+  { label: "REFINANȚARE", href: "#verificare-credit" },
+  { label: "CREDITARE", href: "#verificare-credit" },
+  { label: "OPTIMIZARE FINANCIARĂ", href: "#verificare-credit" },
+  { label: "ANALIZĂ FINANCIARĂ", href: "#verificare-credit" },
+  { label: "PRECALIFICARE", href: "#verificare-credit" },
+  { label: "CONSULTANȚĂ FINANCIARĂ", href: "#proces" },
+];
+
+function ServiceTicker() {
+  const handleTickerClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const targetEl = document.getElementById(targetId);
+    if (targetEl) {
+      targetEl.scrollIntoView({ behavior: "smooth" });
+      trackEvent("homepage_service_ticker_click", { destination: targetId });
+    }
+  };
+
+  return (
+    <nav aria-label="Servicii financiare" className="cv-service-ticker-bar">
+      <div className="cv-ticker-track-wrapper">
+        <div className="cv-ticker-track">
+          {[...TICKER_SERVICES, ...TICKER_SERVICES].map((service, index) => (
+            <Fragment key={index}>
+              <a
+                href={service.href}
+                className="cv-ticker-item"
+                onClick={(e) => handleTickerClick(e, service.href)}
+              >
+                {service.label}
+              </a>
+              <span className="cv-ticker-separator" aria-hidden="true">•</span>
+            </Fragment>
+          ))}
+        </div>
+      </div>
+    </nav>
+  );
+}
 
 export default function Home() {
   const [menu, setMenu] = useState(false);
@@ -467,6 +513,9 @@ export default function Home() {
       />
 
       <main>
+        {/* EXECUTIVE SERVICE TICKER / MARQUEE */}
+        <ServiceTicker />
+
         {/* 1. HERO SECTION REWRITE */}
         <section id="top" className="hero section">
           <div className="hero-copy">

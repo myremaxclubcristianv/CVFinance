@@ -2699,4 +2699,115 @@ footer {
   }
 }
 
+/* EXECUTIVE SERVICE TICKER / MARQUEE */
+.cv-service-ticker-bar {
+  width: 100%;
+  background: #0D1117;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  height: 46px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  z-index: 20;
+}
+
+.cv-ticker-track-wrapper {
+  display: flex;
+  width: max-content;
+  overflow: hidden;
+}
+
+.cv-ticker-track {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: cvTickerScroll 35s linear infinite;
+  will-change: transform;
+}
+
+.cv-service-ticker-bar:hover .cv-ticker-track {
+  animation-play-state: paused;
+}
+
+@keyframes cvTickerScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.cv-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #CBD5E1;
+  text-decoration: none;
+  padding: 0 16px;
+  transition: color 0.15s ease;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+}
+
+.cv-ticker-item:hover {
+  color: #34D399;
+}
+
+.cv-ticker-item:focus-visible {
+  color: #34D399;
+  outline: none;
+  box-shadow: inset 0 0 0 2px #34D399;
+  border-radius: 4px;
+}
+
+.cv-ticker-separator {
+  color: rgba(52, 211, 153, 0.45);
+  font-size: 14px;
+  margin: 0 4px;
+  user-select: none;
+}
+
+@media (max-width: 768px) {
+  .cv-service-ticker-bar {
+    height: 40px;
+  }
+  .cv-ticker-item {
+    font-size: 11px;
+    padding: 0 12px;
+  }
+  .cv-ticker-track {
+    animation-duration: 45s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cv-ticker-track {
+    animation-play-state: paused !important;
+  }
+  .cv-ticker-track-wrapper {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .cv-ticker-track-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  .cv-service-ticker-bar {
+    height: 46px;
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  .cv-service-ticker-bar {
+    height: 40px;
+  }
+}
+
 
