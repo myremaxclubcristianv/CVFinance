@@ -287,9 +287,8 @@ export default function FloatingConversionCTA({
 
       <div ref={containerRef} className="cv-floating-container">
         {/* Popup Menu */}
-        <div
+        <nav
           id="floating-contact-menu"
-          role="menu"
           aria-label="Opțiuni de contact rapid"
           className={`cv-floating-popup ${isOpen ? "is-open" : ""}`}
         >
@@ -311,7 +310,6 @@ export default function FloatingConversionCTA({
               href={`https://wa.me/${phone}?text=${encodeURIComponent(whatsappMessage)}`}
               target="_blank"
               rel="noopener noreferrer"
-              role="menuitem"
               onClick={handleWhatsAppClick}
               className="cv-floating-popup-item"
             >
@@ -325,7 +323,6 @@ export default function FloatingConversionCTA({
             {/* 02: Verifică Situația */}
             <a
               href="/#verificare-credit"
-              role="menuitem"
               onClick={handleVerificationClick}
               className="cv-floating-popup-item"
             >
@@ -339,7 +336,6 @@ export default function FloatingConversionCTA({
             {/* 03: Recomandă un Client */}
             <Link
               href="/referral"
-              role="menuitem"
               onClick={handleReferralClick}
               className="cv-floating-popup-item"
             >
@@ -349,7 +345,9 @@ export default function FloatingConversionCTA({
                 <span className="cv-floating-popup-desc">Primește recompensa →</span>
               </span>
             </Link>
-          </nav>
+          </nav></nav>
+          
+
         </div>
 
         {/* Single Floating Button */}
@@ -363,7 +361,7 @@ export default function FloatingConversionCTA({
         >
           <MessageCircle size={24} />
         </button>
-      </div>
+  
     </>
   );
 }

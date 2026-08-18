@@ -49,6 +49,8 @@ export default function CalculatorSection({
               </div>
               <input
                 type="range"
+                id="calcAmountRange"
+                aria-label="Credit amount range"
                 min="10000"
                 max="500000"
                 step="5000"
@@ -65,6 +67,8 @@ export default function CalculatorSection({
               </div>
               <input
                 type="range"
+                id="calcPaymentRange"
+                aria-label="Current monthly payment range"
                 min="500"
                 max="10000"
                 step="100"
@@ -81,6 +85,8 @@ export default function CalculatorSection({
               </div>
               <input
                 type="range"
+                id="calcIncomeRange"
+                aria-label="Monthly net income range"
                 min="2500"
                 max="30000"
                 step="500"
@@ -97,6 +103,8 @@ export default function CalculatorSection({
               </div>
               <input
                 type="range"
+                id="calcRateRange"
+                aria-label="Estimated interest rate range"
                 min="6"
                 max="25"
                 step="0.5"

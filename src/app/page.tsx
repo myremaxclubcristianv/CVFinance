@@ -465,8 +465,8 @@ export default function Home() {
                 </span>
               </div>
               <p style={{ margin: 0, fontSize: "0.98rem", color: "var(--text-secondary)", fontWeight: 500 }}>
-                Tu îmi spui ce vrei să faci. Eu mă ocup de restul.
-              </p>
+                 Tu îmi spui ce vrei să faci. Eu mă ocup de restul.
+               </p>
             </div>
             
             {/* 4-STEP EDITORIAL PROCESS */}
@@ -616,22 +616,22 @@ export default function Home() {
               <div className="lg:col-span-6 grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8" style={{ borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "2rem 0" }}>
                 <div>
                   <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem", display: "block", marginBottom: "0.5rem" }}>01 / CAPITAL DE LUCRU</span>
-                  <h4 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>CAPITAL DE LUCRU</h4>
+                  <h3 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>CAPITAL DE LUCRU</h3>
                   <p style={{ fontSize: "0.88rem", color: "#5F6368", lineHeight: "1.4" }}>Cash-flow, stocuri, materii prime sau furnizori.</p>
                 </div>
                 <div>
                   <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem", display: "block", marginBottom: "0.5rem" }}>02 / ECHIPAMENTE</span>
-                  <h4 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>ECHIPAMENTE</h4>
+                  <h3 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>ECHIPAMENTE</h3>
                   <p style={{ fontSize: "0.88rem", color: "#5F6368", lineHeight: "1.4" }}>Utilaje industriale, flote auto, echipamente IT sau medicale.</p>
                 </div>
                 <div>
                   <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem", display: "block", marginBottom: "0.5rem" }}>03 / INVESTIȚII</span>
-                  <h4 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>INVESTIȚII</h4>
+                  <h3 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>INVESTIȚII</h3>
                   <p style={{ fontSize: "0.88rem", color: "#5F6368", lineHeight: "1.4" }}>Spații comerciale, hale de producție sau clădiri de birouri.</p>
                 </div>
                 <div>
                   <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem", display: "block", marginBottom: "0.5rem" }}>04 / DEZVOLTARE</span>
-                  <h4 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>DEZVOLTARE AFACERE</h4>
+                  <h3 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "0.25rem" }}>DEZVOLTARE AFACERE</h3>
                   <p style={{ fontSize: "0.88rem", color: "#5F6368", lineHeight: "1.4" }}>Extinderea punctelor de lucru, fuziuni sau proiecte noi de amploare.</p>
                 </div>
               </div>
@@ -704,14 +704,16 @@ export default function Home() {
                     <span className="cv-calc-val-badge">{calcAmount.toLocaleString("ro-RO")} RON</span>
                   </div>
                   <input
-                    type="range"
-                    min="10000"
-                    max="500000"
-                    step="5000"
-                    value={calcAmount}
-                    onChange={(e) => setCalcAmount(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
+                      type="range"
+                      id="calcAmountRangePage"
+                      aria-label="Credit amount range"
+                      min="10000"
+                      max="500000"
+                      step="5000"
+                      value={calcAmount}
+                      onChange={(e) => setCalcAmount(Number(e.target.value))}
+                      className="cv-calc-range"
+                    />
                 </div>
 
                 <div className="cv-calc-field">
@@ -720,14 +722,16 @@ export default function Home() {
                     <span className="cv-calc-val-badge">{calcPayment.toLocaleString("ro-RO")} RON</span>
                   </div>
                   <input
-                    type="range"
-                    min="500"
-                    max="10000"
-                    step="100"
-                    value={calcPayment}
-                    onChange={(e) => setCalcPayment(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
+                      type="range"
+                      id="calcPaymentRangePage"
+                      aria-label="Current monthly payment range"
+                      min="500"
+                      max="10000"
+                      step="100"
+                      value={calcPayment}
+                      onChange={(e) => setCalcPayment(Number(e.target.value))}
+                      className="cv-calc-range"
+                    />
                 </div>
 
                 <div className="cv-calc-field">
@@ -736,14 +740,16 @@ export default function Home() {
                     <span className="cv-calc-val-badge">{calcIncome.toLocaleString("ro-RO")} RON</span>
                   </div>
                   <input
-                    type="range"
-                    min="2500"
-                    max="30000"
-                    step="500"
-                    value={calcIncome}
-                    onChange={(e) => setCalcIncome(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
+                      type="range"
+                      id="calcIncomeRangePage"
+                      aria-label="Monthly net income range"
+                      min="2500"
+                      max="30000"
+                      step="500"
+                      value={calcIncome}
+                      onChange={(e) => setCalcIncome(Number(e.target.value))}
+                      className="cv-calc-range"
+                    />
                 </div>
 
                 <div className="cv-calc-field">
@@ -752,14 +758,16 @@ export default function Home() {
                     <span className="cv-calc-val-badge">{calcRate}%</span>
                   </div>
                   <input
-                    type="range"
-                    min="6"
-                    max="25"
-                    step="0.5"
-                    value={calcRate}
-                    onChange={(e) => setCalcRate(Number(e.target.value))}
-                    className="cv-calc-range"
-                  />
+                      type="range"
+                      id="calcRateRangePage"
+                      aria-label="Estimated interest rate range"
+                      min="6"
+                      max="25"
+                      step="0.5"
+                      value={calcRate}
+                      onChange={(e) => setCalcRate(Number(e.target.value))}
+                      className="cv-calc-range"
+                    />
                 </div>
               </div>
 
@@ -939,7 +947,7 @@ export default function Home() {
           <div className="cv-container">
             <span className="cv-section-marker">PROGRAM RECOMANDĂRI</span>
             
-            <div className="cv-hero-grid" style={{ alignItems: "center" }}>
+            <div id="n6h4kr" className="progress-bar-bg" role="progressbar" aria-label="Credit verification progress" aria-valuenow={formStep} aria-valuemin={1} aria-valuemax={5}>
               <div>
                 <h2 className="cv-section-title" style={{ fontSize: "clamp(2rem, 3.8vw, 3rem)" }}>
                   500 – 3.000 RON
@@ -956,7 +964,7 @@ export default function Home() {
               </div>
 
               <div style={{ backgroundColor: "#FFFFFF", padding: "2rem", border: "1px solid #E4E8E6" }}>
-                <h4 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "1rem" }}>CUM FUNCȚIONEAZĂ?</h4>
+                <h3 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "1rem" }}>CUM FUNCȚIONEAZĂ?</h3>
                 <ol className="cv-mono" style={{ fontSize: "0.88rem", display: "flex", flexDirection: "column", gap: "0.75rem", color: "#5F6368" }}>
                   <li>1. COMPLETEZI FORMULARUL DE RECOMANDARE</li>
                   <li>2. PRELUĂM ȘI ANALIZĂM DOSARUL CLIENTULUI</li>

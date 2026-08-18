@@ -320,7 +320,7 @@ export default function TotulInainteDeCreditFunnel({
             {step === 5 && "Date de contact"}
           </span>
         </div>
-        <div className="progress-bar-bg" role="progressbar" aria-valuenow={step} aria-valuemin={1} aria-valuemax={5}>
+        <div id="n6h4kr" className="progress-bar-bg" role="progressbar" aria-label="Credit verification progress" aria-valuenow={step} aria-valuemin={1} aria-valuemax={5}>
           <div className="progress-bar-fill" style={{ width: `${(step / 5) * 100}%` }} />
         </div>
       </div>
