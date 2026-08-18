@@ -164,7 +164,7 @@ const faqs = [
 const ecosystemLinks = [
   { name: "AiX Media", desc: "Digital Media & Strategy", href: "https://aixmedia.cristianvaduva.com/" },
   { name: "AiX OS", desc: "Operating System & Systems", href: "https://os.cristianvaduva.com/" },
-  { name: "Health", desc: "Medical Advisory Network", href: "https://health.cristianvaduva.com/" },
+  { name: "Health", desc: "Health Education Platform", href: "https://health.cristianvaduva.com/" },
   { name: "Subventii", desc: "Non-reimbursable Business Funds", href: "https://subventii.cristianvaduva.com/" },
   { name: "Home Find", desc: "Real Estate Matching Platform", href: "https://homefind.cristianvaduva.com/" },
   { name: "CV Finance / Credite", desc: "Credit Advisory & Financial Optimization", href: "https://credite.cristianvaduva.com/" },
