@@ -430,10 +430,11 @@ export default function Header() {
 
         {/* ── DESKTOP NAVIGATION — visible >=768px only ── */}
         <div className="desktop-navigation cv-header-inner" style={{ paddingLeft: "32px", paddingRight: "32px" }}>
-          <Link href="/" className="cv-brand">
-            <span className="cv-brand-title">CV Finance</span>
-            <span className="cv-brand-subtitle">CREDIT ADVISORY &amp; FINANCIAL OPTIMIZATION</span>
-          </Link>
+          <Link href="/" className="cv-brand" aria-label="CV Finance – Acasă">
+          <span className="cv-brand-title">CV Finance</span>
+          <span className="cv-brand-subtitle">CREDIT ADVISORY &amp; FINANCIAL OPTIMIZATION</span>
+          <span className="partner-indicator" aria-label="Parteneriat exclusiv Smart Credit România">× Smart Credit</span>
+        </Link>
           <nav className="cv-nav-links">
             <Link href="/#totul-inainte-de-credit" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#totul-inainte-de-credit", "totul-inainte-de-credit")}>Personal</Link>
             <Link href="/#business-finance" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#business-finance", "business-finance")}>Business</Link>

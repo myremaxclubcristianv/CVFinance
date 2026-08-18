@@ -373,6 +373,12 @@ export default function Home() {
         },
       },
       {
+        "@type": "Organization",
+        "@id": "https://smart-credit.ro/#organization",
+        name: "Smart Credit România",
+        url: "https://smart-credit.ro/",
+      },
+      {
         "@type": "FinancialService",
         name: "CV Finance",
         description: "Consultanță și intermediere financiară pentru refinanțare credite și finanțare business.",
@@ -408,6 +414,28 @@ export default function Home() {
               <span className="cv-promise-line-emerald">ÎȚI SPUN CE SE POATE FACE.</span><br />
               <span className="cv-promise-line-bold">APOI VORBESC CU BANCA.</span>
             </h2>
+          </div>
+        </section>
+
+        {/* PARTENERIAT STRATEGIC SMART CREDIT */}
+        <section id="parteneriat-smart-credit" className="cv-partner-section">
+          <div className="cv-container">
+            <div className="cv-partner-card">
+              <span className="cv-partner-badge">PARTENERIAT STRATEGIC</span>
+              <h2 className="cv-partner-title">CV Finance × Smart Credit România</h2>
+              <p className="cv-partner-text">
+                CV Finance colaborează exclusiv cu Smart Credit România pentru intermedierea creditelor bancare și refinanțare. Oferim consultanță financiară dedicată și acces la soluțiile optime de creditare negociate direct cu instituțiile partenere.
+              </p>
+              <a
+                href="https://smart-credit.ro/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cv-partner-cta"
+                aria-label="Descoperă Smart Credit România - deschide site-ul oficial într-o filă nouă"
+              >
+                DESCOPERĂ SMART CREDIT →
+              </a>
+            </div>
           </div>
         </section>
 

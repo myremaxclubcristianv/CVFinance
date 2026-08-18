@@ -345,10 +345,8 @@ export default function FloatingConversionCTA({
                 <span className="cv-floating-popup-desc">Primește recompensa →</span>
               </span>
             </Link>
-          </nav></nav>
-          
-
-        </div>
+          </nav>
+        </nav>
 
         {/* Single Floating Button */}
         <button
@@ -361,7 +359,7 @@ export default function FloatingConversionCTA({
         >
           <MessageCircle size={24} />
         </button>
-  
+      </div>
     </>
   );
 }

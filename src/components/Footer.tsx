@@ -29,6 +29,19 @@ export default function Footer() {
           </nav>
         </div>
 
+        <div className="cv-footer-disclosure" style={{ marginTop: "1.5rem", paddingTop: "1rem", borderTop: "1px solid rgba(255,255,255,0.1)", fontSize: "0.82rem", color: "var(--text-secondary, #5F6368)" }}>
+          Partener exclusiv pentru intermedierea creditelor:{" "}
+          <a
+            href="https://smart-credit.ro/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "var(--emerald, #087F5B)", fontWeight: 600, textDecoration: "none" }}
+            aria-label="Smart Credit România - deschide site-ul oficial într-o filă nouă"
+          >
+            Smart Credit România
+          </a>
+        </div>
+
         <div className="cv-footer-legal">
           <div>
             © {footerYear} CV Finance — Cristian Văduva. Toate drepturile rezervate.
