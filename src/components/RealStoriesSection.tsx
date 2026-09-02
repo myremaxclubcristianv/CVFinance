@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { ArrowRight, ExternalLink, ShieldCheck, TrendingDown, CheckCircle2, AlertCircle } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, ShieldCheck, TrendingDown, CheckCircle2, AlertCircle } from "lucide-react";
 
 export default function RealStoriesSection() {
   const scrollToVerification = (e: React.MouseEvent) => {
@@ -15,7 +16,6 @@ export default function RealStoriesSection() {
   return (
     <section id="povesti-reale" className="cv-section" style={{ backgroundColor: "#0E1210", color: "#F7F9F8", borderTop: "1px solid rgba(255, 255, 255, 0.08)", borderBottom: "1px solid rgba(255, 255, 255, 0.08)", padding: "5rem 0" }}>
       <div className="cv-container">
-        
         {/* HEADER EDIȚIE EDITORIALĂ */}
         <div style={{ marginBottom: "3.5rem" }}>
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1rem", marginBottom: "1rem" }}>
@@ -25,14 +25,6 @@ export default function RealStoriesSection() {
             <div style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.35rem 0.85rem", backgroundColor: "rgba(16, 185, 129, 0.08)", border: "1px solid rgba(16, 185, 129, 0.2)", borderRadius: "9999px", fontSize: "0.78rem", color: "#A7F3D0", fontFamily: "var(--font-mono)" }}>
               <ShieldCheck size={14} style={{ color: "#10B981" }} />
               <span>Cazuri documentate de Smart Credit România</span>
-              <a 
-                href="https://smart-credit.ro/smart-info.html" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ color: "#10B981", textDecoration: "underline", fontWeight: 600, marginLeft: "0.25rem", display: "inline-flex", alignItems: "center", gap: "2px" }}
-              >
-                Vezi sursa oficială <ExternalLink size={11} />
-              </a>
             </div>
           </div>
 
@@ -47,18 +39,17 @@ export default function RealStoriesSection() {
 
         {/* REȚEA CARDURI EDITORIALE (CASE STUDIES) */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(310px, 1fr))", gap: "2rem", marginBottom: "4rem" }}>
-          
           {/* STORY 01 — DAVID */}
-          <article 
-            style={{ 
-              backgroundColor: "#141A17", 
-              border: "1px solid rgba(255, 255, 255, 0.1)", 
-              borderRadius: "4px", 
-              padding: "2rem", 
-              display: "flex", 
-              flexDirection: "column", 
+          <article
+            style={{
+              backgroundColor: "#141A17",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "4px",
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
               justifyContent: "space-between",
-              transition: "transform 200ms ease, border-color 200ms ease" 
+              transition: "transform 200ms ease, border-color 200ms ease"
             }}
           >
             <div>
@@ -110,35 +101,33 @@ export default function RealStoriesSection() {
             </div>
 
             <div>
-              <a 
-                href="https://smart-credit.ro/smart-info/refinantare-credite-ifn-studiu-de-caz.html" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ 
-                  display: "inline-flex", 
-                  alignItems: "center", 
-                  gap: "0.5rem", 
-                  fontSize: "0.88rem", 
-                  fontWeight: 700, 
-                  color: "#10B981", 
-                  textDecoration: "none" 
+              <Link
+                href="/povesti-reale/david-21-credite-ifn"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  color: "#10B981",
+                  textDecoration: "none"
                 }}
               >
-                Citește povestea →
-              </a>
+                VEZI POVESTEA →
+              </Link>
             </div>
           </article>
 
           {/* STORY 02 — GEORGETA */}
-          <article 
-            style={{ 
-              backgroundColor: "#141A17", 
-              border: "1px solid rgba(255, 255, 255, 0.1)", 
-              borderRadius: "4px", 
-              padding: "2rem", 
-              display: "flex", 
-              flexDirection: "column", 
-              justifyContent: "space-between" 
+          <article
+            style={{
+              backgroundColor: "#141A17",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "4px",
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between"
             }}
           >
             <div>
@@ -181,35 +170,33 @@ export default function RealStoriesSection() {
             </div>
 
             <div>
-              <a 
-                href="https://smart-credit.ro/smart-info/povestea-georgetei-refinantare-si-scapare-de-ratele-mari.html" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ 
-                  display: "inline-flex", 
-                  alignItems: "center", 
-                  gap: "0.5rem", 
-                  fontSize: "0.88rem", 
-                  fontWeight: 700, 
-                  color: "#10B981", 
-                  textDecoration: "none" 
+              <Link
+                href="/povesti-reale/georgeta-refinantare-rate-mari"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  color: "#10B981",
+                  textDecoration: "none"
                 }}
               >
-                Vezi povestea completă →
-              </a>
+                VEZI POVESTEA →
+              </Link>
             </div>
           </article>
 
           {/* STORY 03 — RALUCA */}
-          <article 
-            style={{ 
-              backgroundColor: "#141A17", 
-              border: "1px solid rgba(255, 255, 255, 0.1)", 
-              borderRadius: "4px", 
-              padding: "2rem", 
-              display: "flex", 
-              flexDirection: "column", 
-              justifyContent: "space-between" 
+          <article
+            style={{
+              backgroundColor: "#141A17",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "4px",
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between"
             }}
           >
             <div>
@@ -249,35 +236,33 @@ export default function RealStoriesSection() {
             </div>
 
             <div>
-              <a 
-                href="https://smart-credit.ro/smart-info/povestea-ralucai-solutia-la-smart-credit.html" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ 
-                  display: "inline-flex", 
-                  alignItems: "center", 
-                  gap: "0.5rem", 
-                  fontSize: "0.88rem", 
-                  fontWeight: 700, 
-                  color: "#10B981", 
-                  textDecoration: "none" 
+              <Link
+                href="/povesti-reale/raluca-solutie-finantare"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  color: "#10B981",
+                  textDecoration: "none"
                 }}
               >
-                Citește povestea →
-              </a>
+                VEZI POVESTEA →
+              </Link>
             </div>
           </article>
 
           {/* STORY 04 — ISTORIC NEGATIV (CLIENTA) */}
-          <article 
-            style={{ 
-              backgroundColor: "#141A17", 
-              border: "1px solid rgba(255, 255, 255, 0.1)", 
-              borderRadius: "4px", 
-              padding: "2rem", 
-              display: "flex", 
-              flexDirection: "column", 
-              justifyContent: "space-between" 
+          <article
+            style={{
+              backgroundColor: "#141A17",
+              border: "1px solid rgba(255, 255, 255, 0.1)",
+              borderRadius: "4px",
+              padding: "2rem",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between"
             }}
           >
             <div>
@@ -309,25 +294,22 @@ export default function RealStoriesSection() {
             </div>
 
             <div>
-              <a 
-                href="https://smart-credit.ro/smart-info/povestea-clientei-noastre-credit-dupa-stergere-din-biroul-de-credit.html" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                style={{ 
-                  display: "inline-flex", 
-                  alignItems: "center", 
-                  gap: "0.5rem", 
-                  fontSize: "0.88rem", 
-                  fontWeight: 700, 
-                  color: "#10B981", 
-                  textDecoration: "none" 
+              <Link
+                href="/povesti-reale/istoric-negativ-biroul-de-credit"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  fontSize: "0.88rem",
+                  fontWeight: 700,
+                  color: "#10B981",
+                  textDecoration: "none"
                 }}
               >
-                Citește povestea →
-              </a>
+                VEZI POVESTEA →
+              </Link>
             </div>
           </article>
-
         </div>
 
         {/* DISCLAIMER EDITORIAL OFICIAL */}
@@ -350,24 +332,23 @@ export default function RealStoriesSection() {
             href="#verificare-credit"
             onClick={scrollToVerification}
             className="cv-btn-primary"
-            style={{ 
-              display: "inline-flex", 
-              alignItems: "center", 
-              gap: "0.5rem", 
-              backgroundColor: "#10B981", 
-              color: "#0E1210", 
-              fontWeight: 800, 
-              padding: "0.9rem 2rem", 
-              borderRadius: "4px", 
-              textDecoration: "none", 
-              fontSize: "0.92rem", 
-              letterSpacing: "0.04em" 
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              backgroundColor: "#10B981",
+              color: "#0E1210",
+              fontWeight: 800,
+              padding: "0.9rem 2rem",
+              borderRadius: "4px",
+              textDecoration: "none",
+              fontSize: "0.92rem",
+              letterSpacing: "0.04em"
             }}
           >
             VERIFICĂ SITUAȚIA MEA <ArrowRight size={16} />
           </a>
         </div>
-
       </div>
     </section>
   );
