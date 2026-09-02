@@ -21,6 +21,7 @@ import CommandSheet from "@/components/CommandSheet";
 import FinancialIntelligence from "@/components/FinancialIntelligence";
 import TotulInainteDeCreditFunnel from "@/components/TotulInainteDeCreditFunnel";
 import BusinessFinanceFunnel from "@/components/BusinessFinanceFunnel";
+import RealStoriesSection from "@/components/RealStoriesSection";
 import { CONTACT } from "@/lib/constants";
 
 const servicesList = [
@@ -438,6 +439,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* POVEȘTI REALE — CAZURI EDITORIALE SMART CREDIT */}
+        <RealStoriesSection />
 
         {/* 10 — 01 / DE UNDE ÎNCEPEM */}
         <CommandSheet />
