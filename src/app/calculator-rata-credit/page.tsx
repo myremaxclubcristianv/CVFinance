@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Calculator Rătă Credit & Refinanțare | Calculează Economia Lunară",
+  title: "Calculator Rată Credit & Refinanțare | Calculează Economia Lunară",
   description:
-    "Calculator de rată credit și refinanțare. Estimează în timp real reducerea posibilității de rată și economiile anuale. Consultanță 100% gratuită.",
+    "Calculator de rată credit și refinanțare. Estimează reducerea potențială a ratei lunare și economiile anuale. Consultanță gratuită.",
   keywords: ["calculator rata credit", "calculator refinantare credit", "simulare credit nevoi personale", "calcul economie rata"],
   alternates: { canonical: "/calculator-rata-credit" },
 };
@@ -14,11 +14,11 @@ export default function CalculatorRataCredit() {
   const faqs = [
     [
       "Cât de exacte sunt calculele din calculatorul online?",
-      "Calculatorul nostru oferă o simulare orientativă bazată pe mediile dobânzilor actuale din piață. Oferta exactă se stabilește în urma analizei dosarului tău de către un consultant.",
+      "Calculatorul nostru oferă o simulare orientativă bazată pe mediile dobânzilor din piață. Oferta exactă se stabilește în urma analizei dosarului tău de către un consultant.",
     ],
     [
       "Mă obligă simularea la ceva?",
-      "Nu, simularea este strict un instrument informativ 100% gratuit și fără nicio obligație.",
+      "Nu, simularea este strict un instrument informativ gratuit și fără nicio obligație.",
     ],
   ];
 

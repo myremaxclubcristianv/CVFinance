@@ -79,7 +79,7 @@ const faqsList = [
   },
   {
     q: "De ce sunt refuzat repetat la solicitările de credit?",
-    a: "Refuzul repetat apare adesea din cauza scorului FICO scăzut, a numărului mare de interogări recente, a gradului depășit de îndatorare sau a veniturilor neeligibile conform normelor băncii.",
+    a: "Refuzul repetat apare adesea din cauza scorului de credit scăzut, a numărului mare de interogări recente, a gradului depășit de îndatorare sau a veniturilor neeligibile conform normelor băncii.",
   },
   {
     q: "Ce trebuie să verific înainte să trimit o nouă aplicație?",
@@ -246,7 +246,7 @@ export default function TotulInainteDeCreditPage() {
                   <CheckCircle2 size={20} className="check-icon" />
                   <div>
                     <strong>Situația din Biroul de Credit:</strong>
-                    <p>Verific raportările existente, scorul FICO și eventualele înregistrări active.</p>
+                    <p>Verific raportările existente, scorul din Biroul de Credit și eventualele înregistrări active.</p>
                   </div>
                 </div>
 
@@ -344,7 +344,7 @@ export default function TotulInainteDeCreditPage() {
               <article className="seo-article-card">
                 <h3>Ce opțiuni există după un refuz?</h3>
                 <p>
-                  Opțiunile pot include: refinanțarea creditelor actuale cu aducerea unui girant/co-plătitor, refacerea scorului FICO prin stingerea datoriilor mici sau orientarea către instituții cu norme mai flexibile.
+                  Opțiunile pot include: refinanțarea creditelor actuale cu aducerea unui girant/co-plătitor, refacerea scorului de credit prin stingerea datoriilor mici sau orientarea către instituții cu norme mai flexibile.
                 </p>
               </article>
 
@@ -372,7 +372,7 @@ export default function TotulInainteDeCreditPage() {
               <article className="seo-article-card">
                 <h3>De ce nu este bine să aplici la întâmplare?</h3>
                 <p>
-                  Trimiterea simultană de aplicații la 5-10 bănci creează interogări repetate în Biroul de Credit. Sistemul FICO interpretează acest comportament drept stare de urgență financiară și scade automat scorul de credit.
+                  Trimiterea simultană de aplicații la multiple bănci creează interogări repetate în Biroul de Credit. Algoritmii de analiză pot interpreta acest comportament drept stare de urgență financiară și pot reduce scorul de credit.
                 </p>
               </article>
             </div>

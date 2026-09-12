@@ -85,12 +85,10 @@ export default function Header() {
 
   // Mount/unmount with animation timing
   useEffect(() => {
-    if (mobileMenuOpen) {
-      setMenuMounted(true);
-    } else {
-      const timer = setTimeout(() => setMenuMounted(false), 220);
-      return () => clearTimeout(timer);
-    }
+    const timer = mobileMenuOpen
+      ? setTimeout(() => setMenuMounted(true), 0)
+      : setTimeout(() => setMenuMounted(false), 220);
+    return () => clearTimeout(timer);
   }, [mobileMenuOpen]);
 
   // Lock body scroll when mobile menu is open

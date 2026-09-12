@@ -90,7 +90,7 @@ export default function RealStoriesSection() {
                     <div style={{ fontSize: "0.92rem", fontWeight: 600, color: "#F3F4F6" }}>≈ 76% → ≈ 30%</div>
                   </div>
                   <div>
-                    <div style={{ fontSize: "0.75rem", color: "#9CA3AF" }}>Scor FICO</div>
+                    <div style={{ fontSize: "0.75rem", color: "#9CA3AF" }}>Scor Birou Credit</div>
                     <div style={{ fontSize: "0.92rem", fontWeight: 600, color: "#10B981" }}>582 → 643</div>
                   </div>
                 </div>

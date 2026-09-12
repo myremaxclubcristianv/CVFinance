@@ -71,16 +71,6 @@ export default function TotulInainteDeCreditFunnel({
   const contactRef = useRef<HTMLFormElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // Sync initial selected problems if passed
-  useEffect(() => {
-    if (initialSelectedProblems.length > 0) {
-      setProblemTypes((prev) => {
-        const set = new Set([...prev, ...initialSelectedProblems]);
-        return Array.from(set);
-      });
-    }
-  }, [initialSelectedProblems]);
-
   // Track initial page view event
   useEffect(() => {
     trackEvent("totul_credit_view", { source: "totul_inainte_de_credit_funnel" });

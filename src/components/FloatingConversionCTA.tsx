@@ -75,11 +75,13 @@ export default function FloatingConversionCTA({
     trackEvent("floating_cta_toggle", { state: !isOpen ? "open" : "close" });
   };
 
+  const cleanPhone = (phone || CONTACT.WHATSAPP).replace(/\D/g, "");
+
   const handleWhatsAppClick = (e: React.MouseEvent) => {
     e.preventDefault();
-    trackEvent("whatsapp_click", { destination_phone: phone, source: "floating_popup" });
+    trackEvent("whatsapp_click", { destination_phone: cleanPhone, source: "floating_popup" });
     const encodedMsg = encodeURIComponent(whatsappMessage);
-    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMsg}`;
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
     setIsOpen(false);
   };
@@ -307,7 +309,7 @@ export default function FloatingConversionCTA({
           <nav className="cv-floating-popup-nav">
             {/* 01: WhatsApp */}
             <a
-              href={`https://wa.me/${phone}?text=${encodeURIComponent(whatsappMessage)}`}
+              href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(whatsappMessage)}`}
               target="_blank"
               rel="noopener noreferrer"
               onClick={handleWhatsAppClick}
@@ -321,7 +323,7 @@ export default function FloatingConversionCTA({
             </a>
 
             {/* 02: Verifică Situația */}
-            <a
+            <Link
               href="/#verificare-credit"
               onClick={handleVerificationClick}
               className="cv-floating-popup-item"
@@ -331,7 +333,7 @@ export default function FloatingConversionCTA({
                 <span className="cv-floating-popup-lbl">VERIFICĂ SITUAȚIA</span>
                 <span className="cv-floating-popup-desc">Analizează situația ta financiară →</span>
               </span>
-            </a>
+            </Link>
 
             {/* 03: Recomandă un Client */}
             <Link

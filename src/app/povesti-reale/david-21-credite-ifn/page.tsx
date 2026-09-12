@@ -4,12 +4,12 @@ import StoryArticleLayout, { StoryMetrics } from "@/components/StoryArticleLayou
 export const metadata: Metadata = {
   title: "21 de credite. O singură rată. — Studiu de Caz Refinanțare | CV Finance",
   description:
-    "Caz real documentat de Smart Credit: Domnul David avea 21 de credite la IFN și rate de 6.476 lei. După refinanțare, rata a scăzut la 2.577 lei, iar scorul FICO a crescut de la 582 la 643.",
+    "Caz real documentat de Smart Credit România. Smart Credit România menționează în cazul publicat un scor FICO de 582 la 643 puncte după consolidarea a 21 de credite IFN.",
   keywords: [
     "refinanțare credite IFN",
     "21 credite IFN",
     "reducere rată credit",
-    "scor FICO Biroul de Credit",
+    "scor de credit Biroul de Credit",
     "supraîndatorare credite",
   ],
   alternates: { canonical: "/povesti-reale/david-21-credite-ifn" },
@@ -29,7 +29,7 @@ export default function DavidStoryPage() {
     { label: "Număr total credite", before: "21 IFN", after: "1 Bancar", highlight: "Comasare totală" },
     { label: "Rată lunară de plată", before: "6.476 lei", after: "2.577 lei", highlight: "−3.899 lei / lună" },
     { label: "Grad de îndatorare", before: "≈ 76%", after: "≈ 30%", highlight: "Sub pragul de risc" },
-    { label: "Scor FICO (Birou)", before: "582", after: "643", highlight: "+61 puncte FICO" },
+    { label: "Scor Birou (studiu)", before: "582", after: "643", highlight: "+61 puncte (Smart Credit)" },
   ];
 
   return (
@@ -64,17 +64,17 @@ export default function DavidStoryPage() {
           <li>• <strong>Venit net lunar:</strong> ≈ 8.500 lei</li>
           <li>• <strong>Rate lunare cumulate:</strong> 6.476 lei/lună</li>
           <li>• <strong>Grad de îndatorare:</strong> ≈ 76% din venit</li>
-          <li>• <strong>Scor FICO inițial:</strong> 582 puncte</li>
+          <li>• <strong>Scor inițial (menționat):</strong> 582 puncte</li>
           <li>• <strong>Solicitare inițială:</strong> 100.000 lei / 5 ani</li>
         </ul>
       </div>
 
       <section style={{ marginBottom: "2.5rem" }}>
         <h2 className="cv-serif" style={{ fontSize: "1.75rem", color: "#FFFFFF", marginBottom: "1rem" }}>
-          De ce scăzuse scorul FICO la 582 deși nu existau restanțe?
+          De ce scăzuse scorul de credit la 582 deși nu existau restanțe?
         </h2>
         <p style={{ marginBottom: "1.25rem" }}>
-          În raportul de la Biroul de Credit, scorul FICO indicat era de <strong>582 puncte</strong>. Deși David își achita ratele la timp, mai mulți factori îi trăgeau scorul în jos:
+          Smart Credit România menționează în cazul publicat un scor FICO de <strong>582 puncte</strong> în raportul inițial. Deși David își achita ratele la timp, mai mulți factori îi trăgeau scorul în jos:
         </p>
         <div style={{ backgroundColor: "#0B0F0D", border: "1px solid rgba(255, 255, 255, 0.08)", padding: "1.25rem 1.5rem", borderRadius: "4px", marginBottom: "1.5rem" }}>
           <ul style={{ paddingLeft: "1.25rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.6rem", fontSize: "0.92rem" }}>
@@ -91,7 +91,7 @@ export default function DavidStoryPage() {
           Soluția identificată și rezultatul obținut
         </h2>
         <p style={{ marginBottom: "1.25rem" }}>
-          David a apelat la echipa Smart Credit România pentru o evaluare profesionistă. În urma analizei rigoare a dosarului și a structurării corecte a veniturilor, în doar <strong>9 zile de la aplicare</strong> s-a obținut aprobarea pentru un credit bancar de nevoi personale la ING Bank în valoare de 100.000 lei.
+          David a apelat la echipa Smart Credit România pentru o evaluare profesionistă. În urma analizei dosarului și a structurării corecte a veniturilor, în doar <strong>9 zile de la aplicare</strong> s-a obținut aprobarea pentru un credit bancar de nevoi personale la ING Bank în valoare de 100.000 lei.
         </p>
         <p style={{ marginBottom: "1.25rem" }}>
           Prin acest nou credit bancar, toate cele 21 de împrumuturi nebancare (IFN) au fost achitate integral și închise, iar clientul a primit în plus o sumă suplimentară de lichidități de aproximativ 60.000 lei.
@@ -115,7 +115,7 @@ export default function DavidStoryPage() {
               <div><strong>Număr rate:</strong> 21 scadențe dispersate</div>
               <div><strong>Credite bancare:</strong> 0</div>
               <div><strong>Grad îndatorare:</strong> ≈ 76% din venit</div>
-              <div><strong>Scor FICO:</strong> 582 puncte</div>
+              <div><strong>Scor inițial:</strong> 582 puncte (studiu Smart Credit)</div>
             </div>
           </div>
 
@@ -129,7 +129,7 @@ export default function DavidStoryPage() {
               <div><strong>Număr rate:</strong> 1 rată unică bancară</div>
               <div><strong>Credite IFN rămase:</strong> 0 (închise)</div>
               <div><strong>Grad îndatorare:</strong> ≈ 30% din venit</div>
-              <div><strong>Scor FICO:</strong> 643 puncte (+61 pts)</div>
+              <div><strong>Scor rectificat:</strong> 643 puncte (+61 pts Smart Credit)</div>
             </div>
           </div>
         </div>
@@ -151,9 +151,9 @@ export default function DavidStoryPage() {
             </p>
           </div>
           <div style={{ backgroundColor: "#0B0F0D", padding: "1.25rem", borderRadius: "4px", borderLeft: "3px solid #10B981" }}>
-            <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "0.35rem" }}>2. Scorul FICO se rectifică prin consolidare.</strong>
+            <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "0.35rem" }}>2. Scorul de credit se îmbunătățește prin consolidare.</strong>
             <p style={{ fontSize: "0.9rem", color: "#9CA3AF", margin: 0 }}>
-              Închiderea conturilor nebancare și trecerea la o singură rată bancară achitată la timp a ridicat scorul FICO al domnului David cu 61 de puncte într-un timp scurt.
+              Smart Credit România menționează în cazul publicat că închiderea conturilor nebancare și trecerea la o singură rată bancară achitată la timp a ridicat scorul FICO al domnului David cu 61 de puncte într-un timp scurt.
             </p>
           </div>
           <div style={{ backgroundColor: "#0B0F0D", padding: "1.25rem", borderRadius: "4px", borderLeft: "3px solid #10B981" }}>

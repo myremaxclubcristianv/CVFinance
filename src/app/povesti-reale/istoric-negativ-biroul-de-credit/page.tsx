@@ -107,7 +107,7 @@ export default function NegativeHistoryStoryPage() {
           <div style={{ backgroundColor: "#0B0F0D", padding: "1.25rem", borderRadius: "4px", borderLeft: "3px solid #10B981" }}>
             <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "0.35rem" }}>2. Ordinea pașilor este esențială.</strong>
             <p style={{ fontSize: "0.9rem", color: "#9CA3AF", margin: 0 }}>
-              Aplicarea la bancă înainte de rectificarea Biroului de Credit duce la un nou refuz care scade suplimentar scorul FICO. Soluția corectă este curățarea prealabilă a istoricului.
+              Aplicarea la bancă înainte de clarificarea situației din Biroul de Credit duce la un nou refuz care afectează suplimentar scorul de credit. Soluția corectă este evaluarea prealabilă a istoricului.
             </p>
           </div>
         </div>

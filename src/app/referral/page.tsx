@@ -7,12 +7,19 @@ import { trackEvent } from "@/lib/analytics";
 import { ArrowRight, ShieldCheck, Check } from "lucide-react";
 import { CONTACT } from "@/lib/constants";
 
+/*
+LEGAL REVIEW REQUIRED:
+Confirm with counsel specialized in Romanian credit intermediation /
+consumer credit law that the referral program, payer, beneficiary,
+contractual structure, marketing wording and disclosure comply with
+all applicable Romanian legal requirements.
+*/
+
 export default function ReferralPage() {
-  const [footerYear, setFooterYear] = useState(2026);
+  const [footerYear] = useState(() => new Date().getFullYear());
   
   useEffect(() => {
     trackEvent("referral_page_viewed");
-    setFooterYear(new Date().getFullYear());
   }, []);
 
   const handleCtaClick = (e: React.MouseEvent) => {
@@ -34,8 +41,8 @@ export default function ReferralPage() {
     },
     {
       code: "03",
-      title: "PRIMEȘTI",
-      desc: "Primești comisionul stabilit de 500 – 3.000 RON imediat după acordarea creditului de către bancă."
+      title: "REMUNERAȚIE",
+      desc: "Primești remunerația de 500 – 3.000 RON la finalizarea dosarului și acordarea creditului, în condițiile legale aplicabile."
     }
   ];
 
@@ -61,7 +68,7 @@ export default function ReferralPage() {
                 UN CLIENT.
               </h1>
               <p className="cv-hero-desc" style={{ fontSize: "1.15rem", marginBottom: "2.5rem" }}>
-                Cunoști pe cineva care are nevoie de finanțare sau vrea să-și optimizeze ratele? Trimite-mi situația lui. Eu mă ocup de restul, iar tu ești recompensat direct.
+                Cunoști pe cineva care are nevoie de finanțare sau vrea să-și optimizeze ratele? Trimite-mi situația lui. Eu mă ocup de restul, iar tu ești recompensat conform condițiilor stabilite.
               </p>
               <div className="cv-hero-actions">
                 <a href="#form-recomandare" onClick={handleCtaClick} className="cv-btn-primary">
@@ -72,22 +79,22 @@ export default function ReferralPage() {
 
             <div className="cv-hero-right" style={{ display: "flex", alignItems: "center" }}>
               <div className="cv-readout-panel" style={{ width: "100%", padding: "2.5rem", border: "1px solid var(--border)", backgroundColor: "var(--bg-secondary)" }}>
-                <span className="cv-mono" style={{ color: "var(--text-secondary)", fontSize: "0.75rem", display: "block", marginBottom: "0.5rem" }}>COMISION DE RECOMANDARE</span>
+                <span className="cv-mono" style={{ color: "var(--text-secondary)", fontSize: "0.75rem", display: "block", marginBottom: "0.5rem" }}>REMUNERAȚIE RECOMANDARE</span>
                 <div className="cv-mono" style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 900, color: "var(--emerald)", lineHeight: "1", marginBottom: "0.5rem" }}>
                   500 – 3.000 RON
                 </div>
                 <span className="cv-mono" style={{ color: "var(--text-secondary)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", marginBottom: "1.5rem" }}>
-                  PENTRU FIECARE RECOMANDARE ELIGIBILĂ ACORDATĂ
+                  PENTRU FIECARE DOSAR FINALIZAT CU SUCCES
                 </span>
                 
                 <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.8rem", fontSize: "0.88rem", color: "var(--text-secondary)" }}>
                   <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
                     <Check size={16} style={{ color: "var(--emerald)", marginTop: "0.15rem", flexShrink: 0 }} />
-                    <span>Plată garantată prin contract de recomandare.</span>
+                    <span>Cadru de colaborare transparent conform legii.</span>
                   </div>
                   <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
                     <Check size={16} style={{ color: "var(--emerald)", marginTop: "0.15rem", flexShrink: 0 }} />
-                    <span>Proces 100% transparent: ești notificat la fiecare etapă.</span>
+                    <span>Notificare la fiecare etapă a analizei.</span>
                   </div>
                   <div style={{ display: "flex", gap: "0.5rem", alignItems: "flex-start" }}>
                     <Check size={16} style={{ color: "var(--emerald)", marginTop: "0.15rem", flexShrink: 0 }} />
@@ -177,9 +184,9 @@ export default function ReferralPage() {
             </div>
 
             <div className="cv-legal-callout" style={{ marginBottom: "2.5rem" }}>
-              <div className="cv-legal-callout-title">GARANȚIA PARTENERIATULUI</div>
+              <div className="cv-legal-callout-title">CADRU LEGAL &amp; TRANSPARENȚĂ</div>
               <p className="cv-legal-callout-text">
-                Fiecare recomandare este înregistrată oficial în sistemul CV Finance, cu protecția datelor și asigurarea plății comisionului imediat după acordarea creditului.
+                Programul de recomandări și orice remunerație aferentă sunt operate cu respectarea cadrului legal aplicabil intermedierii de credite și a obligațiilor de informare și transparență. Condițiile programului sunt comunicate înainte de participare. Orice remunerație este acordată numai în condițiile și limitele permise de cadrul legal și contractual aplicabil.
               </p>
             </div>
 
@@ -188,23 +195,23 @@ export default function ReferralPage() {
                 <span className="cv-legal-num">01</span>
                 <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Validarea Recomandării</h3>
                 <p className="cv-legal-text" style={{ fontSize: "0.95rem" }}>
-                  Recompensa se acordă pentru persoanele fizice sau juridice recomandate care nu sunt deja în discuții active cu CV Finance și care finalizează cu succes un dosar de finanțare (creditul este aprobat și decontat de bancă).
+                  Remunerația se poate acorda pentru persoanele fizice sau juridice recomandate care nu sunt deja în discuții active cu CV Finance și care finalizează cu succes un dosar de finanțare (creditul este aprobat și decontat de instituția finanțatoare).
                 </p>
               </div>
 
               <div className="cv-legal-section">
                 <span className="cv-legal-num">02</span>
-                <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Valoarea Comisionului</h3>
+                <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Nivelul Remunerației</h3>
                 <p className="cv-legal-text" style={{ fontSize: "0.95rem" }}>
-                  Comisionul variază între <strong>500 RON</strong> (pentru credite de nevoi personale / sume mai mici) și <strong>3.000 RON</strong> (pentru credite ipotecare de valori mari sau finanțări business corporative complexe), în funcție de volumul finanțării acordate.
+                  Nivelul remunerației este orientativ între <strong>500 RON</strong> și <strong>3.000 RON</strong>, în funcție de specificul și volumul finanțării intermediate, cu respectarea normelor legale aplicabile.
                 </p>
               </div>
 
               <div className="cv-legal-section">
                 <span className="cv-legal-num">03</span>
-                <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Momentul Plății</h3>
+                <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Decontarea</h3>
                 <p className="cv-legal-text" style={{ fontSize: "0.95rem" }}>
-                  Plata se efectuează în termen de maximum <strong>5 zile lucrătoare</strong> de la momentul în care banca parteneră virează fondurile creditului către client și încheie decontul cu CV Finance.
+                  Decontarea se efectuează conform contractului/convenției aplicabile, ulterior finalizării tuturor formalităților legale și bancare.
                 </p>
               </div>
             </div>

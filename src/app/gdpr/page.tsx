@@ -42,7 +42,7 @@ export default function GDPRPage() {
           <section className="cv-legal-section">
             <div className="cv-legal-section-header">
               <span className="cv-legal-num">01</span>
-              <h2 className="cv-legal-heading">Garanțiile de Securitate și Confidențialitate</h2>
+              <h2 className="cv-legal-heading">Măsurile de Securitate și Confidențialitate</h2>
             </div>
             <div className="cv-legal-grid">
               <div className="cv-legal-card emerald">
@@ -50,10 +50,10 @@ export default function GDPRPage() {
                   <div className="cv-legal-card-icon">
                     <Lock size={18} />
                   </div>
-                  <h3 className="cv-legal-card-title">Securitate garantată</h3>
+                  <h3 className="cv-legal-card-title">Securitatea datelor</h3>
                 </div>
                 <p className="cv-legal-card-desc">
-                  Folosim conexiuni criptate SSL/TLS și servere securizate de nivel bancar. Nimeni neautorizat nu are acces la datele tale.
+                  Folosim conexiuni criptate SSL/TLS și servere securizate. Nimeni neautorizat nu are acces la datele tale.
                 </p>
               </div>
 
@@ -62,7 +62,7 @@ export default function GDPRPage() {
                   <div className="cv-legal-card-icon">
                     <ShieldCheck size={18} />
                   </div>
-                  <h3 className="cv-legal-card-title">Confidențialitate 100%</h3>
+                  <h3 className="cv-legal-card-title">Confidențialitate strictă</h3>
                 </div>
                 <p className="cv-legal-card-desc">
                   Nu vindem și nu închiriem baza de date niciunei terțe părți. Datele sunt procesate strict pentru soluționarea cererii tale.

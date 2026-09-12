@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Check, ShieldCheck, Landmark } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Credit Nevoi Personale România | Dobânzi Bune & Analiză Gratuită 100%",
+  title: "Credit Nevoi Personale România | Analiză Gratuită & Consultanță | CV Finance",
   description:
-    "Comparație și negociere pentru credit nevoi personale de la peste 20 de bănci partenere. Află în 2 minute ce sumă poți obține și cea mai mică rată lunară.",
+    "Comparație și intermediere pentru credit de nevoi personale prin parteneri autorizați. Află opțiunile de finanțare potrivite profilului tău.",
   keywords: ["credit nevoi personale", "broker credit nevoi personale", "banca nevoi personale", "dobanda credit nevoi personale"],
   alternates: { canonical: "/credit-nevoi-personale" },
 };

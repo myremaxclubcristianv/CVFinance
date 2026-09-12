@@ -15,9 +15,10 @@ export default function WhatsAppButton({
   message = "Bună ziua, doresc o analiză gratuită a opțiunilor mele financiare.",
 }: WhatsAppButtonProps) {
   const handleClick = () => {
-    trackEvent("whatsapp_click", { destination_phone: phone });
+    const cleanPhone = (phone || CONTACT.WHATSAPP).replace(/\D/g, "");
+    trackEvent("whatsapp_click", { destination_phone: cleanPhone });
     const encodedMsg = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/${phone}?text=${encodedMsg}`;
+    const whatsappUrl = `https://wa.me/${cleanPhone}?text=${encodedMsg}`;
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
   };
 

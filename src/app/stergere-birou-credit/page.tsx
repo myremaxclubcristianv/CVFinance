@@ -3,9 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Analiză Birou de CV Finance | Soluții Legale Întârzieri Plată",
+  title: "Analiză Birou de Credit | Soluții Legale Întârzieri Plată | CV Finance",
   description:
-    "Analiză Birou de Credit și identificarea soluțiilor disponibile pentru corectarea informațiilor eligibile. Consultanță financiară transparentă 100% gratuită.",
+    "Analiză Birou de Credit și identificarea soluțiilor disponibile pentru corectarea informațiilor eligibile. Consultanță financiară transparentă și gratuită.",
   keywords: ["biroul de credit", "analiza birou de credit", "corectare date birou credit", "stergere birou de credit legal"],
   alternates: { canonical: "/stergere-birou-credit" },
 };

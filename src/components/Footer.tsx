@@ -4,11 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Footer() {
-  const [footerYear, setFooterYear] = useState(2026);
-
-  useEffect(() => {
-    setFooterYear(new Date().getFullYear());
-  }, []);
+  const [footerYear] = useState(() => new Date().getFullYear());
 
   return (
     <footer className="cv-footer">

@@ -103,7 +103,7 @@ const diagnosticRows = [
 const personalEduQuestions = [
   {
     q: "Ce înseamnă o problemă în Biroul de Credit?",
-    a: "Înregistrările negative apar atunci când au existat întârzieri la plata ratelor. Ele pot influența scorul FICO, însă existența lor nu înseamnă automat că nu poți obține finanțare.",
+    a: "Înregistrările negative apar atunci când au existat întârzieri la plata ratelor. Ele pot influența scorul de credit, însă existența lor nu înseamnă automat că nu poți obține finanțare.",
   },
   {
     q: "Se poate corecta o informație din Biroul de Credit?",
@@ -131,14 +131,14 @@ const personalEduQuestions = [
   },
   {
     q: "De ce nu este bine să aplic la întâmplare la mai multe bănci?",
-    a: "Fiecare interogare repetată scade scorul FICO. Este esențial să aplici doar acolo unde ai șanse maxime de aprobare din prima încercare.",
+    a: "Fiecare interogare repetată poate afecta scorul de credit din Biroul de Credit. Este esențial să aplici doar acolo unde există compatibilitate cu normele de risc ale băncii.",
   },
 ];
 
 const faqs = [
   [
     "Analiza inițială este cu adevărat gratuită?",
-    "Da. Analiza inițială a situației tale și verificarea opțiunilor disponibile sunt 100% gratuite și nu implică nicio obligație.",
+    "Da. Analiza inițială a situației tale și verificarea opțiunilor disponibile sunt gratuite și nu implică nicio obligație.",
   ],
   [
     "În cât timp primesc un răspuns?",
@@ -153,8 +153,8 @@ const faqs = [
     "Da. Refinanțarea este concepută special pentru a reduce presiunea ratelor și a reorganiza datoriile existente.",
   ],
   [
-    "Verificarea îmi afectează scorul FICO?",
-    "Nu. Discuția inițială și analiza noastră nu reprezintă o aplicare oficială la bancă, deci scorul FICO rămâne neatins.",
+    "Verificarea îmi afectează scorul de credit?",
+    "Nu. Discuția inițială și analiza noastră nu reprezintă o aplicare oficială la bancă, deci scorul tău de credit din Biroul de Credit rămâne neatins.",
   ],
   [
     "Ce înseamnă analiza eligibilității?",
@@ -210,8 +210,7 @@ export default function Home() {
   const [marketing, setMarketing] = useState(true);
   const [honeypot, setHoneypot] = useState("");
 
-  const [footerYear, setFooterYear] = useState(2026);
-  useEffect(() => { setFooterYear(new Date().getFullYear()); }, []);
+  const [footerYear] = useState(() => new Date().getFullYear());
 
   // Listen to custom intent selection from header or command sheet
   useEffect(() => {
@@ -935,7 +934,7 @@ export default function Home() {
           <div className="cv-container">
             <span className="cv-section-marker">TRUST & CREDIBILITY</span>
             <div className="cv-section-header">
-              <h2 className="cv-section-title">GARANȚIA PROCESULUI NOSTRU</h2>
+              <h2 className="cv-section-title">STANDARDELE PROCESULUI NOSTRU</h2>
               <p className="cv-section-sub">Standarde de lucru transparente și obiective.</p>
             </div>
 
@@ -943,7 +942,7 @@ export default function Home() {
               <div className="cv-diag-row">
                 <span className="cv-diag-code">01</span>
                 <span className="cv-diag-name">Consultanță personalizată</span>
-                <span className="cv-diag-status">GARANTAT</span>
+                <span className="cv-diag-status">INCLUS</span>
               </div>
               <div className="cv-diag-row">
                 <span className="cv-diag-code">02</span>
@@ -958,7 +957,7 @@ export default function Home() {
               <div className="cv-diag-row">
                 <span className="cv-diag-code">04</span>
                 <span className="cv-diag-name">Analiză inițială fără obligații</span>
-                <span className="cv-diag-status">100% GRATUIT</span>
+                <span className="cv-diag-status">GRATUIT</span>
               </div>
               <div className="cv-diag-row">
                 <span className="cv-diag-code">05</span>
@@ -967,7 +966,7 @@ export default function Home() {
               </div>
               <div className="cv-diag-row">
                 <span className="cv-diag-code">06</span>
-                <span className="cv-diag-name">Confidențialitate garantată</span>
+                <span className="cv-diag-name">Confidențialitate strictă a datelor</span>
                 <span className="cv-diag-status">CONFIDENȚIAL</span>
               </div>
             </div>
@@ -988,7 +987,7 @@ export default function Home() {
                   / RECOMANDARE
                 </span>
                 <p className="cv-section-sub">
-                  Cunoști pe cineva care dorește să-și reducă ratele sau are nevoie de credit? Recomandă un client și primești comision garantat după acordarea creditului.
+                  Cunoști pe cineva care dorește să-și reducă ratele sau are nevoie de credit? Recomandă un client și poți beneficia de remunerație conform condițiilor legale aplicabile.
                 </p>
                 <Link href="/referral" className="cv-btn-primary mt-6">
                   RECOMANDĂ UN CLIENT →
@@ -1000,7 +999,7 @@ export default function Home() {
                 <ol className="cv-mono" style={{ fontSize: "0.88rem", display: "flex", flexDirection: "column", gap: "0.75rem", color: "#5F6368" }}>
                   <li>1. COMPLETEZI FORMULARUL DE RECOMANDARE</li>
                   <li>2. PRELUĂM ȘI ANALIZĂM DOSARUL CLIENTULUI</li>
-                  <li>3. LA ACORDAREA CREDITULUI PRIMEȘTI COMISIONUL</li>
+                  <li>3. LA FINALIZAREA DOSARULUI ȘI ACORDARE SE CALCULEAZĂ REMUNERAȚIA</li>
                 </ol>
               </div>
             </div>

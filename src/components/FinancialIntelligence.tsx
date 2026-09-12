@@ -15,33 +15,34 @@ export default function FinancialIntelligence() {
         </div>
 
         <div className="cv-terminal-box">
-          <div className="cv-terminal-header">
-            <span>MARKET ADVISORY TERMINAL — REAL TIME MONITOR</span>
+          <div className="cv-terminal-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+            <span>MARKET ADVISORY MONITOR — SNAPSHOT BNR</span>
+            <span style={{ fontSize: "0.75rem", color: "var(--text-secondary)", textTransform: "uppercase" }}>Sursă: BNR · Actualizare periodică</span>
           </div>
 
           <div className="cv-terminal-metrics">
             <div>
-              <div className="cv-term-metric-val">6,10%</div>
-              <div className="cv-term-metric-lbl">REFERINȚĂ 2026</div>
+              <div className="cv-term-metric-val">6.50%</div>
+              <div className="cv-term-metric-lbl">DOBÂNDĂ BNR</div>
             </div>
             <div>
-              <div className="cv-term-metric-val emerald">−0,20%</div>
-              <div className="cv-term-metric-lbl">EVOLUȚIE</div>
+              <div className="cv-term-metric-val emerald">5.86%</div>
+              <div className="cv-term-metric-lbl">INDICE IRCC</div>
             </div>
           </div>
 
           <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1.25rem", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: "1.25rem", fontFamily: "var(--font-mono)", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
             <div>
-              <span>IRCC ACTUAL:</span> <strong style={{ color: "var(--text-primary)" }}>5.99%</strong>
+              <span>IRCC:</span> <strong style={{ color: "var(--text-primary)" }}>5.86%</strong>
             </div>
             <div>
-              <span>ROBOR 3M:</span> <strong style={{ color: "var(--text-primary)" }}>5.82%</strong>
+              <span>ROBOR 3M:</span> <strong style={{ color: "var(--text-primary)" }}>5.58%</strong>
             </div>
             <div>
-              <span>MARJĂ MEDIE BĂNCI:</span> <strong style={{ color: "var(--text-primary)" }}>2.10%</strong>
+              <span>RATA BNR:</span> <strong style={{ color: "var(--text-primary)" }}>6.50%</strong>
             </div>
             <div>
-              <span>GRAD MAX ÎNDATORARE:</span> <strong style={{ color: "var(--text-primary)" }}>40% NET</strong>
+              <span>GRAD MAX ÎNDATORARE:</span> <strong style={{ color: "var(--text-primary)" }}>40% - 45%</strong>
             </div>
           </div>
         </div>

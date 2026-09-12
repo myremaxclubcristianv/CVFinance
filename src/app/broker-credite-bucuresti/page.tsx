@@ -14,18 +14,20 @@ export default function BrokerCrediteBucuresti() {
   const faqs = [
     [
       "Unde este situat sediul Broker CV Finance?",
-      "Sediul nostru principal este situat în zona Piața Victoriei, București. Oferim consultanță atât fizic la birou, cât și 100% online/telefonic pe tot teritoriul României.",
+      "Sediul nostru este situat în zona Piața Victoriei, București. Oferim consultanță atât fizic la birou, cât și online/telefonic pe tot teritoriul României.",
     ],
     [
       "Cât mă costă serviciile brokerului?",
-      "Consultanța și analiza inițială sunt 100% gratuite pentru client.",
+      "Consultanța și analiza inițială sunt gratuite pentru client.",
     ],
   ];
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "LocalBusiness",
+    "@type": "FinancialService",
     name: "Broker Credite București — CV Finance",
+    telephone: "+40767110439",
+    url: "https://credite.cristianvaduva.com/broker-credite-bucuresti",
     address: {
       "@type": "PostalAddress",
       streetAddress: "Piața Victoriei",

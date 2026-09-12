@@ -4,23 +4,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
+const NAV_ITEMS = [
+  { label: "PERSONAL", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
+  { label: "BUSINESS", href: "/#business-finance", id: "business-finance" },
+  { label: "SERVICII", href: "/#servicii", id: "servicii" },
+  { label: "PROCES", href: "/#cum-functioneaza", id: "cum-functioneaza" },
+];
+
 export default function MobileQuickNav() {
   const pathname = usePathname();
   const [activeSection, setActiveSection] = useState("");
-
-  const navItems = [
-    { label: "PERSONAL", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
-    { label: "BUSINESS", href: "/#business-finance", id: "business-finance" },
-    { label: "SERVICII", href: "/#servicii", id: "servicii" },
-    { label: "PROCES", href: "/#cum-functioneaza", id: "cum-functioneaza" },
-  ];
 
   useEffect(() => {
     if (pathname !== "/") return;
 
     const handleScroll = () => {
       let current = "";
-      for (const item of navItems) {
+      for (const item of NAV_ITEMS) {
         const el = document.getElementById(item.id);
         if (el) {
           const rect = el.getBoundingClientRect();
@@ -50,7 +50,7 @@ export default function MobileQuickNav() {
   return (
     <div className="cv-mobile-quick-nav md:hidden" aria-label="Navigare rapidă pe mobil">
       <div className="cv-mobile-quick-nav-inner">
-        {navItems.map((item) => {
+        {NAV_ITEMS.map((item) => {
           const isActive = activeSection === item.id;
           return (
             <Link

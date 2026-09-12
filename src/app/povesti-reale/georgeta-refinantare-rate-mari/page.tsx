@@ -81,7 +81,7 @@ export default function GeorgetaStoryPage() {
               Ezitarea inițială și evaluarea profesionistă
             </h3>
             <p style={{ fontSize: "0.95rem", color: "#D1D5DB", margin: 0, lineHeight: 1.65 }}>
-              Inițial, doamna Georgeta a fost sceptică. A amânat decizia și a crezut că va rezolva situația prin "ajutor din familie". Când acea variantă nu a funcționat, s-a decis să lase un specialist de la Smart Credit să îi analizeze complet veniturile și datoriile.
+              Inițial, doamna Georgeta a fost sceptică. A amânat decizia și a crezut că va rezolva situația prin „ajutor din familie”. Când acea variantă nu a funcționat, s-a decis să lase un specialist de la Smart Credit să îi analizeze complet veniturile și datoriile.
             </p>
           </div>
 
@@ -134,7 +134,7 @@ export default function GeorgetaStoryPage() {
             </p>
           </div>
           <div style={{ backgroundColor: "#0B0F0D", padding: "1.25rem", borderRadius: "4px", borderLeft: "3px solid #10B981" }}>
-            <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "0.35rem" }}>2. Gândul că "nu o să meargă" este cea mai mare barieră.</strong>
+            <strong style={{ color: "#FFFFFF", display: "block", marginBottom: "0.35rem" }}>2. Gândul că „nu o să meargă” este cea mai mare barieră.</strong>
             <p style={{ fontSize: "0.9rem", color: "#9CA3AF", margin: 0 }}>
               Multe persoane își pun singure bariere, presupunând că vor fi respinse. Un specialist care analizează obiectiv dosarul poate identifica soluția potrivită acolo unde clientul nu mai vede nicio ieșire.
             </p>

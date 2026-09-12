@@ -91,13 +91,6 @@ export default function BusinessFinanceFunnel({
   const contactRef = useRef<HTMLFormElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
 
-  // Sync initial purposes
-  useEffect(() => {
-    if (initialSelectedPurposes.length > 0) {
-      setSelectedPurposes((prev) => Array.from(new Set([...prev, ...initialSelectedPurposes])));
-    }
-  }, [initialSelectedPurposes]);
-
   useEffect(() => {
     trackEvent("business_finance_view", { source });
   }, [source]);

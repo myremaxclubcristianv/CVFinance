@@ -73,8 +73,8 @@ export default function CVFinanceHero() {
             </div>
 
             <div className="cv-readout-footer">
-              • ANALIZĂ 100% CONFIDENȚIALĂ<br />
-              • FĂRĂ AFECTARE SCOR FICO
+              • ANALIZĂ CONFIDENȚIALĂ<br />
+              • FĂRĂ AFECTARE SCOR BIROUL DE CREDIT
             </div>
           </div>
         </div>

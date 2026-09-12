@@ -3,7 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Check } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Credit cu Istoric Negativ | Consultanță Soluții Financiare România",
+  title: "Credit cu Istoric Negativ | Consultanță Soluții Financiare | CV Finance",
   description:
     "Ai avut întârzieri la plăți în trecut? Analizăm situația ta și identificăm soluțiile financiare disponibile în piață. Fără falsuri, consultanță transparentă.",
   keywords: ["credit cu istoric negativ", "credit intarzieri", "solutii biroul de credit", "broker credit intarziati"],
@@ -18,7 +18,7 @@ export default function CreditIstoricNegativ() {
     ],
     [
       "Costă ceva analiza inițială a situației mele?",
-      "Nu. Analiza este 100% gratuită și confidențială. Îți explicăm realist șansele înainte de orice pas.",
+      "Nu. Analiza inițială este gratuită și confidențială. Îți explicăm realist opțiunile înainte de orice pas.",
     ],
   ];
 

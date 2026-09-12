@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { trackEvent } from "@/lib/analytics";
 
@@ -16,33 +17,33 @@ interface CommandRow {
 const COMMAND_ROWS: CommandRow[] = [
   {
     code: "01",
-    label: "Vreau bani",
-    intent: "Am nevoie de o sumă nouă",
-    desc: "Analizăm varianta optimă pentru obținerea unei sume noi de bani.",
+    label: "Vreau un credit ipotecar / achiziție",
+    intent: "Achiziție locuință",
+    desc: "Achiziție locuință, teren, casă în construcție sau dezvoltare rezidențială.",
     targetId: "verificare-credit",
     type: "personal",
   },
   {
     code: "02",
-    label: "Vreau să cumpăr o locuință",
-    intent: "Credit nou",
-    desc: "Găsim creditul ipotecar potrivit cu cele mai bune condiții de piață.",
+    label: "Vreau să-mi reduc rata la creditul actual",
+    intent: "Refinanțare",
+    desc: "Refinanțare și optimizare dobândă pentru scăderea costului lunar total.",
     targetId: "verificare-credit",
     type: "personal",
   },
   {
     code: "03",
-    label: "Vreau să refinanțez",
-    intent: "Refinanțare",
-    desc: "Reducem rata lunară și comasăm toate creditele într-unul singur.",
-    targetId: "verificare-credit",
+    label: "Am fost refuzat de bancă",
+    intent: "Istoric negativ",
+    desc: "Analizăm motivele de refuz și identificăm soluții compatibile în piață.",
+    targetId: "totul-inainte-de-credit",
     type: "personal",
   },
   {
     code: "04",
-    label: "Am nevoie de bani pentru mine",
-    intent: "Am nevoie de o sumă nouă",
-    desc: "Credit de nevoi personale cu acordare rapidă și dobândă optimă.",
+    label: "Am credite la IFN-uri cu dobânzi mari",
+    intent: "Refinanțare IFN",
+    desc: "Comasăm împrumuturile nebancare într-o singură rată bancară sustenabilă.",
     targetId: "verificare-credit",
     type: "personal",
   },
@@ -66,13 +67,15 @@ const COMMAND_ROWS: CommandRow[] = [
     code: "07",
     label: "Vreau să recomand un client",
     intent: "Recomandare client",
-    desc: "Recomanzi o persoană sau o firmă și obții comision garantat la acordare.",
+    desc: "Recomanzi o persoană sau o firmă și poți obține remunerație conform legii.",
     targetId: "recomandari",
     type: "personal",
   },
 ];
 
 export default function CommandSheet() {
+  const router = useRouter();
+
   const handleSelect = (row: CommandRow) => {
     trackEvent("command_row_click", { code: row.code, label: row.label });
 
@@ -81,7 +84,7 @@ export default function CommandSheet() {
       if (targetEl) {
         targetEl.scrollIntoView({ behavior: "smooth" });
       } else {
-        window.location.href = "/referral";
+        router.push("/referral");
       }
       return;
     }
