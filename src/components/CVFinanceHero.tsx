@@ -43,6 +43,11 @@ export default function CVFinanceHero() {
               CUM FUNCȚIONEAZĂ
             </a>
           </div>
+
+          <div style={{ marginTop: "1.25rem", display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.85rem", color: "var(--text-secondary)" }}>
+            <span style={{ color: "#087F5B", fontWeight: 700 }}>●</span>
+            <span><strong>NU LUA UN CREDIT PÂNĂ NU NE CONSULTĂM:</strong> analizăm situația ta înainte să semnezi.</span>
+          </div>
         </div>
 
         {/* RIGHT COLUMN: INSTITUTIONAL STATEMENT READOUT */}

@@ -417,6 +417,28 @@ export default function Home() {
           </div>
         </section>
 
+        {/* POZIȚIONARE PRINCIPALĂ — NU LUA UN CREDIT PÂNĂ NU NE CONSULTĂM */}
+        <section className="cv-section" style={{ backgroundColor: "#F7F9F8", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", padding: "3.5rem 0" }}>
+          <div className="cv-container">
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "2rem" }}>
+              <div style={{ maxWidth: "720px" }}>
+                <span className="cv-section-marker" style={{ marginBottom: "0.5rem" }}>POZIȚIONARE &amp; CONSULTANȚĂ</span>
+                <h2 className="cv-section-title" style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", margin: "0 0 0.75rem 0", lineHeight: 1.15, letterSpacing: "-0.02em" }}>
+                  NU LUA UN CREDIT PÂNĂ NU NE CONSULTĂM.
+                </h2>
+                <p className="cv-section-sub" style={{ margin: 0, fontSize: "1.05rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
+                  Înainte să semnezi, verificăm situația ta și îți explicăm ce opțiuni merită analizate.
+                </p>
+              </div>
+              <div>
+                <a href="#verificare-credit" className="cv-btn-primary" style={{ whiteSpace: "nowrap", padding: "0.85rem 1.75rem", fontSize: "0.9rem" }}>
+                  VERIFICĂ SITUAȚIA →
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* PARTENERIAT STRATEGIC SMART CREDIT */}
         <section id="parteneriat-smart-credit" className="cv-partner-section">
           <div className="cv-container">
@@ -693,6 +715,19 @@ export default function Home() {
                   <ArrowRight size={18} className="cv-dir-arrow" />
                 </div>
               ))}
+            </div>
+
+            {/* CALLOUT: RECOMANDĂ UN CLIENT */}
+            <div style={{ marginTop: "2.5rem", padding: "1.5rem 2rem", backgroundColor: "#F7F9F8", border: "1px solid var(--border)", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1.25rem" }}>
+              <div>
+                <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--emerald)", fontWeight: 700, display: "block", marginBottom: "0.25rem", letterSpacing: "0.05em" }}>RECOMANDĂRI</span>
+                <p style={{ margin: 0, fontSize: "0.98rem", color: "var(--text-primary)", fontWeight: 600 }}>
+                  Cunoști pe cineva care are nevoie de o soluție de creditare? Trimite-ne recomandarea.
+                </p>
+              </div>
+              <Link href="/referral" className="cv-btn-secondary" style={{ fontSize: "0.85rem", padding: "0.65rem 1.35rem", whiteSpace: "nowrap" }}>
+                RECOMANDĂ UN CLIENT →
+              </Link>
             </div>
           </div>
         </section>
@@ -978,25 +1013,25 @@ export default function Home() {
           <div className="cv-container">
             <span className="cv-section-marker">PROGRAM RECOMANDĂRI</span>
             
-            <div id="n6h4kr" className="progress-bar-bg" role="progressbar" aria-label="Credit verification progress" aria-valuenow={formStep} aria-valuemin={1} aria-valuemax={5}>
-              <div>
-                <h2 className="cv-section-title" style={{ fontSize: "clamp(2rem, 3.8vw, 3rem)" }}>
-                  500 – 3.000 RON
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center" style={{ backgroundColor: "#FFFFFF", padding: "clamp(1.75rem, 3.5vw, 2.5rem)", border: "1px solid #E4E8E6" }}>
+              <div className="lg:col-span-7">
+                <h2 className="cv-section-title" style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.8rem)", marginBottom: "0.5rem" }}>
+                  RECOMANDĂ UN CLIENT
                 </h2>
-                <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.9rem", display: "block", marginBottom: "1rem" }}>
-                  / RECOMANDARE
+                <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.95rem", display: "block", marginBottom: "1rem" }}>
+                  500 – 3.000 RON / RECOMANDARE
                 </span>
-                <p className="cv-section-sub">
-                  Cunoști pe cineva care dorește să-și reducă ratele sau are nevoie de credit? Recomandă un client și poți beneficia de remunerație conform condițiilor legale aplicabile.
+                <p className="cv-section-sub" style={{ marginBottom: "1.75rem", fontSize: "1.05rem", lineHeight: 1.5 }}>
+                  Cunoști pe cineva care are nevoie de o soluție de creditare? Trimite-ne recomandarea.
                 </p>
-                <Link href="/referral" className="cv-btn-primary mt-6">
+                <Link href="/referral" className="cv-btn-primary">
                   RECOMANDĂ UN CLIENT →
                 </Link>
               </div>
 
-              <div style={{ backgroundColor: "#FFFFFF", padding: "2rem", border: "1px solid #E4E8E6" }}>
-                <h3 style={{ fontWeight: 800, fontSize: "1.1rem", marginBottom: "1rem" }}>CUM FUNCȚIONEAZĂ?</h3>
-                <ol className="cv-mono" style={{ fontSize: "0.88rem", display: "flex", flexDirection: "column", gap: "0.75rem", color: "#5F6368" }}>
+              <div className="lg:col-span-5" style={{ backgroundColor: "#F7F9F8", padding: "1.75rem", border: "1px solid #E4E8E6" }}>
+                <h3 style={{ fontWeight: 800, fontSize: "1rem", marginBottom: "0.75rem", letterSpacing: "-0.01em" }}>CUM FUNCȚIONEAZĂ?</h3>
+                <ol className="cv-mono" style={{ fontSize: "0.82rem", display: "flex", flexDirection: "column", gap: "0.65rem", color: "#5F6368" }}>
                   <li>1. COMPLETEZI FORMULARUL DE RECOMANDARE</li>
                   <li>2. PRELUĂM ȘI ANALIZĂM DOSARUL CLIENTULUI</li>
                   <li>3. LA FINALIZAREA DOSARULUI ȘI ACORDARE SE CALCULEAZĂ REMUNERAȚIA</li>
@@ -1342,24 +1377,20 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 27 — FINAL CTA EDITORIAL WHITESPACE */}
-        <section className="cv-section" style={{ padding: "8rem 0", textAlign: "center" }}>
+        {/* 27 — FINAL CTA EDITORIAL */}
+        <section className="cv-section" style={{ padding: "6rem 0", textAlign: "center" }}>
           <div className="cv-container">
-            <h2 className="cv-section-title" style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.8rem)", marginBottom: "1rem" }}>
-              NU TREBUIE SĂ ȘTII TU<br />
-              CE BANCĂ ESTE POTRIVITĂ.
+            <span className="cv-section-marker" style={{ marginBottom: "0.5rem" }}>CONSULTANȚĂ &amp; VERIFICARE</span>
+            <h2 className="cv-section-title" style={{ fontSize: "clamp(2rem, 4vw, 3.2rem)", marginBottom: "1rem" }}>
+              NU LUA UN CREDIT PÂNĂ NU NE CONSULTĂM.
             </h2>
-            <p className="cv-section-sub" style={{ fontSize: "1.25rem", marginBottom: "2.5rem" }}>
-              Trebuie doar să-mi spui ce vrei să faci.
+            <p className="cv-section-sub" style={{ fontSize: "1.15rem", marginBottom: "2rem", maxWidth: "680px", marginInline: "auto" }}>
+              Înainte să semnezi, verificăm situația ta și îți explicăm ce opțiuni merită analizate.
             </p>
             <a
               href="#verificare-credit"
               className="cv-btn-primary"
-              style={{ fontSize: "1rem", padding: "1rem 2rem" }}
-              onClick={(e) => {
-                e.preventDefault();
-                document.getElementById("verificare-credit")?.scrollIntoView({ behavior: "smooth" });
-              }}
+              style={{ fontSize: "0.95rem", padding: "1rem 2rem" }}
             >
               VERIFICĂ SITUAȚIA →
             </a>
