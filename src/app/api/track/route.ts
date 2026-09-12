@@ -47,6 +47,8 @@ async function sendTelegramActivity(text: string): Promise<boolean> {
   }
 }
 
+const clean = (val?: string) => (val || "").replace(/[<>]/g, "").trim();
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -63,8 +65,17 @@ export async function POST(request: Request) {
       timestamp = new Date().toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" }),
     } = body;
 
+    const safePage = clean(page);
+    const safeSection = clean(section);
+    const safeCtaLabel = clean(ctaLabel);
+    const safeIntent = clean(intent);
+    const safeDeviceType = clean(deviceType);
+    const safeUtmSource = clean(utmSource);
+    const safeReferrer = clean(referrer);
+    const safeSessionId = clean(sessionId);
+
     // Rate limiting key: event + sessionId + (section || page || ctaLabel)
-    const dedupKey = `${sessionId}:${event}:${section || page || ctaLabel}`;
+    const dedupKey = `${safeSessionId}:${event}:${safeSection || safePage || safeCtaLabel}`;
     
     // Cooldown: 15s for page/section view, 5s for CTA
     const cooldown = event === "page_view" || event === "section_view" ? 15000 : 5000;
@@ -79,57 +90,57 @@ export async function POST(request: Request) {
         telegramText =
           `👤 <b>VIZITATOR NOU</b>\n\n` +
           `🌐 <b>Site:</b> credite.cristianvaduva.com\n` +
-          `📄 <b>Pagina:</b> ${page}\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
-          `🌍 <b>Referrer:</b> ${referrer}\n` +
-          `🔗 <b>UTM:</b> ${utmSource}\n` +
+          `📄 <b>Pagina:</b> ${safePage}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
+          `🌍 <b>Referrer:</b> ${safeReferrer}\n` +
+          `🔗 <b>UTM:</b> ${safeUtmSource}\n` +
           `🕐 <b>Ora:</b> ${timestamp}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       case "page_view":
         telegramText =
           `👀 <b>PAGINĂ ACCESATĂ</b>\n\n` +
-          `📄 <b>Pagina:</b> ${page}\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `📄 <b>Pagina:</b> ${safePage}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       case "section_view":
         telegramText =
           `👀 <b>SECȚIUNE VIZUALIZATĂ</b>\n\n` +
-          `🏷️ <b>Secțiune:</b> ${section || "—"}\n` +
-          `📍 <b>Path:</b> ${page}\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `🏷️ <b>Secțiune:</b> ${safeSection || "—"}\n` +
+          `📍 <b>Path:</b> ${safePage}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       case "cta_click":
         telegramText =
           `🎯 <b>INTERACȚIUNE CTA</b>\n\n` +
-          `<b>Action:</b> ${ctaLabel || "CTA"}\n` +
-          `📍 <b>Pagină:</b> ${page}\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `<b>Action:</b> ${safeCtaLabel || "CTA"}\n` +
+          `📍 <b>Pagină:</b> ${safePage}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       case "cta_whatsapp_clicked":
         telegramText =
           `💬 <b>WHATSAPP</b>\n\n` +
           `Vizitatorul a apăsat „Discută pe WhatsApp”\n` +
-          `📍 <b>Pagină:</b> ${page}\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `📍 <b>Pagină:</b> ${safePage}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       case "lead_form_started":
         telegramText =
           `📝 <b>FORMULAR ÎNCEPUT</b>\n\n` +
-          `📍 <b>Pagină:</b> ${page}\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
+          `📍 <b>Pagină:</b> ${safePage}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
           `🎯 Formular analiză financiară\n` +
-          `🔥 <b>Intent:</b> ${intent}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `🔥 <b>Intent:</b> ${safeIntent}\n` +
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       case "lead_form_step_3":
@@ -137,9 +148,9 @@ export async function POST(request: Request) {
           `🔥 <b>LEAD — A AJUNS LA CONTACT</b>\n\n` +
           `📍 Formular analiză financiară\n` +
           `👤 <b>Stadiu:</b> A ajuns la Nume / Telefon / Email\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
           `🔥 <b>Intent:</b> VERY HIGH\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       case "referral_page_viewed":
@@ -147,17 +158,17 @@ export async function POST(request: Request) {
           `🤝 <b>RECOMANDARE</b>\n\n` +
           `Vizitatorul a accesat pagina de recomandări\n` +
           `📍 <b>Pagină:</b> /referral\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
       default:
         telegramText =
           `⚡ <b>ACTIVITATE VIZITATOR</b>\n\n` +
-          `<b>Event:</b> ${event}\n` +
-          `📍 <b>Pagină:</b> ${page}\n` +
-          `📱 <b>Device:</b> ${deviceType}\n` +
-          `🆔 <b>Session:</b> <code>#${sessionId.slice(0, 8)}</code>`;
+          `<b>Event:</b> ${clean(event)}\n` +
+          `📍 <b>Pagină:</b> ${safePage}\n` +
+          `📱 <b>Device:</b> ${safeDeviceType}\n` +
+          `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
     }
 
