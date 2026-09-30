@@ -34,10 +34,17 @@ interface SessionJourney {
   lastActive: number;
   landingPage: string;
   pagesVisited: string[];
+  storiesViewed: string[];
   actions: string[];
   timedActions: TimedAction[];
   isNewVisitorNotified: boolean;
   isReturningVisitorNotified: boolean;
+  isHighIntentNotified: boolean;
+  hasCompletedCalculator: boolean;
+  hasStartedForm: boolean;
+  hasClickedPhone: boolean;
+  hasClickedWhatsApp: boolean;
+  hasConverted: boolean;
   actionCounts: Map<string, number>;
   lastActionNotification: Map<string, number>;
 }
@@ -63,10 +70,17 @@ function getOrCreateSession(
       lastActive: now,
       landingPage: initialPage || "/",
       pagesVisited: [initialPage || "/"],
+      storiesViewed: [],
       actions: [],
       timedActions: [],
       isNewVisitorNotified: false,
       isReturningVisitorNotified: false,
+      isHighIntentNotified: false,
+      hasCompletedCalculator: false,
+      hasStartedForm: false,
+      hasClickedPhone: false,
+      hasClickedWhatsApp: false,
+      hasConverted: false,
       actionCounts: new Map<string, number>(),
       lastActionNotification: new Map<string, number>(),
     };
@@ -88,6 +102,63 @@ function getOrCreateSession(
   }
 
   return session;
+}
+
+const IMPORTANT_PAGES = [
+  "/calculator-rata-credit",
+  "/totul-inainte-de-credit",
+  "/broker-credite-bucuresti",
+  "/referral",
+  "/refinantare-credit",
+  "/credit-istoric-negativ",
+  "/credit-nevoi-personale",
+  "/stergere-birou-credit",
+];
+
+function isImportantPage(page: string): boolean {
+  return IMPORTANT_PAGES.includes(page) || page.startsWith("/povesti-reale/");
+}
+
+function evaluateHighIntent(session: SessionJourney): { isHighIntent: boolean; signals: string[] } {
+  const signals: string[] = [];
+  
+  if (session.hasCompletedCalculator) {
+    signals.push("Calculator finalizat cu simulare");
+  }
+  
+  const commercialPages = session.pagesVisited.filter((p) =>
+    p.includes("/calculator") ||
+    p.includes("/totul-inainte-de-credit") ||
+    p.includes("/broker-credite") ||
+    p.includes("/referral") ||
+    p.includes("/povesti-reale") ||
+    p.includes("/credite-ipotecare") ||
+    p.includes("/refinantare") ||
+    p.includes("/stergere-birou") ||
+    p.includes("/credit-")
+  );
+  if (commercialPages.length >= 3) {
+    signals.push(`${commercialPages.length} pagini comerciale vizitate`);
+  }
+  
+  if (session.hasClickedPhone) {
+    signals.push("Click pe numărul de telefon");
+  }
+  
+  if (session.hasClickedWhatsApp) {
+    signals.push("Click pe butonul WhatsApp");
+  }
+  
+  if (session.hasStartedForm) {
+    signals.push("Formular de calificare inițiat");
+  }
+  
+  if (session.isReturning && session.visitCount >= 2) {
+    signals.push(`Vizitator recurent (Vizita #${session.visitCount})`);
+  }
+  
+  const isHighIntent = signals.length >= 2;
+  return { isHighIntent, signals };
 }
 
 const trackSchema = z.object({
@@ -390,17 +461,14 @@ export async function POST(request: Request) {
     const shortSessionId = formatShortId(rawSessionId);
 
     const safePage = escapeHtml(clean(data.page) || "/");
-    const safeSection = escapeHtml(clean(data.section));
     const safeCtaLabel = escapeHtml(clean(data.ctaLabel));
-    const safeIntent = escapeHtml(clean(data.intent));
-    const safeDeviceType = escapeHtml(clean(data.deviceType) || parsedUA.deviceType);
-    const safeOs = escapeHtml(parsedUA.os);
-    const safeBrowser = escapeHtml(parsedUA.browser);
     const safeDeviceSummary = escapeHtml(parsedUA.deviceSummary);
     const safeScreenCategory = escapeHtml(clean(data.screenCategory) || "Large screen");
     const safeLanguage = escapeHtml(clean(data.language) || "ro-RO");
     const safeTimezone = escapeHtml(clean(data.timezone) || geo.timezone);
     const safeSource = escapeHtml(sourceInfo.label);
+    const safeMedium = escapeHtml(clean(data.utmMedium) || "—");
+    const safeCampaign = escapeHtml(clean(data.utmCampaign) || "—");
     const safeReferrerHost = escapeHtml(sourceInfo.host);
     const safeCity = escapeHtml(geo.city);
     const safeCountry = escapeHtml(geo.country);
@@ -471,112 +539,191 @@ export async function POST(request: Request) {
         const recentJourney = session.pagesVisited.map((p, i) => `${i + 1}. ${escapeHtml(p)}`).join("\n");
         const lastAction = session.actions.length > 1 ? session.actions[session.actions.length - 1] : "Page view";
         telegramText =
-          `🔁 <b>RETURNING VISITOR</b>\n\n` +
-          `🕐 ${fullTimestampStr} EEST\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n` +
-          `🔁 Visit: #${data.visitCount}\n\n` +
-          `📍 ${safeCity} · ${safeCountry}\n\n` +
-          `💻 ${safeDeviceSummary}\n\n` +
-          `🔎 <b>SOURCE</b>\n` +
-          `${safeSource}\n\n` +
-          `📄 <b>CURRENT PAGE</b>\n` +
-          `${safePage}\n\n` +
-          `📊 <b>SESSION</b>\n` +
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🔁 VISITATOR RECURENT</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>SESSION</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Time: ${fullTimestampStr} EEST\n` +
+          `Visitor: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `Visit: #${data.visitCount}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>CONTEXT</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Location: ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `Device: ${safeDeviceSummary}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🔗 <b>ACQUISITION</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Source: ${safeSource}\n` +
+          `Referrer: ${safeReferrerHost}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📄 <b>PAGES & METRICS</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Landing: ${escapeHtml(session.landingPage)}\n` +
+          `Current: ${safePage}\n` +
           `Pages: ${pageCount}\n` +
           `Duration: ${durationFormatted}\n` +
-          `Actions: ${session.actions.length}\n\n` +
+          `Actions: ${session.actions.length}\n` +
+          `━━━━━━━━━━━━━━\n` +
           `🧭 <b>RECENT JOURNEY</b>\n` +
-          `${recentJourney}\n\n` +
-          `⚡ <b>LAST ACTION</b>\n` +
-          `${escapeHtml(lastAction)}`;
+          `━━━━━━━━━━━━━━\n` +
+          `${recentJourney}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `⚡ <b>LAST ACTION:</b> ${escapeHtml(lastAction)}`;
       } else if (!data.isReturning && !session.isNewVisitorNotified) {
         session.isNewVisitorNotified = true;
         session.actions.push("Page viewed");
         session.timedActions.push({ timeStr: actionTimeStr, name: "Page view" });
         shouldNotifyTelegram = true;
         telegramText =
-          `👀 <b>NEW VISITOR</b>\n\n` +
-          `🕐 ${fullTimestampStr} EEST\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n` +
-          `🔁 Visit: #${data.visitCount}\n\n` +
-          `📍 <b>LOCATION</b>\n` +
-          `${geo.countryFlag} ${safeCountry}\n` +
-          `📌 ${safeCity}\n` +
-          `🕰 ${safeTimezone}\n\n` +
-          `💻 <b>DEVICE</b>\n` +
-          `${safeDeviceSummary}\n` +
-          `📐 ${safeScreenCategory}\n` +
-          `🌍 ${safeLanguage}\n\n` +
-          `🔎 <b>SOURCE</b>\n` +
-          `${safeSource}\n` +
-          `🔗 Referrer: ${safeReferrerHost}\n\n` +
-          `🎯 <b>LANDING</b>\n` +
-          `${safePage}\n\n` +
-          `➡️ <b>FIRST ACTION</b>\n` +
-          `Page viewed`;
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 👀 VISITOR NOU</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>SESSION</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Time: ${fullTimestampStr} EEST\n` +
+          `Visitor: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `Visit: #${data.visitCount}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>CONTEXT</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Location: ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `Device: ${safeDeviceSummary}\n` +
+          `Screen: ${safeScreenCategory}\n` +
+          `Language: ${safeLanguage}\n` +
+          `Timezone: ${safeTimezone}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🔗 <b>ACQUISITION</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Source: ${safeSource}\n` +
+          `Medium: ${safeMedium}\n` +
+          `Campaign: ${safeCampaign}\n` +
+          `Referrer: ${safeReferrerHost}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📄 <b>ACTIVITY</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Landing: ${safePage}\n` +
+          `First action: Page viewed\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🎯 <b>STATUS:</b> New visitor`;
       }
     }
 
-    // 2. High-Value Action: Phone CTA Clicked
+    // 2. High-Value Page View Notification
+    else if (event === "page_view" && isImportantPage(clean(data.page))) {
+      session.timedActions.push({ timeStr: actionTimeStr, name: `Page (${clean(data.page)})` });
+      if (canNotifyAction(`page_${clean(data.page)}`, 30000)) {
+        shouldNotifyTelegram = true;
+        telegramText =
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📄 PAGINĂ IMPORTANTĂ</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📄 <b>PAGE:</b> ${safePage}\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
+          `⏱ <b>Session duration:</b> ${durationFormatted} (${pageCount} pages)`;
+      }
+    }
+
+    // 3. Phone CTA Clicked
     else if (event === "phone_click" || event === "cta_phone_clicked") {
+      session.hasClickedPhone = true;
       session.actions.push("Phone CTA clicked");
       session.timedActions.push({ timeStr: actionTimeStr, name: "Phone CTA" });
       if (canNotifyAction("phone")) {
         shouldNotifyTelegram = true;
         const totalClicks = session.actionCounts.get("phone") || 1;
-        const actionLabel = totalClicks > 1 ? `📞 PHONE CTA CLICKED · ${totalClicks}×` : `📞 PHONE CTA CLICKED`;
+        const ctaTitle = totalClicks > 1 ? `📞 PHONE CTA CLICKED · ${totalClicks}×` : `📞 PHONE CTA CLICKED`;
         telegramText =
-          `⚡ <b>IMPORTANT ACTIVITY</b>\n\n` +
-          `🕐 ${timeOnly}\n\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n\n` +
-          `📍 ${safeCity} · ${safeCountry}\n` +
-          `💻 ${safeDeviceSummary}\n\n` +
-          `📄 <b>PAGE</b>\n` +
-          `${safePage}\n\n` +
-          `🎯 <b>ACTION</b>\n` +
-          `${actionLabel}\n\n` +
-          `🔎 <b>SOURCE</b>\n` +
-          `${safeSource}\n\n` +
-          `📊 <b>SESSION</b>\n` +
-          `${durationFormatted}\n` +
-          `${pageCount} pages\n` +
-          `${session.actions.length} actions`;
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📞 CLICK TELEFON</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `📄 <b>Page:</b> ${safePage}\n` +
+          `🔘 <b>CTA:</b> Telefon 0767 110 439\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📊 <b>JOURNEY BEFORE CLICK</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Pages viewed: ${pageCount}\n` +
+          `Duration: ${durationFormatted}\n` +
+          `Actions: ${session.actions.length}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🎯 <b>ACTION:</b> ${ctaTitle}`;
       }
     }
 
-    // 3. High-Value Action: WhatsApp CTA Clicked
+    // 4. WhatsApp CTA Clicked
     else if (event === "whatsapp_click" || event === "cta_whatsapp_clicked" || event === "business_finance_whatsapp" || event === "totul_credit_whatsapp") {
+      session.hasClickedWhatsApp = true;
       session.actions.push("WhatsApp CTA clicked");
       session.timedActions.push({ timeStr: actionTimeStr, name: "WhatsApp CTA" });
       if (canNotifyAction("whatsapp")) {
         shouldNotifyTelegram = true;
         const totalClicks = session.actionCounts.get("whatsapp") || 1;
-        const actionLabel = totalClicks > 1 ? `💬 WHATSAPP CTA CLICKED · ${totalClicks}×` : `💬 WHATSAPP CTA CLICKED`;
+        const ctaTitle = totalClicks > 1 ? `💬 WHATSAPP CTA CLICKED · ${totalClicks}×` : `💬 WHATSAPP CTA CLICKED`;
         telegramText =
-          `⚡ <b>IMPORTANT ACTIVITY</b>\n\n` +
-          `🕐 ${timeOnly}\n\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n\n` +
-          `📍 ${safeCity} · ${safeCountry}\n` +
-          `💻 ${safeDeviceSummary}\n\n` +
-          `📄 <b>PAGE</b>\n` +
-          `${safePage}\n\n` +
-          `🎯 <b>ACTION</b>\n` +
-          `${actionLabel}\n\n` +
-          `🔎 <b>SOURCE</b>\n` +
-          `${safeSource}\n\n` +
-          `📊 <b>SESSION</b>\n` +
-          `${durationFormatted}\n` +
-          `${pageCount} pages\n` +
-          `${session.actions.length} actions`;
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 💬 CLICK WHATSAPP</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `📄 <b>Page:</b> ${safePage}\n` +
+          `🔘 <b>CTA:</b> WhatsApp Direct\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📊 <b>JOURNEY BEFORE CLICK</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Pages viewed: ${pageCount}\n` +
+          `Duration: ${durationFormatted}\n` +
+          `Actions: ${session.actions.length}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🎯 <b>ACTION:</b> ${ctaTitle}`;
       }
     }
 
-    // 4. Calculator Activity
+    // 5. Telegram CTA Clicked
+    else if (event === "telegram_click" || event === "cta_telegram_clicked") {
+      session.actions.push("Telegram CTA clicked");
+      session.timedActions.push({ timeStr: actionTimeStr, name: "Telegram CTA" });
+      if (canNotifyAction("telegram_click")) {
+        shouldNotifyTelegram = true;
+        telegramText =
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — ✈️ CLICK TELEGRAM</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `📄 <b>Page:</b> ${safePage}\n` +
+          `🔘 <b>CTA:</b> Telegram Contact\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📊 <b>JOURNEY:</b> ${pageCount} pages · ${durationFormatted}`;
+      }
+    }
+
+    // 6. Calculator Activity
     else if (event === "calculator_complete" || event === "calculator_completed" || event === "calculator_used") {
+      session.hasCompletedCalculator = true;
       session.actions.push("Calculator completed");
       session.timedActions.push({ timeStr: actionTimeStr, name: "Calculator completed" });
       if (canNotifyAction("calculator", 15000)) {
@@ -584,51 +731,59 @@ export async function POST(request: Request) {
         const coarseAmount = getCoarseAmountRange(data.amount);
         const coarsePayment = getCoarsePaymentRange(data.payment);
         telegramText =
-          `🧮 <b>CALCULATOR ACTIVITY</b>\n\n` +
-          `🕐 ${timeOnly}\n\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n\n` +
-          `📄 <b>PAGE</b>\n` +
-          `${safePage}\n\n` +
-          `🎯 <b>ACTION</b>\n` +
-          `Calculator completed\n\n` +
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🧮 CALCULATOR FINALIZAT</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `📄 <b>Page:</b> ${safePage}\n` +
+          `━━━━━━━━━━━━━━\n` +
           `💰 <b>INPUT</b>\n` +
-          `Amount: ${coarseAmount}\n` +
-          `Term: 20–25 years\n\n` +
-          `📊 <b>RESULT</b>\n` +
-          `Monthly payment: ${coarsePayment}\n\n` +
-          `💻 <b>DEVICE</b>\n` +
-          `${safeDeviceSummary}\n\n` +
-          `🔎 <b>SOURCE</b>\n` +
-          `${safeSource}\n\n` +
-          `⏱ <b>SESSION</b>\n` +
-          `${durationFormatted}`;
+          `━━━━━━━━━━━━━━\n` +
+          `Interval sumă: <b>${coarseAmount}</b>\n` +
+          `Durată estimată: 20–25 ani\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📊 <b>RESULT ESTIMAT</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `Rată lunară: <b>${coarsePayment}</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Context:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `⏱ <b>Session duration:</b> ${durationFormatted}`;
       }
     }
 
-    // 5. Real Story Viewed
+    // 7. Real Story Viewed
     else if (event === "story_view" || safePage.includes("/povesti-reale/")) {
       const storyTitle = (data.metadata?.title as string) || (safePage.includes("david") ? "David — 21 credite IFN" : safePage.includes("georgeta") ? "Georgeta — Refinanțare rate mari" : safePage.includes("istoric-negativ") ? "Istoric negativ Biroul de Credit" : "Studiu de caz Smart Credit");
+      if (!session.storiesViewed.includes(storyTitle)) {
+        session.storiesViewed.push(storyTitle);
+      }
       session.actions.push(`Story: ${storyTitle}`);
       session.timedActions.push({ timeStr: actionTimeStr, name: "Story viewed" });
       if (canNotifyAction(`story_${safePage}`, 30000)) {
         shouldNotifyTelegram = true;
+        const storiesCount = session.storiesViewed.length;
+        const storiesBadge = storiesCount > 1 ? ` (${storiesCount} povești citite în sesiune)` : "";
         telegramText =
-          `📖 <b>POVESTE REALĂ VIZUALIZATĂ</b>\n\n` +
-          `🕐 ${timeOnly}\n\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n\n` +
-          `📖 <b>STORY</b>\n` +
-          `${escapeHtml(storyTitle)}\n\n` +
-          `📄 ${safePage}\n\n` +
-          `💻 ${safeDeviceSummary}\n\n` +
-          `🔎 <b>Source</b>\n` +
-          `${safeSource}\n\n` +
-          `📊 <b>Session</b>\n` +
-          `${durationFormatted} · ${pageCount} pages`;
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📖 POVESTE VIZUALIZATĂ</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📖 <b>Story:</b> ${escapeHtml(storyTitle)}${storiesBadge}\n` +
+          `📄 <b>URL:</b> ${safePage}\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
+          `📊 <b>Session:</b> ${durationFormatted} · ${pageCount} pages`;
       }
     }
 
-    // 6. Form Started
+    // 8. Form Started
     else if (
       event === "form_start" ||
       event === "form_started" ||
@@ -636,46 +791,49 @@ export async function POST(request: Request) {
       event === "business_finance_started" ||
       event === "totul_credit_started"
     ) {
+      session.hasStartedForm = true;
       session.actions.push("Form started");
       session.timedActions.push({ timeStr: actionTimeStr, name: "Form started" });
       if (canNotifyAction("form_start", 20000)) {
         shouldNotifyTelegram = true;
         telegramText =
-          `📝 <b>FORMULAR ÎNCEPUT</b>\n\n` +
-          `🕐 ${timeOnly}\n\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n\n` +
-          `📄 <b>PAGE</b>\n` +
-          `${safePage}\n\n` +
-          `🎯 <b>INTENT</b>\n` +
-          `Credit verification\n\n` +
-          `💻 ${safeDeviceSummary}\n\n` +
-          `🔎 <b>SOURCE</b>\n` +
-          `${safeSource}\n\n` +
-          `📊 <b>SESSION</b>\n` +
-          `${pageCount} pages · ${durationFormatted}`;
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📝 FORMULAR ÎNCEPUT</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `📄 <b>Form:</b> Verificare Eligibilitate Credit\n` +
+          `📄 <b>Page:</b> ${safePage}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
+          `⏱ <b>Session:</b> ${pageCount} pages · ${durationFormatted}`;
       }
     }
 
-    // 7. Referral Program Interaction
+    // 9. Referral Program Interaction
     else if (event === "referral_page_viewed" || event === "referral_hero_cta_clicked" || event === "referral_link_clicked") {
       session.actions.push("Referral hub accessed");
       session.timedActions.push({ timeStr: actionTimeStr, name: "Referral page" });
       if (canNotifyAction("referral", 25000)) {
         shouldNotifyTelegram = true;
         telegramText =
-          `🤝 <b>PROGRAM RECOMANDĂRI</b>\n\n` +
-          `🕐 ${timeOnly}\n\n` +
-          `Vizitatorul a accesat ecosistemul de parteneriat / recomandări\n\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n\n` +
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🤝 PROGRAM RECOMANDĂRI</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `Vizitatorul a accesat ecosistemul de parteneriat / recomandări\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
           `📍 <b>Pagină:</b> ${safePage}\n` +
           `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
           `⏱ <b>Session:</b> ${durationFormatted}`;
       }
     }
 
-    // 8. Key CTA Clicks
+    // 10. Key CTA Clicks
     else if (
       event === "cta_click" ||
       event === "cta_analysis_clicked" ||
@@ -689,27 +847,22 @@ export async function POST(request: Request) {
       if (canNotifyAction(`cta_${actionName}`, 20000)) {
         shouldNotifyTelegram = true;
         telegramText =
-          `⚡ <b>IMPORTANT ACTIVITY</b>\n\n` +
-          `🕐 ${timeOnly}\n\n` +
-          `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-          `🧭 Session: <code>${shortSessionId}</code>\n\n` +
-          `📍 ${safeCity} · ${safeCountry}\n` +
-          `💻 ${safeDeviceSummary}\n\n` +
-          `📄 <b>PAGE</b>\n` +
-          `${safePage}\n\n` +
-          `🎯 <b>ACTION</b>\n` +
-          `🎯 CTA CLICKED\n` +
-          `"${actionName}"\n\n` +
-          `🔎 <b>SOURCE</b>\n` +
-          `${safeSource}\n\n` +
-          `📊 <b>SESSION</b>\n` +
-          `${durationFormatted}\n` +
-          `${pageCount} pages\n` +
-          `${session.actions.length} actions`;
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🔥 ACTIVITATE IMPORTANTĂ</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `📄 <b>Page:</b> ${safePage}\n` +
+          `🎯 <b>ACTION:</b> 🎯 CTA CLICKED "${actionName}"\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔎 <b>Source:</b> ${safeSource}\n` +
+          `📊 <b>Session:</b> ${durationFormatted} · ${pageCount} pages`;
       }
     }
 
-    // 9. Lead / Referral Conversion Journey Summary
+    // 11. Lead / Referral Conversion Journey Summary
     else if (
       event === "lead_success" ||
       event === "form_submitted" ||
@@ -717,6 +870,7 @@ export async function POST(request: Request) {
       event === "totul_credit_submitted" ||
       event === "referral_form_submit"
     ) {
+      session.hasConverted = true;
       session.actions.push("Lead submitted");
       session.timedActions.push({ timeStr: actionTimeStr, name: "Lead submitted" });
       shouldNotifyTelegram = true;
@@ -726,22 +880,86 @@ export async function POST(request: Request) {
         : `${actionTimeStr} — Lead submitted`;
       
       telegramText =
-        `📊 <b>SESSION CONVERSION JOURNEY</b>\n\n` +
-        `🕐 ${timeOnly}\n\n` +
-        `🆔 Visitor: <code>${shortVisitorId}</code>\n` +
-        `🧭 Session: <code>${shortSessionId}</code>\n\n` +
-        `📍 ${safeCity} · ${safeCountry}\n` +
-        `💻 ${safeDeviceSummary}\n\n` +
-        `🔎 <b>SOURCE</b>\n` +
-        `${safeSource}\n\n` +
-        `⏱ <b>SESSION</b>\n` +
-        `${durationFormatted}\n\n` +
-        `📄 <b>PAGES — ${session.pagesVisited.length}</b>\n\n` +
-        `${formattedPages}\n\n` +
-        `⚡ <b>ACTIONS</b>\n\n` +
-        `${formattedTimeline}\n\n` +
-        `🎯 <b>CONVERSION</b>\n` +
-        `NEW LEAD`;
+        `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📊 JOURNEY</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `👤 <b>VISITOR & SESSION</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `🆔 Visitor ID: <code>${shortVisitorId}</code>\n` +
+        `🧭 Session ID: <code>${shortSessionId}</code>\n` +
+        `🕐 Time: ${timeOnly} · Duration: ${durationFormatted}\n` +
+        `📍 Location: ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+        `💻 Device: ${safeDeviceSummary}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `🔗 <b>ACQUISITION</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `Source: ${safeSource}\n` +
+        `Medium: ${safeMedium}\n` +
+        `Campaign: ${safeCampaign}\n` +
+        `Referrer: ${safeReferrerHost}\n` +
+        `Landing page: ${escapeHtml(session.landingPage)}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `📄 <b>PAGES VISITED (${session.pagesVisited.length})</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `${formattedPages}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `⚡ <b>ACTIONS TIMELINE</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `${formattedTimeline}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `🟢 <b>CONVERSION:</b> NEW LEAD`;
+    }
+
+    // 12. Session End Notification (only for engaged sessions)
+    else if (event === "session_end" || event === "visitor_session_ended") {
+      if (currentDurationSec > 30 || pageCount >= 2 || session.actions.length > 0) {
+        shouldNotifyTelegram = true;
+        const outcome = session.hasConverted ? "Lead / Recomandare trimisă" : "Nicio conversie";
+        const importantActions = session.actions.length > 0
+          ? session.actions.slice(-5).map((a) => `• ${escapeHtml(a)}`).join("\n")
+          : "• Navigare generală";
+        telegramText =
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🚪 SESIUNE ÎNCHEIATĂ</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `⏱ <b>Duration:</b> ${durationFormatted}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📄 <b>Landing:</b> ${escapeHtml(session.landingPage)}\n` +
+          `📄 <b>Exit:</b> ${safePage}\n` +
+          `📊 <b>Pages:</b> ${pageCount} pages\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `⚡ <b>IMPORTANT ACTIONS:</b>\n` +
+          `${importantActions}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🟢 <b>Outcome:</b> ${outcome}`;
+      }
+    }
+
+    // High Intent Automatic Alert Trigger (if multiple commercial signals detected)
+    if (!session.isHighIntentNotified && !session.hasConverted) {
+      const intentEval = evaluateHighIntent(session);
+      if (intentEval.isHighIntent) {
+        session.isHighIntentNotified = true;
+        const highIntentMsg =
+          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🎯 INTENȚIE RIDICATĂ</b>\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🎯 <b>SIGNALS:</b>\n` +
+          `${intentEval.signals.map((s) => `• ${escapeHtml(s)}`).join("\n")}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
+          `🔗 <b>Source:</b> ${safeSource}\n` +
+          `━━━━━━━━━━━━━━\n` +
+          `📊 <b>JOURNEY:</b> ${pageCount} pages · ${durationFormatted}`;
+        sendTelegramActivity(highIntentMsg).catch(() => {});
+      }
     }
 
     // Send Telegram Notification if qualified
@@ -763,9 +981,9 @@ export async function POST(request: Request) {
       campaign: clean(data.utmCampaign),
       content: clean(data.utmContent),
       term: clean(data.utmTerm),
-      device_type: safeDeviceType,
-      os: safeOs,
-      browser: safeBrowser,
+      device_type: safeDeviceSummary,
+      os: parsedUA.os,
+      browser: parsedUA.browser,
       language: safeLanguage,
       timezone: safeTimezone,
       country: safeCountry,

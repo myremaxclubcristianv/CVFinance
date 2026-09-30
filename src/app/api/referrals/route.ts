@@ -171,17 +171,41 @@ export async function POST(request: Request) {
       console.error("Supabase insert error (referral):", error);
     }
 
-    const shortVisitor = data.visitorId ? escapeHtml(clean(data.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-    const shortSession = data.sessionId ? escapeHtml(clean(data.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-    const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
+    const shortVisitor = data.visitorId ? escapeHtml(clean(data.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
+    const shortSession = data.sessionId ? escapeHtml(clean(data.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
+
+    const timestamp = new Intl.DateTimeFormat("ro-RO", {
+      dateStyle: "medium",
+      timeStyle: "medium",
+      timeZone: "Europe/Bucharest",
+    }).format(new Date());
 
     // Build Telegram message for referral
-    const telegramText = `🚨 <b>CV FINANCE – RECOMANDARE</b>\n\n` +
-      `<b>Referrer:</b> ${escapeHtml(clean(data.referrer_name))} (<code>${escapeHtml(clean(data.referrer_phone))}</code>)\n` +
-      `<b>Client:</b> ${escapeHtml(clean(data.client_name))} (<code>${escapeHtml(clean(data.client_phone))}</code>)\n` +
-      `<b>Finanțare:</b> ${escapeHtml(clean(data.financial_need))}\n` +
-      `<b>Mesaj:</b> ${escapeHtml(clean(data.referral_message)) || "—"}` +
-      idFooter;
+    const telegramText =
+      `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🤝 RECOMANDARE NOUĂ</b>\n` +
+      `━━━━━━━━━━━━━━\n` +
+      `👤 <b>PARTENER / REFERRER</b>\n` +
+      `━━━━━━━━━━━━━━\n` +
+      `Nume: ${escapeHtml(clean(data.referrer_name))}\n` +
+      `Telefon: <code>${escapeHtml(clean(data.referrer_phone))}</code>\n` +
+      `Email: ${escapeHtml(clean(data.referrer_email)) || "—"}\n` +
+      `━━━━━━━━━━━━━━\n` +
+      `👥 <b>CLIENT RECOMANDAT</b>\n` +
+      `━━━━━━━━━━━━━━\n` +
+      `Nume: ${escapeHtml(clean(data.client_name))}\n` +
+      `Telefon: <code>${escapeHtml(clean(data.client_phone))}</code>\n` +
+      `Email: ${escapeHtml(clean(data.client_email)) || "—"}\n` +
+      `Nevoie financiară: <b>${escapeHtml(clean(data.financial_need))}</b>\n` +
+      `Mesaj: ${escapeHtml(clean(data.referral_message)) || "—"}\n` +
+      `━━━━━━━━━━━━━━\n` +
+      `🌍 <b>CONTEXT & TRAFFIC</b>\n` +
+      `━━━━━━━━━━━━━━\n` +
+      `🕐 Time: ${escapeHtml(timestamp)}\n` +
+      `🆔 Visitor: <code>${shortVisitor}</code>\n` +
+      `🧭 Session: <code>${shortSession}</code>\n` +
+      `📄 Referral page: ${escapeHtml(data.pageUrl || "/referral")}\n` +
+      `📱 Device: ${escapeHtml(data.deviceType || "Desktop")}\n` +
+      `🔗 Source: referral`;
     await sendTelegramReferral(telegramText);
     return NextResponse.json({ ok: true, message: "Recomandarea a fost înregistrată cu succes." });
   } catch (e) {

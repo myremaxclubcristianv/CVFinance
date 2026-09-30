@@ -536,41 +536,37 @@ export async function POST(request: Request) {
         ? "🔥 <b>LEAD — HOMEPAGE / TOTUL ÎNAINTE DE CREDIT</b>"
         : "🔥 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>";
 
-      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-      const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
+      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
+      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
 
       telegramText =
-        `${headerTitle}\n\n` +
-        `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
-        `👤 <b>CLIENT</b>\n` +
+        `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🟢 LEAD NOU</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `👤 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `Prioritate: ${priorityBadge}\n` +
         `Nume: ${escapeHtml(sanitizedName)}\n` +
         `Telefon: <code>${escapeHtml(lead.phone)}</code>\n` +
         `Email: ${escapeHtml(sanitizedEmail) || "—"}\n\n` +
-        `🎯 <b>MOTIV / PROBLEME</b>\n` +
+        `🎯 <b>MOTIV / PROBLEME:</b>\n` +
         `${motivText || "• Nespecificat"}\n\n` +
-        `💳 <b>SITUAȚIE FINANCIARĂ</b>\n` +
-        `Venit: ${escapeHtml(formattedIncome)} RON\n` +
-        `Tip venit: ${escapeHtml(lead.incomeType)}\n` +
-        `Vechime: ${escapeHtml(lead.employmentDuration)}\n` +
-        `Rate lunare: ${escapeHtml(formattedInstallments)} RON\n` +
-        `Credite active: ${escapeHtml(lead.activeCreditCount)}\n` +
-        `Sumă dorită: ${escapeHtml(formattedAmount)} RON\n\n` +
-        `🏦 <b>BIROUL DE CREDIT</b>\n` +
-        `Status: ${escapeHtml(lead.creditBureauStatus)}\n` +
-        `Întârzieri / Perioadă: ${escapeHtml(lead.delayPeriod || "—")}\n\n` +
-        `📝 <b>SITUAȚIA CLIENTULUI</b>\n` +
-        `${escapeHtml(sanitizedMessage) || "Nicio mențiune adăugată."}\n\n` +
-        `🌐 <b>TRAFFIC</b>\n` +
-        `Page: ${escapeHtml(lead.pageUrl || "/totul-inainte-de-credit")}\n` +
-        `Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
-        `Referrer: ${escapeHtml(referrer)}\n` +
-        `UTM: ${escapeHtml(lead.utmSource)} / ${escapeHtml(lead.utmMedium)} / ${escapeHtml(lead.utmCampaign)}\n\n` +
-        `🕐 <b>TIMESTAMP</b>\n` +
-        `${escapeHtml(timestamp)}\n\n` +
-        `⚡ <b>LEAD SCORE</b>\n` +
-        `${priorityBadge}` +
-        idFooter;
+        `💳 <b>PROFIL FINANCIAR:</b>\n` +
+        `Venit: ${escapeHtml(formattedIncome)} RON (${escapeHtml(lead.incomeType)}, ${escapeHtml(lead.employmentDuration)})\n` +
+        `Rate lunare: ${escapeHtml(formattedInstallments)} RON (Credite active: ${escapeHtml(lead.activeCreditCount)})\n` +
+        `Sumă dorită: <b>${escapeHtml(formattedAmount)} RON</b>\n` +
+        `Birou Credit: ${escapeHtml(lead.creditBureauStatus)} (Întârzieri: ${escapeHtml(lead.delayPeriod || "—")})\n` +
+        `Mesaj: ${escapeHtml(sanitizedMessage) || "—"}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `🌍 <b>CONTEXT & TRAFFIC</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `🕐 Time: ${escapeHtml(timestamp)}\n` +
+        `🆔 Visitor: <code>${shortVisitor}</code>\n` +
+        `🧭 Session: <code>${shortSession}</code>\n` +
+        `📱 Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
+        `🔗 Source: ${escapeHtml(lead.utmSource || "direct")}\n` +
+        `🔗 Campaign: ${escapeHtml(lead.utmCampaign || "—")}\n` +
+        `📄 Page: ${escapeHtml(lead.pageUrl || "/totul-inainte-de-credit")}\n` +
+        `🌐 Referrer: ${escapeHtml(referrer)}`;
     } else {
       const sanitizedMessage = clean(lead.message || "");
       const formattedAmount = new Intl.NumberFormat("ro-RO").format(lead.desiredAmount);
@@ -588,30 +584,37 @@ export async function POST(request: Request) {
         timestamp,
       };
 
-      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-      const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
+      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
+      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
 
       telegramText =
-        `🚨 <b>CV FINANCE</b>\n<b>NOU CLIENT FINANCIAL ADVISORY</b>\n` +
-        `🔥 <b>Prioritate: HIGH</b>\n\n` +
-        `👤 <b>Client:</b> ${escapeHtml(sanitizedName)}\n` +
-        `📞 <b>Telefon:</b> <code>${escapeHtml(lead.phone)}</code>\n` +
-        `📧 <b>Email:</b> ${escapeHtml(sanitizedEmail) || "—"}\n` +
-        `🎂 <b>An naștere:</b> ${escapeHtml(String(lead.birthYear))}\n\n` +
-        `💰 <b>Venit:</b> ${escapeHtml(formattedIncome)} RON\n` +
-        `🏦 <b>Credite:</b> ${escapeHtml(lead.creditTypes?.join(", "))}\n` +
-        `📉 <b>Rată actuală:</b> ${escapeHtml(formattedPayment)} RON\n` +
-        `🎯 <b>Obiectiv financiar:</b> ${escapeHtml(lead.purpose)}\n` +
-        `💳 <b>Sumă:</b> <b>${escapeHtml(formattedAmount)} RON</b>\n` +
-        `🔒 <b>GDPR:</b> ✅ Acceptat\n` +
-        `📢 <b>Marketing:</b> ${(lead.marketingConsent || lead.marketing) ? "✅ Acceptat" : "❌ Neacceptat"}\n\n` +
-        `📍 <b>Sursă:</b> ${escapeHtml(lead.utmSource)} / ${escapeHtml(lead.utmMedium)} / ${escapeHtml(lead.utmCampaign)}\n` +
-        `📱 <b>Device:</b> ${escapeHtml(lead.deviceType)}\n` +
-        `🌐 <b>Referrer:</b> ${escapeHtml(referrer)}\n` +
-        `🔗 <b>Pagină:</b> ${escapeHtml(lead.pageUrl || "—")}\n` +
-        `⏰ <b>Ora:</b> ${escapeHtml(timestamp)}` +
-        idFooter;
+        `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🟢 LEAD NOU</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `👤 <b>LEAD</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `Nume: ${escapeHtml(sanitizedName)}\n` +
+        `Telefon: <code>${escapeHtml(lead.phone)}</code>\n` +
+        `Email: ${escapeHtml(sanitizedEmail) || "—"}\n` +
+        `An naștere: ${escapeHtml(String(lead.birthYear))}\n\n` +
+        `💰 <b>PROFIL FINANCIAR:</b>\n` +
+        `Obiectiv: <b>${escapeHtml(lead.purpose)}</b>\n` +
+        `Sumă dorită: <b>${escapeHtml(formattedAmount)} RON</b>\n` +
+        `Venit lunar: ${escapeHtml(formattedIncome)} RON\n` +
+        `Credite: ${escapeHtml(lead.creditTypes?.join(", "))}\n` +
+        `Rată actuală: ${escapeHtml(formattedPayment)} RON\n` +
+        `Mesaj: ${escapeHtml(sanitizedMessage) || "—"}\n` +
+        `GDPR: ✅ Acceptat | Marketing: ${(lead.marketingConsent || lead.marketing) ? "✅" : "❌"}\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `🌍 <b>CONTEXT & TRAFFIC</b>\n` +
+        `━━━━━━━━━━━━━━\n` +
+        `🕐 Time: ${escapeHtml(timestamp)}\n` +
+        `🆔 Visitor: <code>${shortVisitor}</code>\n` +
+        `🧭 Session: <code>${shortSession}</code>\n` +
+        `📱 Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
+        `🔗 Source: ${escapeHtml(lead.utmSource || "direct")}\n` +
+        `🔗 Campaign: ${escapeHtml(lead.utmCampaign || "—")}\n` +
+        `📄 Page: ${escapeHtml(lead.pageUrl || "/")}\n` +
+        `🌐 Referrer: ${escapeHtml(referrer)}`;
     }
 
     // 1. Permanent Storage Layer
