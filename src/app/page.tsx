@@ -1101,6 +1101,7 @@ export default function Home() {
                 href={`https://wa.me/${CONTACT.WHATSAPP}?text=${encodeURIComponent("Bună ziua, doresc o analiză financiară.")}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent("whatsapp_click", { source: "contact_section" })}
                 className="cv-contact-row"
               >
                 <span className="cv-contact-type">WHATSAPP</span>
@@ -1108,13 +1109,21 @@ export default function Home() {
                 <span className="cv-contact-action">+43 650 953 6345 →</span>
               </a>
 
-              <a href={`tel:${CONTACT.PHONE}`} className="cv-contact-row">
+              <a
+                href={`tel:${CONTACT.PHONE}`}
+                onClick={() => trackEvent("phone_click", { source: "contact_section" })}
+                className="cv-contact-row"
+              >
                 <span className="cv-contact-type">TELEFON</span>
                 <span className="cv-contact-sub">Discutăm situația ta la telefon</span>
                 <span className="cv-contact-action">0767 110 439 →</span>
               </a>
 
-              <a href={`mailto:${CONTACT.EMAIL}`} className="cv-contact-row">
+              <a
+                href={`mailto:${CONTACT.EMAIL}`}
+                onClick={() => trackEvent("cta_click", { ctaLabel: "EMAIL CONTACT", source: "contact_section" })}
+                className="cv-contact-row"
+              >
                 <span className="cv-contact-type">EMAIL</span>
                 <span className="cv-contact-sub">Trimite-mi detaliile pe mail</span>
                 <span className="cv-contact-action">cristianvaduva@duck.com →</span>

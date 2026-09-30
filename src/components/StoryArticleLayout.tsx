@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ExternalLink, ShieldCheck, AlertCircle } from "lucide-react";
+import { trackEvent } from "@/lib/analytics";
 
 export interface StoryMetrics {
   label: string;
@@ -28,6 +29,9 @@ export default function StoryArticleLayout({
   metrics,
   children,
 }: StoryArticleProps) {
+  useEffect(() => {
+    trackEvent("story_view", { title, category });
+  }, [title, category]);
   return (
     <div style={{ backgroundColor: "#0E1210", color: "#F7F9F8", minHeight: "100vh", fontFamily: "var(--font-sans, Inter, sans-serif)", paddingBottom: "5rem" }}>
 
@@ -171,6 +175,7 @@ export default function StoryArticleLayout({
           <Link
             href="/#verificare-credit"
             className="cv-btn-primary"
+            onClick={() => trackEvent("cta_click", { ctaLabel: "VERIFICĂ SITUAȚIA", source: "story_bottom_cta" })}
             style={{
               display: "inline-flex",
               alignItems: "center",
