@@ -51,6 +51,8 @@ const standardLeadSchema = z.object({
   referral: z.string().max(100).optional().default("—"),
   pageUrl: z.string().max(2048).optional(),
   deviceType: z.string().max(50).optional().default("Desktop"),
+  visitorId: z.string().max(100).optional(),
+  sessionId: z.string().max(100).optional(),
 });
 
 const totulLeadSchema = z.object({
@@ -98,6 +100,8 @@ const totulLeadSchema = z.object({
   referral: z.string().max(100).optional().default("—"),
   pageUrl: z.string().max(2048).optional(),
   deviceType: z.string().max(50).optional().default("Desktop"),
+  visitorId: z.string().max(100).optional(),
+  sessionId: z.string().max(100).optional(),
 });
 
 const businessLeadSchema = z.object({
@@ -155,6 +159,8 @@ const businessLeadSchema = z.object({
   referral: z.string().max(100).optional().default("—"),
   pageUrl: z.string().max(2048).optional(),
   deviceType: z.string().max(50).optional().default("Desktop"),
+  visitorId: z.string().max(100).optional(),
+  sessionId: z.string().max(100).optional(),
 });
 
 // Rate limiting (sliding window)
@@ -459,6 +465,10 @@ export async function POST(request: Request) {
         timestamp,
       };
 
+      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+      const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
+
       telegramText =
         `🏢 <b>LEAD — BUSINESS FINANCE</b>\n\n` +
         `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
@@ -491,7 +501,8 @@ export async function POST(request: Request) {
         `Referrer: ${escapeHtml(referrer)}\n` +
         `UTM: ${escapeHtml(lead.utmSource)} / ${escapeHtml(lead.utmMedium)} / ${escapeHtml(lead.utmCampaign)}\n\n` +
         `🕐 <b>TIMESTAMP</b>\n` +
-        `${escapeHtml(timestamp)}`;
+        `${escapeHtml(timestamp)}` +
+        idFooter;
     } else if (isTotulCredit) {
       const sanitizedMessage = clean(lead.clientMessage || "");
       const formattedIncome = new Intl.NumberFormat("ro-RO").format(lead.income);
@@ -525,6 +536,10 @@ export async function POST(request: Request) {
         ? "🔥 <b>LEAD — HOMEPAGE / TOTUL ÎNAINTE DE CREDIT</b>"
         : "🔥 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>";
 
+      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+      const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
+
       telegramText =
         `${headerTitle}\n\n` +
         `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
@@ -554,7 +569,8 @@ export async function POST(request: Request) {
         `🕐 <b>TIMESTAMP</b>\n` +
         `${escapeHtml(timestamp)}\n\n` +
         `⚡ <b>LEAD SCORE</b>\n` +
-        `${priorityBadge}`;
+        `${priorityBadge}` +
+        idFooter;
     } else {
       const sanitizedMessage = clean(lead.message || "");
       const formattedAmount = new Intl.NumberFormat("ro-RO").format(lead.desiredAmount);
@@ -571,6 +587,10 @@ export async function POST(request: Request) {
         referrer,
         timestamp,
       };
+
+      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+      const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
 
       telegramText =
         `🚨 <b>CV FINANCE</b>\n<b>NOU CLIENT FINANCIAL ADVISORY</b>\n` +
@@ -590,7 +610,8 @@ export async function POST(request: Request) {
         `📱 <b>Device:</b> ${escapeHtml(lead.deviceType)}\n` +
         `🌐 <b>Referrer:</b> ${escapeHtml(referrer)}\n` +
         `🔗 <b>Pagină:</b> ${escapeHtml(lead.pageUrl || "—")}\n` +
-        `⏰ <b>Ora:</b> ${escapeHtml(timestamp)}`;
+        `⏰ <b>Ora:</b> ${escapeHtml(timestamp)}` +
+        idFooter;
     }
 
     // 1. Permanent Storage Layer

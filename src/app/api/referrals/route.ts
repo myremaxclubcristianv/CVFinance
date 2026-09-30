@@ -40,6 +40,8 @@ const referralSchema = z.object({
   utmContent: z.string().max(100).optional().default("—"),
   pageUrl: z.string().max(2048).optional(),
   deviceType: z.string().max(50).optional().default("Desktop"),
+  visitorId: z.string().max(100).optional(),
+  sessionId: z.string().max(100).optional(),
 });
 
 const attempts = new Map<string, { count: number; resetAt: number }>();
@@ -168,12 +170,18 @@ export async function POST(request: Request) {
     if (error) {
       console.error("Supabase insert error (referral):", error);
     }
+
+    const shortVisitor = data.visitorId ? escapeHtml(clean(data.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+    const shortSession = data.sessionId ? escapeHtml(clean(data.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
+    const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
+
     // Build Telegram message for referral
-    const telegramText = `🚨 <b>CV FINANCE – RECOMANDARE</b>\n` +
+    const telegramText = `🚨 <b>CV FINANCE – RECOMANDARE</b>\n\n` +
       `<b>Referrer:</b> ${escapeHtml(clean(data.referrer_name))} (<code>${escapeHtml(clean(data.referrer_phone))}</code>)\n` +
       `<b>Client:</b> ${escapeHtml(clean(data.client_name))} (<code>${escapeHtml(clean(data.client_phone))}</code>)\n` +
       `<b>Finanțare:</b> ${escapeHtml(clean(data.financial_need))}\n` +
-      `<b>Mesaj:</b> ${escapeHtml(clean(data.referral_message)) || "—"}`;
+      `<b>Mesaj:</b> ${escapeHtml(clean(data.referral_message)) || "—"}` +
+      idFooter;
     await sendTelegramReferral(telegramText);
     return NextResponse.json({ ok: true, message: "Recomandarea a fost înregistrată cu succes." });
   } catch (e) {
