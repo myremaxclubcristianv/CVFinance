@@ -254,7 +254,28 @@ function calculateBusinessLeadPriority(data: any): "HOT" | "WARM" | "INFORMATION
   return "INFORMATIONAL";
 }
 
-const clean = (val: string) => val.replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+const clean = (val?: string) => (val || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+
+function escapeHtml(val?: string): string {
+  if (!val) return "";
+  return String(val)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function getClientIp(request: Request): string {
+  const vercelIp = request.headers.get("x-vercel-ip") || request.headers.get("x-real-ip");
+  if (vercelIp) return vercelIp.trim();
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const parts = forwarded.split(",");
+    return parts[parts.length - 1].trim();
+  }
+  return "127.0.0.1";
+}
 
 // --- Storage & Notification Abstraction Layer ---
 
@@ -299,7 +320,7 @@ async function saveLead(leadData: any): Promise<boolean> {
     });
 
   if (error) {
-    console.error("Supabase lead insert failed:", error);
+    console.error("Supabase lead insert failed");
     return false;
   }
 
@@ -308,7 +329,6 @@ async function saveLead(leadData: any): Promise<boolean> {
 
 async function sendTelegram(telegramText: string): Promise<boolean> {
   if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
-    console.warn("Telegram missing configuration");
     return false;
   }
   
@@ -327,7 +347,6 @@ async function sendTelegram(telegramText: string): Promise<boolean> {
 
 async function sendEmail(leadData: any, telegramText: string): Promise<boolean> {
   if (!process.env.RESEND_API_KEY || !process.env.LEAD_EMAIL_TO || !process.env.LEAD_EMAIL_FROM) {
-    console.warn("Resend missing configuration");
     return false;
   }
 
@@ -340,7 +359,7 @@ async function sendEmail(leadData: any, telegramText: string): Promise<boolean> 
     body: JSON.stringify({
       from: process.env.LEAD_EMAIL_FROM,
       to: [process.env.LEAD_EMAIL_TO],
-      subject: `🚨 CV FINANCE — NOUĂ SOLICITARE (Fallback): ${leadData.name} (${leadData.phone})`,
+      subject: `🚨 CV FINANCE — NOUĂ SOLICITARE (Fallback)`,
       html: telegramText.replace(/\n/g, "<br/>"),
     }),
   });
@@ -349,20 +368,18 @@ async function sendEmail(leadData: any, telegramText: string): Promise<boolean> 
 }
 
 export async function POST(request: Request) {
-  console.log('API /api/leads HIT');
   try {
     let body: any = {};
     try {
       body = await request.json();
-    } catch (parseError) {
-      console.error('Failed to parse JSON body', parseError);
-      const raw = await request.text();
-      console.log('RAW BODY TEXT', raw);
+    } catch {
+      return NextResponse.json(
+        { ok: false, message: "Datele transmise sunt invalide." },
+        { status: 400 }
+      );
     }
-  console.log('REQUEST BODY', body);
 
-    const forwarded = request.headers.get("x-forwarded-for");
-    const ip = forwarded ? forwarded.split(",")[0].trim() : request.headers.get("x-real-ip") || "127.0.0.1";
+    const ip = getClientIp(request);
 
     if (!allowRequest(ip)) {
       return NextResponse.json(
@@ -378,16 +395,15 @@ export async function POST(request: Request) {
       : isTotulCredit
       ? totulLeadSchema.safeParse(body)
       : standardLeadSchema.safeParse(body);
-    // Log payload for debugging
-    console.log("RECEIVED LEAD PAYLOAD", JSON.stringify(body, null, 2));
+
     const { success, data, error } = parsed;
+
     // Honeypot check (website must be empty)
     if (data?.website) {
-      console.warn("Honeypot triggered, ignoring lead.");
       return NextResponse.json({ ok: true, message: "Solicitarea a fost înregistrată cu succes." }, { status: 200 });
     }
+
     if (!success) {
-      console.error("LEAD VALIDATION FAILED", JSON.stringify(error?.flatten(), null, 2));
       const firstIssue = error?.issues?.[0];
       const errorMessage = firstIssue?.message || "Datele introduse sunt incomplete sau invalide.";
       return NextResponse.json(
@@ -404,7 +420,6 @@ export async function POST(request: Request) {
     
     // Duplicate Check
     if (isDuplicate(lead.phone, lead.email || "")) {
-      console.log(`Duplicate lead prevented for ${lead.phone} / ${lead.email}`);
       return NextResponse.json({ ok: true, message: "Solicitarea a fost înregistrată cu succes." });
     }
 
@@ -427,7 +442,7 @@ export async function POST(request: Request) {
       const sanitizedMessage = clean(lead.clientMessage || "");
       const priority = calculateBusinessLeadPriority(lead);
       const priorityBadge = priority === "HOT" ? "🔥 HOT" : priority === "WARM" ? "🟡 WARM" : "🔵 INFORMATIONAL";
-      const purposesText = (lead.selectedPurposes || []).map((p: string) => `• ${p}`).join("\n");
+      const purposesText = (lead.selectedPurposes || []).map((p: string) => `• ${escapeHtml(p)}`).join("\n");
 
       fullLeadData = {
         ...lead,
@@ -448,35 +463,35 @@ export async function POST(request: Request) {
         `🏢 <b>LEAD — BUSINESS FINANCE</b>\n\n` +
         `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
         `👤 <b>ANTREPRENOR</b>\n` +
-        `Nume: ${sanitizedName}\n` +
-        `Telefon: <code>${lead.phone}</code>\n` +
-        `Email: ${sanitizedEmail || "—"}\n\n` +
+        `Nume: ${escapeHtml(sanitizedName)}\n` +
+        `Telefon: <code>${escapeHtml(lead.phone)}</code>\n` +
+        `Email: ${escapeHtml(sanitizedEmail) || "—"}\n\n` +
         `🏢 <b>BUSINESS</b>\n` +
-        `Firma: ${clean(lead.companyName || "Nespecificat")}\n` +
-        `Tip: ${lead.companyType} | Vechime: ${lead.companyAge}\n` +
-        `Domeniu: ${clean(lead.industry || "—")} | Localitate: ${clean(lead.location || "—")}\n` +
-        `Angajați: ${lead.employeeRange}\n\n` +
+        `Firma: ${escapeHtml(clean(lead.companyName || "Nespecificat"))}\n` +
+        `Tip: ${escapeHtml(lead.companyType)} | Vechime: ${escapeHtml(lead.companyAge)}\n` +
+        `Domeniu: ${escapeHtml(clean(lead.industry || "—"))} | Localitate: ${escapeHtml(clean(lead.location || "—"))}\n` +
+        `Angajați: ${escapeHtml(lead.employeeRange)}\n\n` +
         `💰 <b>PROFIL FINANCIAR</b>\n` +
-        `Cifră de afaceri: ${lead.annualRevenue}\n` +
-        `Profit: ${lead.approximateProfit}\n` +
-        `Sumă dorită: <b>${lead.requestedAmountRange} (${lead.currency})</b>\n` +
-        `Credite/Rate active: ${lead.existingCredits} (${lead.monthlyInstallments} RON/lună)\n\n` +
+        `Cifră de afaceri: ${escapeHtml(lead.annualRevenue)}\n` +
+        `Profit: ${escapeHtml(lead.approximateProfit)}\n` +
+        `Sumă dorită: <b>${escapeHtml(lead.requestedAmountRange)} (${escapeHtml(lead.currency)})</b>\n` +
+        `Credite/Rate active: ${escapeHtml(lead.existingCredits)} (${escapeHtml(String(lead.monthlyInstallments))} RON/lună)\n\n` +
         `🎯 <b>DESTINAȚIE FINANȚARE</b>\n` +
         `${purposesText || "• Nespecificat"}\n\n` +
         `⚠️ <b>RISC & CONTEXT</b>\n` +
-        `Biroul de credit: ${lead.bureauStatus}\n` +
-        `Întârzieri: ${lead.hasDelays}\n` +
-        `Refuzuri anterioare: ${lead.previousRefusal}\n` +
-        `Urgență: ${lead.urgency}\n\n` +
+        `Biroul de credit: ${escapeHtml(lead.bureauStatus)}\n` +
+        `Întârzieri: ${escapeHtml(lead.hasDelays)}\n` +
+        `Refuzuri anterioare: ${escapeHtml(lead.previousRefusal)}\n` +
+        `Urgență: ${escapeHtml(lead.urgency)}\n\n` +
         `📝 <b>MESAJ CLIENT</b>\n` +
-        `${sanitizedMessage || "Nicio mențiune adăugată."}\n\n` +
+        `${escapeHtml(sanitizedMessage) || "Nicio mențiune adăugată."}\n\n` +
         `🌐 <b>TRAFFIC</b>\n` +
         `Sursă: Homepage Business Finance\n` +
-        `Device: ${lead.deviceType || "Desktop"}\n` +
-        `Referrer: ${referrer}\n` +
-        `UTM: ${lead.utmSource} / ${lead.utmMedium} / ${lead.utmCampaign}\n\n` +
+        `Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
+        `Referrer: ${escapeHtml(referrer)}\n` +
+        `UTM: ${escapeHtml(lead.utmSource)} / ${escapeHtml(lead.utmMedium)} / ${escapeHtml(lead.utmCampaign)}\n\n` +
         `🕐 <b>TIMESTAMP</b>\n` +
-        `${timestamp}`;
+        `${escapeHtml(timestamp)}`;
     } else if (isTotulCredit) {
       const sanitizedMessage = clean(lead.clientMessage || "");
       const formattedIncome = new Intl.NumberFormat("ro-RO").format(lead.income);
@@ -505,7 +520,7 @@ export async function POST(request: Request) {
         timestamp,
       };
 
-      const motivText = (lead.problemTypes || []).map((p: string) => `• ${p}`).join("\n");
+      const motivText = (lead.problemTypes || []).map((p: string) => `• ${escapeHtml(p)}`).join("\n");
       const headerTitle = lead.source === "homepage-totul-inainte-de-credit"
         ? "🔥 <b>LEAD — HOMEPAGE / TOTUL ÎNAINTE DE CREDIT</b>"
         : "🔥 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>";
@@ -514,30 +529,30 @@ export async function POST(request: Request) {
         `${headerTitle}\n\n` +
         `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
         `👤 <b>CLIENT</b>\n` +
-        `Nume: ${sanitizedName}\n` +
-        `Telefon: <code>${lead.phone}</code>\n` +
-        `Email: ${sanitizedEmail || "—"}\n\n` +
+        `Nume: ${escapeHtml(sanitizedName)}\n` +
+        `Telefon: <code>${escapeHtml(lead.phone)}</code>\n` +
+        `Email: ${escapeHtml(sanitizedEmail) || "—"}\n\n` +
         `🎯 <b>MOTIV / PROBLEME</b>\n` +
         `${motivText || "• Nespecificat"}\n\n` +
         `💳 <b>SITUAȚIE FINANCIARĂ</b>\n` +
-        `Venit: ${formattedIncome} RON\n` +
-        `Tip venit: ${lead.incomeType}\n` +
-        `Vechime: ${lead.employmentDuration}\n` +
-        `Rate lunare: ${formattedInstallments} RON\n` +
-        `Credite active: ${lead.activeCreditCount}\n` +
-        `Sumă dorită: ${formattedAmount} RON\n\n` +
+        `Venit: ${escapeHtml(formattedIncome)} RON\n` +
+        `Tip venit: ${escapeHtml(lead.incomeType)}\n` +
+        `Vechime: ${escapeHtml(lead.employmentDuration)}\n` +
+        `Rate lunare: ${escapeHtml(formattedInstallments)} RON\n` +
+        `Credite active: ${escapeHtml(lead.activeCreditCount)}\n` +
+        `Sumă dorită: ${escapeHtml(formattedAmount)} RON\n\n` +
         `🏦 <b>BIROUL DE CREDIT</b>\n` +
-        `Status: ${lead.creditBureauStatus}\n` +
-        `Întârzieri / Perioadă: ${lead.delayPeriod || "—"}\n\n` +
+        `Status: ${escapeHtml(lead.creditBureauStatus)}\n` +
+        `Întârzieri / Perioadă: ${escapeHtml(lead.delayPeriod || "—")}\n\n` +
         `📝 <b>SITUAȚIA CLIENTULUI</b>\n` +
-        `${sanitizedMessage || "Nicio mențiune adăugată."}\n\n` +
+        `${escapeHtml(sanitizedMessage) || "Nicio mențiune adăugată."}\n\n` +
         `🌐 <b>TRAFFIC</b>\n` +
-        `Page: ${lead.pageUrl || "/totul-inainte-de-credit"}\n` +
-        `Device: ${lead.deviceType || "Desktop"}\n` +
-        `Referrer: ${referrer}\n` +
-        `UTM: ${lead.utmSource} / ${lead.utmMedium} / ${lead.utmCampaign}\n\n` +
+        `Page: ${escapeHtml(lead.pageUrl || "/totul-inainte-de-credit")}\n` +
+        `Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
+        `Referrer: ${escapeHtml(referrer)}\n` +
+        `UTM: ${escapeHtml(lead.utmSource)} / ${escapeHtml(lead.utmMedium)} / ${escapeHtml(lead.utmCampaign)}\n\n` +
         `🕐 <b>TIMESTAMP</b>\n` +
-        `${timestamp}\n\n` +
+        `${escapeHtml(timestamp)}\n\n` +
         `⚡ <b>LEAD SCORE</b>\n` +
         `${priorityBadge}`;
     } else {
@@ -560,31 +575,29 @@ export async function POST(request: Request) {
       telegramText =
         `🚨 <b>CV FINANCE</b>\n<b>NOU CLIENT FINANCIAL ADVISORY</b>\n` +
         `🔥 <b>Prioritate: HIGH</b>\n\n` +
-        `👤 <b>Client:</b> ${sanitizedName}\n` +
-        `📞 <b>Telefon:</b> <code>${lead.phone}</code>\n` +
-        `📧 <b>Email:</b> ${sanitizedEmail || "—"}\n` +
-        `🎂 <b>An naștere:</b> ${lead.birthYear}\n\n` +
-        `💰 <b>Venit:</b> ${formattedIncome} RON\n` +
-        `🏦 <b>Credite:</b> ${lead.creditTypes?.join(", ")}\n` +
-        `📉 <b>Rată actuală:</b> ${formattedPayment} RON\n` +
-        `🎯 <b>Obiectiv financiar:</b> ${lead.purpose}\n` +
-        `💳 <b>Sumă:</b> <b>${formattedAmount} RON</b>\n` +
+        `👤 <b>Client:</b> ${escapeHtml(sanitizedName)}\n` +
+        `📞 <b>Telefon:</b> <code>${escapeHtml(lead.phone)}</code>\n` +
+        `📧 <b>Email:</b> ${escapeHtml(sanitizedEmail) || "—"}\n` +
+        `🎂 <b>An naștere:</b> ${escapeHtml(String(lead.birthYear))}\n\n` +
+        `💰 <b>Venit:</b> ${escapeHtml(formattedIncome)} RON\n` +
+        `🏦 <b>Credite:</b> ${escapeHtml(lead.creditTypes?.join(", "))}\n` +
+        `📉 <b>Rată actuală:</b> ${escapeHtml(formattedPayment)} RON\n` +
+        `🎯 <b>Obiectiv financiar:</b> ${escapeHtml(lead.purpose)}\n` +
+        `💳 <b>Sumă:</b> <b>${escapeHtml(formattedAmount)} RON</b>\n` +
         `🔒 <b>GDPR:</b> ✅ Acceptat\n` +
         `📢 <b>Marketing:</b> ${(lead.marketingConsent || lead.marketing) ? "✅ Acceptat" : "❌ Neacceptat"}\n\n` +
-        `📍 <b>Sursă:</b> ${lead.utmSource} / ${lead.utmMedium} / ${lead.utmCampaign}\n` +
-        `📱 <b>Device:</b> ${lead.deviceType}\n` +
-        `🌐 <b>Referrer:</b> ${referrer}\n` +
-        `🔗 <b>Pagină:</b> ${lead.pageUrl || "—"}\n` +
-        `⏰ <b>Ora:</b> ${timestamp}`;
+        `📍 <b>Sursă:</b> ${escapeHtml(lead.utmSource)} / ${escapeHtml(lead.utmMedium)} / ${escapeHtml(lead.utmCampaign)}\n` +
+        `📱 <b>Device:</b> ${escapeHtml(lead.deviceType)}\n` +
+        `🌐 <b>Referrer:</b> ${escapeHtml(referrer)}\n` +
+        `🔗 <b>Pagină:</b> ${escapeHtml(lead.pageUrl || "—")}\n` +
+        `⏰ <b>Ora:</b> ${escapeHtml(timestamp)}`;
     }
 
     // 1. Permanent Storage Layer
     try {
-      console.log('INSERT START');
       await saveLead(fullLeadData);
-      console.log('INSERT RESULT', 'completed');
     } catch (dbError) {
-      console.error("Database save failed, but continuing to notifications:", dbError);
+      console.error("Database save error:", dbError);
     }
 
     // 2. Notifications Flow with Fallback
@@ -592,22 +605,17 @@ export async function POST(request: Request) {
       const telegramSuccess = await sendTelegram(telegramText);
       
       if (!telegramSuccess) {
-        console.warn("Telegram failed, attempting email fallback...");
-        const emailSuccess = await sendEmail(fullLeadData, telegramText);
-        if (!emailSuccess) {
-           console.error("CRITICAL: Both Telegram and Email fallback failed for lead:", fullLeadData);
-        }
+        await sendEmail(fullLeadData, telegramText);
       }
     } catch (notifyError) {
-      console.error("Error in notification flow:", notifyError);
-      await sendEmail(fullLeadData, telegramText).catch((e) => console.error("Emergency email failed:", e));
+      console.error("Notification flow error:", notifyError);
+      await sendEmail(fullLeadData, telegramText).catch(() => {});
     }
 
     // Always return safe success to user if we reach here
     return NextResponse.json({ ok: true, message: "Solicitarea a fost înregistrată cu succes." });
   } catch (error) {
-    console.error("API /api/leads Error:", error);
-    // Even on 500, we do not expose internal error details to the client
+    console.error("API /api/leads error:", error);
     return NextResponse.json(
       { ok: false, message: "A apărut o eroare la procesarea solicitării. Încearcă din nou." },
       { status: 500 }

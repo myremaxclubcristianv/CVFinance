@@ -70,8 +70,29 @@ function isDuplicate(phone: string, email: string): boolean {
   return false;
 }
 
-function clean(val: string) {
-  return val.replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+function clean(val?: string) {
+  return (val || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+}
+
+function escapeHtml(val?: string): string {
+  if (!val) return "";
+  return String(val)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+function getClientIp(request: Request): string {
+  const vercelIp = request.headers.get("x-vercel-ip") || request.headers.get("x-real-ip");
+  if (vercelIp) return vercelIp.trim();
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const parts = forwarded.split(",");
+    return parts[parts.length - 1].trim();
+  }
+  return "127.0.0.1";
 }
 
 async function sendTelegramReferral(text: string): Promise<boolean> {
@@ -86,14 +107,22 @@ async function sendTelegramReferral(text: string): Promise<boolean> {
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || request.headers.get("x-real-ip") || "127.0.0.1";
+    let body: any = {};
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        { ok: false, message: "Datele transmise sunt invalide." },
+        { status: 400 }
+      );
+    }
+
+    const ip = getClientIp(request);
     if (!allowRequest(ip)) {
       return NextResponse.json({ ok: false, message: "Prea multe cereri. Încearcă din nou în 15 minute." }, { status: 429 });
     }
     const parsed = fullReferralSchema.safeParse(body);
     if (!parsed.success || parsed.data.website) {
-      console.error("REFERRAL VALIDATION FAILED", JSON.stringify(parsed.error?.flatten(), null, 2));
       return NextResponse.json(
         {
           ok: false,
@@ -141,10 +170,10 @@ export async function POST(request: Request) {
     }
     // Build Telegram message for referral
     const telegramText = `🚨 <b>CV FINANCE – RECOMANDARE</b>\n` +
-      `<b>Referrer:</b> ${clean(data.referrer_name)} (${clean(data.referrer_phone)})\n` +
-      `<b>Client:</b> ${clean(data.client_name)} (${clean(data.client_phone)})\n` +
-      `<b>Finanțare:</b> ${clean(data.financial_need)}\n` +
-      `<b>Mesaj:</b> ${clean(data.referral_message)}`;
+      `<b>Referrer:</b> ${escapeHtml(clean(data.referrer_name))} (<code>${escapeHtml(clean(data.referrer_phone))}</code>)\n` +
+      `<b>Client:</b> ${escapeHtml(clean(data.client_name))} (<code>${escapeHtml(clean(data.client_phone))}</code>)\n` +
+      `<b>Finanțare:</b> ${escapeHtml(clean(data.financial_need))}\n` +
+      `<b>Mesaj:</b> ${escapeHtml(clean(data.referral_message)) || "—"}`;
     await sendTelegramReferral(telegramText);
     return NextResponse.json({ ok: true, message: "Recomandarea a fost înregistrată cu succes." });
   } catch (e) {

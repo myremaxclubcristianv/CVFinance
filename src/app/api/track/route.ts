@@ -47,11 +47,27 @@ async function sendTelegramActivity(text: string): Promise<boolean> {
   }
 }
 
-const clean = (val?: string) => (val || "").replace(/[<>]/g, "").trim();
+const clean = (val?: string) => (val || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
+
+function escapeHtml(val?: string): string {
+  if (!val) return "";
+  return String(val)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    let body: any = {};
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json({ ok: false }, { status: 400 });
+    }
+
     const {
       event,
       sessionId = "anon",
@@ -65,17 +81,18 @@ export async function POST(request: Request) {
       timestamp = new Date().toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" }),
     } = body;
 
-    const safePage = clean(page);
-    const safeSection = clean(section);
-    const safeCtaLabel = clean(ctaLabel);
-    const safeIntent = clean(intent);
-    const safeDeviceType = clean(deviceType);
-    const safeUtmSource = clean(utmSource);
-    const safeReferrer = clean(referrer);
-    const safeSessionId = clean(sessionId);
+    const safePage = escapeHtml(clean(page));
+    const safeSection = escapeHtml(clean(section));
+    const safeCtaLabel = escapeHtml(clean(ctaLabel));
+    const safeIntent = escapeHtml(clean(intent));
+    const safeDeviceType = escapeHtml(clean(deviceType));
+    const safeUtmSource = escapeHtml(clean(utmSource));
+    const safeReferrer = escapeHtml(clean(referrer));
+    const rawSessionId = clean(sessionId);
+    const safeSessionId = escapeHtml(rawSessionId);
 
-    // Rate limiting key: event + sessionId + (section || page || ctaLabel)
-    const dedupKey = `${safeSessionId}:${event}:${safeSection || safePage || safeCtaLabel}`;
+    // Rate limiting key: event + rawSessionId + (section || page || ctaLabel)
+    const dedupKey = `${rawSessionId}:${clean(event)}:${clean(section) || clean(page) || clean(ctaLabel)}`;
     
     // Cooldown: 15s for page/section view, 5s for CTA
     const cooldown = event === "page_view" || event === "section_view" ? 15000 : 5000;
@@ -94,7 +111,7 @@ export async function POST(request: Request) {
           `📱 <b>Device:</b> ${safeDeviceType}\n` +
           `🌍 <b>Referrer:</b> ${safeReferrer}\n` +
           `🔗 <b>UTM:</b> ${safeUtmSource}\n` +
-          `🕐 <b>Ora:</b> ${timestamp}\n` +
+          `🕐 <b>Ora:</b> ${escapeHtml(timestamp)}\n` +
           `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
         break;
 
@@ -165,7 +182,7 @@ export async function POST(request: Request) {
       default:
         telegramText =
           `⚡ <b>ACTIVITATE VIZITATOR</b>\n\n` +
-          `<b>Event:</b> ${clean(event)}\n` +
+          `<b>Event:</b> ${escapeHtml(clean(event))}\n` +
           `📍 <b>Pagină:</b> ${safePage}\n` +
           `📱 <b>Device:</b> ${safeDeviceType}\n` +
           `🆔 <b>Session:</b> <code>#${safeSessionId.slice(0, 8)}</code>`;
@@ -176,7 +193,7 @@ export async function POST(request: Request) {
     sendTelegramActivity(telegramText).catch(() => {});
 
     return NextResponse.json({ ok: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ ok: false }, { status: 500 });
   }
 }
