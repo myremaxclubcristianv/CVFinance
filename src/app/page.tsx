@@ -173,6 +173,8 @@ const ecosystemLinks = [
   { name: "Cristian Văduva", desc: "Advisory & Financial Optimization", href: "https://cristianvaduva.com/" },
   { name: "AiX Luxury", desc: "Real Estate & Luxury Advisory", href: "https://aixluxury.com/" },
   { name: "Market Pulse", desc: "Macroeconomic & Real Estate Intelligence", href: "https://cristianvaduva.com/market-pulse" },
+  { name: "CONSTRUCTIONS by AiXLuxury", desc: "Dezvoltări & Construcții Premium", href: "https://constructions.cristianvaduva.com/" },
+  { name: "FLY", desc: "Aviație Privată & Executive Travel", href: "https://fly.cristianvaduva.com/" },
 ];
 
 export default function Home() {
