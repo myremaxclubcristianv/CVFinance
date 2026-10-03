@@ -12,7 +12,7 @@ import {
   getSecureClientIp,
 } from "@/lib/ecosystem";
 
-// In-memory rate limiting per client IP
+// In-memory rate limiting per client IP (serverless-local)
 const ipRateLimit = new Map<string, { count: number; resetAt: number }>();
 const TRACK_RATE_LIMIT = 60; // Max 60 tracking hits per minute per IP
 const TRACK_WINDOW_MS = 60 * 1000;
@@ -35,6 +35,16 @@ interface TimedAction {
   name: string;
 }
 
+interface AttributionTouch {
+  source: string;
+  medium: string;
+  campaign: string;
+  term?: string;
+  content?: string;
+  landingPage?: string;
+  timestamp?: string;
+}
+
 interface SessionJourney {
   visitorId: string;
   sessionId: string;
@@ -47,6 +57,8 @@ interface SessionJourney {
   storiesViewed: string[];
   actions: string[];
   timedActions: TimedAction[];
+  firstTouch?: AttributionTouch | null;
+  lastTouch?: AttributionTouch | null;
   isNewVisitorNotified: boolean;
   isReturningVisitorNotified: boolean;
   isHighIntentNotified: boolean;
@@ -54,6 +66,7 @@ interface SessionJourney {
   hasStartedForm: boolean;
   hasClickedPhone: boolean;
   hasClickedWhatsApp: boolean;
+  hasClickedTelegram: boolean;
   hasConverted: boolean;
   actionCounts: Map<string, number>;
   lastActionNotification: Map<string, number>;
@@ -66,7 +79,9 @@ function getOrCreateSession(
   visitorId: string,
   isReturning: boolean,
   visitCount: number,
-  initialPage: string
+  initialPage: string,
+  firstTouch?: AttributionTouch | null,
+  lastTouch?: AttributionTouch | null
 ): SessionJourney {
   const now = Date.now();
   let session = sessionStore.get(sessionId);
@@ -83,6 +98,8 @@ function getOrCreateSession(
       storiesViewed: [],
       actions: [],
       timedActions: [],
+      firstTouch: firstTouch || null,
+      lastTouch: lastTouch || null,
       isNewVisitorNotified: false,
       isReturningVisitorNotified: false,
       isHighIntentNotified: false,
@@ -90,6 +107,7 @@ function getOrCreateSession(
       hasStartedForm: false,
       hasClickedPhone: false,
       hasClickedWhatsApp: false,
+      hasClickedTelegram: false,
       hasConverted: false,
       actionCounts: new Map<string, number>(),
       lastActionNotification: new Map<string, number>(),
@@ -99,6 +117,12 @@ function getOrCreateSession(
     session.lastActive = now;
     if (initialPage && !session.pagesVisited.includes(initialPage)) {
       session.pagesVisited.push(initialPage);
+    }
+    if (firstTouch && !session.firstTouch) {
+      session.firstTouch = firstTouch;
+    }
+    if (lastTouch) {
+      session.lastTouch = lastTouch;
     }
   }
 
@@ -129,7 +153,35 @@ function isImportantPage(page: string): boolean {
   return IMPORTANT_PAGES.includes(page) || page.startsWith("/povesti-reale/");
 }
 
-function evaluateHighIntent(session: SessionJourney): { isHighIntent: boolean; signals: string[] } {
+function deriveObservedInterest(session: SessionJourney, currentPage: string): { interest: string; specificArea: string } {
+  const pages = session.pagesVisited;
+  const p = currentPage || (pages.length > 0 ? pages[pages.length - 1] : "/");
+
+  if (p.includes("/totul-inainte-de-credit") || session.hasStartedForm) {
+    return { interest: "Credit", specificArea: "Verificare Eligibilitate & Diagnostic" };
+  }
+  if (p.includes("/refinantare-credit")) {
+    return { interest: "Refinanțare", specificArea: "Optimizare & Reducere Rate" };
+  }
+  if (p.includes("/credit-istoric-negativ") || p.includes("/stergere-birou-credit")) {
+    return { interest: "Istoric Negativ", specificArea: "Analiză Biroul de Credit" };
+  }
+  if (p.includes("/credit-nevoi-personale")) {
+    return { interest: "Credit de Nevoi Personale", specificArea: "Finanțare Rapidă" };
+  }
+  if (p.includes("/calculator")) {
+    return { interest: "Simulare Credit", specificArea: "Calculator Rate & Buget" };
+  }
+  if (p.includes("/referral")) {
+    return { interest: "Parteneriat", specificArea: "Program Recomandări" };
+  }
+  if (p.includes("/povesti-reale/")) {
+    return { interest: "Studii de Caz", specificArea: "Povești Reale de Finanțare" };
+  }
+  return { interest: "Consultanță Financiară", specificArea: "Homepage Browsing" };
+}
+
+function evaluateHighIntent(session: SessionJourney): { isHighIntent: boolean; signals: string[]; reason: string } {
   const signals: string[] = [];
 
   if (session.hasCompletedCalculator) {
@@ -147,7 +199,7 @@ function evaluateHighIntent(session: SessionJourney): { isHighIntent: boolean; s
     p.includes("/stergere-birou") ||
     p.includes("/credit-")
   );
-  if (commercialPages.length >= 3) {
+  if (commercialPages.length >= 2) {
     signals.push(`${commercialPages.length} pagini comerciale vizitate`);
   }
 
@@ -167,14 +219,28 @@ function evaluateHighIntent(session: SessionJourney): { isHighIntent: boolean; s
     signals.push(`Vizitator recurent (Vizita #${session.visitCount})`);
   }
 
-  const isHighIntent = signals.length >= 2;
-  return { isHighIntent, signals };
+  const isHighIntent = signals.length >= 2 || (session.hasStartedForm && (session.hasClickedPhone || session.hasClickedWhatsApp));
+  const reason = signals.slice(0, 3).join(" + ");
+  return { isHighIntent, signals, reason };
 }
+
+const touchSchema = z
+  .object({
+    source: z.string().trim().max(100).optional().default("direct"),
+    medium: z.string().trim().max(100).optional().default("—"),
+    campaign: z.string().trim().max(100).optional().default("—"),
+    term: z.string().trim().max(100).optional(),
+    content: z.string().trim().max(100).optional(),
+    landingPage: z.string().trim().max(2048).optional(),
+    timestamp: z.string().trim().max(100).optional(),
+  })
+  .optional()
+  .nullable();
 
 const trackSchema = z.object({
   event: z.string().trim().min(1).max(64),
-  visitorId: z.string().trim().max(64).optional().default("vis_anon"),
-  sessionId: z.string().trim().max(64).optional().default("sess_anon"),
+  visitorId: z.string().trim().max(64).optional().default("VF-ANON"),
+  sessionId: z.string().trim().max(64).optional().default("S-ANON"),
   isReturning: z.boolean().optional().default(false),
   visitCount: z.coerce.number().int().min(1).max(10000).optional().default(1),
   sessionDuration: z.coerce.number().int().min(0).max(86400).optional().default(0),
@@ -186,6 +252,8 @@ const trackSchema = z.object({
   intent: z.string().trim().max(50).optional().default("LOW"),
   deviceType: z.string().trim().max(50).optional().default("Mobile"),
   screenCategory: z.string().trim().max(50).optional().default("Medium screen"),
+  screenResolution: z.string().trim().max(50).optional().default("—"),
+  viewport: z.string().trim().max(50).optional().default("—"),
   utmSource: z.string().trim().max(100).optional().default("direct"),
   utmMedium: z.string().trim().max(100).optional().default("—"),
   utmCampaign: z.string().trim().max(100).optional().default("—"),
@@ -195,6 +263,10 @@ const trackSchema = z.object({
   language: z.string().trim().max(50).optional().default("ro-RO"),
   timezone: z.string().trim().max(100).optional().default("Europe/Bucharest"),
   timestamp: z.string().trim().max(50).optional(),
+  firstTouch: touchSchema,
+  lastTouch: touchSchema,
+  scrollDepth: z.string().trim().max(50).optional(),
+  duration: z.string().trim().max(50).optional(),
   metadata: z.record(z.any()).optional().default({}),
   amount: z.coerce.number().optional(),
   payment: z.coerce.number().optional(),
@@ -364,23 +436,27 @@ export async function POST(request: Request) {
     const ecosystemProp = detectEcosystemProperty(clean(data.page) || clean(data.source), request);
 
     // Context & Technical Details
-    const rawVisitorId = data.visitorId || "vis_anon";
-    const rawSessionId = data.sessionId || "sess_anon";
+    const rawVisitorId = data.visitorId || "VF-ANON";
+    const rawSessionId = data.sessionId || "S-ANON";
     const shortVisitorId = formatShortId(rawVisitorId);
     const shortSessionId = formatShortId(rawSessionId);
 
     const ua = request.headers.get("user-agent") || "";
     const parsedUA = parseDeviceFromUA(ua);
+    const safeDeviceType = escapeHtml(parsedUA.deviceType || data.deviceType || "Desktop");
+    const safeOS = escapeHtml(parsedUA.os || "Other OS");
+    const safeBrowser = escapeHtml(parsedUA.browser || "Other Browser");
     const safeDeviceSummary = parsedUA.deviceSummary;
 
     const geo = parseGeoFromHeaders(request);
-    const safeCity = escapeHtml(geo.city);
-    const safeCountry = escapeHtml(geo.country);
+    const safeCity = escapeHtml(geo.city || "București");
+    const safeCountry = escapeHtml(geo.country || "România");
     const safePage = escapeHtml(clean(data.page));
     const safeCtaLabel = escapeHtml(clean(data.ctaLabel));
     const safeLanguage = escapeHtml(clean(data.language));
     const safeTimezone = escapeHtml(clean(data.timezone));
-    const safeScreenCategory = escapeHtml(clean(data.screenCategory));
+    const safeScreen = escapeHtml(clean(data.screenResolution));
+    const safeViewport = escapeHtml(clean(data.viewport));
 
     const sourceInfo = normalizeSource(data.utmSource, data.referrer);
     const safeSource = escapeHtml(sourceInfo.label);
@@ -388,19 +464,22 @@ export async function POST(request: Request) {
     const safeMedium = escapeHtml(clean(data.utmMedium));
     const safeCampaign = escapeHtml(clean(data.utmCampaign));
 
+    // Multi-touch attribution extraction
+    const firstTouchSource = data.firstTouch?.source ? `${escapeHtml(clean(data.firstTouch.source))} / ${escapeHtml(clean(data.firstTouch.medium || "—"))}` : "—";
+    const lastTouchSource = data.lastTouch?.source ? `${escapeHtml(clean(data.lastTouch.source))} / ${escapeHtml(clean(data.lastTouch.medium || "—"))}` : "—";
+
     const nowDateTime = new Date();
-    const fullTimestampStr = new Intl.DateTimeFormat("ro-RO", {
-      dateStyle: "medium",
-      timeStyle: "medium",
+    const fullDateFormatted = new Intl.DateTimeFormat("ro-RO", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
       timeZone: "Europe/Bucharest",
     }).format(nowDateTime);
 
     const timeOnly = new Intl.DateTimeFormat("ro-RO", {
-      timeStyle: "medium",
-      timeZone: "Europe/Bucharest",
-    }).format(nowDateTime);
-
-    const actionTimeStr = new Intl.DateTimeFormat("ro-RO", {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit",
@@ -413,7 +492,9 @@ export async function POST(request: Request) {
       rawVisitorId,
       data.isReturning,
       data.visitCount,
-      clean(data.page) || "/"
+      clean(data.page) || "/",
+      data.firstTouch,
+      data.lastTouch
     );
 
     const currentDurationSec = Math.max(data.sessionDuration, Math.floor((Date.now() - session.startTime) / 1000));
@@ -437,6 +518,9 @@ export async function POST(request: Request) {
       return true;
     };
 
+    // Credit intent classification based on actual user actions
+    const observedInterest = deriveObservedInterest(session, clean(data.page));
+
     // --- EVENT CLASSIFICATION & TELEGRAM HIERARCHY ---
 
     // 1. Session Started / New Visitor / Returning Visitor
@@ -444,100 +528,119 @@ export async function POST(request: Request) {
       if (data.isReturning && !session.isReturningVisitorNotified) {
         session.isReturningVisitorNotified = true;
         session.actions.push("Returning visit");
-        session.timedActions.push({ timeStr: actionTimeStr, name: "Page view" });
+        session.timedActions.push({ timeStr: timeOnly, name: "Page view" });
         shouldNotifyTelegram = true;
         const recentJourney = session.pagesVisited.map((p, i) => `${i + 1}. ${escapeHtml(p)}`).join("\n");
-        const lastAction = session.actions.length > 1 ? session.actions[session.actions.length - 1] : "Page view";
         telegramText =
-          `${formatTelegramTitle(ecosystemProp.key, "🔁 VISITATOR RECURENT")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>SESSION</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Time: ${fullTimestampStr} EEST\n` +
-          `Visitor: <code>${shortVisitorId}</code>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🔵 RETURNING VISITOR")}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
           `Session: <code>${shortSessionId}</code>\n` +
-          `Visit: #${data.visitCount}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>CONTEXT</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Location: ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
-          `Device: ${safeDeviceSummary}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🔗 <b>ACQUISITION</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Source: ${safeSource}\n` +
-          `Referrer: ${safeReferrerHost}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📄 <b>PAGES & METRICS</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Landing: ${escapeHtml(session.landingPage)}\n` +
-          `Current: ${safePage}\n` +
-          `Pages: ${pageCount}\n` +
-          `Duration: ${durationFormatted}\n` +
-          `Actions: ${session.actions.length}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🧭 <b>RECENT JOURNEY</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `${recentJourney}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `⚡ <b>LAST ACTION:</b> ${escapeHtml(lastAction)}`;
-      } else if (!data.isReturning && !session.isNewVisitorNotified) {
-        session.isNewVisitorNotified = true;
-        session.actions.push("Page viewed");
-        session.timedActions.push({ timeStr: actionTimeStr, name: "Page view" });
-        shouldNotifyTelegram = true;
-        telegramText =
-          `${formatTelegramTitle(ecosystemProp.key, "👀 VISITOR NOU")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>SESSION</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Time: ${fullTimestampStr} EEST\n` +
-          `Visitor: <code>${shortVisitorId}</code>\n` +
-          `Session: <code>${shortSessionId}</code>\n` +
-          `Visit: #${data.visitCount}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>CONTEXT</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Location: ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
-          `Device: ${safeDeviceSummary}\n` +
-          `Screen: ${safeScreenCategory}\n` +
-          `Language: ${safeLanguage}\n` +
-          `Timezone: ${safeTimezone}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🔗 <b>ACQUISITION</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Source: ${safeSource}\n` +
+          `Status: 🔁 Vizitator recurent\n` +
+          `Vizită: #${data.visitCount}\n` +
+          `Ora: ${fullDateFormatted}\n` +
+          `Durată sesiune: ${durationFormatted}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📍 <b>ORIGINE / ACQUISITION</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Sursă: ${safeSource}\n` +
           `Medium: ${safeMedium}\n` +
           `Campaign: ${safeCampaign}\n` +
           `Referrer: ${safeReferrerHost}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📄 <b>ACTIVITY</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
+          `Landing: ${escapeHtml(session.landingPage)}\n` +
+          `First Touch: ${firstTouchSource}\n` +
+          `Last Touch: ${lastTouchSource}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>LOCAȚIE ESTIMATĂ</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Țară: ${geo.countryFlag} ${safeCountry}\n` +
+          `Regiune: ${safeCity}\n` +
+          `Oraș: ${safeCity}\n` +
+          `Timezone: ${safeTimezone}\n` +
+          `⚠️ Locație estimată — NU GPS\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📱 <b>DEVICE</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Categorie: ${safeDeviceType}\n` +
+          `OS: ${safeOS}\n` +
+          `Browser: ${safeBrowser}\n` +
+          `Screen: ${safeScreen}\n` +
+          `Viewport: ${safeViewport}\n` +
+          `Limbă: ${safeLanguage}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🧭 <b>PARCURS SESIUNE</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `${recentJourney}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `💳 <b>INTENT:</b> ${escapeHtml(observedInterest.interest)} (${escapeHtml(observedInterest.specificArea)})`;
+      } else if (!data.isReturning && !session.isNewVisitorNotified) {
+        session.isNewVisitorNotified = true;
+        session.actions.push("Page viewed");
+        session.timedActions.push({ timeStr: timeOnly, name: "Page view" });
+        shouldNotifyTelegram = true;
+        telegramText =
+          `${formatTelegramTitle(ecosystemProp.key, "🟢 VISITOR NOU")}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `Status: 🆕 Prima vizită\n` +
+          `Vizită: #1\n` +
+          `Ora: ${fullDateFormatted}\n` +
+          `Durată sesiune: ${durationFormatted}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📍 <b>ORIGINE / ACQUISITION</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Sursă: ${safeSource}\n` +
+          `Medium: ${safeMedium}\n` +
+          `Campaign: ${safeCampaign}\n` +
+          `Referrer: ${safeReferrerHost}\n` +
           `Landing: ${safePage}\n` +
-          `First action: Page viewed\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🎯 <b>STATUS:</b> New visitor`;
+          `First Touch: ${firstTouchSource}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>LOCAȚIE ESTIMATĂ</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Țară: ${geo.countryFlag} ${safeCountry}\n` +
+          `Regiune: ${safeCity}\n` +
+          `Oraș: ${safeCity}\n` +
+          `Timezone: ${safeTimezone}\n` +
+          `⚠️ Locație estimată — NU GPS\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📱 <b>DEVICE</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `Categorie: ${safeDeviceType}\n` +
+          `OS: ${safeOS}\n` +
+          `Browser: ${safeBrowser}\n` +
+          `Screen: ${safeScreen}\n` +
+          `Viewport: ${safeViewport}\n` +
+          `Limbă: ${safeLanguage}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `💳 <b>INTENT:</b> ${escapeHtml(observedInterest.interest)} (${escapeHtml(observedInterest.specificArea)})`;
       }
     }
 
     // 2. High-Value Page View Notification
     else if (event === "page_view" && isImportantPage(clean(data.page))) {
-      session.timedActions.push({ timeStr: actionTimeStr, name: `Page (${clean(data.page)})` });
+      session.timedActions.push({ timeStr: timeOnly, name: `Page (${clean(data.page)})` });
       if (canNotifyAction(`page_${clean(data.page)}`, 30000)) {
         shouldNotifyTelegram = true;
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "📄 PAGINĂ IMPORTANTĂ")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📄 <b>PAGE:</b> ${safePage}\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📄 <b>Pagină:</b> ${safePage}\n` +
+          `🕐 <b>Ora:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor ID:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📍 <b>Origine:</b> ${safeSource} (${safeMedium})\n` +
+          `🌍 <b>Locație:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
-          `⏱ <b>Session duration:</b> ${durationFormatted} (${pageCount} pages)`;
+          `⏱ <b>Durată sesiune:</b> ${durationFormatted} (${pageCount} pagini)\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `💳 <b>INTENT:</b> ${escapeHtml(observedInterest.interest)} (${escapeHtml(observedInterest.specificArea)})`;
       }
     }
 
@@ -545,31 +648,29 @@ export async function POST(request: Request) {
     else if (event === "phone_click" || event === "cta_phone_clicked") {
       session.hasClickedPhone = true;
       session.actions.push("Phone CTA clicked");
-      session.timedActions.push({ timeStr: actionTimeStr, name: "Phone CTA" });
+      session.timedActions.push({ timeStr: timeOnly, name: "Phone CTA" });
       if (canNotifyAction("phone")) {
         shouldNotifyTelegram = true;
         const totalClicks = session.actionCounts.get("phone") || 1;
         const ctaTitle = totalClicks > 1 ? `📞 PHONE CTA CLICKED · ${totalClicks}×` : `📞 PHONE CTA CLICKED`;
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "📞 CLICK TELEFON")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `📄 <b>Page:</b> ${safePage}\n` +
-          `🔘 <b>CTA:</b> Telefon 0767 110 439\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📞 <b>PHONE CTA</b>\n` +
+          `CTA: VERIFICĂ SITUAȚIA (Telefon)\n` +
+          `Pagină: ${safePage}\n` +
+          `Ora: ${timeOnly}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `Vizită: #${data.visitCount}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Context:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📊 <b>JOURNEY BEFORE CLICK</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Pages viewed: ${pageCount}\n` +
-          `Duration: ${durationFormatted}\n` +
-          `Actions: ${session.actions.length}\n` +
-          `━━━━━━━━━━━━━━\n` +
+          `🔗 <b>Sursă:</b> ${safeSource}\n` +
+          `⏱ <b>Durată până la apel:</b> ${durationFormatted} (${pageCount} pagini)\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
           `🎯 <b>ACTION:</b> ${ctaTitle}`;
       }
     }
@@ -578,56 +679,55 @@ export async function POST(request: Request) {
     else if (event === "whatsapp_click" || event === "cta_whatsapp_clicked" || event === "business_finance_whatsapp" || event === "totul_credit_whatsapp") {
       session.hasClickedWhatsApp = true;
       session.actions.push("WhatsApp CTA clicked");
-      session.timedActions.push({ timeStr: actionTimeStr, name: "WhatsApp CTA" });
+      session.timedActions.push({ timeStr: timeOnly, name: "WhatsApp CTA" });
       if (canNotifyAction("whatsapp")) {
         shouldNotifyTelegram = true;
         const totalClicks = session.actionCounts.get("whatsapp") || 1;
         const ctaTitle = totalClicks > 1 ? `💬 WHATSAPP CTA CLICKED · ${totalClicks}×` : `💬 WHATSAPP CTA CLICKED`;
         telegramText =
-          `${formatTelegramTitle(ecosystemProp.key, "💬 CLICK WHATSAPP")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `📄 <b>Page:</b> ${safePage}\n` +
-          `🔘 <b>CTA:</b> WhatsApp Direct\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🟢 CLICK WHATSAPP")}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🟢 <b>WHATSAPP CTA</b>\n` +
+          `CTA: Contact WhatsApp Direct\n` +
+          `Pagină: ${safePage}\n` +
+          `Ora: ${timeOnly}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `Vizită: #${data.visitCount}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Context:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📊 <b>JOURNEY BEFORE CLICK</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Pages viewed: ${pageCount}\n` +
-          `Duration: ${durationFormatted}\n` +
-          `Actions: ${session.actions.length}\n` +
-          `━━━━━━━━━━━━━━\n` +
+          `🔗 <b>Sursă:</b> ${safeSource}\n` +
+          `⏱ <b>Durată:</b> ${durationFormatted} (${pageCount} pagini)\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
           `🎯 <b>ACTION:</b> ${ctaTitle}`;
       }
     }
 
     // 5. Telegram CTA Clicked
     else if (event === "telegram_click" || event === "cta_telegram_clicked") {
+      session.hasClickedTelegram = true;
       session.actions.push("Telegram CTA clicked");
-      session.timedActions.push({ timeStr: actionTimeStr, name: "Telegram CTA" });
+      session.timedActions.push({ timeStr: timeOnly, name: "Telegram CTA" });
       if (canNotifyAction("telegram_click")) {
         shouldNotifyTelegram = true;
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "✈️ CLICK TELEGRAM")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `📄 <b>Page:</b> ${safePage}\n` +
-          `🔘 <b>CTA:</b> Telegram Contact\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `✈️ <b>TELEGRAM CTA</b>\n` +
+          `CTA: Contact Telegram Direct\n` +
+          `Pagină: ${safePage}\n` +
+          `Ora: ${timeOnly}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Locație:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📊 <b>JOURNEY:</b> ${pageCount} pages · ${durationFormatted}`;
+          `⏱ <b>Session:</b> ${pageCount} pagini · ${durationFormatted}`;
       }
     }
 
@@ -635,32 +735,27 @@ export async function POST(request: Request) {
     else if (event === "calculator_complete" || event === "calculator_completed" || event === "calculator_used") {
       session.hasCompletedCalculator = true;
       session.actions.push("Calculator completed");
-      session.timedActions.push({ timeStr: actionTimeStr, name: "Calculator completed" });
+      session.timedActions.push({ timeStr: timeOnly, name: "Calculator completed" });
       if (canNotifyAction("calculator", 15000)) {
         shouldNotifyTelegram = true;
         const coarseAmount = getCoarseAmountRange(data.amount);
         const coarsePayment = getCoarsePaymentRange(data.payment);
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "🧮 CALCULATOR FINALIZAT")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `📄 <b>Page:</b> ${safePage}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `💰 <b>INPUT</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Ora:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor ID:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `📄 <b>Pagină:</b> ${safePage}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `💰 <b>SIMULARE</b>\n` +
           `Interval sumă: <b>${coarseAmount}</b>\n` +
-          `Durată estimată: 20–25 ani\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📊 <b>RESULT ESTIMAT</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `Rată lunară: <b>${coarsePayment}</b>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>Context:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `Rată lunară estimată: <b>${coarsePayment}</b>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Locație:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `⏱ <b>Session duration:</b> ${durationFormatted}`;
+          `🔗 <b>Sursă:</b> ${safeSource}\n` +
+          `⏱ <b>Durată sesiune:</b> ${durationFormatted}`;
       }
     }
 
@@ -671,25 +766,24 @@ export async function POST(request: Request) {
         session.storiesViewed.push(storyTitle);
       }
       session.actions.push(`Story: ${storyTitle}`);
-      session.timedActions.push({ timeStr: actionTimeStr, name: "Story viewed" });
+      session.timedActions.push({ timeStr: timeOnly, name: "Story viewed" });
       if (canNotifyAction(`story_${safePage}`, 30000)) {
         shouldNotifyTelegram = true;
         const storiesCount = session.storiesViewed.length;
         const storiesBadge = storiesCount > 1 ? ` (${storiesCount} povești citite în sesiune)` : "";
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "📖 POVESTE VIZUALIZATĂ")}\n` +
-          `━━━━━━━━━━━━━━\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
           `📖 <b>Story:</b> ${escapeHtml(storyTitle)}${storiesBadge}\n` +
           `📄 <b>URL:</b> ${safePage}\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🆔 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `🕐 <b>Ora:</b> ${timeOnly}\n` +
+          `🆔 <b>Visitor ID:</b> <code>${shortVisitorId}</code>\n` +
+          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Locație:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
-          `📊 <b>Session:</b> ${durationFormatted} · ${pageCount} pages`;
+          `🔗 <b>Sursă:</b> ${safeSource}\n` +
+          `📊 <b>Sesiune:</b> ${durationFormatted} · ${pageCount} pagini`;
       }
     }
 
@@ -703,43 +797,50 @@ export async function POST(request: Request) {
     ) {
       session.hasStartedForm = true;
       session.actions.push("Form started");
-      session.timedActions.push({ timeStr: actionTimeStr, name: "Form started" });
+      session.timedActions.push({ timeStr: timeOnly, name: "Form started" });
       if (canNotifyAction("form_start", 20000)) {
         shouldNotifyTelegram = true;
+        const formName = clean(data.page).includes("totul")
+          ? "Totul Înainte de Credit"
+          : clean(data.page).includes("business")
+          ? "Business Finance"
+          : "Verificare Eligibilitate Credit";
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "📝 FORMULAR ÎNCEPUT")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `📄 <b>Form:</b> Verificare Eligibilitate Credit\n` +
-          `📄 <b>Page:</b> ${safePage}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📝 <b>FORM STARTED</b>\n` +
+          `Form: ${escapeHtml(formName)}\n` +
+          `Pagină: ${safePage}\n` +
+          `Ora: ${timeOnly}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Locație:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `🔗 <b>Referrer:</b> ${safeReferrerHost}\n` +
-          `⏱ <b>Session:</b> ${pageCount} pages · ${durationFormatted}`;
+          `🔗 <b>Sursă:</b> ${safeSource}\n` +
+          `⏱ <b>Elapsed:</b> ${durationFormatted} (${pageCount} pagini)`;
       }
     }
 
     // 9. Referral Program Interaction
     else if (event === "referral_page_viewed" || event === "referral_hero_cta_clicked" || event === "referral_link_clicked") {
       session.actions.push("Referral hub accessed");
-      session.timedActions.push({ timeStr: actionTimeStr, name: "Referral page" });
+      session.timedActions.push({ timeStr: timeOnly, name: "Referral page" });
       if (canNotifyAction("referral", 25000)) {
         shouldNotifyTelegram = true;
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "🤝 PROGRAM RECOMANDĂRI")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🕐 <b>Ora:</b> ${timeOnly}\n` +
           `Vizitatorul a accesat ecosistemul de parteneriat / recomandări\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🆔 <b>Visitor ID:</b> <code>${shortVisitorId}</code>\n` +
           `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
           `📍 <b>Pagină:</b> ${safePage}\n` +
           `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `⏱ <b>Session:</b> ${durationFormatted}`;
+          `⏱ <b>Sesiune:</b> ${durationFormatted}`;
       }
     }
 
@@ -753,22 +854,25 @@ export async function POST(request: Request) {
     ) {
       const actionName = safeCtaLabel || clean(data.source) || "VERIFICĂ SITUAȚIA";
       session.actions.push(`CTA: ${actionName}`);
-      session.timedActions.push({ timeStr: actionTimeStr, name: `CTA (${actionName})` });
+      session.timedActions.push({ timeStr: timeOnly, name: `CTA (${actionName})` });
       if (canNotifyAction(`cta_${actionName}`, 20000)) {
         shouldNotifyTelegram = true;
         telegramText =
           `${formatTelegramTitle(ecosystemProp.key, "🔥 ACTIVITATE IMPORTANTĂ")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `📄 <b>Page:</b> ${safePage}\n` +
-          `🎯 <b>ACTION:</b> 🎯 CTA CLICKED "${actionName}"\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🔘 <b>CTA CLICK</b>\n` +
+          `CTA: "${escapeHtml(actionName)}"\n` +
+          `Pagină: ${safePage}\n` +
+          `Ora: ${timeOnly}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📍 <b>Locație:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔎 <b>Source:</b> ${safeSource}\n` +
-          `📊 <b>Session:</b> ${durationFormatted} · ${pageCount} pages`;
+          `🔎 <b>Sursă:</b> ${safeSource}\n` +
+          `📊 <b>Sesiune:</b> ${durationFormatted} · ${pageCount} pagini`;
       }
     }
 
@@ -782,41 +886,43 @@ export async function POST(request: Request) {
     ) {
       session.hasConverted = true;
       session.actions.push("Lead submitted");
-      session.timedActions.push({ timeStr: actionTimeStr, name: "Lead submitted" });
+      session.timedActions.push({ timeStr: timeOnly, name: "Lead submitted" });
       shouldNotifyTelegram = true;
-      const formattedPages = session.pagesVisited.map((p, idx) => `${idx + 1}. ${escapeHtml(p)}`).join("\n");
-      const formattedTimeline = session.timedActions.length > 0
-        ? session.timedActions.map((ta) => `${ta.timeStr} — ${escapeHtml(ta.name)}`).join("\n")
-        : `${actionTimeStr} — Lead submitted`;
+      const formattedJourney = session.timedActions.length > 0
+        ? session.timedActions.map((ta) => `${ta.timeStr}\n→ ${escapeHtml(ta.name)}`).join("\n\n")
+        : `${timeOnly}\n→ Lead submitted`;
+
+      const formName = clean(data.page).includes("totul")
+        ? "Totul Înainte de Credit"
+        : clean(data.page).includes("business")
+        ? "Business Finance"
+        : clean(data.page).includes("referral")
+        ? "Formular Recomandare"
+        : "Credit Verification";
 
       telegramText =
-        `${formatTelegramTitle(ecosystemProp.key, "📊 JOURNEY")}\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `👤 <b>VISITOR & SESSION</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `🆔 Visitor ID: <code>${shortVisitorId}</code>\n` +
-        `🧭 Session ID: <code>${shortSessionId}</code>\n` +
-        `🕐 Time: ${timeOnly} · Duration: ${durationFormatted}\n` +
-        `📍 Location: ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
-        `💻 Device: ${safeDeviceSummary}\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `🔗 <b>ACQUISITION</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `Source: ${safeSource}\n` +
-        `Medium: ${safeMedium}\n` +
-        `Campaign: ${safeCampaign}\n` +
-        `Referrer: ${safeReferrerHost}\n` +
-        `Landing page: ${escapeHtml(session.landingPage)}\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `📄 <b>PAGES VISITED (${session.pagesVisited.length})</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `${formattedPages}\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `⚡ <b>ACTIONS TIMELINE</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `${formattedTimeline}\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `🟢 <b>CONVERSION:</b> NEW LEAD`;
+        `${formatTelegramTitle(ecosystemProp.key, "🔥 CONVERSIE LEAD")}\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `🔥 <b>CONVERSION</b>\n` +
+        `Lead: CREATED\n` +
+        `Form: ${escapeHtml(formName)}\n` +
+        `Visitor: <code>${shortVisitorId}</code>\n` +
+        `Session: <code>${shortSessionId}</code>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `📍 <b>ACQUISITION</b>\n` +
+        `Source: ${safeSource} / ${safeMedium}\n` +
+        `Landing: ${escapeHtml(session.landingPage)}\n` +
+        `First Touch: ${firstTouchSource}\n` +
+        `Last Touch: ${lastTouchSource}\n` +
+        `Conversion time: ${timeOnly}\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `📱 <b>DEVICE & LOCATION</b>\n` +
+        `Device: ${safeDeviceSummary}\n` +
+        `Location: ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `🧭 <b>USER JOURNEY</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `${formattedJourney}`;
     }
 
     // 12. Session End Notification (only for engaged sessions)
@@ -828,23 +934,28 @@ export async function POST(request: Request) {
           ? session.actions.slice(-5).map((a) => `• ${escapeHtml(a)}`).join("\n")
           : "• Navigare generală";
         telegramText =
-          `${formatTelegramTitle(ecosystemProp.key, "🚪 SESIUNE ÎNCHEIATĂ")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `⏱ <b>Duration:</b> ${durationFormatted}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
-          `💻 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📄 <b>Landing:</b> ${escapeHtml(session.landingPage)}\n` +
-          `📄 <b>Exit:</b> ${safePage}\n` +
-          `📊 <b>Pages:</b> ${pageCount} pages\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `⚡ <b>IMPORTANT ACTIONS:</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "📊 SESSION SUMMARY")}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `Status: ${session.isReturning ? "Returning" : "New"}\n` +
+          `Duration: ${durationFormatted}\n` +
+          `Pages: ${pageCount}\n` +
+          `Interactions: ${session.actions.length}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📍 <b>ACQUISITION</b>\n` +
+          `Source: ${safeSource} / ${safeMedium}\n` +
+          `Landing: ${escapeHtml(session.landingPage)}\n` +
+          `Last Page: ${safePage}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📱 <b>DEVICE & LOCATION</b>\n` +
+          `Device: ${safeDeviceSummary}\n` +
+          `Location: ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `⚡ <b>IMPORTANT ACTIONS</b>\n` +
           `${importantActions}\n` +
-          `━━━━━━━━━━━━━━\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
           `🟢 <b>Outcome:</b> ${outcome}`;
       }
     }
@@ -855,19 +966,22 @@ export async function POST(request: Request) {
       if (intentEval.isHighIntent) {
         session.isHighIntentNotified = true;
         const highIntentMsg =
-          `${formatTelegramTitle(ecosystemProp.key, "🎯 INTENȚIE RIDICATĂ")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🎯 <b>SIGNALS:</b>\n` +
-          `${intentEval.signals.map((s) => `• ${escapeHtml(s)}`).join("\n")}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `🕐 <b>Time:</b> ${timeOnly}\n` +
-          `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
-          `🧭 <b>Session:</b> <code>${shortSessionId}</code>\n` +
-          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry}\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🔥 HIGH INTENT VISITOR")}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🔥 <b>HIGH INTENT</b>\n` +
+          `Reason: ${escapeHtml(intentEval.reason)}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `👤 <b>VIZITATOR</b>\n` +
+          `Visitor ID: <code>${shortVisitorId}</code>\n` +
+          `Session: <code>${shortSessionId}</code>\n` +
+          `Ora: ${timeOnly}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `🌍 <b>Location:</b> ${geo.countryFlag} ${safeCity}, ${safeCountry} (estimată)\n` +
           `📱 <b>Device:</b> ${safeDeviceSummary}\n` +
-          `🔗 <b>Source:</b> ${safeSource}\n` +
-          `━━━━━━━━━━━━━━\n` +
-          `📊 <b>JOURNEY:</b> ${pageCount} pages · ${durationFormatted}`;
+          `🔗 <b>Source:</b> ${safeSource} / ${safeMedium}\n` +
+          `━━━━━━━━━━━━━━━━━━\n` +
+          `📊 <b>JOURNEY:</b> ${pageCount} pagini · ${durationFormatted}\n` +
+          `🎯 <b>SIGNALS:</b>\n${intentEval.signals.map((s) => `• ${escapeHtml(s)}`).join("\n")}`;
         sendTelegramActivity(highIntentMsg).catch(() => {});
       }
     }
@@ -918,6 +1032,10 @@ export async function POST(request: Request) {
         payment: data.payment,
         intent: data.intent,
         ipMasked: maskedClientIp,
+        firstTouch: data.firstTouch,
+        lastTouch: data.lastTouch,
+        screen: data.screenResolution,
+        viewport: data.viewport,
       },
       created_at: new Date().toISOString(),
     };

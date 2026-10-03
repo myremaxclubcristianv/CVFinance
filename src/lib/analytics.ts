@@ -6,6 +6,7 @@ declare global {
     gtag?: (...args: unknown[]) => void;
     fbq?: (...args: unknown[]) => void;
     dataLayer?: unknown[];
+    __cv_tracking_initialized?: boolean;
   }
 }
 
@@ -15,18 +16,29 @@ export const FB_PIXEL_ID = process.env.NEXT_PUBLIC_FB_PIXEL_ID || "";
 // Cache for deduplicating exact same events within a short timeframe
 const eventCache = new Set<string>();
 
+// Generate pseudonymous random ID with given prefix
+function generateId(prefix: string): string {
+  const rand = Math.random().toString(36).substring(2, 8) + Math.random().toString(36).substring(2, 6);
+  return `${prefix}${rand.toUpperCase()}`;
+}
+
 // Get or initialize persistent pseudonymous Visitor ID (localStorage)
 export const getVisitorId = (): string => {
-  if (typeof window === "undefined") return "vis_server";
+  if (typeof window === "undefined") return "VF-SERVER";
   try {
     let visitorId = localStorage.getItem("cv_finance_visitor_id");
     if (!visitorId) {
-      visitorId = "vis_" + Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 6);
+      visitorId = generateId("VF-");
       localStorage.setItem("cv_finance_visitor_id", visitorId);
       localStorage.setItem("cv_finance_visit_count", "1");
       localStorage.setItem("cv_finance_first_seen", String(Date.now()));
       localStorage.setItem("cv_finance_last_seen", String(Date.now()));
     } else {
+      // Normalize legacy vis_ prefix if present
+      if (visitorId.startsWith("vis_")) {
+        visitorId = "VF-" + visitorId.replace("vis_", "").toUpperCase();
+        localStorage.setItem("cv_finance_visitor_id", visitorId);
+      }
       const lastSeen = Number(localStorage.getItem("cv_finance_last_seen") || "0");
       const now = Date.now();
       // Increment visit count if returning after 30 minutes
@@ -38,23 +50,26 @@ export const getVisitorId = (): string => {
     }
     return visitorId;
   } catch {
-    return "vis_anon";
+    return "VF-ANON";
   }
 };
 
 // Get or initialize persistent pseudonymous Session ID (sessionStorage)
 export const getSessionId = (): string => {
-  if (typeof window === "undefined") return "sess_server";
+  if (typeof window === "undefined") return "S-SERVER";
   try {
     let sessionId = sessionStorage.getItem("cv_finance_session_id");
     if (!sessionId) {
-      sessionId = "sess_" + Math.random().toString(36).substring(2, 10) + Math.random().toString(36).substring(2, 6);
+      sessionId = generateId("S-");
       sessionStorage.setItem("cv_finance_session_id", sessionId);
       sessionStorage.setItem("cv_finance_session_start", String(Date.now()));
+    } else if (sessionId.startsWith("sess_")) {
+      sessionId = "S-" + sessionId.replace("sess_", "").toUpperCase();
+      sessionStorage.setItem("cv_finance_session_id", sessionId);
     }
     return sessionId;
   } catch {
-    return "sess_anon";
+    return "S-ANON";
   }
 };
 
@@ -77,6 +92,86 @@ export const getVisitCount = (): number => {
   }
 };
 
+// Multi-Touch Attribution helper (First Touch & Last Touch)
+export interface AttributionTouch {
+  source: string;
+  medium: string;
+  campaign: string;
+  term?: string;
+  content?: string;
+  landingPage: string;
+  timestamp: string;
+}
+
+export const getAttribution = () => {
+  if (typeof window === "undefined") return { firstTouch: null, lastTouch: null };
+  try {
+    const query = new URLSearchParams(window.location.search);
+    const utmSource = query.get("utm_source");
+    const utmMedium = query.get("utm_medium") || "—";
+    const utmCampaign = query.get("utm_campaign") || "—";
+    const utmTerm = query.get("utm_term") || "—";
+    const utmContent = query.get("utm_content") || "—";
+    const referrer = document.referrer;
+
+    let detectedSource = utmSource;
+    if (!detectedSource && referrer) {
+      try {
+        const refUrl = new URL(referrer);
+        if (!refUrl.hostname.includes(window.location.hostname)) {
+          detectedSource = refUrl.hostname.replace(/^www\./, "");
+        }
+      } catch {}
+    }
+
+    // 1. First Touch Attribution (persists forever)
+    let firstTouch: AttributionTouch | null = null;
+    const rawFirst = localStorage.getItem("cv_finance_first_touch");
+    if (!rawFirst) {
+      firstTouch = {
+        source: detectedSource || "direct",
+        medium: utmMedium,
+        campaign: utmCampaign,
+        term: utmTerm,
+        content: utmContent,
+        landingPage: window.location.pathname,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem("cv_finance_first_touch", JSON.stringify(firstTouch));
+    } else {
+      try {
+        firstTouch = JSON.parse(rawFirst);
+      } catch {}
+    }
+
+    // 2. Last Touch Attribution (updates on new external campaigns or referrers)
+    let lastTouch: AttributionTouch | null = null;
+    if (detectedSource) {
+      lastTouch = {
+        source: detectedSource,
+        medium: utmMedium,
+        campaign: utmCampaign,
+        term: utmTerm,
+        content: utmContent,
+        landingPage: window.location.pathname,
+        timestamp: new Date().toISOString(),
+      };
+      localStorage.setItem("cv_finance_last_touch", JSON.stringify(lastTouch));
+    } else {
+      const rawLast = localStorage.getItem("cv_finance_last_touch");
+      if (rawLast) {
+        try {
+          lastTouch = JSON.parse(rawLast);
+        } catch {}
+      }
+    }
+
+    return { firstTouch, lastTouch };
+  } catch {
+    return { firstTouch: null, lastTouch: null };
+  }
+};
+
 // Helper to check stored cookie consent
 export const hasConsent = (category: "analytics" | "marketing"): boolean => {
   if (typeof window === "undefined") return false;
@@ -90,7 +185,7 @@ export const hasConsent = (category: "analytics" | "marketing"): boolean => {
   }
 };
 
-// Helper to extract traffic parameters (UTMs, Referrer, Device, Viewport, Timezone)
+// Helper to extract traffic parameters (UTMs, Referrer, Device, Viewport, Timezone, Attribution)
 export const getTrafficMetadata = () => {
   if (typeof window === "undefined") return {};
 
@@ -110,6 +205,14 @@ export const getTrafficMetadata = () => {
   const visitCount = getVisitCount();
   const isReturning = visitCount > 1;
   const sessionDuration = getSessionDuration();
+  const { firstTouch, lastTouch } = getAttribution();
+
+  let screenResolution = "—";
+  let viewport = "—";
+  try {
+    screenResolution = `${window.screen?.width || window.innerWidth} × ${window.screen?.height || window.innerHeight}`;
+    viewport = `${window.innerWidth} × ${window.innerHeight}`;
+  } catch {}
 
   let language = "ro-RO";
   let timezone = "Europe/Bucharest";
@@ -133,8 +236,12 @@ export const getTrafficMetadata = () => {
     landingPage: window.location.pathname,
     deviceType,
     screenCategory,
+    screenResolution,
+    viewport,
     language,
     timezone,
+    firstTouch,
+    lastTouch,
   };
 };
 
@@ -153,6 +260,8 @@ const logTelegramActivity = (eventName: string, eventParams?: Record<string, unk
     page: window.location.pathname + window.location.hash,
     deviceType: meta.deviceType,
     screenCategory: meta.screenCategory,
+    screenResolution: meta.screenResolution,
+    viewport: meta.viewport,
     utmSource: meta.utmSource,
     utmMedium: meta.utmMedium,
     utmCampaign: meta.utmCampaign,
@@ -161,6 +270,8 @@ const logTelegramActivity = (eventName: string, eventParams?: Record<string, unk
     referrer: meta.referrer,
     language: meta.language,
     timezone: meta.timezone,
+    firstTouch: meta.firstTouch,
+    lastTouch: meta.lastTouch,
     timestamp: new Date().toLocaleTimeString("ro-RO", { hour: "2-digit", minute: "2-digit" }),
     ...eventParams,
   };
@@ -229,3 +340,36 @@ export const trackEvent = (
     console.log(`[Visitor Intelligence v2] (${eventName}) Consent - Analytics: ${hasConsent("analytics")}, Marketing: ${hasConsent("marketing")}:`, eventParams);
   }
 };
+
+// Passive client-side observer for scroll thresholds and engagement time milestones
+export const initPassiveEngagementTracking = () => {
+  if (typeof window === "undefined" || window.__cv_tracking_initialized) return;
+  window.__cv_tracking_initialized = true;
+
+  // 1. Scroll Depth Milestones (25%, 50%, 75%, 90%)
+  const scrollMilestones = new Set<number>();
+  const handleScroll = () => {
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight <= 0) return;
+    const scrollPercent = Math.floor((window.scrollY / docHeight) * 100);
+
+    const thresholds = [25, 50, 75, 90];
+    for (const t of thresholds) {
+      if (scrollPercent >= t && !scrollMilestones.has(t)) {
+        scrollMilestones.add(t);
+        trackEvent(`scroll_${t}`, { scrollDepth: `${t}%` });
+      }
+    }
+  };
+
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  // 2. Time-on-page Milestones (30s, 60s, 180s)
+  const timeThresholds = [30, 60, 180];
+  timeThresholds.forEach((sec) => {
+    setTimeout(() => {
+      trackEvent(`time_${sec}s`, { duration: `${sec}s` });
+    }, sec * 1000);
+  });
+};
+

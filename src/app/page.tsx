@@ -15,7 +15,7 @@ import {
   CheckCircle2,
   AlertCircle
 } from "lucide-react";
-import { trackEvent, getTrafficMetadata } from "@/lib/analytics";
+import { trackEvent, getTrafficMetadata, initPassiveEngagementTracking } from "@/lib/analytics";
 import CVFinanceHero from "@/components/CVFinanceHero";
 import CommandSheet from "@/components/CommandSheet";
 import FinancialIntelligence from "@/components/FinancialIntelligence";
@@ -219,9 +219,10 @@ export default function Home() {
     return () => window.removeEventListener("cv_intent_select", handleIntent);
   }, []);
 
-  // Track page view
+  // Track page view and initialize engagement telemetry
   useEffect(() => {
     trackEvent("page_view", getTrafficMetadata());
+    initPassiveEngagementTracking();
   }, []);
 
   // Calculations for calculator

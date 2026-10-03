@@ -154,11 +154,17 @@ export function cleanString(val?: string | null): string {
  * Format short pseudonymous Visitor/Session ID.
  */
 export function formatShortId(id?: string | null): string {
-  if (!id) return "—";
-  const prefix = id.startsWith("sess_") ? "sess_" : "vis_";
-  const cleanId = id.replace(/^(vis_|sess_)/, "");
-  const upper = cleanId.toUpperCase();
-  return prefix + upper.slice(0, 4) + "••••";
+  if (!id || id === "—") return "—";
+  if (id.startsWith("VF-") || id.startsWith("S-")) {
+    const parts = id.split("-");
+    const prefix = parts[0] + "-";
+    const body = parts.slice(1).join("-");
+    return prefix + body.slice(0, 6) + (body.length > 6 ? "•••" : "");
+  }
+  const isSess = id.startsWith("sess_");
+  const prefix = isSess ? "S-" : "VF-";
+  const cleanId = id.replace(/^(vis_|sess_)/, "").toUpperCase();
+  return prefix + cleanId.slice(0, 5) + "•••";
 }
 
 /**
