@@ -1,6 +1,15 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import {
+  detectEcosystemProperty,
+  formatTelegramTitle,
+  escapeHtml,
+  cleanString as clean,
+  formatShortId,
+  parseDeviceFromUA,
+  parseGeoFromHeaders,
+} from "@/lib/ecosystem";
 
 // In-memory rate limiting per client IP
 const ipRateLimit = new Map<string, { count: number; resetAt: number }>();
@@ -121,11 +130,11 @@ function isImportantPage(page: string): boolean {
 
 function evaluateHighIntent(session: SessionJourney): { isHighIntent: boolean; signals: string[] } {
   const signals: string[] = [];
-  
+
   if (session.hasCompletedCalculator) {
     signals.push("Calculator finalizat cu simulare");
   }
-  
+
   const commercialPages = session.pagesVisited.filter((p) =>
     p.includes("/calculator") ||
     p.includes("/totul-inainte-de-credit") ||
@@ -140,23 +149,23 @@ function evaluateHighIntent(session: SessionJourney): { isHighIntent: boolean; s
   if (commercialPages.length >= 3) {
     signals.push(`${commercialPages.length} pagini comerciale vizitate`);
   }
-  
+
   if (session.hasClickedPhone) {
     signals.push("Click pe numărul de telefon");
   }
-  
+
   if (session.hasClickedWhatsApp) {
     signals.push("Click pe butonul WhatsApp");
   }
-  
+
   if (session.hasStartedForm) {
     signals.push("Formular de calificare inițiat");
   }
-  
+
   if (session.isReturning && session.visitCount >= 2) {
     signals.push(`Vizitator recurent (Vizita #${session.visitCount})`);
   }
-  
+
   const isHighIntent = signals.length >= 2;
   return { isHighIntent, signals };
 }
@@ -191,25 +200,6 @@ const trackSchema = z.object({
   termYears: z.coerce.number().optional(),
 });
 
-const clean = (val?: string) => (val || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
-
-function escapeHtml(val?: string): string {
-  if (!val) return "";
-  return String(val)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function formatShortId(id: string): string {
-  const prefix = id.startsWith("sess_") ? "sess_" : "vis_";
-  const cleanId = id.replace(/^(vis_|sess_)/, "");
-  const upper = cleanId.toUpperCase();
-  return prefix + upper.slice(0, 4) + "••••";
-}
-
 function getClientIp(request: Request): string {
   const vercelIp = request.headers.get("x-vercel-ip") || request.headers.get("x-real-ip");
   if (vercelIp) return vercelIp.trim();
@@ -229,95 +219,6 @@ function maskIp(ip: string): string {
     }
   }
   return "xxx.xxx.xxx.xxx";
-}
-
-function parseDeviceFromUA(ua: string) {
-  const isMobile = /iPhone|iPad|iPod|Android/i.test(ua);
-  const isTablet = /iPad|Android/i.test(ua) && !/Mobile/i.test(ua);
-  const deviceType = isTablet ? "Tablet" : isMobile ? "Mobile" : "Desktop";
-
-  let os = "Other OS";
-  let osModel = "";
-  if (/iPhone/i.test(ua)) {
-    os = "iOS";
-    osModel = "iPhone";
-  } else if (/iPad/i.test(ua)) {
-    os = "iPadOS";
-    osModel = "iPad";
-  } else if (/Macintosh|Mac OS X/i.test(ua)) {
-    os = "macOS";
-  } else if (/Windows NT/i.test(ua)) {
-    os = "Windows";
-  } else if (/Android/i.test(ua)) {
-    os = "Android";
-  } else if (/Linux/i.test(ua)) {
-    os = "Linux";
-  }
-
-  let browser = "Other Browser";
-  if (/Edg/i.test(ua)) browser = "Edge";
-  else if (/Chrome/i.test(ua) && !/Edg/i.test(ua)) browser = "Chrome";
-  else if (/Safari/i.test(ua) && !/Chrome/i.test(ua)) browser = "Safari";
-  else if (/Firefox/i.test(ua)) browser = "Firefox";
-  else if (/Opera|OPR/i.test(ua)) browser = "Opera";
-
-  const deviceSummary = osModel
-    ? `${deviceType} · ${osModel} · ${browser}`
-    : `${deviceType} · ${os} · ${browser}`;
-
-  return { deviceType, os, browser, deviceSummary };
-}
-
-function parseGeoFromHeaders(request: Request) {
-  const countryCode = request.headers.get("x-vercel-ip-country") || "RO";
-  const cityRaw = request.headers.get("x-vercel-ip-city") || "";
-  const regionRaw = request.headers.get("x-vercel-ip-country-region") || "";
-  const timezoneRaw = request.headers.get("x-vercel-ip-timezone") || "Europe/Bucharest";
-
-  let country = "Romania";
-  let countryFlag = "🇷🇴";
-
-  if (countryCode === "RO") {
-    country = "Romania";
-    countryFlag = "🇷🇴";
-  } else if (countryCode === "GB" || countryCode === "UK") {
-    country = "Marea Britanie";
-    countryFlag = "🇬🇧";
-  } else if (countryCode === "DE") {
-    country = "Germania";
-    countryFlag = "🇩🇪";
-  } else if (countryCode === "IT") {
-    country = "Italia";
-    countryFlag = "🇮🇹";
-  } else if (countryCode === "ES") {
-    country = "Spania";
-    countryFlag = "🇪🇸";
-  } else if (countryCode === "FR") {
-    country = "Franța";
-    countryFlag = "🇫🇷";
-  } else if (countryCode === "US") {
-    country = "Statele Unite";
-    countryFlag = "🇺🇸";
-  } else if (countryCode === "MD") {
-    country = "Moldova";
-    countryFlag = "🇲🇩";
-  } else {
-    country = countryCode;
-    countryFlag = "🌍";
-  }
-
-  let city = "București";
-  if (cityRaw) {
-    try {
-      city = decodeURIComponent(cityRaw);
-    } catch {
-      city = cityRaw;
-    }
-  } else if (regionRaw) {
-    city = regionRaw;
-  }
-
-  return { country, countryFlag, city, timezone: timezoneRaw };
 }
 
 function normalizeSource(utmSource: string, referrer: string): { label: string; host: string } {
@@ -416,86 +317,85 @@ async function sendTelegramActivity(text: string): Promise<boolean> {
   }
 }
 
-async function saveToSupabase(sessionData: any, eventData: any): Promise<void> {
+async function saveToSupabase(sessionRecord: any, eventRecord: any): Promise<void> {
   try {
-    const admin = getSupabaseAdmin();
-    if (sessionData && sessionData.id) {
-      await admin.from("visitor_sessions").upsert(sessionData, { onConflict: "id" });
-    }
-    if (eventData && eventData.id) {
-      await admin.from("visitor_events").insert(eventData);
-    }
+    const supabase = getSupabaseAdmin();
+    await supabase.from("sessions").upsert(sessionRecord, { onConflict: "id" });
+    await supabase.from("events").insert(eventRecord);
   } catch {
-    // Graceful degradation
+    // Non-blocking fallback
   }
 }
 
 export async function POST(request: Request) {
   try {
-    const ip = getClientIp(request);
-    if (!allowTrackRequest(ip)) {
-      return NextResponse.json({ ok: false, message: "Rate limit exceeded" }, { status: 429 });
+    const clientIp = getClientIp(request);
+    const maskedClientIp = maskIp(clientIp);
+
+    if (!allowTrackRequest(clientIp)) {
+      return NextResponse.json({ ok: false, error: "Rate limit exceeded" }, { status: 429 });
     }
 
     let body: any = {};
     try {
       body = await request.json();
     } catch {
-      return NextResponse.json({ ok: false, message: "Invalid JSON" }, { status: 400 });
+      return NextResponse.json({ ok: false, error: "Invalid JSON" }, { status: 400 });
     }
 
     const parsed = trackSchema.safeParse(body);
     if (!parsed.success) {
-      return NextResponse.json({ ok: false, message: "Invalid payload schema" }, { status: 400 });
+      return NextResponse.json({ ok: false, error: "Invalid schema" }, { status: 400 });
     }
 
     const data = parsed.data;
-    const ua = request.headers.get("user-agent") || "";
-    const parsedUA = parseDeviceFromUA(ua);
-    const geo = parseGeoFromHeaders(request);
-    const sourceInfo = normalizeSource(data.utmSource, data.referrer);
 
-    const rawVisitorId = clean(data.visitorId) || "vis_anon";
-    const rawSessionId = clean(data.sessionId) || "sess_anon";
+    // Detect originating ecosystem property (CREDITE, INSURANCE, HOMEFIND, AIXMEDIA, CONSTRUCTIONS, FLY)
+    const ecosystemProp = detectEcosystemProperty(clean(data.page) || clean(data.source), request);
+
+    // Context & Technical Details
+    const rawVisitorId = data.visitorId || "vis_anon";
+    const rawSessionId = data.sessionId || "sess_anon";
     const shortVisitorId = formatShortId(rawVisitorId);
     const shortSessionId = formatShortId(rawSessionId);
 
-    const safePage = escapeHtml(clean(data.page) || "/");
-    const safeCtaLabel = escapeHtml(clean(data.ctaLabel));
-    const safeDeviceSummary = escapeHtml(parsedUA.deviceSummary);
-    const safeScreenCategory = escapeHtml(clean(data.screenCategory) || "Large screen");
-    const safeLanguage = escapeHtml(clean(data.language) || "ro-RO");
-    const safeTimezone = escapeHtml(clean(data.timezone) || geo.timezone);
-    const safeSource = escapeHtml(sourceInfo.label);
-    const safeMedium = escapeHtml(clean(data.utmMedium) || "—");
-    const safeCampaign = escapeHtml(clean(data.utmCampaign) || "—");
-    const safeReferrerHost = escapeHtml(sourceInfo.host);
+    const ua = request.headers.get("user-agent") || "";
+    const parsedUA = parseDeviceFromUA(ua);
+    const safeDeviceSummary = parsedUA.deviceSummary;
+
+    const geo = parseGeoFromHeaders(request);
     const safeCity = escapeHtml(geo.city);
     const safeCountry = escapeHtml(geo.country);
-    const maskedClientIp = maskIp(ip);
+    const safePage = escapeHtml(clean(data.page));
+    const safeCtaLabel = escapeHtml(clean(data.ctaLabel));
+    const safeLanguage = escapeHtml(clean(data.language));
+    const safeTimezone = escapeHtml(clean(data.timezone));
+    const safeScreenCategory = escapeHtml(clean(data.screenCategory));
 
+    const sourceInfo = normalizeSource(data.utmSource, data.referrer);
+    const safeSource = escapeHtml(sourceInfo.label);
+    const safeReferrerHost = escapeHtml(sourceInfo.host);
+    const safeMedium = escapeHtml(clean(data.utmMedium));
+    const safeCampaign = escapeHtml(clean(data.utmCampaign));
+
+    const nowDateTime = new Date();
     const fullTimestampStr = new Intl.DateTimeFormat("ro-RO", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
+      dateStyle: "medium",
+      timeStyle: "medium",
       timeZone: "Europe/Bucharest",
-    }).format(new Date());
+    }).format(nowDateTime);
 
     const timeOnly = new Intl.DateTimeFormat("ro-RO", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
+      timeStyle: "medium",
       timeZone: "Europe/Bucharest",
-    }).format(new Date());
+    }).format(nowDateTime);
 
     const actionTimeStr = new Intl.DateTimeFormat("ro-RO", {
       hour: "2-digit",
       minute: "2-digit",
+      second: "2-digit",
       timeZone: "Europe/Bucharest",
-    }).format(new Date());
+    }).format(nowDateTime);
 
     // Journey Tracking
     const session = getOrCreateSession(
@@ -539,7 +439,7 @@ export async function POST(request: Request) {
         const recentJourney = session.pagesVisited.map((p, i) => `${i + 1}. ${escapeHtml(p)}`).join("\n");
         const lastAction = session.actions.length > 1 ? session.actions[session.actions.length - 1] : "Page view";
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🔁 VISITATOR RECURENT</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🔁 VISITATOR RECURENT")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>SESSION</b>\n` +
           `━━━━━━━━━━━━━━\n` +
@@ -577,7 +477,7 @@ export async function POST(request: Request) {
         session.timedActions.push({ timeStr: actionTimeStr, name: "Page view" });
         shouldNotifyTelegram = true;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 👀 VISITOR NOU</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "👀 VISITOR NOU")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>SESSION</b>\n` +
           `━━━━━━━━━━━━━━\n` +
@@ -616,7 +516,7 @@ export async function POST(request: Request) {
       if (canNotifyAction(`page_${clean(data.page)}`, 30000)) {
         shouldNotifyTelegram = true;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📄 PAGINĂ IMPORTANTĂ</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "📄 PAGINĂ IMPORTANTĂ")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `📄 <b>PAGE:</b> ${safePage}\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
@@ -641,7 +541,7 @@ export async function POST(request: Request) {
         const totalClicks = session.actionCounts.get("phone") || 1;
         const ctaTitle = totalClicks > 1 ? `📞 PHONE CTA CLICKED · ${totalClicks}×` : `📞 PHONE CTA CLICKED`;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📞 CLICK TELEFON</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "📞 CLICK TELEFON")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
           `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
@@ -674,7 +574,7 @@ export async function POST(request: Request) {
         const totalClicks = session.actionCounts.get("whatsapp") || 1;
         const ctaTitle = totalClicks > 1 ? `💬 WHATSAPP CTA CLICKED · ${totalClicks}×` : `💬 WHATSAPP CTA CLICKED`;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 💬 CLICK WHATSAPP</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "💬 CLICK WHATSAPP")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
           `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
@@ -704,7 +604,7 @@ export async function POST(request: Request) {
       if (canNotifyAction("telegram_click")) {
         shouldNotifyTelegram = true;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — ✈️ CLICK TELEGRAM</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "✈️ CLICK TELEGRAM")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
           `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
@@ -731,7 +631,7 @@ export async function POST(request: Request) {
         const coarseAmount = getCoarseAmountRange(data.amount);
         const coarsePayment = getCoarsePaymentRange(data.payment);
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🧮 CALCULATOR FINALIZAT</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🧮 CALCULATOR FINALIZAT")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
           `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
@@ -767,7 +667,7 @@ export async function POST(request: Request) {
         const storiesCount = session.storiesViewed.length;
         const storiesBadge = storiesCount > 1 ? ` (${storiesCount} povești citite în sesiune)` : "";
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📖 POVESTE VIZUALIZATĂ</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "📖 POVESTE VIZUALIZATĂ")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `📖 <b>Story:</b> ${escapeHtml(storyTitle)}${storiesBadge}\n` +
           `📄 <b>URL:</b> ${safePage}\n` +
@@ -797,7 +697,7 @@ export async function POST(request: Request) {
       if (canNotifyAction("form_start", 20000)) {
         shouldNotifyTelegram = true;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📝 FORMULAR ÎNCEPUT</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "📝 FORMULAR ÎNCEPUT")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
           `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
@@ -820,7 +720,7 @@ export async function POST(request: Request) {
       if (canNotifyAction("referral", 25000)) {
         shouldNotifyTelegram = true;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🤝 PROGRAM RECOMANDĂRI</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🤝 PROGRAM RECOMANDĂRI")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
           `Vizitatorul a accesat ecosistemul de parteneriat / recomandări\n` +
@@ -847,7 +747,7 @@ export async function POST(request: Request) {
       if (canNotifyAction(`cta_${actionName}`, 20000)) {
         shouldNotifyTelegram = true;
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🔥 ACTIVITATE IMPORTANTĂ</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🔥 ACTIVITATE IMPORTANTĂ")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🕐 <b>Time:</b> ${timeOnly}\n` +
           `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
@@ -878,9 +778,9 @@ export async function POST(request: Request) {
       const formattedTimeline = session.timedActions.length > 0
         ? session.timedActions.map((ta) => `${ta.timeStr} — ${escapeHtml(ta.name)}`).join("\n")
         : `${actionTimeStr} — Lead submitted`;
-      
+
       telegramText =
-        `💳 <b>CREDITE.CRISTIANVADUVA.COM — 📊 JOURNEY</b>\n` +
+        `${formatTelegramTitle(ecosystemProp.key, "📊 JOURNEY")}\n` +
         `━━━━━━━━━━━━━━\n` +
         `👤 <b>VISITOR & SESSION</b>\n` +
         `━━━━━━━━━━━━━━\n` +
@@ -918,7 +818,7 @@ export async function POST(request: Request) {
           ? session.actions.slice(-5).map((a) => `• ${escapeHtml(a)}`).join("\n")
           : "• Navigare generală";
         telegramText =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🚪 SESIUNE ÎNCHEIATĂ</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🚪 SESIUNE ÎNCHEIATĂ")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `⏱ <b>Duration:</b> ${durationFormatted}\n` +
           `🆔 <b>Visitor:</b> <code>${shortVisitorId}</code>\n` +
@@ -945,7 +845,7 @@ export async function POST(request: Request) {
       if (intentEval.isHighIntent) {
         session.isHighIntentNotified = true;
         const highIntentMsg =
-          `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🎯 INTENȚIE RIDICATĂ</b>\n` +
+          `${formatTelegramTitle(ecosystemProp.key, "🎯 INTENȚIE RIDICATĂ")}\n` +
           `━━━━━━━━━━━━━━\n` +
           `🎯 <b>SIGNALS:</b>\n` +
           `${intentEval.signals.map((s) => `• ${escapeHtml(s)}`).join("\n")}\n` +

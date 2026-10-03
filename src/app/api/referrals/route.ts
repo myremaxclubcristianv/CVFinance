@@ -1,6 +1,14 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import {
+  detectEcosystemProperty,
+  escapeHtml,
+  cleanString,
+  formatShortId,
+  parseDeviceFromUA,
+  parseGeoFromHeaders,
+} from "@/lib/ecosystem";
 
 const referralSchema = z.object({
   referrer_name: z.string().trim().min(2).max(100),
@@ -48,6 +56,7 @@ const attempts = new Map<string, { count: number; resetAt: number }>();
 const fullReferralSchema = referralSchema;
 const RATE_LIMIT = 5;
 const WINDOW_MS = 15 * 60 * 1000;
+
 function allowRequest(ip: string): boolean {
   const now = Date.now();
   const entry = attempts.get(ip);
@@ -60,9 +69,10 @@ function allowRequest(ip: string): boolean {
   return true;
 }
 
-// Duplicate protection – same as leads route
+// Duplicate protection
 const processed = new Map<string, number>();
 const DUP_WINDOW_MS = 10 * 60 * 1000;
+
 function isDuplicate(phone: string, email: string): boolean {
   const now = Date.now();
   const key = `${phone}-${email}`;
@@ -70,20 +80,6 @@ function isDuplicate(phone: string, email: string): boolean {
   if (last && now - last < DUP_WINDOW_MS) return true;
   processed.set(key, now);
   return false;
-}
-
-function clean(val?: string) {
-  return (val || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
-}
-
-function escapeHtml(val?: string): string {
-  if (!val) return "";
-  return String(val)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
 }
 
 function getClientIp(request: Request): string {
@@ -138,41 +134,49 @@ export async function POST(request: Request) {
     if (isDuplicate(data.referrer_phone, data.referrer_email || "")) {
       return NextResponse.json({ ok: true, message: "Recomandarea a fost înregistrată cu succes." });
     }
-    // Store in leads table – respecting existing columns
+
+    const userAgent = cleanString(request.headers.get("user-agent") || "necunoscut");
+    const referrer = cleanString(request.headers.get("referer") || "direct");
+    const deviceInfo = parseDeviceFromUA(userAgent);
+    const geoInfo = parseGeoFromHeaders(request);
+    const ecosystemProp = detectEcosystemProperty(data.pageUrl, request);
+
+    // Store in leads table
     const { error } = await getSupabaseAdmin()
-    .from("leads")
-    .insert({
-      name: clean(data.client_name),
-      phone: clean(data.client_phone),
-      email: data.client_email ? clean(data.client_email) : "referral@cvfinance.ro",
-      purpose: clean(data.financial_need),
-      desired_amount: "0",
-      income: "0",
-      employment: "Sub 3 luni",
-      credit_types: ["Nu am"],
-      credit_type: "Nu am",
-      monthly_payment: "0",
-      delays: "Nu",
-      credit_bureau: "Nu știu",
-      message: `[RECOMANDARE DE LA: ${clean(data.referrer_name)} (${clean(data.referrer_phone)}${data.referrer_email ? " / " + clean(data.referrer_email) : ""})] ${clean(data.referral_message || "")}`.trim(),
-      gdpr: true,
-      marketing: false,
-      utm_source: "referral",
-      utm_medium: data.utmMedium || "—",
-      utm_campaign: data.utmCampaign || "—",
-      utm_content: data.utmContent || "—",
-      page_url: data.pageUrl,
-      device_type: data.deviceType || "Desktop",
-      ip,
-      user_agent: request.headers.get("user-agent") || "",
-      referrer: clean(data.referrer_name),
-    });
+      .from("leads")
+      .insert({
+        name: cleanString(data.client_name),
+        phone: cleanString(data.client_phone),
+        email: data.client_email ? cleanString(data.client_email) : null,
+        purpose: cleanString(data.financial_need),
+        desired_amount: null,
+        income: null,
+        employment: null,
+        credit_types: null,
+        credit_type: null,
+        monthly_payment: null,
+        delays: null,
+        credit_bureau: null,
+        message: `[RECOMANDARE DE LA: ${cleanString(data.referrer_name)} (${cleanString(data.referrer_phone)}${data.referrer_email ? " / " + cleanString(data.referrer_email) : ""})] ${cleanString(data.referral_message || "")}`.trim(),
+        gdpr: true,
+        marketing: false,
+        utm_source: "referral",
+        utm_medium: data.utmMedium || "—",
+        utm_campaign: data.utmCampaign || "—",
+        utm_content: data.utmContent || "—",
+        page_url: data.pageUrl || null,
+        device_type: data.deviceType || "Desktop",
+        ip,
+        user_agent: userAgent,
+        referrer: cleanString(data.referrer_name),
+      });
+
     if (error) {
       console.error("Supabase insert error (referral):", error);
     }
 
-    const shortVisitor = data.visitorId ? escapeHtml(clean(data.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
-    const shortSession = data.sessionId ? escapeHtml(clean(data.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
+    const shortVisitor = formatShortId(data.visitorId);
+    const shortSession = formatShortId(data.sessionId);
 
     const timestamp = new Intl.DateTimeFormat("ro-RO", {
       dateStyle: "medium",
@@ -180,32 +184,41 @@ export async function POST(request: Request) {
       timeZone: "Europe/Bucharest",
     }).format(new Date());
 
+    const sanitizedReferralMsg = cleanString(data.referral_message || "");
+
     // Build Telegram message for referral
     const telegramText =
-      `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🤝 RECOMANDARE NOUĂ</b>\n` +
-      `━━━━━━━━━━━━━━\n` +
+      `${ecosystemProp.emoji} <b>${ecosystemProp.domain.toUpperCase()} — 🤝 RECOMANDARE NOUĂ</b>\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
       `👤 <b>PARTENER / REFERRER</b>\n` +
-      `━━━━━━━━━━━━━━\n` +
-      `Nume: ${escapeHtml(clean(data.referrer_name))}\n` +
-      `Telefon: <code>${escapeHtml(clean(data.referrer_phone))}</code>\n` +
-      `Email: ${escapeHtml(clean(data.referrer_email)) || "—"}\n` +
-      `━━━━━━━━━━━━━━\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `Nume: ${escapeHtml(cleanString(data.referrer_name))}\n` +
+      `Telefon: <code>${escapeHtml(cleanString(data.referrer_phone))}</code>\n` +
+      `Email: ${cleanString(data.referrer_email) ? escapeHtml(cleanString(data.referrer_email)) : "Nespecificat"}\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
       `👥 <b>CLIENT RECOMANDAT</b>\n` +
-      `━━━━━━━━━━━━━━\n` +
-      `Nume: ${escapeHtml(clean(data.client_name))}\n` +
-      `Telefon: <code>${escapeHtml(clean(data.client_phone))}</code>\n` +
-      `Email: ${escapeHtml(clean(data.client_email)) || "—"}\n` +
-      `Nevoie financiară: <b>${escapeHtml(clean(data.financial_need))}</b>\n` +
-      `Mesaj: ${escapeHtml(clean(data.referral_message)) || "—"}\n` +
-      `━━━━━━━━━━━━━━\n` +
-      `🌍 <b>CONTEXT & TRAFFIC</b>\n` +
-      `━━━━━━━━━━━━━━\n` +
-      `🕐 Time: ${escapeHtml(timestamp)}\n` +
-      `🆔 Visitor: <code>${shortVisitor}</code>\n` +
-      `🧭 Session: <code>${shortSession}</code>\n` +
-      `📄 Referral page: ${escapeHtml(data.pageUrl || "/referral")}\n` +
-      `📱 Device: ${escapeHtml(data.deviceType || "Desktop")}\n` +
-      `🔗 Source: referral`;
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `Nume: ${escapeHtml(cleanString(data.client_name))}\n` +
+      `Telefon: <code>${escapeHtml(cleanString(data.client_phone))}</code>\n` +
+      `Email: ${cleanString(data.client_email) ? escapeHtml(cleanString(data.client_email)) : "Nespecificat"}\n` +
+      `Nevoie financiară: <b>${escapeHtml(cleanString(data.financial_need))}</b>\n` +
+      (sanitizedReferralMsg ? `Mesaj: ${escapeHtml(sanitizedReferralMsg)}\n` : "") +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `🌐 <b>CONTEXT</b>\n` +
+      `━━━━━━━━━━━━━━━━━━\n` +
+      `Landing page: ${escapeHtml(data.pageUrl || "/referral")}\n` +
+      `Source: referral\n` +
+      `Medium: —\n` +
+      `Campaign: —\n` +
+      `Referrer: ${escapeHtml(referrer)}\n` +
+      `Device: ${escapeHtml(deviceInfo.deviceType || data.deviceType || "Desktop")}\n` +
+      `OS: ${escapeHtml(deviceInfo.os)}\n` +
+      `Browser: ${escapeHtml(deviceInfo.browser)}\n` +
+      `Location aproximativă: ${geoInfo.countryFlag} ${escapeHtml(geoInfo.city)}, ${escapeHtml(geoInfo.country)}\n` +
+      `Visitor ID: <code>${shortVisitor}</code>\n` +
+      `Session ID: <code>${shortSession}</code>\n` +
+      `Time: ${escapeHtml(timestamp)}`;
+
     await sendTelegramReferral(telegramText);
     return NextResponse.json({ ok: true, message: "Recomandarea a fost înregistrată cu succes." });
   } catch (e) {

@@ -1,23 +1,25 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import {
+  detectEcosystemProperty,
+  escapeHtml,
+  cleanString,
+  formatShortId,
+  parseDeviceFromUA,
+  parseGeoFromHeaders,
+} from "@/lib/ecosystem";
+
+// Real Form Schema for Main Lead Qualification (credite.cristianvaduva.com)
+// Source of truth: Formularul Real din UI (3 pași: Obiectiv/Sumă -> Venit/Vechime -> Nume/Telefon/Email/GDPR)
 const standardLeadSchema = z.object({
-  // Step 1: Purpose & Requested Amount
+  // Step 1: Purpose & Desired Amount
   purpose: z.string().trim().min(2, "Selectează un obiectiv financiar.").max(100),
   desiredAmount: z.coerce.number().positive("Suma dorită trebuie să fie mai mare ca 0.").max(5_000_000),
 
-  // Step 2: Financial Profile
+  // Step 2: Income & Employment
   income: z.coerce.number().positive("Venitul trebuie să fie mai mare ca 0.").max(1_000_000),
   employment: z.string().trim().min(1, "Selectează vechimea în muncă.").max(100),
-  creditTypes: z
-    .array(z.string())
-    .min(1)
-    .max(10)
-    .optional()
-    .default(["Bancă"]),
-  monthlyPayment: z.coerce.number().min(0).max(100_000).optional().default(0),
-  delays: z.string().trim().max(100).optional().default("Nu"),
-  creditBureau: z.string().trim().max(100).optional().default("Nu știu"),
 
   // Step 3: Contact & Consents
   name: z.string().trim().min(2, "Te rugăm să introduci numele complet (minimum 2 caractere).").max(100),
@@ -33,14 +35,11 @@ const standardLeadSchema = z.object({
     .or(z.literal(""))
     .transform((val) => (!val ? undefined : val))
     .pipe(z.string().email("Adresă de email nevalidă.").max(120).optional()),
-  birthYear: z.coerce.number().int().min(1930).max(new Date().getFullYear() - 18).optional().default(1990),
-  message: z.string().trim().max(1000).optional().default(""),
+
   gdpr: z.literal(true, {
     errorMap: () => ({ message: "Acordul cu termenii și condițiile este obligatoriu." }),
   }),
   gdprConsent: z.boolean().optional().default(true),
-  marketing: z.boolean().optional().default(false),
-  marketingConsent: z.boolean().optional().default(false),
 
   // Traffic & Device Metadata
   website: z.string().max(0).optional().default(""), // Honeypot
@@ -55,6 +54,7 @@ const standardLeadSchema = z.object({
   sessionId: z.string().max(100).optional(),
 });
 
+// Real Form Schema for "Totul Înainte de Credit" Funnel
 const totulLeadSchema = z.object({
   source: z.enum(["totul-inainte-de-credit", "homepage-totul-inainte-de-credit"]),
   leadType: z.string().optional().default("credit_prequalification"),
@@ -104,6 +104,7 @@ const totulLeadSchema = z.object({
   sessionId: z.string().max(100).optional(),
 });
 
+// Real Form Schema for "Business Finance" Funnel
 const businessLeadSchema = z.object({
   source: z.literal("homepage-business-finance"),
   leadType: z.string().optional().default("business_finance_prequalification"),
@@ -181,7 +182,6 @@ function allowRequest(ip: string): boolean {
 }
 
 // Temporary Duplicate Prevention
-// TODO: Replace with Redis/Supabase based deduplication when traffic increases.
 const processedLeads = new Map<string, number>();
 const DUP_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
 
@@ -189,11 +189,11 @@ function isDuplicate(phone: string, email: string): boolean {
   const now = Date.now();
   const key = `${phone}-${email}`;
   const lastProcessed = processedLeads.get(key);
-  
+
   if (lastProcessed && now - lastProcessed < DUP_WINDOW_MS) {
     return true;
   }
-  
+
   processedLeads.set(key, now);
   return false;
 }
@@ -260,18 +260,6 @@ function calculateBusinessLeadPriority(data: any): "HOT" | "WARM" | "INFORMATION
   return "INFORMATIONAL";
 }
 
-const clean = (val?: string) => (val || "").replace(/[<>]/g, "").replace(/\s+/g, " ").trim();
-
-function escapeHtml(val?: string): string {
-  if (!val) return "";
-  return String(val)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
 function getClientIp(request: Request): string {
   const vercelIp = request.headers.get("x-vercel-ip") || request.headers.get("x-real-ip");
   if (vercelIp) return vercelIp.trim();
@@ -291,42 +279,50 @@ async function saveLead(leadData: any): Promise<boolean> {
     .insert({
       name: leadData.name,
       phone: leadData.phone,
-      email: leadData.email,
+      email: leadData.email || null,
 
-      birth_year: leadData.birthYear,
-      purpose: leadData.purpose,
-      desired_amount: String(leadData.desiredAmount),
+      birth_year: leadData.birthYear || null,
+      purpose: leadData.purpose || null,
+      desired_amount: leadData.desiredAmount ? String(leadData.desiredAmount) : null,
 
-      income: String(leadData.income),
-      employment: leadData.employment,
+      income: leadData.income ? String(leadData.income) : null,
+      employment: leadData.employment || null,
 
-      credit_types: Array.isArray(leadData.creditTypes) ? leadData.creditTypes : [String(leadData.creditTypes || "Nespecificat")],
-      credit_type: Array.isArray(leadData.creditTypes) ? leadData.creditTypes.join(", ") : String(leadData.creditTypes || "Nespecificat"),
+      credit_types: leadData.creditTypes
+        ? Array.isArray(leadData.creditTypes)
+          ? leadData.creditTypes
+          : [String(leadData.creditTypes)]
+        : null,
+      credit_type: leadData.creditTypes
+        ? Array.isArray(leadData.creditTypes)
+          ? leadData.creditTypes.join(", ")
+          : String(leadData.creditTypes)
+        : null,
 
-      monthly_payment: String(leadData.monthlyPayment || "0"),
-      delays: leadData.delays || "Nu",
-      credit_bureau: leadData.creditBureau || "Nu știu",
+      monthly_payment: leadData.monthlyPayment ? String(leadData.monthlyPayment) : null,
+      delays: leadData.delays || null,
+      credit_bureau: leadData.creditBureau || null,
 
-      message: leadData.message,
+      message: leadData.message || null,
 
-      gdpr: leadData.gdpr,
-      marketing: leadData.marketing,
+      gdpr: leadData.gdpr ?? true,
+      marketing: leadData.marketing ?? false,
 
-      utm_source: leadData.utmSource,
-      utm_medium: leadData.utmMedium,
-      utm_campaign: leadData.utmCampaign,
-      utm_content: leadData.utmContent,
+      utm_source: leadData.utmSource || null,
+      utm_medium: leadData.utmMedium || null,
+      utm_campaign: leadData.utmCampaign || null,
+      utm_content: leadData.utmContent || null,
 
-      page_url: leadData.pageUrl,
-      device_type: leadData.deviceType,
+      page_url: leadData.pageUrl || null,
+      device_type: leadData.deviceType || null,
 
-      ip: leadData.ip,
-      user_agent: leadData.userAgent,
-      referrer: leadData.referrer,
+      ip: leadData.ip || null,
+      user_agent: leadData.userAgent || null,
+      referrer: leadData.referrer || null,
     });
 
   if (error) {
-    console.error("Supabase lead insert failed");
+    console.error("Supabase lead insert failed:", error);
     return false;
   }
 
@@ -337,7 +333,7 @@ async function sendTelegram(telegramText: string): Promise<boolean> {
   if (!process.env.TELEGRAM_BOT_TOKEN || !process.env.TELEGRAM_CHAT_ID) {
     return false;
   }
-  
+
   const response = await fetch(`https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}/sendMessage`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -347,7 +343,7 @@ async function sendTelegram(telegramText: string): Promise<boolean> {
       parse_mode: "HTML",
     }),
   });
-  
+
   return response.ok;
 }
 
@@ -394,8 +390,11 @@ export async function POST(request: Request) {
       );
     }
 
-    const isTotulCredit = body?.source === "totul-inainte-de-credit" || body?.source === "homepage-totul-inainte-de-credit";
+    const isTotulCredit =
+      body?.source === "totul-inainte-de-credit" ||
+      body?.source === "homepage-totul-inainte-de-credit";
     const isBusiness = body?.source === "homepage-business-finance";
+
     const parsed = isBusiness
       ? businessLeadSchema.safeParse(body)
       : isTotulCredit
@@ -423,14 +422,14 @@ export async function POST(request: Request) {
     }
 
     const lead: any = data;
-    
+
     // Duplicate Check
     if (isDuplicate(lead.phone, lead.email || "")) {
       return NextResponse.json({ ok: true, message: "Solicitarea a fost înregistrată cu succes." });
     }
 
-    const sanitizedName = clean(lead.name);
-    const sanitizedEmail = lead.email ? clean(lead.email) : "";
+    const sanitizedName = cleanString(lead.name);
+    const sanitizedEmail = lead.email ? cleanString(lead.email) : "";
 
     const timestamp = new Intl.DateTimeFormat("ro-RO", {
       dateStyle: "medium",
@@ -438,17 +437,28 @@ export async function POST(request: Request) {
       timeZone: "Europe/Bucharest",
     }).format(new Date());
 
-    const userAgent = clean(request.headers.get("user-agent") || "necunoscut");
-    const referrer = clean(request.headers.get("referer") || "direct");
+    const userAgent = cleanString(request.headers.get("user-agent") || "necunoscut");
+    const referrer = cleanString(request.headers.get("referer") || "direct");
+    const deviceInfo = parseDeviceFromUA(userAgent);
+    const geoInfo = parseGeoFromHeaders(request);
+    const ecosystemProp = detectEcosystemProperty(lead.pageUrl || lead.source, request);
 
     let telegramText = "";
     let fullLeadData: any = {};
 
+    const shortVisitor = formatShortId(lead.visitorId);
+    const shortSession = formatShortId(lead.sessionId);
+
     if (isBusiness) {
-      const sanitizedMessage = clean(lead.clientMessage || "");
+      const sanitizedMessage = cleanString(lead.clientMessage || "");
+      const sanitizedCompany = cleanString(lead.companyName || "");
+      const sanitizedIndustry = cleanString(lead.industry || "");
+      const sanitizedLocation = cleanString(lead.location || "");
+
       const priority = calculateBusinessLeadPriority(lead);
       const priorityBadge = priority === "HOT" ? "🔥 HOT" : priority === "WARM" ? "🟡 WARM" : "🔵 INFORMATIONAL";
       const purposesText = (lead.selectedPurposes || []).map((p: string) => `• ${escapeHtml(p)}`).join("\n");
+      const formattedMonthly = new Intl.NumberFormat("ro-RO").format(lead.monthlyInstallments || 0);
 
       fullLeadData = {
         ...lead,
@@ -465,52 +475,64 @@ export async function POST(request: Request) {
         timestamp,
       };
 
-      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "";
-      const idFooter = (shortVisitor ? `\n🆔 <b>Visitor:</b> <code>${shortVisitor}</code>` : "") + (shortSession ? `\n🧭 <b>Session:</b> <code>${shortSession}</code>` : "");
-
       telegramText =
-        `🏢 <b>LEAD — BUSINESS FINANCE</b>\n\n` +
-        `🔥 <b>PRIORITATE: ${priorityBadge}</b>\n\n` +
-        `👤 <b>ANTREPRENOR</b>\n` +
+        `${ecosystemProp.emoji} <b>${ecosystemProp.domain.toUpperCase()} — 🟢 LEAD NOU (BUSINESS FINANCE)</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `👤 <b>CLIENT / ANTREPRENOR</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
         `Nume: ${escapeHtml(sanitizedName)}\n` +
         `Telefon: <code>${escapeHtml(lead.phone)}</code>\n` +
-        `Email: ${escapeHtml(sanitizedEmail) || "—"}\n\n` +
-        `🏢 <b>BUSINESS</b>\n` +
-        `Firma: ${escapeHtml(clean(lead.companyName || "Nespecificat"))}\n` +
-        `Tip: ${escapeHtml(lead.companyType)} | Vechime: ${escapeHtml(lead.companyAge)}\n` +
-        `Domeniu: ${escapeHtml(clean(lead.industry || "—"))} | Localitate: ${escapeHtml(clean(lead.location || "—"))}\n` +
-        `Angajați: ${escapeHtml(lead.employeeRange)}\n\n` +
-        `💰 <b>PROFIL FINANCIAR</b>\n` +
+        `Email: ${sanitizedEmail ? escapeHtml(sanitizedEmail) : "Nespecificat"}\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `🏢 <b>DATE COMPANIE</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `Firma: ${sanitizedCompany && sanitizedCompany !== "Nespecificat" ? escapeHtml(sanitizedCompany) : "Nespecificat"}\n` +
+        `Tip firmă: ${escapeHtml(lead.companyType)}\n` +
+        `Vechime: ${escapeHtml(lead.companyAge)}\n` +
+        `Domeniu: ${sanitizedIndustry && sanitizedIndustry !== "—" ? escapeHtml(sanitizedIndustry) : "Nespecificat"}\n` +
+        `Localitate: ${sanitizedLocation && sanitizedLocation !== "—" ? escapeHtml(sanitizedLocation) : "Nespecificat"}\n` +
+        `Angajați: ${escapeHtml(lead.employeeRange)}\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `💼 <b>PROFIL FINANCIAR & SOLICITARE</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `Prioritate: ${priorityBadge}\n` +
+        `Destinație finanțare:\n` +
+        `${purposesText || "• Nespecificat"}\n\n` +
+        `Sumă dorită: <b>${escapeHtml(lead.requestedAmountRange)} (${escapeHtml(lead.currency)})</b>\n` +
         `Cifră de afaceri: ${escapeHtml(lead.annualRevenue)}\n` +
         `Profit: ${escapeHtml(lead.approximateProfit)}\n` +
-        `Sumă dorită: <b>${escapeHtml(lead.requestedAmountRange)} (${escapeHtml(lead.currency)})</b>\n` +
-        `Credite/Rate active: ${escapeHtml(lead.existingCredits)} (${escapeHtml(String(lead.monthlyInstallments))} RON/lună)\n\n` +
-        `🎯 <b>DESTINAȚIE FINANȚARE</b>\n` +
-        `${purposesText || "• Nespecificat"}\n\n` +
-        `⚠️ <b>RISC & CONTEXT</b>\n` +
+        `Credite active: ${escapeHtml(lead.existingCredits)} (Rate lunare: ${escapeHtml(formattedMonthly)} RON)\n` +
         `Biroul de credit: ${escapeHtml(lead.bureauStatus)}\n` +
         `Întârzieri: ${escapeHtml(lead.hasDelays)}\n` +
         `Refuzuri anterioare: ${escapeHtml(lead.previousRefusal)}\n` +
-        `Urgență: ${escapeHtml(lead.urgency)}\n\n` +
-        `📝 <b>MESAJ CLIENT</b>\n` +
-        `${escapeHtml(sanitizedMessage) || "Nicio mențiune adăugată."}\n\n` +
-        `🌐 <b>TRAFFIC</b>\n` +
-        `Sursă: Homepage Business Finance\n` +
-        `Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
+        `Urgență: ${escapeHtml(lead.urgency)}\n` +
+        (sanitizedMessage ? `Mesaj client: ${escapeHtml(sanitizedMessage)}\n` : "") +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `🌐 <b>CONTEXT</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `Landing page: ${escapeHtml(lead.pageUrl || "/business-finance")}\n` +
+        `Source: ${escapeHtml(lead.utmSource || "direct")}\n` +
+        `Medium: ${escapeHtml(lead.utmMedium || "—")}\n` +
+        `Campaign: ${escapeHtml(lead.utmCampaign || "—")}\n` +
         `Referrer: ${escapeHtml(referrer)}\n` +
-        `UTM: ${escapeHtml(lead.utmSource)} / ${escapeHtml(lead.utmMedium)} / ${escapeHtml(lead.utmCampaign)}\n\n` +
-        `🕐 <b>TIMESTAMP</b>\n` +
-        `${escapeHtml(timestamp)}` +
-        idFooter;
+        `Device: ${escapeHtml(deviceInfo.deviceType || lead.deviceType || "Desktop")}\n` +
+        `OS: ${escapeHtml(deviceInfo.os)}\n` +
+        `Browser: ${escapeHtml(deviceInfo.browser)}\n` +
+        `Location aproximativă: ${geoInfo.countryFlag} ${escapeHtml(geoInfo.city)}, ${escapeHtml(geoInfo.country)}\n` +
+        `Visitor ID: <code>${shortVisitor}</code>\n` +
+        `Session ID: <code>${shortSession}</code>\n` +
+        `Time: ${escapeHtml(timestamp)}`;
     } else if (isTotulCredit) {
-      const sanitizedMessage = clean(lead.clientMessage || "");
+      const sanitizedMessage = cleanString(lead.clientMessage || "");
+      const sanitizedDelay = cleanString(lead.delayPeriod || "");
+
       const formattedIncome = new Intl.NumberFormat("ro-RO").format(lead.income);
       const formattedInstallments = new Intl.NumberFormat("ro-RO").format(lead.monthlyInstallments);
       const formattedAmount = new Intl.NumberFormat("ro-RO").format(lead.requestedAmount);
 
       const priority = calculateLeadPriority(lead);
       const priorityBadge = priority === "HOT" ? "🔥 HOT" : priority === "WARM" ? "🟡 WARM" : "🔵 INFORMATIONAL";
+      const motivText = (lead.problemTypes || []).map((p: string) => `• ${escapeHtml(p)}`).join("\n");
 
       fullLeadData = {
         ...lead,
@@ -531,90 +553,105 @@ export async function POST(request: Request) {
         timestamp,
       };
 
-      const motivText = (lead.problemTypes || []).map((p: string) => `• ${escapeHtml(p)}`).join("\n");
-      const headerTitle = lead.source === "homepage-totul-inainte-de-credit"
-        ? "🔥 <b>LEAD — HOMEPAGE / TOTUL ÎNAINTE DE CREDIT</b>"
-        : "🔥 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>";
-
-      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
-      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
-
       telegramText =
-        `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🟢 LEAD NOU</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `👤 <b>LEAD — TOTUL ÎNAINTE DE CREDIT</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `Prioritate: ${priorityBadge}\n` +
+        `${ecosystemProp.emoji} <b>${ecosystemProp.domain.toUpperCase()} — 🟢 LEAD NOU</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `👤 <b>CLIENT</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
         `Nume: ${escapeHtml(sanitizedName)}\n` +
         `Telefon: <code>${escapeHtml(lead.phone)}</code>\n` +
-        `Email: ${escapeHtml(sanitizedEmail) || "—"}\n\n` +
-        `🎯 <b>MOTIV / PROBLEME:</b>\n` +
+        `Email: ${sanitizedEmail ? escapeHtml(sanitizedEmail) : "Nespecificat"}\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `💳 <b>SOLICITARE (TOTUL ÎNAINTE DE CREDIT)</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `Prioritate: ${priorityBadge}\n` +
+        `Situație / Probleme:\n` +
         `${motivText || "• Nespecificat"}\n\n` +
-        `💳 <b>PROFIL FINANCIAR:</b>\n` +
-        `Venit: ${escapeHtml(formattedIncome)} RON (${escapeHtml(lead.incomeType)}, ${escapeHtml(lead.employmentDuration)})\n` +
-        `Rate lunare: ${escapeHtml(formattedInstallments)} RON (Credite active: ${escapeHtml(lead.activeCreditCount)})\n` +
-        `Sumă dorită: <b>${escapeHtml(formattedAmount)} RON</b>\n` +
-        `Birou Credit: ${escapeHtml(lead.creditBureauStatus)} (Întârzieri: ${escapeHtml(lead.delayPeriod || "—")})\n` +
-        `Mesaj: ${escapeHtml(sanitizedMessage) || "—"}\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `🌍 <b>CONTEXT & TRAFFIC</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `🕐 Time: ${escapeHtml(timestamp)}\n` +
-        `🆔 Visitor: <code>${shortVisitor}</code>\n` +
-        `🧭 Session: <code>${shortSession}</code>\n` +
-        `📱 Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
-        `🔗 Source: ${escapeHtml(lead.utmSource || "direct")}\n` +
-        `🔗 Campaign: ${escapeHtml(lead.utmCampaign || "—")}\n` +
-        `📄 Page: ${escapeHtml(lead.pageUrl || "/totul-inainte-de-credit")}\n` +
-        `🌐 Referrer: ${escapeHtml(referrer)}`;
+        `Venit: ${escapeHtml(formattedIncome)} RON\n` +
+        `Tip venit: ${escapeHtml(lead.incomeType)}\n` +
+        `Vechime muncă: ${escapeHtml(lead.employmentDuration)}\n` +
+        `Rate lunare actuale: ${escapeHtml(formattedInstallments)} RON\n` +
+        `Credite active: ${escapeHtml(lead.activeCreditCount)}\n` +
+        `Sumă dorită: ${escapeHtml(formattedAmount)} RON\n` +
+        `Birou de Credit: ${escapeHtml(lead.creditBureauStatus)}\n` +
+        (sanitizedDelay && sanitizedDelay !== "—" ? `Perioadă întârzieri: ${escapeHtml(sanitizedDelay)}\n` : "") +
+        (sanitizedMessage ? `Mesaj client: ${escapeHtml(sanitizedMessage)}\n` : "") +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `🌐 <b>CONTEXT</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `Landing page: ${escapeHtml(lead.pageUrl || "/totul-inainte-de-credit")}\n` +
+        `Source: ${escapeHtml(lead.utmSource || "direct")}\n` +
+        `Medium: ${escapeHtml(lead.utmMedium || "—")}\n` +
+        `Campaign: ${escapeHtml(lead.utmCampaign || "—")}\n` +
+        `Referrer: ${escapeHtml(referrer)}\n` +
+        `Device: ${escapeHtml(deviceInfo.deviceType || lead.deviceType || "Desktop")}\n` +
+        `OS: ${escapeHtml(deviceInfo.os)}\n` +
+        `Browser: ${escapeHtml(deviceInfo.browser)}\n` +
+        `Location aproximativă: ${geoInfo.countryFlag} ${escapeHtml(geoInfo.city)}, ${escapeHtml(geoInfo.country)}\n` +
+        `Visitor ID: <code>${shortVisitor}</code>\n` +
+        `Session ID: <code>${shortSession}</code>\n` +
+        `Time: ${escapeHtml(timestamp)}`;
     } else {
-      const sanitizedMessage = clean(lead.message || "");
+      // Standard Lead from Homepage Credit Form (credite.cristianvaduva.com)
+      // Strictly mirrors form fields: purpose, desiredAmount, income, employment, name, phone, email, gdpr
       const formattedAmount = new Intl.NumberFormat("ro-RO").format(lead.desiredAmount);
       const formattedIncome = new Intl.NumberFormat("ro-RO").format(lead.income);
-      const formattedPayment = new Intl.NumberFormat("ro-RO").format(lead.monthlyPayment);
 
       fullLeadData = {
-        ...lead,
         name: sanitizedName,
-        email: sanitizedEmail,
-        message: sanitizedMessage,
+        phone: lead.phone,
+        email: sanitizedEmail || null,
+        purpose: lead.purpose,
+        desiredAmount: lead.desiredAmount,
+        income: lead.income,
+        employment: lead.employment,
+        gdpr: true,
+        gdprConsent: true,
+        utmSource: lead.utmSource,
+        utmMedium: lead.utmMedium,
+        utmCampaign: lead.utmCampaign,
+        utmContent: lead.utmContent,
+        referral: lead.referral,
+        pageUrl: lead.pageUrl,
+        deviceType: lead.deviceType,
+        visitorId: lead.visitorId,
+        sessionId: lead.sessionId,
         ip,
         userAgent,
         referrer,
         timestamp,
       };
 
-      const shortVisitor = lead.visitorId ? escapeHtml(clean(lead.visitorId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
-      const shortSession = lead.sessionId ? escapeHtml(clean(lead.sessionId).replace(/^(vis_|sess_)/, "").toUpperCase().slice(0, 4) + "••••") : "—";
-
       telegramText =
-        `💳 <b>CREDITE.CRISTIANVADUVA.COM — 🟢 LEAD NOU</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `👤 <b>LEAD</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
+        `${ecosystemProp.emoji} <b>${ecosystemProp.domain.toUpperCase()} — 🟢 LEAD NOU</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `👤 <b>CLIENT</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
         `Nume: ${escapeHtml(sanitizedName)}\n` +
         `Telefon: <code>${escapeHtml(lead.phone)}</code>\n` +
-        `Email: ${escapeHtml(sanitizedEmail) || "—"}\n` +
-        `An naștere: ${escapeHtml(String(lead.birthYear))}\n\n` +
-        `💰 <b>PROFIL FINANCIAR:</b>\n` +
-        `Obiectiv: <b>${escapeHtml(lead.purpose)}</b>\n` +
-        `Sumă dorită: <b>${escapeHtml(formattedAmount)} RON</b>\n` +
-        `Venit lunar: ${escapeHtml(formattedIncome)} RON\n` +
-        `Credite: ${escapeHtml(lead.creditTypes?.join(", "))}\n` +
-        `Rată actuală: ${escapeHtml(formattedPayment)} RON\n` +
-        `Mesaj: ${escapeHtml(sanitizedMessage) || "—"}\n` +
-        `GDPR: ✅ Acceptat | Marketing: ${(lead.marketingConsent || lead.marketing) ? "✅" : "❌"}\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `🌍 <b>CONTEXT & TRAFFIC</b>\n` +
-        `━━━━━━━━━━━━━━\n` +
-        `🕐 Time: ${escapeHtml(timestamp)}\n` +
-        `🆔 Visitor: <code>${shortVisitor}</code>\n` +
-        `🧭 Session: <code>${shortSession}</code>\n` +
-        `📱 Device: ${escapeHtml(lead.deviceType || "Desktop")}\n` +
-        `🔗 Source: ${escapeHtml(lead.utmSource || "direct")}\n` +
-        `🔗 Campaign: ${escapeHtml(lead.utmCampaign || "—")}\n` +
-        `📄 Page: ${escapeHtml(lead.pageUrl || "/")}\n` +
-        `🌐 Referrer: ${escapeHtml(referrer)}`;
+        `Email: ${sanitizedEmail ? escapeHtml(sanitizedEmail) : "Nespecificat"}\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `💳 <b>SOLICITARE</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `Tip credit: ${escapeHtml(lead.purpose)}\n` +
+        `Sumă: ${escapeHtml(formattedAmount)} RON\n` +
+        `Venit: ${escapeHtml(formattedIncome)} RON\n` +
+        `Tip venit: ${escapeHtml(lead.employment)}\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `🌐 <b>CONTEXT</b>\n` +
+        `━━━━━━━━━━━━━━━━━━\n` +
+        `Landing page: ${escapeHtml(lead.pageUrl || "/")}\n` +
+        `Source: ${escapeHtml(lead.utmSource || "direct")}\n` +
+        `Medium: ${escapeHtml(lead.utmMedium || "—")}\n` +
+        `Campaign: ${escapeHtml(lead.utmCampaign || "—")}\n` +
+        `Referrer: ${escapeHtml(referrer)}\n` +
+        `Device: ${escapeHtml(deviceInfo.deviceType || lead.deviceType || "Desktop")}\n` +
+        `OS: ${escapeHtml(deviceInfo.os)}\n` +
+        `Browser: ${escapeHtml(deviceInfo.browser)}\n` +
+        `Location aproximativă: ${geoInfo.countryFlag} ${escapeHtml(geoInfo.city)}, ${escapeHtml(geoInfo.country)}\n` +
+        `Visitor ID: <code>${shortVisitor}</code>\n` +
+        `Session ID: <code>${shortSession}</code>\n` +
+        `Time: ${escapeHtml(timestamp)}`;
     }
 
     // 1. Permanent Storage Layer
@@ -627,7 +664,7 @@ export async function POST(request: Request) {
     // 2. Notifications Flow with Fallback
     try {
       const telegramSuccess = await sendTelegram(telegramText);
-      
+
       if (!telegramSuccess) {
         await sendEmail(fullLeadData, telegramText);
       }

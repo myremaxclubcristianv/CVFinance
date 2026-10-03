@@ -197,17 +197,10 @@ export default function Home() {
   const [desiredAmount, setDesiredAmount] = useState("85000");
   const [income, setIncome] = useState("");
   const [employment, setEmployment] = useState("1–3 ani");
-  const [creditTypes, setCreditTypes] = useState<string[]>(["Bancă"]);
-  const [monthlyPayment, setMonthlyPayment] = useState("1200");
-  const [delays, setDelays] = useState("Nu am avut întârzieri");
-  const [creditBureau, setCreditBureau] = useState("Curat");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [birthYear, setBirthYear] = useState("1990");
-  const [messageText, setMessageText] = useState("");
   const [gdpr, setGdpr] = useState(true);
-  const [marketing, setMarketing] = useState(true);
   const [honeypot, setHoneypot] = useState("");
 
   const [footerYear] = useState(() => new Date().getFullYear());
@@ -316,19 +309,11 @@ export default function Home() {
       desiredAmount: Number(desiredAmount) || 85000,
       income: numericIncome,
       employment: employment || "1–3 ani",
-      creditTypes: creditTypes.length > 0 ? creditTypes : ["Bancă"],
-      monthlyPayment: Number(monthlyPayment) || 0,
-      delays: delays || "Nu",
-      creditBureau: creditBureau || "Nu știu",
       name: name.trim(),
       phone: cleanPhone,
       email: email.trim() || undefined,
-      birthYear: Number(birthYear) || 1990,
-      message: messageText.trim(),
       gdpr: true,
       gdprConsent: true,
-      marketing: Boolean(marketing),
-      marketingConsent: Boolean(marketing),
       website: honeypot || "",
       ...trafficMeta,
       pageUrl: typeof window !== "undefined" ? window.location.href : "https://credite.cristianvaduva.com",
