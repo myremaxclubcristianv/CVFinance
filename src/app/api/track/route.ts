@@ -9,6 +9,7 @@ import {
   formatShortId,
   parseDeviceFromUA,
   parseGeoFromHeaders,
+  getSecureClientIp,
 } from "@/lib/ecosystem";
 
 // In-memory rate limiting per client IP
@@ -200,15 +201,18 @@ const trackSchema = z.object({
   termYears: z.coerce.number().optional(),
 });
 
-function getClientIp(request: Request): string {
-  const vercelIp = request.headers.get("x-vercel-ip") || request.headers.get("x-real-ip");
-  if (vercelIp) return vercelIp.trim();
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const parts = forwarded.split(",");
-    return parts[parts.length - 1].trim();
-  }
-  return "127.0.0.1";
+// Method guards for non-POST HTTP methods
+export async function GET() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
+}
+export async function PUT() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
+}
+export async function DELETE() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
+}
+export async function PATCH() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
 }
 
 function maskIp(ip: string): string {
@@ -329,7 +333,13 @@ async function saveToSupabase(sessionRecord: any, eventRecord: any): Promise<voi
 
 export async function POST(request: Request) {
   try {
-    const clientIp = getClientIp(request);
+    // 1. Payload size guard
+    const contentLength = request.headers.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > 65536) {
+      return NextResponse.json({ ok: false, error: "Payload too large" }, { status: 413 });
+    }
+
+    const clientIp = getSecureClientIp(request);
     const maskedClientIp = maskIp(clientIp);
 
     if (!allowTrackRequest(clientIp)) {

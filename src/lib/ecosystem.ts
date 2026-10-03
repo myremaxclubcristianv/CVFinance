@@ -255,3 +255,39 @@ export function parseGeoFromHeaders(request: Request) {
 
   return { country, countryFlag, city, timezone: timezoneRaw };
 }
+
+/**
+ * Validate and safely extract client IP from headers.
+ * Protects against header injection, oversized strings, and malformed IPs.
+ */
+const IPV4_REGEX = /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+const IPV6_REGEX = /^[0-9a-fA-F:]+$/;
+
+export function getSecureClientIp(request: Request): string {
+  const candidates = [
+    request.headers.get("x-vercel-ip"),
+    request.headers.get("cf-connecting-ip"),
+    request.headers.get("x-real-ip"),
+  ];
+
+  for (const raw of candidates) {
+    if (raw) {
+      const ip = raw.trim();
+      if (ip.length <= 45 && (IPV4_REGEX.test(ip) || IPV6_REGEX.test(ip))) {
+        return ip;
+      }
+    }
+  }
+
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    const parts = forwarded.split(",");
+    const clientPart = parts[0]?.trim();
+    if (clientPart && clientPart.length <= 45 && (IPV4_REGEX.test(clientPart) || IPV6_REGEX.test(clientPart))) {
+      return clientPart;
+    }
+  }
+
+  return "127.0.0.1";
+}
+

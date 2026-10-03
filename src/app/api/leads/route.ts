@@ -8,6 +8,7 @@ import {
   formatShortId,
   parseDeviceFromUA,
   parseGeoFromHeaders,
+  getSecureClientIp,
 } from "@/lib/ecosystem";
 
 // Real Form Schema for Main Lead Qualification (credite.cristianvaduva.com)
@@ -260,15 +261,18 @@ function calculateBusinessLeadPriority(data: any): "HOT" | "WARM" | "INFORMATION
   return "INFORMATIONAL";
 }
 
-function getClientIp(request: Request): string {
-  const vercelIp = request.headers.get("x-vercel-ip") || request.headers.get("x-real-ip");
-  if (vercelIp) return vercelIp.trim();
-  const forwarded = request.headers.get("x-forwarded-for");
-  if (forwarded) {
-    const parts = forwarded.split(",");
-    return parts[parts.length - 1].trim();
-  }
-  return "127.0.0.1";
+// Method guards for non-POST HTTP methods
+export async function GET() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
+}
+export async function PUT() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
+}
+export async function DELETE() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
+}
+export async function PATCH() {
+  return NextResponse.json({ ok: false, message: "Method Not Allowed" }, { status: 405, headers: { Allow: "POST" } });
 }
 
 // --- Storage & Notification Abstraction Layer ---
@@ -371,6 +375,15 @@ async function sendEmail(leadData: any, telegramText: string): Promise<boolean> 
 
 export async function POST(request: Request) {
   try {
+    // 1. Payload size guard against memory exhaustion DoS
+    const contentLength = request.headers.get("content-length");
+    if (contentLength && parseInt(contentLength, 10) > 65536) {
+      return NextResponse.json(
+        { ok: false, message: "Payload-ul depășește limita permisă." },
+        { status: 413 }
+      );
+    }
+
     let body: any = {};
     try {
       body = await request.json();
@@ -381,7 +394,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const ip = getClientIp(request);
+    const ip = getSecureClientIp(request);
 
     if (!allowRequest(ip)) {
       return NextResponse.json(
