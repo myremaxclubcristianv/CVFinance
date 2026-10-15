@@ -12,21 +12,27 @@ import {
   Calendar,
   BarChart3,
   AlertCircle,
+  Landmark,
 } from "lucide-react";
+import BnrDataIntelligenceHub from "@/components/bnr/BnrDataIntelligenceHub";
 
 export const metadata: Metadata = {
-  title: "Ghiduri & Educație Financiară | CV Finance",
+  title: "Date Economice BNR, Ghiduri & Educație Financiară | CV Finance",
   description:
-    "Centrul editorial CV Finance: ghiduri practice, indicatori macroeconomici actuali și analize independente despre credite, dobânzi, DAE, refinanțare și Biroul de Credit.",
+    "Centrul de date economice BNR și ghiduri CV Finance: serii istorice IRCC și ROBOR, politica monetară BNR, dobânzi medii bancare, cursuri valutare și analize independente.",
   keywords: [
+    "date economice bnr",
+    "serii istorice ircc",
+    "robor 3m 6m bnr",
+    "politica monetara bnr",
     "ghiduri credite romania",
     "educatie financiara credite",
     "inflatie romania septembrie 2026",
     "indicatori economici romania",
-    "cum functioneaza creditele",
+    "stabilitate bancara romania",
+    "rezerve internationale bnr",
     "ghid refinantare",
     "ghid biroul de credit",
-    "sfaturi broker credite",
   ],
   alternates: { canonical: "/ghid" },
 };
@@ -199,21 +205,26 @@ export default function GhidIndexPage() {
               <span>•</span>
               <span>DATE OFICIALE VERIFICATE</span>
               <span>•</span>
+              <span>CENTRUL DE DATE BNR (7 CATEGORII)</span>
+              <span>•</span>
               <span>7 GHIDURI PRACTICE DISPONIBILE</span>
             </div>
           </div>
 
-          {/* SECȚIUNEA 1: ȘTIRI FINANCIARE & INDICATORI MACROECONOMICI ACTUALI */}
+          {/* SECȚIUNEA 1: CENTRUL DE DATE ECONOMICE BNR & INDICATORI STATISTICI OFICIALI */}
           <section id="indicatori-macroeconomici" style={{ margin: "2rem 0 3.5rem" }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", marginBottom: "1.25rem", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem" }}>
+            {/* Componenta Interactivă BNR Data Intelligence Hub */}
+            <BnrDataIntelligenceHub />
+
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "0.75rem", margin: "2.5rem 0 1.25rem", borderBottom: "1px solid var(--border)", paddingBottom: "0.75rem" }}>
               <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
                 <TrendingUp size={18} style={{ color: "var(--emerald, #087F5B)" }} />
                 <span className="cv-mono" style={{ fontSize: "0.8rem", fontWeight: 700, letterSpacing: "0.06em", color: "var(--emerald, #087F5B)" }}>
-                  ACTUALITATE ECONOMICĂ &amp; INDICATORI STATISTICI OFICIALI
+                  BULETIN STATISTIC OFICIAL: INFLAȚIA IPC (SURSA PRIMARĂ INS)
                 </span>
               </div>
               <span style={{ fontSize: "0.78rem", color: "var(--text-secondary, #5F6368)" }}>
-                SURSE OFICIALE: INS · BNR · ACTUALIZAT LA ZI
+                SURSE OFICIALE: INS · ACTUALIZAT LA ZI
               </span>
             </div>
 
