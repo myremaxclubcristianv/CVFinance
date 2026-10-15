@@ -78,7 +78,9 @@ const jsonLd = {
       "https://subventii.cristianvaduva.com",
       "https://aixmedia.cristianvaduva.com",
       "https://health.cristianvaduva.com",
-      "https://os.cristianvaduva.com"
+      "https://os.cristianvaduva.com",
+      "https://aether.cristianvaduva.com",
+      "https://dubai.cristianvaduva.com"
     ]
   }
 };

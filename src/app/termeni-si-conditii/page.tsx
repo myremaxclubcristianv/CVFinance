@@ -62,7 +62,7 @@ export default function TermeniSiConditii() {
           <div className="cv-legal-callout">
             <div className="cv-legal-callout-title">PRECIZARE ESENȚIALĂ</div>
             <p className="cv-legal-callout-text">
-              &ldquo;CV Finance oferă servicii de analiză și consultanță financiară independentă. Rezultatele analizelor sunt orientative și nu reprezintă o garanție de aprobare a unui credit. Decizia finală aparține exclusiv instituției financiare partenere, conform propriilor criterii de eligibilitate și de risc.&rdquo;
+              „CV Finance oferă servicii de analiză și consultanță financiară independentă. Rezultatele analizelor sunt orientative și nu reprezintă o garanție de aprobare a unui credit. Decizia finală aparține exclusiv instituției financiare partenere, conform propriilor criterii de eligibilitate și de risc.”
             </p>
           </div>
 

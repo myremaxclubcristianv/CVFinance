@@ -34,7 +34,7 @@ export default function GDPRPage() {
           <div className="cv-legal-callout">
             <div className="cv-legal-callout-title">PRINCIPIUL NOSTRU FUNDAMENTAL</div>
             <p className="cv-legal-callout-text" style={{ fontSize: "1.1rem", fontWeight: 600 }}>
-              &ldquo;Datele tale sunt folosite exclusiv pentru a analiza situația ta financiară și pentru a te contacta în legătură cu solicitarea trimisă.&rdquo;
+              „Datele tale sunt folosite exclusiv pentru a analiza situația ta financiară și pentru a te contacta în legătură cu solicitarea trimisă.”
             </p>
           </div>
 
@@ -102,7 +102,7 @@ export default function GDPRPage() {
               <h2 className="cv-legal-heading">Gestionarea preferințelor de Cookie-uri</h2>
             </div>
             <p className="cv-legal-text">
-              Îți poți schimba opțiunile de consimțământ în orice moment accesând link-ul <strong>&bdquo;Setări Cookie-uri&rdquo;</strong> din subsolul oricărei pagini a site-ului.
+              Îți poți schimba opțiunile de consimțământ în orice moment accesând link-ul <strong>„Setări Cookie-uri”</strong> din subsolul oricărei pagini a site-ului.
             </p>
           </section>
 

@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     q: "Verificarea ofertelor îmi afectează scorul FICO din Biroul de Credit?",
-    a: "Dacă discuți cu un consultant financiar independent care face simulări orientative pe baza veniturilor tale declarate, scorul tău nu este afectat deloc. În schimb, dacă mergi din bancă în bancă și permiți fiecărei agenții să îți facă o &bdquo;pre-aprobare financiară oficială&rdquo;, fiecare bancă va trimite o interogare în Biroul de Credit, ceea ce poate reduce temporar scorul FICO.",
+    a: "Dacă discuți cu un consultant financiar independent care face simulări orientative pe baza veniturilor tale declarate, scorul tău nu este afectat deloc. În schimb, dacă mergi din bancă în bancă și permiți fiecărei agenții să îți facă o „pre-aprobare financiară oficială”, fiecare bancă va trimite o interogare în Biroul de Credit, ceea ce poate reduce temporar scorul FICO.",
   },
   {
     q: "Merită să îmi mut salariul la banca de la care iau creditul?",

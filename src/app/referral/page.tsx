@@ -42,7 +42,7 @@ export default function ReferralPage() {
     {
       code: "03",
       title: "REMUNERAȚIE",
-      desc: "Primești remunerația de 500 – 3.000 RON la finalizarea dosarului și acordarea creditului, în condițiile legale aplicabile."
+      desc: "Primești remunerația stabilită la finalizarea dosarului și acordarea creditului, în condițiile legale aplicabile."
     }
   ];
 
@@ -80,8 +80,8 @@ export default function ReferralPage() {
             <div className="cv-hero-right" style={{ display: "flex", alignItems: "center" }}>
               <div className="cv-readout-panel" style={{ width: "100%", padding: "2.5rem", border: "1px solid var(--border)", backgroundColor: "var(--bg-secondary)" }}>
                 <span className="cv-mono" style={{ color: "var(--text-secondary)", fontSize: "0.75rem", display: "block", marginBottom: "0.5rem" }}>REMUNERAȚIE RECOMANDARE</span>
-                <div className="cv-mono" style={{ fontSize: "clamp(2rem, 3.5vw, 2.8rem)", fontWeight: 900, color: "var(--emerald)", lineHeight: "1", marginBottom: "0.5rem" }}>
-                  500 – 3.000 RON
+                <div className="cv-mono" style={{ fontSize: "clamp(1.4rem, 2.5vw, 1.85rem)", fontWeight: 800, color: "var(--emerald)", lineHeight: "1.2", marginBottom: "0.5rem" }}>
+                  REMUNERAȚIE LA FINALIZARE
                 </div>
                 <span className="cv-mono" style={{ color: "var(--text-secondary)", fontSize: "0.72rem", textTransform: "uppercase", letterSpacing: "0.06em", display: "block", marginBottom: "1.5rem" }}>
                   PENTRU FIECARE DOSAR FINALIZAT CU SUCCES
@@ -203,7 +203,7 @@ export default function ReferralPage() {
                 <span className="cv-legal-num">02</span>
                 <h3 className="cv-legal-heading" style={{ fontSize: "1.2rem", marginBottom: "0.5rem" }}>Nivelul Remunerației</h3>
                 <p className="cv-legal-text" style={{ fontSize: "0.95rem" }}>
-                  Nivelul remunerației este orientativ între <strong>500 RON</strong> și <strong>3.000 RON</strong>, în funcție de specificul și volumul finanțării intermediate, cu respectarea normelor legale aplicabile.
+                  Nivelul remunerației se stabilește în funcție de specificul și volumul finanțării intermediate, cu respectarea normelor legale aplicabile.
                 </p>
               </div>
 

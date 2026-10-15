@@ -190,6 +190,8 @@ const ecosystemLinks = [
   { name: "Market Pulse", desc: "Macroeconomic & Real Estate Intelligence", href: "https://cristianvaduva.com/market-pulse" },
   { name: "CONSTRUCTIONS by AiXLuxury", desc: "Dezvoltări & Construcții Premium", href: "https://constructions.cristianvaduva.com/" },
   { name: "FLY", desc: "Aviație Privată & Executive Travel", href: "https://fly.cristianvaduva.com/" },
+  { name: "AETHER", desc: "aether.cristianvaduva.com", href: "https://aether.cristianvaduva.com/" },
+  { name: "DUBAI", desc: "dubai.cristianvaduva.com", href: "https://dubai.cristianvaduva.com/" },
 ];
 
 export default function Home() {
@@ -554,22 +556,22 @@ export default function Home() {
               <div className="cv-process-item active">
                 <span className="cv-process-num">01</span>
                 <h3 className="cv-process-title">TU VORBEȘTI CU MINE.</h3>
-                <p className="cv-process-desc">&bdquo;Îmi spui ce vrei să faci și care este situația ta actuală.&rdquo;</p>
+                <p className="cv-process-desc">„Îmi spui ce vrei să faci și care este situația ta actuală.”</p>
               </div>
               <div className="cv-process-item">
                 <span className="cv-process-num">02</span>
                 <h3 className="cv-process-title">EU ANALIZEZ SITUAȚIA.</h3>
-                <p className="cv-process-desc">&bdquo;Mă uit la venituri, obligații, istoricul de credit și obiectiv.&rdquo;</p>
+                <p className="cv-process-desc">„Mă uit la venituri, obligații, istoricul de credit și obiectiv.”</p>
               </div>
               <div className="cv-process-item">
                 <span className="cv-process-num">03</span>
                 <h3 className="cv-process-title">EU DISCUT CU BANCA.</h3>
-                <p className="cv-process-desc">&bdquo;Caut varianta potrivită și negociez condițiile în locul tău.&rdquo;</p>
+                <p className="cv-process-desc">„Caut varianta potrivită și negociez condițiile în locul tău.”</p>
               </div>
               <div className="cv-process-item">
                 <span className="cv-process-num">04</span>
                 <h3 className="cv-process-title">TU PRIMEȘTI RĂSPUNSUL.</h3>
-                <p className="cv-process-desc">&bdquo;Știi exact unde te încadrezi și ce opțiuni ai fără drumuri inutile.&rdquo;</p>
+                <p className="cv-process-desc">„Știi exact unde te încadrezi și ce opțiuni ai fără drumuri inutile.”</p>
               </div>
             </div>
           </div>
@@ -1118,7 +1120,7 @@ export default function Home() {
                   RECOMANDĂ UN CLIENT
                 </h2>
                 <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.95rem", display: "block", marginBottom: "1rem" }}>
-                  500 – 3.000 RON / RECOMANDARE
+                  REMUNERAȚIE PENTRU DOSARELE FINALIZATE
                 </span>
                 <p className="cv-section-sub" style={{ marginBottom: "1.75rem", fontSize: "1.05rem", lineHeight: 1.5 }}>
                   Cunoști pe cineva care are nevoie de o soluție de creditare? Trimite-ne recomandarea.

@@ -88,7 +88,7 @@ export default function AcordMarketingPage() {
                 Faceți clic pe linkul de dezabonare din subsolul oricărui email primit de la noi.
               </li>
               <li className="cv-legal-list-item">
-                Trimiteți un email cu subiectul &bdquo;Dezabonare&rdquo; către adresa noastră oficială de contact.
+                Trimiteți un email cu subiectul „Dezabonare” către adresa noastră oficială de contact.
               </li>
             </ul>
           </section>

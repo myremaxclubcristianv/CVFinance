@@ -78,7 +78,7 @@ export default function GhidInainteDeSemnare() {
       >
         <section className="cv-legal-section">
           <p className="cv-legal-text">
-            Semnarea unui contract de credit este un angajament financiar pe mai mulți ani. De multe ori însă, debitorul primește un dosar de zeci de pagini redactate într-un limbaj juridic dens și este invitat să semneze rapid &bdquo;unde este bifat&rdquo;.
+            Semnarea unui contract de credit este un angajament financiar pe mai mulți ani. De multe ori însă, debitorul primește un dosar de zeci de pagini redactate într-un limbaj juridic dens și este invitat să semneze rapid „unde este bifat”.
           </p>
           <p className="cv-legal-text">
             O decizie financiară înțeleaptă presupune să înțelegi exact mecanismul prin care funcționează produsul respectiv. Nu toate instrumentele de împrumut sunt la fel: un card de credit funcționează complet diferit față de un credit cu anuități, iar un descoperit de cont ascunde reguli proprii de scadență.
@@ -113,7 +113,7 @@ export default function GhidInainteDeSemnare() {
                 <h3 className="cv-legal-card-title">2. Cardul de Credit (Cardul de Cumpărături)</h3>
               </div>
               <p className="cv-legal-card-desc">
-                O linie de credit &bdquo;revolving&rdquo; atașată unui card plastic, concepută pentru tranzacții comerciale și rate fără dobândă la magazine partenere.
+                O linie de credit „revolving” atașată unui card plastic, concepută pentru tranzacții comerciale și rate fără dobândă la magazine partenere.
                 <br /><br />
                 <strong>Ideal pentru:</strong> cumpărături curente plătite în perioada de grație (dobândă 0%).
               </p>
@@ -159,7 +159,7 @@ export default function GhidInainteDeSemnare() {
                 <h3 className="cv-legal-card-title">Iluzia sumei minime de plată</h3>
               </div>
               <p className="cv-legal-card-desc">
-                În fiecare lună, extrasul îți arată o &bdquo;sumă minimă de plată&rdquo; (de exemplu 2%–5% din soldul utilizat). Dacă achiți doar această sumă minimă, plătești aproape exclusiv dobânda acumulată; vei avea nevoie de zeci de ani pentru a închide datoria, plătind de câteva ori suma cheltuită inițial.
+                În fiecare lună, extrasul îți arată o „sumă minimă de plată” (de exemplu 2%–5% din soldul utilizat). Dacă achiți doar această sumă minimă, plătești aproape exclusiv dobânda acumulată; vei avea nevoie de zeci de ani pentru a închide datoria, plătind de câteva ori suma cheltuită inițial.
               </p>
             </div>
           </div>

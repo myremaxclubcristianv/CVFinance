@@ -78,7 +78,7 @@ export default function GhidCandAreSensRefinantarea() {
       >
         <section className="cv-legal-section">
           <p className="cv-legal-text">
-            Refinanțarea este adesea prezentată în campaniile de marketing ca un pas obligatoriu spre prosperitate: &bdquo;vino la noi și îți tăiem rata!&rdquo;. În practica financiară responsabilă, refinanțarea este o tranzacție matematică: schimbi un contract existent pe unul nou, iar acest schimb implică atât oportunități, cât și costuri fixe de transfer.
+            Refinanțarea este adesea prezentată în campaniile de marketing ca un pas obligatoriu spre prosperitate: „vino la noi și îți tăiem rata!”. În practica financiară responsabilă, refinanțarea este o tranzacție matematică: schimbi un contract existent pe unul nou, iar acest schimb implică atât oportunități, cât și costuri fixe de transfer.
           </p>
           <p className="cv-legal-text">
             Pentru a stabili dacă o refinanțare merită efortul, trebuie să calculăm ceea ce economiștii numesc <strong>punctul de amortizare</strong>: în câte luni economia lunară din rată acoperă complet toate costurile generate de închiderea creditului vechi și deschiderea celui nou.

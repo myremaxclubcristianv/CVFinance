@@ -78,10 +78,10 @@ export default function GhidIstoricCreditOptiuni() {
       >
         <section className="cv-legal-section">
           <p className="cv-legal-text">
-            Istoricul de credit este &bdquo;cartea de vizită&rdquo; financiară a oricărui cetățean care a interacționat vreodată cu sistemul bancar sau nebancar din România. Fiecare rată plătită la timp construiește reputație, în timp ce fiecare scadență depășită cu peste 30 de zile lasă o amprentă vizibilă în baza de date centralizată.
+            Istoricul de credit este „cartea de vizită” financiară a oricărui cetățean care a interacționat vreodată cu sistemul bancar sau nebancar din România. Fiecare rată plătită la timp construiește reputație, în timp ce fiecare scadență depășită cu peste 30 de zile lasă o amprentă vizibilă în baza de date centralizată.
           </p>
           <p className="cv-legal-text">
-            Există însă multă confuzie și dezinformare legată de ce se poate și ce nu se poate face cu aceste raportări. Unii cred că orice restanță înseamnă excludere pe viață din bănci, în timp ce alții cad pradă iluziei că cineva le poate &bdquo;șterge istoricul&rdquo; contra cost în câteva ore. Realitatea este ghidată de proceduri juridice clare.
+            Există însă multă confuzie și dezinformare legată de ce se poate și ce nu se poate face cu aceste raportări. Unii cred că orice restanță înseamnă excludere pe viață din bănci, în timp ce alții cad pradă iluziei că cineva le poate „șterge istoricul” contra cost în câteva ore. Realitatea este ghidată de proceduri juridice clare.
           </p>
         </section>
 

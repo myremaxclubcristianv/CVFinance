@@ -169,7 +169,7 @@ export default function CalculatorRataCredit() {
               <div className="cv-legal-callout">
                 <div className="cv-legal-callout-title">CONCLUZIE PRACTICĂ</div>
                 <p className="cv-legal-callout-text">
-                  Extinderea perioadei de la 3 la 5 ani reduce rata lunară cu aproximativ 550 lei/lună, oferind un respiro imediat în buget. În același timp, costul total crește cu aproximativ 5.040 lei din dobânda acumulată pe cei 2 ani suplimentari. Nu există o alegere &bdquo;corectă&rdquo; universală — important este să alegi varianta care corespunde capacității tale financiare reale.
+                  Extinderea perioadei de la 3 la 5 ani reduce rata lunară cu aproximativ 550 lei/lună, oferind un respiro imediat în buget. În același timp, costul total crește cu aproximativ 5.040 lei din dobânda acumulată pe cei 2 ani suplimentari. Nu există o alegere „corectă” universală — important este să alegi varianta care corespunde capacității tale financiare reale.
                 </p>
               </div>
             </section>

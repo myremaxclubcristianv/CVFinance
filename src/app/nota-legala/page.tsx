@@ -78,7 +78,7 @@ export default function NotaLegala() {
             <div className="cv-legal-callout">
               <div className="cv-legal-callout-title">AVERTISMENT PRIVIND RISCURILE</div>
               <p className="cv-legal-callout-text">
-                &ldquo;Orice decizie financiară de creditare sau refinanțare trebuie luată exclusiv după analiza atentă a bugetului personal și a capacității reale de rambursare.&rdquo;
+                „Orice decizie financiară de creditare sau refinanțare trebuie luată exclusiv după analiza atentă a bugetului personal și a capacității reale de rambursare.”
               </p>
             </div>
             <p className="cv-legal-text">

@@ -124,7 +124,7 @@ export default function PoliticaConfidentialitate() {
             <div className="cv-legal-callout">
               <div className="cv-legal-callout-title">GESTIONAREA CONSIMȚĂMÂNTULUI</div>
               <p className="cv-legal-callout-text">
-                Vă puteți modifica sau retrage preferințele privind modulele cookie în orice moment folosind opțiunea <strong>&bdquo;Setări Cookie-uri&rdquo;</strong> disponibilă în subsolul oricărei pagini.
+                Vă puteți modifica sau retrage preferințele privind modulele cookie în orice moment folosind opțiunea <strong>„Setări Cookie-uri”</strong> disponibilă în subsolul oricărei pagini.
               </p>
             </div>
           </section>
@@ -183,7 +183,7 @@ export default function PoliticaConfidentialitate() {
               <h2 className="cv-legal-heading">Perioada de stocare</h2>
             </div>
             <p className="cv-legal-text">
-              Păstrăm datele cu caracter personal pe o perioadă de maximum <strong>12 luni</strong> de la data ultimei interacțiuni directe, sau până în momentul în care solicitați expres ștergerea acestora (&bdquo;dreptul de a fi uitat&rdquo;).
+              Păstrăm datele cu caracter personal pe o perioadă de maximum <strong>12 luni</strong> de la data ultimei interacțiuni directe, sau până în momentul în care solicitați expres ștergerea acestora („dreptul de a fi uitat”).
             </p>
           </section>
 

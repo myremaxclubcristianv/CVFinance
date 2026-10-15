@@ -21,10 +21,10 @@ export const metadata: Metadata = {
 const faqs = [
   {
     q: "De ce promovează IFN-urile dobânda pe zi în loc de dobândă pe an?",
-    a: "Exprimarea costului &bdquo;la zi&rdquo; (de exemplu 0,8% sau 1% pe zi) are un puternic efect psihologic: 1 leu la 100 de lei împrumutați sună nesemnificativ. Însă raportat la 365 de zile dintr-un an, acest procent se traduce într-o dobândă nominală simplă de 365% și într-un DAE compus astronomic.",
+    a: "Exprimarea costului „la zi” (de exemplu 0,8% sau 1% pe zi) are un puternic efect psihologic: 1 leu la 100 de lei împrumutați sună nesemnificativ. Însă raportat la 365 de zile dintr-un an, acest procent se traduce într-o dobândă nominală simplă de 365% și într-un DAE compus astronomic.",
   },
   {
-    q: "Ce înseamnă &bdquo;comision de prelungire&rdquo; sau rostogolire de sold?",
+    q: "Ce înseamnă „comision de prelungire” sau rostogolire de sold?",
     a: "Dacă la scadență nu poți returna întreaga sumă, multe IFN-uri îți oferă posibilitatea de a plăti o taxă de prelungire (de exemplu 300–500 lei pentru încă 30 de zile). Această plată reprezintă un cost pur: nu scade nici măcar cu 1 leu din datoria inițială, amânând doar problema cu o lună.",
   },
   {
@@ -71,7 +71,7 @@ export default function GhidCrediteRapideIFN() {
         slug="credite-rapide-ifn-cost-real"
         category="CREDITE NEBANCARE (IFN)"
         title="Credite Rapide și IFN-uri: Cum Înțelegi Costul Real"
-        subtitle="De la &bdquo;1% pe zi&rdquo; la mii de procente DAE. Cum funcționează matematica împrumuturilor nebancare și cum eviți capcana prelungirilor repetate."
+        subtitle="De la „1% pe zi” la mii de procente DAE. Cum funcționează matematica împrumuturilor nebancare și cum eviți capcana prelungirilor repetate."
         readingTime="7 MIN"
         relatedServiceUrl="/refinantare-credit"
         relatedServiceLabel="Refinanțarea creditelor IFN printr-un credit bancar standard"
@@ -91,7 +91,7 @@ export default function GhidCrediteRapideIFN() {
             <h2 className="cv-legal-heading">Matematica Dobânzii de 1% pe Zi: Simplă vs. Compusă</h2>
           </div>
           <p className="cv-legal-text">
-            Când vezi un mesaj de tipul &bdquo;doar 1% dobândă pe zi&rdquo;, mintea umană percepe o cifră mică. În realitate, există o diferență matematică fundamentală între <em>anualizarea simplă</em> și <em>capitalizarea compusă</em>:
+            Când vezi un mesaj de tipul „doar 1% dobândă pe zi”, mintea umană percepe o cifră mică. În realitate, există o diferență matematică fundamentală între <em>anualizarea simplă</em> și <em>capitalizarea compusă</em>:
           </p>
 
           <div className="cv-legal-grid">
@@ -135,7 +135,7 @@ export default function GhidCrediteRapideIFN() {
           </p>
           <ul className="cv-legal-list">
             <li className="cv-legal-list-item"><strong>La scadență (ziua 30):</strong> Ai de returnat 3.000 lei (principal) + 900 lei (dobândă) = <strong>3.900 lei</strong>.</li>
-            <li className="cv-legal-list-item"><strong>Dacă nu ai 3.900 lei disponibili:</strong> Ți se propune plata unei &bdquo;taxe de amânare&rdquo; de 900 lei pentru încă 30 de zile.</li>
+            <li className="cv-legal-list-item"><strong>Dacă nu ai 3.900 lei disponibili:</strong> Ți se propune plata unei „taxe de amânare” de 900 lei pentru încă 30 de zile.</li>
             <li className="cv-legal-list-item"><strong>După 6 luni de prelungiri repetate:</strong> Ai plătit 6 × 900 lei = <strong>5.400 lei doar în comisioane de amânare</strong>, dar datorezi în continuare exact 3.000 lei la fel ca în prima zi!</li>
           </ul>
 

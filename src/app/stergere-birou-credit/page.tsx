@@ -107,7 +107,7 @@ export default function StergereBirouCredit() {
               Analiză Biroul de Credit: Rectificare Legală, Realități și Limite
             </h1>
             <p className="cv-legal-sub">
-              Diferența dintre o promisiune falsă de &bdquo;ștergere garantată&rdquo; și o analiză juridică profesionistă. Înțelege cum funcționează raportările, ce date pot fi contestate legal și ce nu poate promite niciun consultant responsabil.
+              Diferența dintre o promisiune falsă de „ștergere garantată” și o analiză juridică profesionistă. Înțelege cum funcționează raportările, ce date pot fi contestate legal și ce nu poate promite niciun consultant responsabil.
             </p>
             <div className="cv-legal-meta">
               <span>LEGISLAȚIA PRIVIND PROTECȚIA DATELOR (GDPR)</span>
@@ -123,7 +123,7 @@ export default function StergereBirouCredit() {
             </div>
             <ul className="cv-legal-toc-list">
               <li className="cv-legal-toc-item">
-                <a href="#mitul-stergerii-garantate"><span className="cv-legal-toc-num">01</span> Mitul &bdquo;ștergerii garantate&rdquo;</a>
+                <a href="#mitul-stergerii-garantate"><span className="cv-legal-toc-num">01</span> Mitul „ștergerii garantate”</a>
               </li>
               <li className="cv-legal-toc-item">
                 <a href="#cum-functioneaza-biroul"><span className="cv-legal-toc-num">02</span> Cum funcționează Biroul de Credit</a>
@@ -149,10 +149,10 @@ export default function StergereBirouCredit() {
             <section id="mitul-stergerii-garantate" className="cv-legal-section">
               <div className="cv-legal-section-header">
                 <span className="cv-legal-num">01</span>
-                <h2 className="cv-legal-heading">De Ce &bdquo;Ștergerea Garantată&rdquo; Este o Iluzie Periculoasă?</h2>
+                <h2 className="cv-legal-heading">De Ce „Ștergerea Garantată” Este o Iluzie Periculoasă?</h2>
               </div>
               <p className="cv-legal-text">
-                Internetul abundă de reclame care promit &bdquo;ștergerea dosarului din Biroul de Credit în 24 de ore, garantat 100%&rdquo; în schimbul unor sume de bani plătite în avans. Din punct de vedere juridic și operațional, această promisiune este <strong>complet nerealistă</strong>.
+                Internetul abundă de reclame care promit „ștergerea dosarului din Biroul de Credit în 24 de ore, garantat 100%” în schimbul unor sume de bani plătite în avans. Din punct de vedere juridic și operațional, această promisiune este <strong>complet nerealistă</strong>.
               </p>
               <p className="cv-legal-text">
                 Biroul de Credit S.A. este o entitate privată a băncilor, supusă unor reglementări extrem de stricte. Nicio terță parte nu are acces direct de modificare a bazei de date. Singura entitate care poate radia sau corecta o înregistrare este <strong>chiar instituția creditoare care a trimis raportarea</strong> (banca sau IFN-ul respectiv), și o face doar în baza unei justificări legale temeinice.

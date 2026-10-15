@@ -78,7 +78,7 @@ export default function GhidCreditScump() {
       >
         <section className="cv-legal-section">
           <p className="cv-legal-text">
-            Foarte mulți oameni semnează un contract de credit uitându-se la un singur număr: rata lunară pe care o au de plată în ziua de salariu. Dacă rata pare suportabilă în raport cu venitul actual, creditul este considerat automat &bdquo;bun&rdquo;.
+            Foarte mulți oameni semnează un contract de credit uitându-se la un singur număr: rata lunară pe care o au de plată în ziua de salariu. Dacă rata pare suportabilă în raport cu venitul actual, creditul este considerat automat „bun”.
           </p>
           <p className="cv-legal-text">
             Această abordare este însă motivul pentru care mii de debitori ajung să plătească de două sau trei ori suma împrumutată. Un credit nu este ieftin doar pentru că rata lui este mică; el poate fi extins pe o perioadă nejustificat de lungă sau poate include comisioane recurente care erodează masiv economiile familiei.
@@ -178,7 +178,7 @@ export default function GhidCreditScump() {
             <li className="cv-legal-list-item"><strong>În ultima treime a creditului:</strong> Ai achitat deja aproape toată dobânda aferentă banilor; rata lunară este compusă în proporție de 80–90% din rambursarea efectivă a sumei împrumutate.</li>
           </ul>
           <p className="cv-legal-text">
-            De aceea, un credit devine cu adevărat &bdquo;scump&rdquo; dacă îl refinanțezi fără noimă aproape de finalul scadenței, deoarece vei reîncepe să plătești dobândă nouă pe un nou contract. În schimb, refinanțarea unui credit aflat în primii 1–2 ani poate economisi sume considerabile.
+            De aceea, un credit devine cu adevărat „scump” dacă îl refinanțezi fără noimă aproape de finalul scadenței, deoarece vei reîncepe să plătești dobândă nouă pe un nou contract. În schimb, refinanțarea unui credit aflat în primii 1–2 ani poate economisi sume considerabile.
           </p>
         </section>
 
@@ -214,7 +214,7 @@ export default function GhidCreditScump() {
                 <h3 className="cv-legal-card-title">Sold restant care nu scade</h3>
               </div>
               <p className="cv-legal-card-desc">
-                La cardurile de credit și overdrafturi unde plătești doar &bdquo;suma minimă de rambursat&rdquo;, aproape toți banii tăi se duc pe dobândă, iar datoria principală rămâne neschimbată.
+                La cardurile de credit și overdrafturi unde plătești doar „suma minimă de rambursat”, aproape toți banii tăi se duc pe dobândă, iar datoria principală rămâne neschimbată.
               </p>
             </div>
           </div>

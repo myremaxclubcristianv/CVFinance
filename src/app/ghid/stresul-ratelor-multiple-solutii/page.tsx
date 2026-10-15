@@ -147,7 +147,7 @@ export default function GhidStresRateMultiple() {
           <ul className="cv-legal-list">
             <li className="cv-legal-list-item"><strong>1. Consolidarea bancară a tuturor creditelor:</strong> Dacă veniturile tale sunt încă eligibile, comasarea tuturor datoriilor (rate, carduri, descoperiri de cont) într-un singur credit bancar pe 5 ani poate reduce rata totală lunară cu 30%–50%, eliberând o sumă importantă pentru viața de zi cu zi.</li>
             <li className="cv-legal-list-item"><strong>2. Restructurarea directă cu banca actuală:</strong> Dacă nu te mai califici pentru o refinanțare nouă, poți depune o cerere oficială la banca creditoare actuală pentru prelungirea duratei sau o perioadă de grație de 3–6 luni la plata principalului.</li>
-            <li className="cv-legal-list-item"><strong>3. Renunțarea la produsele de tip &bdquo;revolving&rdquo;:</strong> Închiderea definitivă a limitelor de card de credit și a overdrafturilor pe măsură ce sunt achitate, pentru a nu cădea din nou în tentația de a le folosi.</li>
+            <li className="cv-legal-list-item"><strong>3. Renunțarea la produsele de tip „revolving”:</strong> Închiderea definitivă a limitelor de card de credit și a overdrafturilor pe măsură ce sunt achitate, pentru a nu cădea din nou în tentația de a le folosi.</li>
           </ul>
         </section>
 
