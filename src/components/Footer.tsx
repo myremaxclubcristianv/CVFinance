@@ -19,6 +19,7 @@ export default function Footer() {
             <Link href="/#totul-inainte-de-credit" className="cv-legal-link">Personal</Link>
             <Link href="/#business-finance" className="cv-legal-link">Business</Link>
             <Link href="/#servicii" className="cv-legal-link">Servicii</Link>
+            <Link href="/ghid" className="cv-legal-link">Ghiduri</Link>
             <Link href="/#cum-functioneaza" className="cv-legal-link">Cum funcționează</Link>
             <Link href="/#despre" className="cv-legal-link">Despre mine</Link>
             <Link href="/#contact" className="cv-legal-link">Contact</Link>

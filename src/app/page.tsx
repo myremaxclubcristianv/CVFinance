@@ -60,33 +60,48 @@ const servicesList = [
 const loanTypesList = [
   {
     code: "01",
-    title: "CREDIT IPOTECAR",
-    desc: "Pentru achiziția unei locuințe sau a unui teren, cu dobânzi fixe sau variabile negociate.",
+    title: "CREDIT DE NEVOI PERSONALE",
+    desc: "Lichidități fără justificarea utilizării fondurilor, cu dobânzi fixe sau variabile adaptate veniturilor tale.",
   },
   {
     code: "02",
-    title: "CREDIT DE NEVOI PERSONALE",
-    desc: "Pentru proiectele și nevoile tale neprevăzute, fără justificarea utilizării fondurilor.",
+    title: "CREDIT IPOTECAR & IMOBILIAR",
+    desc: "Pentru achiziția unei locuințe sau a unui teren, cu analiză comparativă a ofertelor disponibile în piață.",
   },
   {
     code: "03",
-    title: "REFINANȚARE",
-    desc: "Pentru reorganizarea finanțării existente și obținerea unei rate lunare considerabil reduse.",
+    title: "REFINANȚARE & CONSOLIDARE",
+    desc: "Comasarea creditelor existente într-o singură rată lunară sustenabilă și optimizarea costului total de rambursare.",
   },
   {
     code: "04",
-    title: "CREDIT BUSINESS",
-    desc: "Pentru capital de lucru, linii de credit și optimizarea fluxului de numerar al firmei.",
+    title: "FINANȚARE AUTO",
+    desc: "Pentru achiziția de autoturisme noi sau rulate, cu proprietate directă pe numele tău și condiții adaptate.",
   },
   {
     code: "05",
-    title: "CREDIT INVESTIȚII",
-    desc: "Pentru proiecte de extindere, achiziție de spații comerciale sau echipamente de producție.",
+    title: "RENOVARE & AMENAJARE",
+    desc: "Fonduri dedicate modernizării locuinței sau achiziției de materiale, fără necesitatea ipotecării imobilului.",
   },
   {
     code: "06",
-    title: "SOLUȚII PERSONALIZATE",
-    desc: "Pentru situații speciale care necesită o structurare financiară atipică sau negociere directă.",
+    title: "STUDII & FORMARE",
+    desc: "Finanțare pentru cursuri de calificare, masterat sau studii universitare care îți sporesc potențialul profesional.",
+  },
+  {
+    code: "07",
+    title: "CHELTUIELI MEDICALE",
+    desc: "Lichidități rapide pentru intervenții chirurgicale, tratamente stomatologice sau recuperare medicală urgentă.",
+  },
+  {
+    code: "08",
+    title: "FINANȚARE BUSINESS & IMM",
+    desc: "Linii de credit, capital de lucru, echipamente și investiții pentru companii (SRL, PFA).",
+  },
+  {
+    code: "09",
+    title: "SOLUȚII PENTRU ISTORIC DIFICIL",
+    desc: "Pentru aplicanți cu mici întârzieri din trecut, identificăm partenerii financiari cu norme de risc compatibile.",
   },
 ];
 
@@ -427,7 +442,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* PARTENERIAT STRATEGIC SMART CREDIT */}
+        {/* PARTENERIAT STRATEGIC SMART CREDIT & COLABORĂRI B2B */}
         <section id="parteneriat-smart-credit" className="cv-partner-section">
           <div className="cv-container">
             <div className="cv-partner-card">
@@ -445,6 +460,30 @@ export default function Home() {
               >
                 DESCOPERĂ SMART CREDIT →
               </a>
+            </div>
+
+            {/* PARTENERIATE PROFESIONALE: IMOBILIARE, DEZVOLTATORI & ANTREPRENORI */}
+            <div style={{ marginTop: "2rem", padding: "1.75rem 2rem", backgroundColor: "#FFFFFF", border: "1px solid var(--border)", borderRadius: "4px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "1.5rem" }}>
+              <div style={{ maxWidth: "680px" }}>
+                <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--emerald)", fontWeight: 700, display: "block", marginBottom: "0.35rem", letterSpacing: "0.06em" }}>
+                  PARTENERIATE PROFESIONALE B2B
+                </span>
+                <h3 style={{ fontSize: "1.2rem", fontWeight: 700, margin: "0 0 0.5rem 0", color: "var(--text-primary)" }}>
+                  Colaborări cu Agenți Imobiliari, Dezvoltatori și Contabili
+                </h3>
+                <p style={{ margin: 0, fontSize: "0.92rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>
+                  Oferim sprijin financiar dedicat pentru clienții tăi: pre-calificare rapidă a cumpărătorilor de imobile, soluții de creditare ipotecară și finanțare business pentru antreprenori, cu raportare transparentă la fiecare pas.
+                </p>
+              </div>
+              <div style={{ display: "flex", gap: "0.75rem", flexWrap: "wrap" }}>
+                <a
+                  href={`mailto:${CONTACT.EMAIL}?subject=${encodeURIComponent("Parteneriat profesional CV Finance")}`}
+                  className="cv-btn-secondary"
+                  style={{ fontSize: "0.85rem", padding: "0.75rem 1.4rem", whiteSpace: "nowrap" }}
+                >
+                  DISCUTĂ UN PARTENERIAT →
+                </a>
+              </div>
             </div>
           </div>
         </section>
@@ -726,7 +765,7 @@ export default function Home() {
             <span className="cv-section-marker">06 / TIPURI DE CREDITE</span>
             <div className="cv-section-header">
               <h2 className="cv-section-title">SOLUȚII ADAPTATE SITUAȚIEI TALE</h2>
-              <p className="cv-section-sub">Structurăm soluția potrivită în funcție de destinația fondurilor.</p>
+              <p className="cv-section-sub">Structurăm soluția potrivită în funcție de destinația fondurilor și profilul financiar.</p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "2rem" }}>
@@ -734,10 +773,14 @@ export default function Home() {
                 <div key={item.code} style={{ borderTop: "2px solid #E4E8E6", paddingTop: "1.25rem" }}>
                   <span className="cv-mono" style={{ color: "#087F5B", fontWeight: 700, fontSize: "0.85rem" }}>{item.code}</span>
                   <h3 style={{ fontSize: "1.15rem", fontWeight: 700, margin: "0.5rem 0" }}>{item.title}</h3>
-                  <p style={{ fontSize: "0.92rem", color: "#5F6368" }}>{item.desc}</p>
+                  <p style={{ fontSize: "0.92rem", color: "#5F6368", lineHeight: "1.5" }}>{item.desc}</p>
                 </div>
               ))}
             </div>
+
+            <p style={{ fontSize: "0.82rem", color: "#5F6368", marginTop: "2rem", borderTop: "1px solid var(--border)", paddingTop: "1rem" }}>
+              * Criteriile de acordare, dobânzile și eligibilitatea depind de profilul financiar al solicitantului și de normele interne ale instituțiilor partenere. Nu toate categoriile sunt oferite de fiecare finanțator.
+            </p>
           </div>
         </section>
 
@@ -911,6 +954,74 @@ export default function Home() {
         {/* 18 — 09 / FINANCIAL INTELLIGENCE */}
         <FinancialIntelligence />
 
+        {/* 18.1 — GHIDURI & EDUCAȚIE FINANCIARĂ EDITORIALĂ */}
+        <section className="cv-section" id="ghiduri" style={{ backgroundColor: "#FFFFFF", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)" }}>
+          <div className="cv-container">
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "flex-end", justifyContent: "space-between", gap: "1.5rem", marginBottom: "2.5rem" }}>
+              <div>
+                <span className="cv-section-marker">EDUCAȚIE FINANCIARĂ &amp; EDITORIAL</span>
+                <h2 className="cv-section-title" style={{ margin: "0 0 0.5rem 0" }}>
+                  GHIDURI FINANCIARE INDEPENDENTE
+                </h2>
+                <p className="cv-section-sub" style={{ margin: 0 }}>
+                  Înțelege cifrele înainte de a semna un contract de credit. Articole obiective redactate de Cristian Văduva.
+                </p>
+              </div>
+              <div>
+                <Link href="/ghid" className="cv-btn-secondary" style={{ fontSize: "0.85rem", padding: "0.65rem 1.35rem", whiteSpace: "nowrap" }}>
+                  TOATE GHIDURILE →
+                </Link>
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
+              <div style={{ padding: "1.5rem", backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border)", borderRadius: "2px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--emerald)", fontWeight: 700 }}>COSTURI REALE</span>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.5rem 0" }}>Cum îți dai seama dacă un credit este scump?</h3>
+                  <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>Dobândă vs. DAE, comisioane ascunse, asigurări obligatorii și scadențarul anuitant.</p>
+                </div>
+                <Link href="/ghid/cum-stii-daca-un-credit-este-scump" style={{ color: "var(--emerald)", fontWeight: 700, fontSize: "0.85rem", marginTop: "1rem", textDecoration: "none" }}>
+                  Citește ghidul →
+                </Link>
+              </div>
+
+              <div style={{ padding: "1.5rem", backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border)", borderRadius: "2px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--emerald)", fontWeight: 700 }}>CREDITE RAPIDE</span>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.5rem 0" }}>Credite rapide și IFN-uri: costul real</h3>
+                  <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>De la 1% pe zi la mii de procente DAE. Matematica dobânzii simple vs. compuse și capcanele prelungirii.</p>
+                </div>
+                <Link href="/ghid/credite-rapide-ifn-cost-real" style={{ color: "var(--emerald)", fontWeight: 700, fontSize: "0.85rem", marginTop: "1rem", textDecoration: "none" }}>
+                  Citește ghidul →
+                </Link>
+              </div>
+
+              <div style={{ padding: "1.5rem", backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border)", borderRadius: "2px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--emerald)", fontWeight: 700 }}>REFINANȚARE</span>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.5rem 0" }}>Când are sens refinanțarea și când nu?</h3>
+                  <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>Cum pui în balanță reducerea ratei lunare cu suma totală de plată, comisioanele noi și perioada rămasă.</p>
+                </div>
+                <Link href="/ghid/cand-are-sens-refinantarea-unui-credit" style={{ color: "var(--emerald)", fontWeight: 700, fontSize: "0.85rem", marginTop: "1rem", textDecoration: "none" }}>
+                  Citește ghidul →
+                </Link>
+              </div>
+
+              <div style={{ padding: "1.5rem", backgroundColor: "var(--bg-secondary)", border: "1px solid var(--border)", borderRadius: "2px", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+                <div>
+                  <span className="cv-mono" style={{ fontSize: "0.75rem", color: "var(--emerald)", fontWeight: 700 }}>BIROUL DE CREDIT</span>
+                  <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0.5rem 0" }}>Istoricul de credit: rectificări legale</h3>
+                  <p style={{ fontSize: "0.88rem", color: "var(--text-secondary)", lineHeight: "1.5" }}>Cum funcționează baza de date a Biroului de Credit, când se pot corecta raportările și cum îți refaci scorul.</p>
+                </div>
+                <Link href="/ghid/istoricul-de-credit-biroul-de-credit-optiuni" style={{ color: "var(--emerald)", fontWeight: 700, fontSize: "0.85rem", marginTop: "1rem", textDecoration: "none" }}>
+                  Citește ghidul →
+                </Link>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* 19 — 10 / DESPRE MINE EXECUTIVE BIOGRAPHY */}
         <section className="cv-section" id="despre">
           <div className="cv-container">
@@ -970,7 +1081,7 @@ export default function Home() {
               <div className="cv-diag-row">
                 <span className="cv-diag-code">02</span>
                 <span className="cv-diag-name">Acces la multiple oferte bancare</span>
-                <span className="cv-diag-status">20+ BĂNCI</span>
+                <span className="cv-diag-status">MULTIPLE INSTITUȚII</span>
               </div>
               <div className="cv-diag-row">
                 <span className="cv-diag-code">03</span>

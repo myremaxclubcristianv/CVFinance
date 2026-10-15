@@ -10,10 +10,11 @@ const MOBILE_MENU_ITEMS = [
   { code: "01", title: "PERSONAL", desc: "Credite, refinanțare și soluții pentru persoane", href: "/#totul-inainte-de-credit", id: "totul-inainte-de-credit" },
   { code: "02", title: "BUSINESS", desc: "Finanțare pentru companie și capital", href: "/#business-finance", id: "business-finance" },
   { code: "03", title: "SERVICII", desc: "Soluții de creditare și optimizare", href: "/#servicii", id: "servicii" },
-  { code: "04", title: "CUM FUNCȚIONEAZĂ", desc: "Procesul de analiză și consultanță", href: "/#cum-functioneaza", id: "cum-functioneaza" },
-  { code: "05", title: "DESPRE MINE", desc: "Experiență și abordare", href: "/#despre", id: "despre" },
-  { code: "06", title: "CONTACT", desc: "Ia legătura direct", href: "/#contact", id: "contact" },
-  { code: "07", title: "RECOMANDĂ UN CLIENT", desc: "Recomandă un client și primește recompensa", href: "/referral", id: "referral" },
+  { code: "04", title: "GHIDURI", desc: "Educație financiară și analize de cost", href: "/ghid", id: "ghid" },
+  { code: "05", title: "CUM FUNCȚIONEAZĂ", desc: "Procesul de analiză și consultanță", href: "/#cum-functioneaza", id: "cum-functioneaza" },
+  { code: "06", title: "DESPRE MINE", desc: "Experiență și abordare", href: "/#despre", id: "despre" },
+  { code: "07", title: "CONTACT", desc: "Ia legătura direct", href: "/#contact", id: "contact" },
+  { code: "08", title: "RECOMANDĂ UN CLIENT", desc: "Recomandă un client și primește recompensa", href: "/referral", id: "referral" },
 ];
 
 export default function Header() {
@@ -437,6 +438,7 @@ export default function Header() {
             <Link href="/#totul-inainte-de-credit" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#totul-inainte-de-credit", "totul-inainte-de-credit")}>Personal</Link>
             <Link href="/#business-finance" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#business-finance", "business-finance")}>Business</Link>
             <Link href="/#servicii" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#servicii", "servicii")}>Servicii</Link>
+            <Link href="/ghid" className="cv-nav-link">Ghiduri</Link>
             <Link href="/#cum-functioneaza" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#cum-functioneaza", "cum-functioneaza")}>Cum funcționează</Link>
             <Link href="/#despre" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#despre", "despre")}>Despre mine</Link>
             <Link href="/#contact" className="cv-nav-link" onClick={(e) => handleNavClick(e, "/#contact", "contact")}>Contact</Link>

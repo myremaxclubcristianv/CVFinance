@@ -409,6 +409,7 @@ export default function TotulInainteDeCreditPage() {
               <Link href="/stergere-birou-credit">Analiză Biroul de Credit</Link>
               <Link href="/broker-credite-bucuresti">Broker credite București</Link>
               <Link href="/calculator-rata-credit">Calculator rată credit</Link>
+              <Link href="/ghid">Ghiduri &amp; educație financiară</Link>
             </div>
           </div>
         </section>

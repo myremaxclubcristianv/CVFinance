@@ -14,6 +14,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/stergere-birou-credit",
     "/totul-inainte-de-credit",
     "/referral",
+    "/ghid",
+    "/ghid/cum-stii-daca-un-credit-este-scump",
+    "/ghid/credite-rapide-ifn-cost-real",
+    "/ghid/cum-compari-ofertele-de-credit",
+    "/ghid/stresul-ratelor-multiple-solutii",
+    "/ghid/ce-trebuie-sa-stii-inainte-sa-semnezi-un-credit",
+    "/ghid/cand-are-sens-refinantarea-unui-credit",
+    "/ghid/istoricul-de-credit-biroul-de-credit-optiuni",
     "/povesti-reale/david-21-credite-ifn",
     "/povesti-reale/georgeta-refinantare-rate-mari",
     "/povesti-reale/raluca-solutie-finantare",
@@ -30,7 +38,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return routes.map((route) => ({
     url: `${baseUrl}${route}`,
     lastModified: now,
-    changeFrequency: route === "" ? "daily" : "weekly",
-    priority: route === "" ? 1.0 : route.includes("termeni") || route.includes("confidentialitate") || route.includes("gdpr") || route.includes("nota-legala") || route.includes("acord-marketing") ? 0.3 : 0.8,
+    changeFrequency: route === "" ? "daily" : route.startsWith("/ghid") ? "weekly" : "weekly",
+    priority: route === "" ? 1.0 : route.startsWith("/ghid") ? 0.85 : route.includes("termeni") || route.includes("confidentialitate") || route.includes("gdpr") || route.includes("nota-legala") || route.includes("acord-marketing") ? 0.3 : 0.8,
   }));
 }
